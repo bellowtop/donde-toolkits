@@ -12,6 +12,7 @@ core.*
 .cache
 
 openvino_env
+models
 
 conan/conan.lock
 conan/conanbuildinfo.cmake

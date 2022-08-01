@@ -72,7 +72,7 @@ class Processor {
 template <typename T>
 class ConcurrentProcessor : public Processor {
   public:
-    ConcurrentProcessor(std::string conf, int concurrency, std::string device_id);
+    ConcurrentProcessor(json conf, int concurrency, std::string device_id);
     ~ConcurrentProcessor();
 
     RetCode Init(json cfg) override;
@@ -83,7 +83,7 @@ class ConcurrentProcessor : public Processor {
 
   private:
     int _concurrency;
-    std::string _conf;
+    json _conf;
     std::string _name;
     std::string _device_id;
     ThreadPool _pool;
@@ -99,7 +99,7 @@ class ConcurrentProcessor : public Processor {
 //
 
 template <typename T>
-ConcurrentProcessor<T>::ConcurrentProcessor(std::string conf, int concurrent, std::string device_id)
+ConcurrentProcessor<T>::ConcurrentProcessor(json conf, int concurrent, std::string device_id)
     : _concurrency(concurrent),
       _conf(conf),
       _name("concurrent-process-master"),

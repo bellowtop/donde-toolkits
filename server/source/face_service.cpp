@@ -8,6 +8,7 @@
 #include "face_pipeline.h"
 #include "pb/server.grpc.pb.h"
 #include "types.h"
+#include "nlohmann/json.hpp"
 
 #include <algorithm>
 #include <cassert>
@@ -45,6 +46,8 @@ using com::sekirocc::face_service::Vertex;
 using grpc::ServerContext;
 using grpc::Status;
 
+using json = nlohmann::json;
+
 FaceServiceImpl::FaceServiceImpl(Config& server_config, Logger& root_logger)
     : config(server_config),
       logger(root_logger),
@@ -52,7 +55,7 @@ FaceServiceImpl::FaceServiceImpl(Config& server_config, Logger& root_logger)
       pipeline(config.get_pipeline_config(), device_id){};
 
 void FaceServiceImpl::Start() {
-    std::string conf = "{}";
+    json conf = config.get_pipeline_config();
     int concurrent = 4;
 
     auto detectorProcessor

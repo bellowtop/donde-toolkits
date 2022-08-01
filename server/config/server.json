@@ -5,10 +5,12 @@
     "loglevel": "debug",
 
     "server": {
-	"name": "FaceDetectService"
+        "name": "FaceDetectService"
     },
 
     "pipeline": {
-
+        "detector": {
+            "model": "../../models/face-detection-adas-0001.bin"
+        }
     }
 }

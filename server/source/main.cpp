@@ -104,6 +104,9 @@ auto main(int argc, char** argv) -> int {
         std::cerr << exc.displayText() << std::endl;
         return 1;
 
+    } catch (const std::exception& exc2) {
+        std::cerr << exc2.what() << std::endl;
+        return 1;
     } catch (...) {
         std::cerr << "cannot start server";
         return 1;
