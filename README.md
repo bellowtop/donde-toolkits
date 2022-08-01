@@ -101,6 +101,12 @@ cmake --build build/server
 ```
 
 
+### Models
+
+TODO.
+
+
+
 ### Use Makefile
 
 Makefile wraps `cmake` instructions together.
@@ -121,3 +127,32 @@ make run-test
 # build lib only
 make build-lib
 ```
+
+
+## Xcode
+
+```
+mkdir -p xcode/server
+cd xcode/server
+cmake -G Xcode ../../server
+```
+
+then use xcode to open `FaceRecognitionServer.xcodeproj`, try build and run.
+
+
+
+### Known Issues
+
+Q:
+Build failed with message `"Protobuf requires at least C++11."`
+
+A:
+Navigate to `TARGETS -> API`, find `Apple Clang - Language - C++`, change `C++ Language Dialect` to `C++17[-std=c++17]`
+
+
+Q:
+Run failed with message `dyld[4593]: Library not loaded: @rpath/libopenvinod.dylib`
+
+A:
+It's because we need `source /opt/intel/openvino_2022/setupvars.sh`, but xcode doesn't know that.
+Edit `FaceRecognitionServer` scheme, add environment variable `DYLD_LIBRARY_PATH`, value `/opt/intel/openvino_2022/runtime/3rdparty/tbb/lib::/opt/intel/openvino_2022/runtime/lib/intel64/Release:/opt/intel/openvino_2022/runtime/lib/intel64/Debug`

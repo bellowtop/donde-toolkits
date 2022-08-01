@@ -14,6 +14,9 @@ core.*
 openvino_env
 models
 
+xcode
+
+
 conan/conan.lock
 conan/conanbuildinfo.cmake
 conan/conanbuildinfo.txt
