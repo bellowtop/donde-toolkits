@@ -142,6 +142,12 @@ then use xcode to open `FaceRecognitionServer.xcodeproj`, try build and run.
 
 
 ### Known Issues
+Q:
+CMake generate failed with message `xcode-select: error: tool 'xcodebuild' requires Xcode, but active developer directory '/Library/Developer/CommandLineTools' is a command line tools instance`
+
+A:
+Run `sudo xcode-select -s /Applications/Xcode.app/Contents/Developer`, see also `https://github.com/nodejs/node-gyp/issues/569`.
+
 
 Q:
 Build failed with message `"Protobuf requires at least C++11."`
