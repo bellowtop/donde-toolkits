@@ -16,7 +16,25 @@ using namespace Poco;
 
 using json = nlohmann::json;
 
-FacePipeline::FacePipeline(std::string conf, std::string device_id)
+/**
+   json conf:
+   {
+       "detector": {
+           "model": "xxxx.bin"
+       },
+       "aligner": {
+           "model": "xxxx.bin"
+       },
+       "landmarks": {
+           "model": "xxxx.bin"
+       },
+       "feature": {
+           "model": "xxxx.bin"
+       }
+   }
+ */
+
+FacePipeline::FacePipeline(json conf, std::string device_id)
     : _config(conf), _device_id(device_id), _logger(Logger::get("face-detect-service-logger")) {}
 
 RetCode FacePipeline::Init(std::shared_ptr<Processor> detectorProcessor,
@@ -33,8 +51,7 @@ RetCode FacePipeline::Init(std::shared_ptr<Processor> detectorProcessor,
     // v->valuePtr = &Frame{};
     // conf["id"] = reinterpret_cast<std::uintptr_t>(v);
 
-    json conf;
-    RetCode ret = _detectorProcessor->Init(conf);
+    RetCode ret = _detectorProcessor->Init(_config["detector"]);
 
     // delete v;
 
