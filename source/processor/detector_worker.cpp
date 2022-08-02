@@ -9,6 +9,7 @@
 
 #include "openvino/openvino.hpp"
 
+#include <filesystem>
 #include <iostream>
 #include <string>
 
@@ -41,8 +42,10 @@ RetCode DetectorWorker::Init(json conf, int i, std::string device_id) {
 
     std::string model_path = conf["model"];
 
-    ov::Core core;
     std::cout << "loading model: " << model_path << std::endl;
+    std::cout << "abs path: " << std::filesystem::canonical(model_path) << std::endl;
+
+    ov::Core core;
     std::shared_ptr<ov::Model> model = core.read_model(model_path);
     printInputAndOutputsInfo(*model);
 
