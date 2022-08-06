@@ -37,7 +37,7 @@ build-lib:
 	cmake --build build
 
 run-server:
-	./build/server/bin/FaceRecognitionServer --config_path server/examples/server.json
+	./build/server/bin/FaceRecognitionServer --config_path ./contrib/server.json
 
 run-test:
 	./build/test/bin/FaceRecognitionTests

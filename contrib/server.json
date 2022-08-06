@@ -10,7 +10,7 @@
 
     "pipeline": {
         "detector": {
-            "model": "../../../contrib/models/face-detection-adas-0001.xml"
+            "model": "./contrib/models/face-detection-adas-0001.xml"
         }
     }
 }

@@ -11,6 +11,8 @@
 #include "types.h"
 #include "nlohmann/json.hpp"
 
+#include "openvino/openvino.hpp"
+
 #include <iostream>
 #include <memory>
 
@@ -37,6 +39,18 @@ class DetectorWorker : public Worker {
 
   private:
     Logger& _logger = Logger::get("DetectorLogger");
+
+    int _batch_size = 1;
+    int _image_width;
+    int _image_height;
+    int _color_channel = 3;
+
+    std::shared_ptr<ov::Model> _model;
+    std::shared_ptr<ov::InferRequest> _infer_request;
+    std::shared_ptr<ov::Tensor> _input_tensor;
+    std::shared_ptr<ov::Tensor> _output_tensor;
+
+
 };
 
 // class LandmarksWorker : public Worker {

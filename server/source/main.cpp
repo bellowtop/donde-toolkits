@@ -48,7 +48,7 @@ auto main(int argc, char** argv) -> int {
   options.add_options()
       ("help", "Show help")
       ("version", "Print the current version number")
-      ("config_path", "config filepath", cxxopts::value<std::string>()->default_value("../examples/server.json"));
+      ("config_path", "config filepath", cxxopts::value<std::string>()->default_value("../../contrib/server.json"));
     // clang-format on
 
     std::cout << "openvino version: " << ov::get_openvino_version() << std::endl;
