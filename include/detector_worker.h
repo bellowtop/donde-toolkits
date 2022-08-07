@@ -38,6 +38,9 @@ class DetectorWorker : public Worker {
     void run() override;
 
   private:
+
+    RetCode process(cv::Mat& frame, DetectResult& result);
+
     Logger& _logger = Logger::get("DetectorLogger");
 
     int _batch_size = 1;
@@ -46,9 +49,8 @@ class DetectorWorker : public Worker {
     int _color_channel = 3;
 
     std::shared_ptr<ov::Model> _model;
+    std::shared_ptr<ov::CompiledModel> _compiled_model;
     std::shared_ptr<ov::InferRequest> _infer_request;
-    std::shared_ptr<ov::Tensor> _input_tensor;
-    std::shared_ptr<ov::Tensor> _output_tensor;
 
 
 };
