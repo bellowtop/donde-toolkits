@@ -97,6 +97,10 @@ RetCode DetectorWorker::Init(json conf, int i, std::string device_id) {
 
     _model = ppp.build();
 
+    _batch_size = 1;
+    ov::set_batch(_model, _batch_size);
+
+
     ov::Shape input_shape = _model->input().get_shape();
     _image_width = input_shape[ov::layout::width_idx(tensor_layout)];
     _image_height = input_shape[ov::layout::height_idx(tensor_layout)];
@@ -138,12 +142,16 @@ void DetectorWorker::run() {
 
 // resize input img, and do inference
 RetCode DetectorWorker::process(cv::Mat& img, DetectResult& result) {
-    printf("resize image from [%d x %d] to [%d x %d]", img.cols, img.rows, (int)_image_width,
+    printf("resize image from [%d x %d] to [%d x %d] \n", img.cols, img.rows, (int)_image_width,
            (int)_image_height);
 
     const size_t data_length = img.channels() * _image_width * _image_height;
     std::shared_ptr<unsigned char> data_ptr;
     data_ptr.reset(new unsigned char[data_length], std::default_delete<unsigned char[]>());
+
+    // size of each batch.
+    const size_t image_size = ov::shape_size(_model->input().get_shape()) / _batch_size;
+    assert(image_size == data_length);
 
     cv::Size new_size(_image_width, _image_height);
     cv::Mat resized_img(new_size, img.type(), data_ptr.get());
@@ -151,18 +159,11 @@ RetCode DetectorWorker::process(cv::Mat& img, DetectResult& result) {
 
     ov::Tensor input_tensor = _infer_request->get_input_tensor();
 
-    const size_t batch_size = 1;
-    ov::set_batch(_model, batch_size);
-
-    const size_t image_size = ov::shape_size(_model->input().get_shape()) / batch_size;
-    assert(image_size == data_length);
-
     std::memcpy(input_tensor.data<std::uint8_t>(), data_ptr.get(), image_size);
 
     _infer_request->infer();
 
     const ov::Tensor output_tensor = _infer_request->get_output_tensor();
-
     printInputTensor(output_tensor);
 
     return RetCode::RET_OK;
