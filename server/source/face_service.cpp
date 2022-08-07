@@ -7,6 +7,7 @@
 #include "detector_worker.h"
 #include "face_pipeline.h"
 #include "pb/server.grpc.pb.h"
+#include "pb/server.pb.h"
 #include "types.h"
 #include "nlohmann/json.hpp"
 
@@ -26,6 +27,7 @@
 
 using Poco::format;
 using Poco::Timestamp;
+using Poco::Logger;
 
 using namespace std;
 
@@ -35,7 +37,7 @@ using com::sekirocc::face_service::FaceService;
 
 using com::sekirocc::face_service::FaceDetectRequest;
 using com::sekirocc::face_service::FaceDetectResponse;
-using com::sekirocc::face_service::StatusCode;
+// using com::sekirocc::face_service::StatusCode;
 
 using com::sekirocc::face_service::BoundingPoly;
 using com::sekirocc::face_service::FaceFeature;
@@ -45,21 +47,22 @@ using com::sekirocc::face_service::Vertex;
 
 using grpc::ServerContext;
 using grpc::Status;
+using grpc::StatusCode;
 
 using json = nlohmann::json;
 
-FaceServiceImpl::FaceServiceImpl(Config& server_config, Logger& root_logger)
+FaceServiceImpl::FaceServiceImpl(Config& server_config, Logger& parent)
     : config(server_config),
-      logger(root_logger),
+      logger(Logger::get(parent.name() + ".FaceServiceImpl")),
       device_id(server_config.get_device_id()),
-      pipeline(config.get_pipeline_config(), device_id){};
+      pipeline(config.get_pipeline_config(), device_id, logger){};
 
 void FaceServiceImpl::Start() {
     json conf = config.get_pipeline_config();
     int concurrent = 4;
 
     auto detectorProcessor
-        = std::make_shared<ConcurrentProcessor<DetectorWorker>>(conf, concurrent, device_id);
+        = std::make_shared<ConcurrentProcessor<DetectorWorker>>(conf, concurrent, device_id, logger);
     pipeline.Init(detectorProcessor, detectorProcessor, detectorProcessor, detectorProcessor);
 };
 
@@ -67,6 +70,30 @@ void FaceServiceImpl::Stop() { pipeline.Terminate(); };
 
 Status FaceServiceImpl::BatchDetect(ServerContext* context, const BatchDetectRequest* request,
                                     BatchDetectResponse* response) {
+
+         int count = request->requests_size();
+         std::vector<Frame> frames;
+         frames.reserve(count);
+
+         if (count == 0) {
+             return Status(StatusCode::INVALID_ARGUMENT, "requests size is 0");
+         }
+
+         for (int i = 0; i < count; i++) {
+                 const FaceDetectRequest &req = request->requests(i);
+                 if (!req.has_image()) {
+                         return Status(StatusCode::INVALID_ARGUMENT, "invalid request image",
+                                       "image is null");
+                 }
+                 const std::string &image_data = req.image().data();
+                const std::vector<uint8_t> image_char_vec(image_data.begin(), image_data.end());
+                 Frame frame = pipeline.Decode(image_char_vec);
+                 frames.push_back(frame);
+         }
+    DetectResult ret = pipeline.Detect(frames[0]);
+    
+    logger.debug("pipeline.Detect DetectResult: %s", ret);
+
     return Status::OK;
 }
 

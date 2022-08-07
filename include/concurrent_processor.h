@@ -19,6 +19,7 @@ using Poco::Notification;
 using Poco::NotificationQueue;
 using Poco::Runnable;
 using Poco::ThreadPool;
+using Poco::Logger;
 
 using namespace Poco;
 using namespace std;
@@ -72,7 +73,7 @@ class Processor {
 template <typename T>
 class ConcurrentProcessor : public Processor {
   public:
-    ConcurrentProcessor(json conf, int concurrency, std::string device_id);
+    ConcurrentProcessor(json conf, int concurrency, std::string device_id, Logger& logger);
     ~ConcurrentProcessor();
 
     RetCode Init(json cfg) override;
@@ -99,13 +100,13 @@ class ConcurrentProcessor : public Processor {
 //
 
 template <typename T>
-ConcurrentProcessor<T>::ConcurrentProcessor(json conf, int concurrent, std::string device_id)
+ConcurrentProcessor<T>::ConcurrentProcessor(json conf, int concurrent, std::string device_id, Logger& parent)
     : _concurrency(concurrent),
       _conf(conf),
       _name("concurrent-process-master"),
       _device_id(device_id),
       _pool(Poco::ThreadPool(1, concurrent)),
-      _logger(Logger::get(_name)),
+      _logger(Logger::get(parent.name() + "." + _name)),
       _channel(std::make_shared<NotificationQueue>()), // create a channel
       _workers(0) {
     CreateWorkers(concurrent);
@@ -120,7 +121,7 @@ ConcurrentProcessor<T>::~ConcurrentProcessor() {
 template <typename T>
 void ConcurrentProcessor<T>::CreateWorkers(int concurrent) {
     for (int i = 0; i < concurrent; i++) {
-        _workers.push_back(std::make_shared<T>(T(_channel)));
+        _workers.push_back(std::make_shared<T>(T(_channel, _logger)));
     }
     std::cout << _name << " create workers: " << _workers.size() << std::endl;
 }

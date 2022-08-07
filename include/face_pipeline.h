@@ -17,7 +17,7 @@ using json = nlohmann::json;
 
 class FacePipeline {
   public:
-    FacePipeline(const json config, const std::string device_id);
+    FacePipeline(const json config, const std::string device_id, Poco::Logger& parent);
 
     RetCode Init(std::shared_ptr<Processor> detectorProcessor,
                  std::shared_ptr<Processor> alignerProcessor,

@@ -29,17 +29,17 @@ using grpc::Status;
 
 class FaceServiceImpl final : public FaceService::Service {
   public:
-    FaceServiceImpl(Config &server_config, Logger &root_logger);
+    FaceServiceImpl(Config& server_config, Logger& parent);
 
     void Start();
     void Stop();
 
-    Status BatchDetect(ServerContext *context, const BatchDetectRequest *request,
-                       BatchDetectResponse *response) override;
+    Status BatchDetect(ServerContext* context, const BatchDetectRequest* request,
+                       BatchDetectResponse* response) override;
 
   private:
-    Config &config;
-    Poco::Logger &logger;
+    Config& config;
+    Poco::Logger& logger;
     std::string device_id;
     FacePipeline pipeline;
 };

@@ -30,7 +30,7 @@ using namespace Poco;
 
 class DetectorWorker : public Worker {
   public:
-    DetectorWorker(std::shared_ptr<NotificationQueue> ch);
+    DetectorWorker(std::shared_ptr<NotificationQueue> ch, Poco::Logger& logger);
     ~DetectorWorker();
 
     RetCode Init(json conf, int id, std::string device_id) override;
@@ -40,19 +40,17 @@ class DetectorWorker : public Worker {
   private:
 
     RetCode process(cv::Mat& frame, DetectResult& result);
+    void debugOutputTensor(const ov::Tensor& output);
 
-    Logger& _logger = Logger::get("DetectorLogger");
+    Logger& _logger;
 
     int _batch_size = 1;
     int _image_width;
     int _image_height;
     int _color_channel = 3;
 
-    std::shared_ptr<ov::Model> _model;
     std::shared_ptr<ov::CompiledModel> _compiled_model;
     std::shared_ptr<ov::InferRequest> _infer_request;
-
-
 };
 
 // class LandmarksWorker : public Worker {

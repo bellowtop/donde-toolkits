@@ -12,7 +12,8 @@
 #include <opencv2/opencv.hpp>
 
 using namespace std;
-using namespace Poco;
+
+using Poco::Logger;
 
 using json = nlohmann::json;
 
@@ -34,8 +35,8 @@ using json = nlohmann::json;
    }
  */
 
-FacePipeline::FacePipeline(json conf, std::string device_id)
-    : _config(conf), _device_id(device_id), _logger(Logger::get("face-detect-service-logger")) {}
+FacePipeline::FacePipeline(json conf, std::string device_id, Logger& parent)
+    : _config(conf), _device_id(device_id), _logger(Logger::get(parent.name() + ".FacePipeline")) {}
 
 RetCode FacePipeline::Init(std::shared_ptr<Processor> detectorProcessor,
                            std::shared_ptr<Processor> alignerProcessor,
@@ -66,8 +67,7 @@ RetCode FacePipeline::Terminate() {
 }
 
 Frame FacePipeline::Decode(const vector<uint8_t>& image_data) {
-    cv::Mat data_mat(image_data, false);
-    cv::Mat image(cv::imdecode(data_mat, cv::IMREAD_UNCHANGED));
+    cv::Mat image(cv::imdecode(image_data, cv::IMREAD_UNCHANGED));
 
     // we copy the image to the frame, image can free by itself.
     // and RVO happens here for frame return.
@@ -82,6 +82,4 @@ DetectResult FacePipeline::Detect(const Frame& frame) {
 
     _logger.information("FacePipeline::Detect ret: %d\n", ret);
     return DetectResult{};
-
-
 }
