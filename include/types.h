@@ -20,6 +20,7 @@ struct AlignFace {
 };
 
 struct DetectResult {
+    float confidence;
     cv::Rect box;
 };
 

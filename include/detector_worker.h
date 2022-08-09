@@ -30,7 +30,7 @@ using namespace Poco;
 
 class DetectorWorker : public Worker {
   public:
-    DetectorWorker(std::shared_ptr<NotificationQueue> ch, Poco::Logger& logger);
+    DetectorWorker(std::shared_ptr<NotificationQueue> ch, Poco::Logger& parent);
     ~DetectorWorker();
 
     RetCode Init(json conf, int id, std::string device_id) override;

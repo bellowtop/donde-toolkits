@@ -35,7 +35,7 @@ using json = nlohmann::json;
    }
  */
 
-FacePipeline::FacePipeline(json conf, std::string device_id, Logger& parent)
+FacePipeline::FacePipeline(const json& conf, const std::string& device_id, const Logger& parent)
     : _config(conf), _device_id(device_id), _logger(Logger::get(parent.name() + ".FacePipeline")) {}
 
 RetCode FacePipeline::Init(std::shared_ptr<Processor> detectorProcessor,
@@ -66,20 +66,28 @@ RetCode FacePipeline::Terminate() {
     return RET_OK;
 }
 
-Frame FacePipeline::Decode(const vector<uint8_t>& image_data) {
+Frame* FacePipeline::Decode(const vector<uint8_t>& image_data) {
     cv::Mat image(cv::imdecode(image_data, cv::IMREAD_UNCHANGED));
 
     // we copy the image to the frame, image can free by itself.
     // and RVO happens here for frame return.
-    Frame frame{image};
+    Frame* frame = new Frame{image};
     return frame;
 }
 
-DetectResult FacePipeline::Detect(const Frame& frame) {
+DetectResult* FacePipeline::Detect(const Frame& frame) {
     Value input{ValueFrame, (void*)(&frame)};
+    // output.ptr memory is allocated by inner Process();
     Value output;
-    RetCode ret = _detectorProcessor->Process(input, output);
 
+    RetCode ret = _detectorProcessor->Process(input, output);
     _logger.information("FacePipeline::Detect ret: %d\n", ret);
-    return DetectResult{};
+
+    if (output.valueType != ValueDetectResult) {
+        _logger.error("Detect output is not ValueDetectResult, return empty result");
+        return nullptr;
+    }
+
+    // this object is moved out, the caller is responsible for free memory.
+    return (DetectResult *)output.valuePtr;
 }

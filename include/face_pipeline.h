@@ -17,7 +17,9 @@ using json = nlohmann::json;
 
 class FacePipeline {
   public:
-    FacePipeline(const json config, const std::string device_id, Poco::Logger& parent);
+    FacePipeline(const json& config, const std::string& device_id, const Poco::Logger& parent);
+
+    const json& GetConfig() {return _config;};
 
     RetCode Init(std::shared_ptr<Processor> detectorProcessor,
                  std::shared_ptr<Processor> alignerProcessor,
@@ -26,8 +28,11 @@ class FacePipeline {
 
     RetCode Terminate();
 
-    Frame Decode(const vector<uint8_t>& image_data);
-    DetectResult Detect(const Frame& frame);
+    // the caller should free memory
+    Frame* Decode(const vector<uint8_t>& image_data);
+
+    // the caller should free memory
+    DetectResult* Detect(const Frame& frame);
 
   private:
     json _config;

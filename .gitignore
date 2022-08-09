@@ -11,6 +11,12 @@ core.*
 *.log
 .cache
 
+*.cpp#
+*.h#
+
+*.png
+
+
 openvino_env
 
 contrib/models

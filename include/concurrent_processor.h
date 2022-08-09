@@ -64,20 +64,20 @@ class WorkMessage : public Notification {
 
 class Processor {
   public:
-    virtual RetCode Init(json cfg) = 0;
-    virtual RetCode Process(Value& input, Value& output) = 0;
+    virtual RetCode Init(const json& cfg) = 0;
+    virtual RetCode Process(const Value& input, Value& output) = 0;
     virtual RetCode Terminate() = 0;
     virtual std::string GetName() = 0;
 };
 
 template <typename T>
-class ConcurrentProcessor : public Processor {
+class ConcurrentProcessor final : public Processor {
   public:
-    ConcurrentProcessor(json conf, int concurrency, std::string device_id, Logger& logger);
+    ConcurrentProcessor(const json& conf, int concurrency, const std::string& device_id, const Logger& parent);
     ~ConcurrentProcessor();
 
-    RetCode Init(json cfg) override;
-    RetCode Process(Value& input, Value& output) override;
+    RetCode Init(const json& cfg) override;
+    RetCode Process(const Value& input, Value& output) override;
     RetCode Terminate() override;
 
     std::string GetName() override;
@@ -100,7 +100,7 @@ class ConcurrentProcessor : public Processor {
 //
 
 template <typename T>
-ConcurrentProcessor<T>::ConcurrentProcessor(json conf, int concurrent, std::string device_id, Logger& parent)
+ConcurrentProcessor<T>::ConcurrentProcessor(const json& conf, int concurrent, const std::string& device_id, const Logger& parent)
     : _concurrency(concurrent),
       _conf(conf),
       _name("concurrent-process-master"),
@@ -127,7 +127,7 @@ void ConcurrentProcessor<T>::CreateWorkers(int concurrent) {
 }
 
 template <typename T>
-RetCode ConcurrentProcessor<T>::Init(json conf) {
+RetCode ConcurrentProcessor<T>::Init(const json& conf) {
     // json v = config["id"];
     // Value *value = (Value *)(std::uintptr_t)v;
 
@@ -152,8 +152,8 @@ RetCode ConcurrentProcessor<T>::Init(json conf) {
 }
 
 template <typename T>
-RetCode ConcurrentProcessor<T>::Process(Value& input, Value& output) {
-    _logger.information("input.valueType : %d, valuePtr: %d\n", input.valueType, input.valuePtr);
+RetCode ConcurrentProcessor<T>::Process(const Value& input, Value& output) {
+    _logger.information("input.valueType : %d, valuePtr: %p\n", input.valueType, input.valuePtr);
 
     WorkMessage::Ptr msg = WorkMessage::Ptr(new WorkMessage(input, false));
     _channel->enqueueNotification(msg);
@@ -163,7 +163,7 @@ RetCode ConcurrentProcessor<T>::Process(Value& input, Value& output) {
     Value resp = msg->getResponse();
     output = resp;
 
-    _logger.information("output.valueType : %d, valuePtr: %d\n", output.valueType, output.valuePtr);
+    _logger.information("output.valueType : %d, valuePtr: %p\n", output.valueType, output.valuePtr);
 
     return RET_OK;
 }

@@ -14,6 +14,7 @@
 #include <filesystem>
 #include <iostream>
 #include <memory>
+#include <opencv2/core/types.hpp>
 #include <string>
 
 using Poco::Logger;
@@ -62,6 +63,9 @@ void DetectorWorker::debugOutputTensor(const ov::Tensor& output) {
     // SEE https://kerpanic.wordpress.com/2016/10/31/errfmt-using-poco-logger/
     _logger.debug("image_id: %hf, label: %hf, conf: %hf, x_min: %hf, y_min: %hf, x_max: %hf, y_max: %hf",
                   image_id, label, conf, x_min, y_min, x_max, y_max);
+
+    // printf("\n\nimage_id: %f, label: %f, conf: %f, x_min: %f, y_min: %f, x_max: %f, y_max: %f\n\n",
+    //               image_id, label, conf, x_min, y_min, x_max, y_max);
 }
 
 RetCode DetectorWorker::Init(json conf, int i, std::string device_id) {
@@ -108,7 +112,7 @@ RetCode DetectorWorker::Init(json conf, int i, std::string device_id) {
         = std::make_shared<ov::InferRequest>(std::move(_compiled_model->create_infer_request()));
 
     // warmup img
-    std::string warmup_image = "/Users/jiechen/Documents/Images/white_background.jpg";
+    std::string warmup_image = "./contrib/data/test_image.png";
     cv::Mat img = cv::imread(warmup_image);
 
     DetectResult result;
@@ -134,11 +138,11 @@ void DetectorWorker::run() {
                     continue;
                 }
                 Frame* f = (Frame*)input.valuePtr;
-                DetectResult result;
-                RetCode ret = process(f->image, result);
+                DetectResult* result = new DetectResult;
+                RetCode ret = process(f->image, *result);
                 _logger.debug("process ret: ", ret);
 
-                Value output{ValueDetectResult, (void*)&result};
+                Value output{ValueDetectResult, (void*)result};
                 msg->setResponse(output);
             }
         } else {
@@ -172,6 +176,20 @@ RetCode DetectorWorker::process(cv::Mat& img, DetectResult& result) {
 
     const ov::Tensor output_tensor = _infer_request->get_output_tensor();
     debugOutputTensor(output_tensor);
+
+    const float* tensor_data = output_tensor.data<float>();
+    float conf = tensor_data[2];
+    float x_min = tensor_data[3];
+    float y_min = tensor_data[4];
+    float x_max = tensor_data[5];
+    float y_max = tensor_data[6];
+
+
+    int img_width = img.size().width;
+    int img_height = img.size().height;
+
+    result.box = cv::Rect{(int)(x_min*img_width), (int)(y_min*img_height), (int)((x_max - x_min)*img_width), (int)((y_max - y_min)*img_height)};
+    result.confidence = conf;
 
     return RetCode::RET_OK;
 }

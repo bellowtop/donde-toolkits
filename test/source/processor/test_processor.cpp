@@ -24,13 +24,14 @@ TEST_CASE("ConcurrentProcessor comunicate with DummyWorker using channel.") {
     //
     class DummyWorker : public Worker {
       public:
-        DummyWorker(std::shared_ptr<NotificationQueue> ch) : Worker(ch){};
+        DummyWorker(std::shared_ptr<NotificationQueue> ch, Poco::Logger& parent)
+            : Worker(ch), _logger(Logger::get(parent.name() + ".dummyWorker")){};
         ~DummyWorker(){};
 
         RetCode Init(json conf, int id, std::string device_id) override {
             CHECK(conf != nullptr);
             CHECK(id != -1);
-            CHECK(device_id == "-1");
+            CHECK(device_id == "CPU");
             return RET_OK;
         };
 
@@ -44,7 +45,7 @@ TEST_CASE("ConcurrentProcessor comunicate with DummyWorker using channel.") {
                         if (msg->isQuitMessage()) {
                             break;
                         }
-                        processedMsg ++;
+                        processedMsg++;
 
                         Value input = msg->getRequest();
                         std::cout << "get input, valueType: " << input.valueType << std::endl;
@@ -53,7 +54,7 @@ TEST_CASE("ConcurrentProcessor comunicate with DummyWorker using channel.") {
                         CHECK(input.valuePtr != nullptr);
 
                         // allocate memory in heap, the caller is responsible to free it!
-                        Feature *result = new Feature;
+                        Feature* result = new Feature;
                         result->data.resize(100);
                         Value output{ValueFeature, result};
 
@@ -73,15 +74,21 @@ TEST_CASE("ConcurrentProcessor comunicate with DummyWorker using channel.") {
     // test it.
     //
 
-    std::string config = "{}";
+    Logger& logger = Logger::get("test-processor");
+
+    json config = R"({})";
     int concurrent = 3;
-    std::string device_id = "-1";
+    std::string device_id = "CPU";
 
-    ConcurrentProcessor<DummyWorker> processor{config, concurrent, device_id};
+    ConcurrentProcessor<DummyWorker> processor{config, concurrent, device_id, logger};
 
-    json conf = {
-        {"pipeline", {}}
-    };
+    json conf = R"(
+{
+        "detector": {
+            "model": "./contrib/models/face-detection-adas-0001.xml"
+        }
+ })"_json;
+
     processor.Init(conf);
 
     Frame f;
@@ -94,7 +101,7 @@ TEST_CASE("ConcurrentProcessor comunicate with DummyWorker using channel.") {
     CHECK(output.valuePtr != nullptr);
 
     // you must release output pointer!
-    Feature* feature = (Feature*) output.valuePtr;
+    Feature* feature = (Feature*)output.valuePtr;
     CHECK(feature->data.size() == 100);
     delete feature;
 
