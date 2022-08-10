@@ -1,18 +1,19 @@
 #include "concurrent_processor.h"
 #include "face_pipeline.h"
 #include "types.h"
+#include "utils.h"
 
 #include <Poco/Logger.h>
 #include <doctest/doctest.h>
 #include <doctest/trompeloeil.hpp>
-
 #include <filesystem>
-#include <iostream>
 #include <fstream>
-#include <string>
-
+#include <iostream>
 #include <memory>
 #include <nlohmann/json.hpp>
+#include <opencv2/core/types.hpp>
+#include <opencv2/imgproc.hpp>
+#include <string>
 
 using namespace std;
 
@@ -41,17 +42,24 @@ TEST_CASE("FacePipeline can decode image binary to frame, aka cv::Mat.") {
     pipeline.Init(detectorProcessor, detectorProcessor, detectorProcessor, detectorProcessor);
 
     // read image data;
-    std::string img_path = "./contrib/data/test_image.png";
+    // std::string img_path = "./contrib/data/test_image.png";
+    // std::string img_path = "./contrib/data/zly_1.jpeg";
+    std::string img_path = "./contrib/data/zly_2.jpeg";
 
     double len = std::filesystem::file_size(img_path);
     std::vector<uint8_t> image_data(len);
 
     std::ifstream f{img_path, std::ios::binary};
-    f.read((char *)image_data.data(), image_data.size());
+    f.read((char*)image_data.data(), image_data.size());
 
-    // const std::vector<uint8_t> image_char_vec(buf, buf + len);
     Frame* frame = pipeline.Decode(image_data);
     DetectResult* result = pipeline.Detect(*frame);
+
+    // scope exit
+    std::shared_ptr<int> ggg(NULL, [&](int*) {
+        delete frame;
+        delete result;
+    });
 
     std::cout << "result->box.x: " << result->box.x << std::endl;
     std::cout << "result->box.y: " << result->box.y << std::endl;
@@ -63,7 +71,7 @@ TEST_CASE("FacePipeline can decode image binary to frame, aka cv::Mat.") {
     CHECK_GT(result->box.size().width, 10);
     CHECK_GT(result->box.size().height, 10);
 
-    delete result;
+    drawRectangleInImage(img_path, result->box);
 
     // std::shared_ptr<Processor> a;
 
