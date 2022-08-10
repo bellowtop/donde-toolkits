@@ -69,15 +69,13 @@ RetCode FacePipeline::Terminate() {
 Frame* FacePipeline::Decode(const vector<uint8_t>& image_data) {
     cv::Mat image(cv::imdecode(image_data, cv::IMREAD_UNCHANGED));
 
-    // we copy the image to the frame, image can free by itself.
-    // and RVO happens here for frame return.
     Frame* frame = new Frame{image};
     return frame;
 }
 
 DetectResult* FacePipeline::Detect(const Frame& frame) {
     Value input{ValueFrame, (void*)(&frame)};
-    // output.ptr memory is allocated by inner Process();
+    // output.valuePtr memory is allocated by inner Process();
     Value output;
 
     RetCode ret = _detectorProcessor->Process(input, output);
