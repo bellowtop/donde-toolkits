@@ -6,9 +6,9 @@
 #include "config.h"
 #include "detector_worker.h"
 #include "face_pipeline.h"
+#include "gen/pb-cpp/server.grpc.pb.h"
+#include "gen/pb-cpp/server.pb.h"
 #include "nlohmann/json.hpp"
-#include "pb/server.grpc.pb.h"
-#include "pb/server.pb.h"
 #include "types.h"
 
 #include <algorithm>
@@ -31,19 +31,15 @@ using Poco::Timestamp;
 
 using namespace std;
 
-using com::sekirocc::face_service::BatchDetectRequest;
-using com::sekirocc::face_service::BatchDetectResponse;
+using com::sekirocc::face_service::DetectionRequest;
+using com::sekirocc::face_service::DetectionResponse;
+
 using com::sekirocc::face_service::FaceService;
 
-using com::sekirocc::face_service::FaceDetectRequest;
-using com::sekirocc::face_service::FaceDetectResponse;
 // using com::sekirocc::face_service::StatusCode;
 
-using com::sekirocc::face_service::BoundingPoly;
 using com::sekirocc::face_service::FaceFeature;
 using com::sekirocc::face_service::FaceObject;
-using com::sekirocc::face_service::ObjectInfo;
-using com::sekirocc::face_service::Vertex;
 
 using grpc::ServerContext;
 using grpc::Status;
@@ -68,37 +64,46 @@ void FaceServiceImpl::Start() {
 
 void FaceServiceImpl::Stop() { pipeline.Terminate(); };
 
-Status FaceServiceImpl::BatchDetect(ServerContext* context, const BatchDetectRequest* request,
-                                    BatchDetectResponse* response) {
+Status FaceServiceImpl::Detect(ServerContext* context, const DetectionRequest* request,
+                               DetectionResponse* response) {
 
-    int count = request->requests_size();
-    std::vector<Frame*> frames;
-    frames.reserve(count);
-
-    if (count == 0) {
-        return Status(StatusCode::INVALID_ARGUMENT, "requests size is 0");
+    if (!request->has_image()) {
+        return Status(StatusCode::INVALID_ARGUMENT, "invalid request image", "image is null");
     }
+    const std::string& image_data = request->image().data();
+    const std::vector<uint8_t> image_char_vec(image_data.begin(), image_data.end());
+    Frame* frame = pipeline.Decode(image_char_vec);
+    DetectResult* ret = pipeline.Detect(*frame);
 
-    for (int i = 0; i < count; i++) {
-        const FaceDetectRequest& req = request->requests(i);
-        if (!req.has_image()) {
-            return Status(StatusCode::INVALID_ARGUMENT, "invalid request image", "image is null");
-        }
-        const std::string& image_data = req.image().data();
-        const std::vector<uint8_t> image_char_vec(image_data.begin(), image_data.end());
-        Frame* frame = pipeline.Decode(image_char_vec);
-        frames.push_back(frame);
-    }
-    DetectResult* ret = pipeline.Detect(*frames[0]);
+    // int count = request->requests_size();
+    // std::vector<Frame*> frames;
+    // frames.reserve(count);
+
+    // if (count == 0) {
+    //     return Status(StatusCode::INVALID_ARGUMENT, "requests size is 0");
+    // }
+
+    // for (int i = 0; i < count; i++) {
+    //     const FaceDetectRequest& req = request->requests(i);
+    //     if (!req.has_image()) {
+    //         return Status(StatusCode::INVALID_ARGUMENT, "invalid request image", "image is
+    //         null");
+    //     }
+    //     const std::string& image_data = req.image().data();
+    //     const std::vector<uint8_t> image_char_vec(image_data.begin(), image_data.end());
+    //     Frame* frame = pipeline.Decode(image_char_vec);
+    //     frames.push_back(frame);
+    // }
+    // DetectResult* ret = pipeline.Detect(*frames[0]);
 
     logger.debug("pipeline.Detect DetectResult: %s", ret);
 
     return Status::OK;
 }
 
-// Status FaceServiceImpl::BatchDetect(ServerContext *context,
-//                                            const BatchDetectRequest *request,
-//                                            BatchDetectResponse *response) {
+// Status FaceServiceImpl::BatchDetection(ServerContext *context,
+//                                            const DetectionRequest *request,
+//                                            DetectionResponse *response) {
 //
 //         int count = request->requests_size();
 //         std::vector<Frame> frames;
@@ -115,7 +120,7 @@ Status FaceServiceImpl::BatchDetect(ServerContext* context, const BatchDetectReq
 //                 frames.push_back(frame);
 //         }
 //
-//         std::vector<Feature> fts = pipeline.BatchDetect(frames);
+//         std::vector<Feature> fts = pipeline.BatchDetection(frames);
 //
 //         for (int i = 0; i < count; i++) {
 //                 FaceDetectResponse *resp = response->add_responses();

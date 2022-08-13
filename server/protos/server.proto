@@ -1,54 +1,10 @@
 syntax = "proto3";
 
-// option go_package = "github.com/sekirocc/face-detect-service/api/face_service";
-// option java_package = "com.sekirocc.face_service_service";
+// option go_package = "github.com/sekirocc/face-recognition-service/api/face_service";
+// option java_package = "com.sekirocc.face_recognition_service";
 
 
 package com.sekirocc.face_service;
-
-
-message Vertex {
-        int32 x = 1;
-        int32 y = 2;
-}
-
-message Size {
-        int32 width = 1;
-        int32 height = 2;
-}
-
-message BoundingPoly {
-        repeated Vertex vertices = 1;
-}
-
-enum ImageFormat {
-        IMAGE_UNKNOWN = 0;
-        IMAGE_JPEG = 1;
-        IMAGE_PNG = 2;
-        IMAGE_BMP = 3;
-        IMAGE_TIFF = 4;
-        IMAGE_GIF = 5;
-}
-
-message Image {
-        ImageFormat format = 1;
-        bytes data = 2;
-}
-
-message FaceDetectRequest {
-        Image image = 1;
-}
-
-
-message BatchDetectRequest {
-        repeated FaceDetectRequest requests = 1;
-}
-
-message Result {
-        int32 code = 1;
-        string error = 2;
-        StatusCode status = 3;
-}
 
 enum StatusCode {
         OK = 0;
@@ -62,36 +18,58 @@ enum StatusCode {
         reserved 10103 to 10200;
 }
 
+message Rect {
+  Point point = 1;
+  Size size = 2;
+}
+
+message Point {
+        int32 x = 1;
+        int32 y = 2;
+}
+
+message Size {
+        int32 width = 1;
+        int32 height = 2;
+}
+
+enum ImageFormat {
+        IMAGE_UNKNOWN = 0;
+        IMAGE_JPEG = 1;
+        IMAGE_PNG = 2;
+}
+
+message Image {
+        ImageFormat format = 1;
+        bytes data = 2;
+}
+
+message DetectionRequest {
+        Image image = 1;
+}
+
+
 message FaceFeature {
         bytes blob = 1;
         int32 version = 2;
 }
 
 message FaceObject {
-        float quality = 1;
-        BoundingPoly rectangle = 2;
-        repeated Vertex landmarks = 3;
-        float face_score = 4;
+  StatusCode code = 1;
+        Rect rectangle = 2;
+        float quality = 3;
+        float confidence = 4;
         FaceFeature feature = 5;
 }
 
-message ObjectInfo {
-        FaceObject face = 1;
+message DetectionResponse {
+        repeated FaceObject faces = 1;
 }
 
-message FaceDetectResponse {
-        repeated ObjectInfo face_info = 1;
-}
-
-
-message BatchDetectResponse {
-        repeated Result results = 1;
-        repeated FaceDetectResponse responses = 2;
-}
 
 // 人脸检测
 service FaceService {
-        rpc BatchDetect(BatchDetectRequest) returns (BatchDetectResponse) {
+        rpc Detect(DetectionRequest) returns (DetectionResponse) {
 
         }
 }

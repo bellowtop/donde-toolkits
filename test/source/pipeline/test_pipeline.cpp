@@ -71,7 +71,7 @@ TEST_CASE("FacePipeline can decode image binary to frame, aka cv::Mat.") {
     CHECK_GT(result->box.size().width, 10);
     CHECK_GT(result->box.size().height, 10);
 
-    drawRectangleInImage(img_path, result->box);
+    // drawRectangleInImage(img_path, result->box);
 
     // std::shared_ptr<Processor> a;
 

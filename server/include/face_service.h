@@ -5,7 +5,7 @@
 #include "Poco/Timestamp.h"
 #include "config.h"
 #include "face_pipeline.h"
-#include "pb/server.grpc.pb.h"
+#include "gen/pb-cpp/server.grpc.pb.h"
 
 #include <grpc/grpc.h>
 #include <grpcpp/security/server_credentials.h>
@@ -20,8 +20,8 @@ using Poco::Timestamp;
 
 using namespace std;
 
-using com::sekirocc::face_service::BatchDetectRequest;
-using com::sekirocc::face_service::BatchDetectResponse;
+using com::sekirocc::face_service::DetectionRequest;
+using com::sekirocc::face_service::DetectionResponse;
 using com::sekirocc::face_service::FaceService;
 
 using grpc::ServerContext;
@@ -34,8 +34,8 @@ class FaceServiceImpl final : public FaceService::Service {
     void Start();
     void Stop();
 
-    Status BatchDetect(ServerContext* context, const BatchDetectRequest* request,
-                       BatchDetectResponse* response) override;
+    Status Detect(ServerContext* context, const DetectionRequest* request,
+                  DetectionResponse* response) override;
 
   private:
     Config& config;

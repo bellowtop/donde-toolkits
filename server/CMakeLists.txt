@@ -24,12 +24,12 @@ set(OpenVINO_DIR "/opt/intel/openvino_2022/runtime/cmake")
 find_package(OpenVINO REQUIRED COMPONENTS Runtime)
 
 
-# ----- GRPC api library ----
-file(GLOB_RECURSE api_headers CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/api/*.h")
-file(GLOB_RECURSE api_sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/api/*.cc")
-add_library(API ${api_headers} ${api_sources})
+# ----- GRPC pb ----
+file(GLOB_RECURSE pb_headers CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/protos/gen/pb-cpp/*.h")
+file(GLOB_RECURSE pb_sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/protos/gen/pb-cpp/*.cc")
+add_library(PB ${pb_headers} ${pb_sources})
 include_directories(
-	${CMAKE_CURRENT_SOURCE_DIR}/api
+	${CMAKE_CURRENT_SOURCE_DIR}/protos
 )
 
 
@@ -59,6 +59,6 @@ target_link_libraries(${PROJECT_NAME}
 	CONAN_PKG::nlohmann_json
 	CONAN_PKG::toml11
 	openvino::runtime
-	API
+	PB
 	FaceRecognition
 	)
