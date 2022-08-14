@@ -47,7 +47,7 @@ inline void drawRectangleInImage(const std::string& image_path, cv::Rect rect) {
     cv::Point p1(rect.x, rect.y);
     cv::Point p2(rect.x + rect.width, rect.y + rect.height);
 
-    cv::rectangle(img, p1, p2, cv::Scalar(255, 0, 0), 2, cv::LINE_8);
+    cv::rectangle(img, p1, p2, cv::Scalar(0, 0, 255), 2, cv::LINE_8);
     cv::imshow("Output", img);
     cv::waitKey(0);
 }

@@ -39,9 +39,9 @@ TEST_CASE("FacePipeline can decode image binary to frame, aka cv::Mat.") {
     pipeline.Init(detectorProcessor, detectorProcessor, detectorProcessor, detectorProcessor);
 
     // read image data;
-    // std::string img_path = "./contrib/data/test_image.png";
+    std::string img_path = "./contrib/data/test_image2.png";
     // std::string img_path = "./contrib/data/zly_1.jpeg";
-    std::string img_path = "./contrib/data/zly_2.jpeg";
+    // std::string img_path = "./contrib/data/zly_2.jpeg";
 
     double len = std::filesystem::file_size(img_path);
     std::vector<uint8_t> image_data(len);
