@@ -1,7 +1,6 @@
 #include "concurrent_processor.h"
 #include "types.h"
 
-#include <Poco/Logger.h>
 #include <Poco/NotificationQueue.h>
 #include <doctest/doctest.h>
 #include <memory>
@@ -10,7 +9,6 @@
 using namespace std;
 using namespace Poco;
 
-using Poco::Logger;
 using Poco::Notification;
 using Poco::NotificationQueue;
 
@@ -24,8 +22,8 @@ TEST_CASE("ConcurrentProcessor comunicate with DummyWorker using channel.") {
     //
     class DummyWorker : public Worker {
       public:
-        DummyWorker(std::shared_ptr<NotificationQueue> ch, Poco::Logger& parent)
-            : Worker(ch), _logger(Logger::get(parent.name() + ".dummyWorker")){};
+        DummyWorker(std::shared_ptr<NotificationQueue> ch)
+            : Worker(ch){};
         ~DummyWorker(){};
 
         RetCode Init(json conf, int id, std::string device_id) override {
@@ -66,21 +64,17 @@ TEST_CASE("ConcurrentProcessor comunicate with DummyWorker using channel.") {
             }
         };
 
-      private:
-        Logger& _logger = Logger::get("DummyWorker");
     };
 
     //
     // test it.
     //
 
-    Logger& logger = Logger::get("test-processor");
-
     json config = R"({})";
     int concurrent = 3;
     std::string device_id = "CPU";
 
-    ConcurrentProcessor<DummyWorker> processor{config, concurrent, device_id, logger};
+    ConcurrentProcessor<DummyWorker> processor{config, concurrent, device_id};
 
     json conf = R"(
 {

@@ -37,6 +37,7 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
 	CONAN_PKG::fmt
 	CONAN_PKG::opencv
+	CONAN_PKG::spdlog
 	CONAN_PKG::poco
 	CONAN_PKG::nlohmann_json
 	openvino::runtime

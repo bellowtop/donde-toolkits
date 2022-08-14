@@ -11,6 +11,11 @@
 #include "nlohmann/json.hpp"
 #include "types.h"
 
+
+#include "spdlog/spdlog.h"
+#include "spdlog/sinks/stdout_color_sinks.h"
+
+
 #include <algorithm>
 #include <cassert>
 #include <grpc/grpc.h>
@@ -26,7 +31,6 @@
 #include <string>
 
 using Poco::format;
-using Poco::Logger;
 using Poco::Timestamp;
 
 using namespace std;
@@ -48,18 +52,17 @@ using grpc::StatusCode;
 
 using json = nlohmann::json;
 
-FaceServiceImpl::FaceServiceImpl(Config& server_config, Logger& parent)
+FaceServiceImpl::FaceServiceImpl(Config& server_config)
     : config(server_config),
-      logger(Logger::get(parent.name() + ".FaceServiceImpl")),
       device_id(server_config.get_device_id()),
-      pipeline(config.get_pipeline_config(), device_id, logger){};
+      pipeline(config.get_pipeline_config(), device_id){};
 
 void FaceServiceImpl::Start() {
     const json& conf = pipeline.GetConfig();
     int concurrent = 4;
 
     auto detectorProcessor = std::make_shared<ConcurrentProcessor<DetectorWorker>>(
-        conf, concurrent, device_id, logger);
+        conf, concurrent, device_id);
     pipeline.Init(detectorProcessor, detectorProcessor, detectorProcessor, detectorProcessor);
 };
 
@@ -115,7 +118,7 @@ Status FaceServiceImpl::Detect(ServerContext* context, const DetectionRequest* r
     // }
     // DetectResult* ret = pipeline.Detect(*frames[0]);
 
-    logger.debug("pipeline.Detect DetectResult: %s", result);
+    spdlog::debug("pipeline.Detect DetectResult.confidence: {}", result->confidence);
 
     return Status::OK;
 }

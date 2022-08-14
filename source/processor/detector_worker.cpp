@@ -10,6 +10,9 @@
 #include "types.h"
 #include "utils.h"
 
+#include "spdlog/spdlog.h"
+
+
 #include <cassert>
 #include <filesystem>
 #include <iostream>
@@ -23,8 +26,8 @@ using Poco::NotificationQueue;
 
 using namespace Poco;
 
-DetectorWorker::DetectorWorker(std::shared_ptr<NotificationQueue> ch, Poco::Logger& parent)
-    : Worker(ch), _logger(Logger::get(parent.name() + ".DetectorWorker")) {}
+DetectorWorker::DetectorWorker(std::shared_ptr<NotificationQueue> ch)
+    : Worker(ch) {}
 
 DetectorWorker::~DetectorWorker() {
     // _channel.reset();
@@ -61,7 +64,7 @@ void DetectorWorker::debugOutputTensor(const ov::Tensor& output) {
 
     // poco format float with %hf
     // SEE https://kerpanic.wordpress.com/2016/10/31/errfmt-using-poco-logger/
-    _logger.debug("image_id: %hf, label: %hf, conf: %hf, x_min: %hf, y_min: %hf, x_max: %hf, y_max: %hf",
+    spdlog::debug("image_id: {}, label: {}, conf: {}, x_min: {}, y_min: {}, x_max: {}, y_max: {}",
                   image_id, label, conf, x_min, y_min, x_max, y_max);
 
     // printf("\n\nimage_id: %f, label: %f, conf: %f, x_min: %f, y_min: %f, x_max: %f, y_max: %f\n\n",
@@ -76,8 +79,8 @@ RetCode DetectorWorker::Init(json conf, int i, std::string device_id) {
 
     std::string model_path = conf["model"];
 
-    _logger.information("loading model: %s", model_path);
-    _logger.information("abs path: %s", std::filesystem::canonical(model_path).string());
+    spdlog::info("loading model: {}", model_path);
+    spdlog::info("abs path: {}", std::filesystem::canonical(model_path).string());
 
     ov::Core core;
     std::shared_ptr<ov::Model> model = core.read_model(model_path);
@@ -133,14 +136,14 @@ void DetectorWorker::run() {
                 }
                 Value input = msg->getRequest();
                 if (input.valueType != ValueFrame) {
-                    _logger.error("DetectorWorker input value is not a frame! wrong valueType: %d",
-                                  input.valueType);
+                    spdlog::error("DetectorWorker input value is not a frame! wrong valueType: {}",
+                     input.valueType);
                     continue;
                 }
                 Frame* f = (Frame*)input.valuePtr;
                 DetectResult* result = new DetectResult;
                 RetCode ret = process(f->image, *result);
-                _logger.debug("process ret: ", ret);
+                spdlog::debug("process ret: {}", ret);
 
                 Value output{ValueDetectResult, (void*)result};
                 msg->setResponse(output);
@@ -153,8 +156,7 @@ void DetectorWorker::run() {
 
 // resize input img, and do inference
 RetCode DetectorWorker::process(cv::Mat& img, DetectResult& result) {
-    _logger.debug("resize image from [%d x %d] to [%d x %d] \n", img.cols, img.rows,
-                  (int)_image_width, (int)_image_height);
+    spdlog::debug("resize image from [{} x {}] to [{} x {}] \n", img.cols, img.rows, (int)_image_width, (int)_image_height);
 
     const size_t data_length = img.channels() * _image_width * _image_height;
     std::shared_ptr<unsigned char> data_ptr;

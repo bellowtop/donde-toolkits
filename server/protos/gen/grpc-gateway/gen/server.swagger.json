@@ -1,0 +1,201 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "server.proto",
+    "version": "version not set"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/detect_face": {
+      "post": {
+        "operationId": "FaceService_Detect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/face_serviceDetectionResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/face_serviceDetectionRequest"
+            }
+          }
+        ],
+        "tags": [
+          "FaceService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "face_serviceDetectionRequest": {
+      "type": "object",
+      "properties": {
+        "image": {
+          "$ref": "#/definitions/face_serviceImage"
+        }
+      }
+    },
+    "face_serviceDetectionResponse": {
+      "type": "object",
+      "properties": {
+        "faces": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/face_serviceFaceObject"
+          }
+        }
+      }
+    },
+    "face_serviceFaceFeature": {
+      "type": "object",
+      "properties": {
+        "blob": {
+          "type": "string",
+          "format": "byte"
+        },
+        "version": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "face_serviceFaceObject": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/face_serviceResultCode"
+        },
+        "rectangle": {
+          "$ref": "#/definitions/face_serviceRect"
+        },
+        "quality": {
+          "type": "number",
+          "format": "float"
+        },
+        "confidence": {
+          "type": "number",
+          "format": "float"
+        },
+        "feature": {
+          "$ref": "#/definitions/face_serviceFaceFeature"
+        }
+      }
+    },
+    "face_serviceImage": {
+      "type": "object",
+      "properties": {
+        "format": {
+          "$ref": "#/definitions/face_serviceImageFormat"
+        },
+        "data": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "face_serviceImageFormat": {
+      "type": "string",
+      "enum": [
+        "IMAGE_UNKNOWN",
+        "IMAGE_JPEG",
+        "IMAGE_PNG"
+      ],
+      "default": "IMAGE_UNKNOWN"
+    },
+    "face_servicePoint": {
+      "type": "object",
+      "properties": {
+        "x": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "y": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "face_serviceRect": {
+      "type": "object",
+      "properties": {
+        "point": {
+          "$ref": "#/definitions/face_servicePoint"
+        },
+        "size": {
+          "$ref": "#/definitions/face_serviceSize"
+        }
+      }
+    },
+    "face_serviceResultCode": {
+      "type": "string",
+      "enum": [
+        "OK",
+        "SERVER_ERROR",
+        "CLIENT_ERROR",
+        "FACE_NOT_FOUND"
+      ],
+      "default": "OK"
+    },
+    "face_serviceSize": {
+      "type": "object",
+      "properties": {
+        "width": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "height": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

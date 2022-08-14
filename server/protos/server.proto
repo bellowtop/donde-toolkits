@@ -1,9 +1,12 @@
 syntax = "proto3";
 
-// option go_package = "github.com/sekirocc/face-recognition-service/api/face_service";
+import "google/api/annotations.proto";
+
+option go_package = "github.com/sekirocc/face-recognition-service/face_service";
 // option java_package = "com.sekirocc.face_recognition_service";
 
 package com.sekirocc.face_service;
+
 
 enum ResultCode {
     OK = 0;
@@ -62,5 +65,10 @@ message DetectionResponse { repeated FaceObject faces = 1; }
 
 // 人脸检测
 service FaceService {
-    rpc Detect(DetectionRequest) returns (DetectionResponse) {}
+    rpc Detect(DetectionRequest) returns (DetectionResponse) {
+      option (google.api.http) = {
+	post : "/detect_face"
+	body : "*"
+      };
+    }
 }

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Poco/Logger.h"
 #include "concurrent_processor.h"
 #include "detector_worker.h"
 #include "types.h"
@@ -17,7 +16,7 @@ using json = nlohmann::json;
 
 class FacePipeline {
   public:
-    FacePipeline(const json& config, const std::string& device_id, const Poco::Logger& parent);
+    FacePipeline(const json& config, const std::string& device_id);
 
     const json& GetConfig() {return _config;};
 
@@ -37,7 +36,6 @@ class FacePipeline {
   private:
     json _config;
     std::string _device_id;
-    Poco::Logger& _logger;
 
     std::shared_ptr<Processor> _detectorProcessor;
     std::shared_ptr<Processor> _landmarksProcessor;

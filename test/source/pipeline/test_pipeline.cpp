@@ -21,9 +21,6 @@ using nlohmann::json;
 
 TEST_CASE("FacePipeline can decode image binary to frame, aka cv::Mat.") {
 
-    Logger& logger = Logger::get("test-pipeline");
-    logger.setLevel("trace");
-
     json conf = R"(
  {
         "detector": {
@@ -34,11 +31,11 @@ TEST_CASE("FacePipeline can decode image binary to frame, aka cv::Mat.") {
 
     string device_id = "CPU";
 
-    FacePipeline pipeline{conf, device_id, logger};
+    FacePipeline pipeline{conf, device_id};
 
     int concurrent = 1;
     auto detectorProcessor = std::make_shared<ConcurrentProcessor<DetectorWorker>>(
-        conf, concurrent, device_id, logger);
+        conf, concurrent, device_id);
     pipeline.Init(detectorProcessor, detectorProcessor, detectorProcessor, detectorProcessor);
 
     // read image data;

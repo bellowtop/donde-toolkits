@@ -9,7 +9,7 @@ docker run -v $PWD:/defs namely/protoc-all:1.47_2 -f server.proto -l cpp
 
 ```
 
-## Version Issue
+### Version Issue
 
 
 I know the version of docker image is `1.47_2`, which is different from
@@ -30,3 +30,40 @@ So inclusion, we use:
 * docker image namely/protoc-all:1.47_2
 
 Stick with those versions!
+
+
+
+## Generate grpc-gateway
+
+```
+docker pull namely/gen-grpc-gateway:1.47_2
+docker run -v `pwd`:/defs namely/gen-grpc-gateway:1.47_2 -f server.proto -s FaceService
+
+# generated code in `gen/grpc-gateway`,
+
+```
+
+
+### make a small fix, maybe namely/gen-grpc-gateway:1.47_2 has a small bug?
+
+vi gen/grpc-gateway/Dockerfile
+
+change =>
+COPY --from=build /app/gen/github.com/sekirocc/face-recognition-service/face_service/server.swagger.json /app/
+
+to =>
+COPY --from=build /app/gen/server.swagger.json /app/
+
+```
+# then build your image
+docker build -t face-service-grpc-gateway gen/grpc-gateway/
+```
+
+
+### start the gateway http server
+
+```
+docker run -p 8080:80 -it docker.io/library/face-service-grpc-gateway --backend 192.168.31.60:9595
+```
+
+telnet localhost:8080

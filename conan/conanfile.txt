@@ -14,6 +14,8 @@ opencv/4.5.5
 doctest/2.4.9
 trompeloeil/42
 
+spdlog/1.10.0
+
 [generators]
 cmake
 

@@ -7,6 +7,8 @@
 #include "face_pipeline.h"
 #include "gen/pb-cpp/server.grpc.pb.h"
 
+// #include "spdlog/spdlog.h"
+
 #include <grpc/grpc.h>
 #include <grpcpp/security/server_credentials.h>
 #include <grpcpp/server.h>
@@ -15,7 +17,6 @@
 #include <iostream>
 
 using Poco::format;
-using Poco::Logger;
 using Poco::Timestamp;
 
 using namespace std;
@@ -29,7 +30,7 @@ using grpc::Status;
 
 class FaceServiceImpl final : public FaceService::Service {
   public:
-    FaceServiceImpl(Config& server_config, Logger& parent);
+    FaceServiceImpl(Config& server_config);
 
     void Start();
     void Stop();
@@ -39,7 +40,7 @@ class FaceServiceImpl final : public FaceService::Service {
 
   private:
     Config& config;
-    Poco::Logger& logger;
+    // spdlog::Logger& logger;
     std::string device_id;
     FacePipeline pipeline;
 };

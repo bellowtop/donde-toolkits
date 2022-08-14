@@ -1,7 +1,6 @@
 #include "Poco/ConsoleChannel.h"
 #include "Poco/Exception.h"
 #include "Poco/Format.h"
-#include "Poco/Logger.h"
 #include "Poco/NotificationQueue.h"
 #include "Poco/Thread.h"
 #include "Poco/Timestamp.h"
@@ -11,12 +10,17 @@
 #include "face_service.h"
 #include "openvino/openvino.hpp"
 
+#include "spdlog/spdlog.h"
+#include "spdlog/sinks/stdout_color_sinks.h"
+
+
 #include <cstdint>
 #include <cxxopts.hpp>
 #include <grpcpp/grpcpp.h>
 #include <grpcpp/health_check_service_interface.h>
 #include <iostream>
 #include <iterator>
+#include <spdlog/common.h>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -24,7 +28,6 @@
 using Poco::AutoPtr;
 using Poco::ConsoleChannel;
 using Poco::format;
-using Poco::Logger;
 using Poco::NotificationQueue;
 using Poco::Thread;
 using Poco::Timestamp;
@@ -71,15 +74,14 @@ auto main(int argc, char** argv) -> int {
 
         Config config = Config::getInstance();
 
-        AutoPtr<ConsoleChannel> pChannel(new ConsoleChannel);
-        Logger::root().setChannel(pChannel);
+        auto console_log = spdlog::stdout_color_mt("console");
+        console_log->set_level(spdlog::level::trace);
+        spdlog::set_default_logger(console_log);
 
-        Logger& logger = Logger::get("face-detect-service-logger");
-        logger.setLevel("trace");
 
-        FaceServiceImpl service(config, logger);
+        FaceServiceImpl service(config);
         service.Start();
-        logger.information("create and started FaceDetectService...");
+        spdlog::info("create and started FaceDetectService...");
 
         std::string server_address("0.0.0.0:9595");
         grpc::EnableDefaultHealthCheckService(true);
@@ -92,11 +94,10 @@ auto main(int argc, char** argv) -> int {
 
         builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
         builder.RegisterService(&service);
-        logger.information("register grpc service");
+        spdlog::info("register grpc service");
 
         std::unique_ptr<Server> server(builder.BuildAndStart());
-        std::cout << "Server listening on " << server_address << std::endl;
-        logger.information("Server listening on %s", server_address);
+        spdlog::info("Server listening on {}", server_address);
 
         server->Wait();
 

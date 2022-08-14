@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Poco/Event.h"
-#include "Poco/Logger.h"
 #include "Poco/Notification.h"
 #include "Poco/NotificationQueue.h"
 #include "Poco/Runnable.h"
@@ -9,6 +8,8 @@
 #include "Poco/ThreadPool.h"
 #include "nlohmann/json.hpp"
 #include "types.h"
+
+#include "spdlog/spdlog.h"
 
 #include <iostream>
 #include <memory>
@@ -19,7 +20,6 @@ using Poco::Notification;
 using Poco::NotificationQueue;
 using Poco::Runnable;
 using Poco::ThreadPool;
-using Poco::Logger;
 
 using namespace Poco;
 using namespace std;
@@ -73,7 +73,7 @@ class Processor {
 template <typename T>
 class ConcurrentProcessor final : public Processor {
   public:
-    ConcurrentProcessor(const json& conf, int concurrency, const std::string& device_id, const Logger& parent);
+    ConcurrentProcessor(const json& conf, int concurrency, const std::string& device_id);
     ~ConcurrentProcessor();
 
     RetCode Init(const json& cfg) override;
@@ -88,7 +88,6 @@ class ConcurrentProcessor final : public Processor {
     std::string _name;
     std::string _device_id;
     ThreadPool _pool;
-    Poco::Logger& _logger;
     std::shared_ptr<NotificationQueue> _channel;
 
     std::vector<std::shared_ptr<T>> _workers;
@@ -100,13 +99,12 @@ class ConcurrentProcessor final : public Processor {
 //
 
 template <typename T>
-ConcurrentProcessor<T>::ConcurrentProcessor(const json& conf, int concurrent, const std::string& device_id, const Logger& parent)
+ConcurrentProcessor<T>::ConcurrentProcessor(const json& conf, int concurrent, const std::string& device_id)
     : _concurrency(concurrent),
       _conf(conf),
       _name("concurrent-process-master"),
       _device_id(device_id),
       _pool(Poco::ThreadPool(1, concurrent)),
-      _logger(Logger::get(parent.name() + "." + _name)),
       _channel(std::make_shared<NotificationQueue>()), // create a channel
       _workers(0) {
     CreateWorkers(concurrent);
@@ -121,7 +119,7 @@ ConcurrentProcessor<T>::~ConcurrentProcessor() {
 template <typename T>
 void ConcurrentProcessor<T>::CreateWorkers(int concurrent) {
     for (int i = 0; i < concurrent; i++) {
-        _workers.push_back(std::make_shared<T>(T(_channel, _logger)));
+        _workers.push_back(std::make_shared<T>(T(_channel)));
     }
     std::cout << _name << " create workers: " << _workers.size() << std::endl;
 }
@@ -153,7 +151,7 @@ RetCode ConcurrentProcessor<T>::Init(const json& conf) {
 
 template <typename T>
 RetCode ConcurrentProcessor<T>::Process(const Value& input, Value& output) {
-    _logger.information("input.valueType : %d, valuePtr: %p\n", input.valueType, input.valuePtr);
+    spdlog::info("input.valueType : {}, valuePtr: {}\n", input.valueType, input.valuePtr);
 
     WorkMessage::Ptr msg = WorkMessage::Ptr(new WorkMessage(input, false));
     _channel->enqueueNotification(msg);
@@ -163,7 +161,7 @@ RetCode ConcurrentProcessor<T>::Process(const Value& input, Value& output) {
     Value resp = msg->getResponse();
     output = resp;
 
-    _logger.information("output.valueType : %d, valuePtr: %p\n", output.valueType, output.valuePtr);
+    spdlog::info("output.valueType : {}, valuePtr: {}\n", output.valueType, output.valuePtr);
 
     return RET_OK;
 }

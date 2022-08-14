@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Poco/Event.h"
-#include "Poco/Logger.h"
 #include "Poco/Notification.h"
 #include "Poco/NotificationQueue.h"
 #include "Poco/Runnable.h"
@@ -18,7 +17,6 @@
 
 using Poco::AutoPtr;
 using Poco::FastMutex;
-using Poco::Logger;
 using Poco::Notification;
 using Poco::NotificationQueue;
 using Poco::Runnable;
@@ -30,7 +28,7 @@ using namespace Poco;
 
 class DetectorWorker : public Worker {
   public:
-    DetectorWorker(std::shared_ptr<NotificationQueue> ch, Poco::Logger& parent);
+    DetectorWorker(std::shared_ptr<NotificationQueue> ch);
     ~DetectorWorker();
 
     RetCode Init(json conf, int id, std::string device_id) override;
@@ -41,8 +39,6 @@ class DetectorWorker : public Worker {
 
     RetCode process(cv::Mat& frame, DetectResult& result);
     void debugOutputTensor(const ov::Tensor& output);
-
-    Logger& _logger;
 
     int _batch_size = 1;
     int _image_width;

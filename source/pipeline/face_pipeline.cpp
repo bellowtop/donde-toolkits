@@ -6,6 +6,9 @@
 #include "nlohmann/json.hpp"
 #include "types.h"
 
+
+#include "spdlog/spdlog.h"
+
 #include <cstdint>
 #include <opencv2/core/mat.hpp>
 #include <opencv2/imgcodecs.hpp>
@@ -35,8 +38,8 @@ using json = nlohmann::json;
    }
  */
 
-FacePipeline::FacePipeline(const json& conf, const std::string& device_id, const Logger& parent)
-    : _config(conf), _device_id(device_id), _logger(Logger::get(parent.name() + ".FacePipeline")) {}
+FacePipeline::FacePipeline(const json& conf, const std::string& device_id)
+    : _config(conf), _device_id(device_id) {}
 
 RetCode FacePipeline::Init(std::shared_ptr<Processor> detectorProcessor,
                            std::shared_ptr<Processor> alignerProcessor,
@@ -61,7 +64,7 @@ RetCode FacePipeline::Init(std::shared_ptr<Processor> detectorProcessor,
 
 RetCode FacePipeline::Terminate() {
     RetCode ret = _detectorProcessor->Terminate();
-    _logger.information("processor terminate ret: %d\n", ret);
+    // _logger.information("processor terminate ret: %d\n", ret);
 
     return RET_OK;
 }
@@ -79,10 +82,10 @@ DetectResult* FacePipeline::Detect(const Frame& frame) {
     Value output;
 
     RetCode ret = _detectorProcessor->Process(input, output);
-    _logger.information("FacePipeline::Detect ret: %d\n", ret);
+    spdlog::info("FacePipeline::Detect ret: {}", ret);
 
     if (output.valueType != ValueDetectResult) {
-        _logger.error("Detect output is not ValueDetectResult, return empty result");
+        // _logger.error("Detect output is not ValueDetectResult, return empty result");
         return nullptr;
     }
 
