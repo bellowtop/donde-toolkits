@@ -38,7 +38,6 @@ using com::sekirocc::face_service::FaceService;
 using com::sekirocc::face_service::Rect;
 using com::sekirocc::face_service::ResultCode;
 
-using com::sekirocc::face_service::FaceFeature;
 using com::sekirocc::face_service::FaceObject;
 
 using grpc::ServerContext;

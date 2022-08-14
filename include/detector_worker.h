@@ -14,12 +14,7 @@
 #include <iostream>
 #include <memory>
 
-using Poco::AutoPtr;
-using Poco::FastMutex;
-using Poco::Notification;
 using Poco::NotificationQueue;
-using Poco::Runnable;
-using Poco::ThreadPool;
 
 using json = nlohmann::json;
 
