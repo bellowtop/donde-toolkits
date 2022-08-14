@@ -10,9 +10,8 @@
 #include "face_service.h"
 #include "openvino/openvino.hpp"
 
-#include "spdlog/spdlog.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
-
+#include "spdlog/spdlog.h"
 
 #include <cstdint>
 #include <cxxopts.hpp>
@@ -74,10 +73,9 @@ auto main(int argc, char** argv) -> int {
 
         Config config = Config::getInstance();
 
-        auto console_log = spdlog::stdout_color_mt("console");
+        auto console_log = spdlog::stdout_color_mt("main");
         console_log->set_level(spdlog::level::trace);
         spdlog::set_default_logger(console_log);
-
 
         FaceServiceImpl service(config);
         service.Start();

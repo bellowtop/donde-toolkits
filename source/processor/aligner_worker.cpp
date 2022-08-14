@@ -2,8 +2,8 @@
 #include "Poco/Logger.h"
 #include "Poco/Notification.h"
 #include "Poco/NotificationQueue.h"
-#include "types.h"
 #include "concurrent_processor.h"
+#include "types.h"
 
 #include <iostream>
 #include <string>

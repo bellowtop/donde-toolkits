@@ -1,7 +1,4 @@
 #include <doctest/doctest.h>
-
 #include <string>
 
-TEST_CASE("FaceRecognition") {
-  CHECK("aa" == "aa");
-}
+TEST_CASE("FaceRecognition") { CHECK("aa" == "aa"); }

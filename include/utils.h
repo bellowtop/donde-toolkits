@@ -1,13 +1,12 @@
 #pragma once
 
-#include "openvino/openvino.hpp"
 #include "opencv2/opencv.hpp"
+#include "openvino/openvino.hpp"
 
 #include <iostream>
 #include <opencv2/core/types.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgcodecs.hpp>
-
 
 inline void printInputAndOutputsInfo(const ov::Model& network) {
     std::cout << "model name: " << network.get_friendly_name() << std::endl;

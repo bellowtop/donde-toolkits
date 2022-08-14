@@ -10,8 +10,8 @@ using namespace std;
 enum RetCode { RET_OK, RET_ERR };
 
 struct Frame {
-    Frame() {};
-    Frame(const cv::Mat& img): image(img.clone()) {};
+    Frame(){};
+    Frame(const cv::Mat& img) : image(img.clone()){};
     cv::Mat image;
 };
 

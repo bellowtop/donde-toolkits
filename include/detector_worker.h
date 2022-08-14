@@ -7,10 +7,9 @@
 #include "Poco/Thread.h"
 #include "Poco/ThreadPool.h"
 #include "concurrent_processor.h"
-#include "types.h"
 #include "nlohmann/json.hpp"
-
 #include "openvino/openvino.hpp"
+#include "types.h"
 
 #include <iostream>
 #include <memory>
@@ -36,7 +35,6 @@ class DetectorWorker : public Worker {
     void run() override;
 
   private:
-
     RetCode process(cv::Mat& frame, DetectResult& result);
     void debugOutputTensor(const ov::Tensor& output);
 
@@ -47,6 +45,8 @@ class DetectorWorker : public Worker {
 
     std::shared_ptr<ov::CompiledModel> _compiled_model;
     std::shared_ptr<ov::InferRequest> _infer_request;
+
+    std::shared_ptr<spdlog::logger> _logger;
 };
 
 // class LandmarksWorker : public Worker {

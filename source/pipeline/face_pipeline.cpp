@@ -4,10 +4,8 @@
 #include "Poco/Thread.h"
 #include "concurrent_processor.h"
 #include "nlohmann/json.hpp"
-#include "types.h"
-
-
 #include "spdlog/spdlog.h"
+#include "types.h"
 
 #include <cstdint>
 #include <opencv2/core/mat.hpp>
@@ -90,5 +88,5 @@ DetectResult* FacePipeline::Detect(const Frame& frame) {
     }
 
     // this object is moved out, the caller is responsible for free memory.
-    return (DetectResult *)output.valuePtr;
+    return (DetectResult*)output.valuePtr;
 }

@@ -9,12 +9,9 @@
 #include "gen/pb-cpp/server.grpc.pb.h"
 #include "gen/pb-cpp/server.pb.h"
 #include "nlohmann/json.hpp"
-#include "types.h"
-
-
-#include "spdlog/spdlog.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
-
+#include "spdlog/spdlog.h"
+#include "types.h"
 
 #include <algorithm>
 #include <cassert>
@@ -30,8 +27,6 @@
 #include <sstream>
 #include <string>
 
-using Poco::format;
-using Poco::Timestamp;
 
 using namespace std;
 
@@ -40,8 +35,8 @@ using com::sekirocc::face_service::DetectionResponse;
 
 using com::sekirocc::face_service::FaceService;
 
-using com::sekirocc::face_service::ResultCode;
 using com::sekirocc::face_service::Rect;
+using com::sekirocc::face_service::ResultCode;
 
 using com::sekirocc::face_service::FaceFeature;
 using com::sekirocc::face_service::FaceObject;
@@ -61,8 +56,8 @@ void FaceServiceImpl::Start() {
     const json& conf = pipeline.GetConfig();
     int concurrent = 4;
 
-    auto detectorProcessor = std::make_shared<ConcurrentProcessor<DetectorWorker>>(
-        conf, concurrent, device_id);
+    auto detectorProcessor
+        = std::make_shared<ConcurrentProcessor<DetectorWorker>>(conf, concurrent, device_id);
     pipeline.Init(detectorProcessor, detectorProcessor, detectorProcessor, detectorProcessor);
 };
 
@@ -95,7 +90,6 @@ Status FaceServiceImpl::Detect(ServerContext* context, const DetectionRequest* r
     rect->mutable_point()->set_y(result->box.y);
     rect->mutable_size()->set_width(result->box.width);
     rect->mutable_size()->set_height(result->box.height);
-
 
     // int count = request->requests_size();
     // std::vector<Frame*> frames;

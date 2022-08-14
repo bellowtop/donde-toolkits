@@ -22,8 +22,7 @@ TEST_CASE("ConcurrentProcessor comunicate with DummyWorker using channel.") {
     //
     class DummyWorker : public Worker {
       public:
-        DummyWorker(std::shared_ptr<NotificationQueue> ch)
-            : Worker(ch){};
+        DummyWorker(std::shared_ptr<NotificationQueue> ch) : Worker(ch){};
         ~DummyWorker(){};
 
         RetCode Init(json conf, int id, std::string device_id) override {
@@ -63,7 +62,6 @@ TEST_CASE("ConcurrentProcessor comunicate with DummyWorker using channel.") {
                 }
             }
         };
-
     };
 
     //

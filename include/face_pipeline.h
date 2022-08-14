@@ -2,9 +2,8 @@
 
 #include "concurrent_processor.h"
 #include "detector_worker.h"
-#include "types.h"
 #include "nlohmann/json.hpp"
-
+#include "types.h"
 
 #include <map>
 
@@ -13,12 +12,11 @@ using namespace std;
 
 using json = nlohmann::json;
 
-
 class FacePipeline {
   public:
     FacePipeline(const json& config, const std::string& device_id);
 
-    const json& GetConfig() {return _config;};
+    const json& GetConfig() { return _config; };
 
     RetCode Init(std::shared_ptr<Processor> detectorProcessor,
                  std::shared_ptr<Processor> alignerProcessor,

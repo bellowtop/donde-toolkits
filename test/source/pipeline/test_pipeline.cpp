@@ -34,8 +34,8 @@ TEST_CASE("FacePipeline can decode image binary to frame, aka cv::Mat.") {
     FacePipeline pipeline{conf, device_id};
 
     int concurrent = 1;
-    auto detectorProcessor = std::make_shared<ConcurrentProcessor<DetectorWorker>>(
-        conf, concurrent, device_id);
+    auto detectorProcessor
+        = std::make_shared<ConcurrentProcessor<DetectorWorker>>(conf, concurrent, device_id);
     pipeline.Init(detectorProcessor, detectorProcessor, detectorProcessor, detectorProcessor);
 
     // read image data;

@@ -7,11 +7,12 @@
 #include "concurrent_processor.h"
 #include "opencv2/opencv.hpp"
 #include "openvino/openvino.hpp"
-#include "types.h"
-#include "utils.h"
 
 #include "spdlog/spdlog.h"
+#include "spdlog/sinks/stdout_color_sinks.h"
 
+#include "types.h"
+#include "utils.h"
 
 #include <cassert>
 #include <filesystem>
@@ -64,23 +65,26 @@ void DetectorWorker::debugOutputTensor(const ov::Tensor& output) {
 
     // poco format float with %hf
     // SEE https://kerpanic.wordpress.com/2016/10/31/errfmt-using-poco-logger/
-    spdlog::debug("image_id: {}, label: {}, conf: {}, x_min: {}, y_min: {}, x_max: {}, y_max: {}",
+    _logger->debug("image_id: {}, label: {}, conf: {}, x_min: {}, y_min: {}, x_max: {}, y_max: {}",
                   image_id, label, conf, x_min, y_min, x_max, y_max);
 
-    // printf("\n\nimage_id: %f, label: %f, conf: %f, x_min: %f, y_min: %f, x_max: %f, y_max: %f\n\n",
+    // printf("\n\nimage_id: %f, label: %f, conf: %f, x_min: %f, y_min: %f, x_max: %f, y_max:
+    // %f\n\n",
     //               image_id, label, conf, x_min, y_min, x_max, y_max);
 }
 
 RetCode DetectorWorker::Init(json conf, int i, std::string device_id) {
-    _id = i;
     _name = "detector-worker-" + std::to_string(i);
+    _logger = spdlog::stdout_color_mt(_name);
+
+    _id = i;
     _device_id = device_id;
     _conf = conf;
 
     std::string model_path = conf["model"];
 
-    spdlog::info("loading model: {}", model_path);
-    spdlog::info("abs path: {}", std::filesystem::canonical(model_path).string());
+    _logger->info("loading model: {}", model_path);
+    _logger->info("abs path: {}", std::filesystem::canonical(model_path).string());
 
     ov::Core core;
     std::shared_ptr<ov::Model> model = core.read_model(model_path);
@@ -136,14 +140,14 @@ void DetectorWorker::run() {
                 }
                 Value input = msg->getRequest();
                 if (input.valueType != ValueFrame) {
-                    spdlog::error("DetectorWorker input value is not a frame! wrong valueType: {}",
-                     input.valueType);
+                    _logger->error("DetectorWorker input value is not a frame! wrong valueType: {}",
+                                  input.valueType);
                     continue;
                 }
                 Frame* f = (Frame*)input.valuePtr;
                 DetectResult* result = new DetectResult;
                 RetCode ret = process(f->image, *result);
-                spdlog::debug("process ret: {}", ret);
+                _logger->debug("process ret: {}", ret);
 
                 Value output{ValueDetectResult, (void*)result};
                 msg->setResponse(output);
@@ -156,7 +160,8 @@ void DetectorWorker::run() {
 
 // resize input img, and do inference
 RetCode DetectorWorker::process(cv::Mat& img, DetectResult& result) {
-    spdlog::debug("resize image from [{} x {}] to [{} x {}] \n", img.cols, img.rows, (int)_image_width, (int)_image_height);
+    _logger->debug("resize image from [{} x {}] to [{} x {}] \n", img.cols, img.rows,
+                  (int)_image_width, (int)_image_height);
 
     const size_t data_length = img.channels() * _image_width * _image_height;
     std::shared_ptr<unsigned char> data_ptr;
@@ -186,11 +191,11 @@ RetCode DetectorWorker::process(cv::Mat& img, DetectResult& result) {
     float x_max = tensor_data[5];
     float y_max = tensor_data[6];
 
-
     int img_width = img.size().width;
     int img_height = img.size().height;
 
-    result.box = cv::Rect{(int)(x_min*img_width), (int)(y_min*img_height), (int)((x_max - x_min)*img_width), (int)((y_max - y_min)*img_height)};
+    result.box = cv::Rect{(int)(x_min * img_width), (int)(y_min * img_height),
+                          (int)((x_max - x_min) * img_width), (int)((y_max - y_min) * img_height)};
     result.confidence = conf;
 
     return RetCode::RET_OK;

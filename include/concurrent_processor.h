@@ -7,9 +7,8 @@
 #include "Poco/Thread.h"
 #include "Poco/ThreadPool.h"
 #include "nlohmann/json.hpp"
-#include "types.h"
-
 #include "spdlog/spdlog.h"
+#include "types.h"
 
 #include <iostream>
 #include <memory>
@@ -99,7 +98,8 @@ class ConcurrentProcessor final : public Processor {
 //
 
 template <typename T>
-ConcurrentProcessor<T>::ConcurrentProcessor(const json& conf, int concurrent, const std::string& device_id)
+ConcurrentProcessor<T>::ConcurrentProcessor(const json& conf, int concurrent,
+                                            const std::string& device_id)
     : _concurrency(concurrent),
       _conf(conf),
       _name("concurrent-process-master"),
