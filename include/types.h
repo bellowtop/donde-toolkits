@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <memory>
 #include <opencv2/core/mat.hpp>
 #include <opencv2/core/types.hpp>
 #include <vector>
@@ -15,16 +16,13 @@ struct Frame {
     cv::Mat image;
 };
 
-struct AlignFace {
-    cv::Mat face;
-};
-
 struct DetectFace {
     float confidence;
     cv::Rect box;
 };
 
 struct DetectResult {
+    std::shared_ptr<Frame> frame;
     std::vector<DetectFace> faces;
 };
 
@@ -40,5 +38,5 @@ enum ValueType { ValueFrame, ValueDetectResult, ValueLandmarksResult, ValueFeatu
 
 struct Value {
     ValueType valueType;
-    void* valuePtr;
+    std::shared_ptr<void> valuePtr;
 };

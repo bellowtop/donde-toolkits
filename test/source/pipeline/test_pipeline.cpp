@@ -50,14 +50,8 @@ TEST_CASE("FacePipeline can decode image binary to frame, aka cv::Mat.") {
     std::ifstream f{img_path, std::ios::binary};
     f.read((char*)image_data.data(), image_data.size());
 
-    Frame* frame = pipeline.Decode(image_data);
-    DetectResult* result = pipeline.Detect(*frame);
-
-    // scope exit
-    std::shared_ptr<int> ggg(NULL, [&](int*) {
-        delete frame;
-        delete result;
-    });
+    std::shared_ptr<Frame> frame = pipeline.Decode(image_data);
+    std::shared_ptr<DetectResult> result = pipeline.Detect(frame);
 
     std::vector<cv::Rect> boxes(result->faces.size());
 

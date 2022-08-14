@@ -56,7 +56,9 @@ void FaceServiceImpl::Start() {
 
     auto detectorProcessor
         = std::make_shared<ConcurrentProcessor<DetectorWorker>>(conf, concurrent, device_id);
-    pipeline.Init(detectorProcessor, detectorProcessor, detectorProcessor, detectorProcessor);
+    auto landmarksProcessor
+        = std::make_shared<ConcurrentProcessor<LandmarksWorker>>(conf, concurrent, device_id);
+    pipeline.Init(detectorProcessor, landmarksProcessor, detectorProcessor, detectorProcessor);
 };
 
 void FaceServiceImpl::Stop() { pipeline.Terminate(); };
@@ -69,14 +71,10 @@ Status FaceServiceImpl::Detect(ServerContext* context, const DetectionRequest* r
     }
     const std::string& image_data = request->image().data();
     const std::vector<uint8_t> image_char_vec(image_data.begin(), image_data.end());
-    Frame* frame = pipeline.Decode(image_char_vec);
-    DetectResult* result = pipeline.Detect(*frame);
 
-    // scope exit
-    std::shared_ptr<int> ggg(NULL, [&](int*) {
-        delete frame;
-        delete result;
-    });
+    // auto release.
+    std::shared_ptr<Frame> frame = pipeline.Decode(image_char_vec);
+    std::shared_ptr<DetectResult> result = pipeline.Detect(frame);
 
     for (auto& detected_face : result->faces) {
         // fill response

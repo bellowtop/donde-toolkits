@@ -151,12 +151,16 @@ void DetectorWorker::run() {
                                   input.valueType);
                     continue;
                 }
-                Frame* f = (Frame*)input.valuePtr;
-                DetectResult* result = new DetectResult;
+                std::shared_ptr<Frame> f = std::static_pointer_cast<Frame>(input.valuePtr);
+
+                std::shared_ptr<DetectResult> result = std::make_shared<DetectResult>();
+                // acquire! hold a reference to the frame.
+                result->frame = f;
+
                 RetCode ret = process(f->image, *result);
                 _logger->debug("process ret: {}", ret);
 
-                Value output{ValueDetectResult, (void*)result};
+                Value output{ValueDetectResult, result};
                 msg->setResponse(output);
             }
         } else {
@@ -166,7 +170,7 @@ void DetectorWorker::run() {
 }
 
 // resize input img, and do inference
-RetCode DetectorWorker::process(cv::Mat& img, DetectResult& result) {
+RetCode DetectorWorker::process(const cv::Mat& img, DetectResult& result) {
     _logger->debug("resize image from [{} x {}] to [{} x {}] \n", img.cols, img.rows,
                   (int)_image_width, (int)_image_height);
 

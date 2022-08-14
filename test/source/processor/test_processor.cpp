@@ -51,7 +51,8 @@ TEST_CASE("ConcurrentProcessor comunicate with DummyWorker using channel.") {
                         CHECK(input.valuePtr != nullptr);
 
                         // allocate memory in heap, the caller is responsible to free it!
-                        Feature* result = new Feature;
+                        std::shared_ptr<Feature> result = std::make_shared<Feature>();
+
                         result->data.resize(100);
                         Value output{ValueFeature, result};
 
@@ -83,8 +84,8 @@ TEST_CASE("ConcurrentProcessor comunicate with DummyWorker using channel.") {
 
     processor.Init(conf);
 
-    Frame f;
-    Value input{ValueFrame, &f};
+    std::shared_ptr<Frame> f = std::make_shared<Frame>();
+    Value input{ValueFrame, f};
 
     Value output;
     processor.Process(input, output);
@@ -92,10 +93,8 @@ TEST_CASE("ConcurrentProcessor comunicate with DummyWorker using channel.") {
     CHECK(output.valueType == ValueFeature);
     CHECK(output.valuePtr != nullptr);
 
-    // you must release output pointer!
-    Feature* feature = (Feature*)output.valuePtr;
+    std::shared_ptr<Feature> feature = std::static_pointer_cast<Feature>(output.valuePtr);
     CHECK(feature->data.size() == 100);
-    delete feature;
 
     processor.Process(input, output);
     processor.Process(input, output);

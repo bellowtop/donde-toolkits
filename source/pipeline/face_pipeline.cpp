@@ -8,6 +8,7 @@
 #include "types.h"
 
 #include <cstdint>
+#include <memory>
 #include <opencv2/core/mat.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/opencv.hpp>
@@ -67,15 +68,14 @@ RetCode FacePipeline::Terminate() {
     return RET_OK;
 }
 
-Frame* FacePipeline::Decode(const vector<uint8_t>& image_data) {
+std::shared_ptr<Frame> FacePipeline::Decode(const vector<uint8_t>& image_data) {
     cv::Mat image(cv::imdecode(image_data, cv::IMREAD_UNCHANGED));
 
-    Frame* frame = new Frame{image};
-    return frame;
+    return std::make_shared<Frame>(image);
 }
 
-DetectResult* FacePipeline::Detect(const Frame& frame) {
-    Value input{ValueFrame, (void*)(&frame)};
+std::shared_ptr<DetectResult> FacePipeline::Detect(std::shared_ptr<Frame> frame) {
+    Value input{ValueFrame, frame};
     // output.valuePtr memory is allocated by inner Process();
     Value output;
 
@@ -87,6 +87,5 @@ DetectResult* FacePipeline::Detect(const Frame& frame) {
         return nullptr;
     }
 
-    // this object is moved out, the caller is responsible for free memory.
-    return (DetectResult*)output.valuePtr;
+    return std::static_pointer_cast<DetectResult>(output.valuePtr);
 }
