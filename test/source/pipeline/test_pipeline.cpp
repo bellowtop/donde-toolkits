@@ -39,7 +39,8 @@ TEST_CASE("FacePipeline can decode image binary to frame, aka cv::Mat.") {
     pipeline.Init(detectorProcessor, detectorProcessor, detectorProcessor, detectorProcessor);
 
     // read image data;
-    std::string img_path = "./contrib/data/test_image2.png";
+    // std::string img_path = "./contrib/data/test_image2.png";
+    std::string img_path = "./contrib/data/test_image_5_person.jpeg";
     // std::string img_path = "./contrib/data/zly_1.jpeg";
     // std::string img_path = "./contrib/data/zly_2.jpeg";
 
@@ -58,17 +59,26 @@ TEST_CASE("FacePipeline can decode image binary to frame, aka cv::Mat.") {
         delete result;
     });
 
-    std::cout << "result->box.x: " << result->box.x << std::endl;
-    std::cout << "result->box.y: " << result->box.y << std::endl;
-    std::cout << "result->box.width: " << result->box.width << std::endl;
-    std::cout << "result->box.height: " << result->box.height << std::endl;
+    std::vector<cv::Rect> boxes(result->faces.size());
 
-    CHECK(result->box.empty() == false);
-    CHECK_GT(result->confidence, 0.8);
-    CHECK_GT(result->box.size().width, 10);
-    CHECK_GT(result->box.size().height, 10);
+    for (auto& detected_face : result->faces) {
+        auto box = detected_face.box;
+        std::cout << "box.x: " << box.x << std::endl;
+        std::cout << "box.y: " << box.y << std::endl;
+        std::cout << "box.width: " << box.width << std::endl;
+        std::cout << "box.height: " << box.height << std::endl;
 
-    // drawRectangleInImage(img_path, result->box);
+        spdlog::debug("pipeline.Detect DetectResult.confidence: {}", detected_face.confidence);
+
+        CHECK(box.empty() == false);
+        CHECK_GT(box.size().width, 10);
+        CHECK_GT(box.size().height, 10);
+        CHECK_GT(detected_face.confidence, 0.8);
+
+        boxes.push_back(box);
+    }
+
+    // drawRectangleInImage(img_path, boxes);
 
     // std::shared_ptr<Processor> a;
 
