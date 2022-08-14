@@ -7,10 +7,8 @@
 #include "concurrent_processor.h"
 #include "opencv2/opencv.hpp"
 #include "openvino/openvino.hpp"
-
-#include "spdlog/spdlog.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
-
+#include "spdlog/spdlog.h"
 #include "types.h"
 #include "utils.h"
 
@@ -27,8 +25,7 @@ using Poco::NotificationQueue;
 
 using namespace Poco;
 
-DetectorWorker::DetectorWorker(std::shared_ptr<NotificationQueue> ch)
-    : Worker(ch) {}
+DetectorWorker::DetectorWorker(std::shared_ptr<NotificationQueue> ch) : Worker(ch) {}
 
 DetectorWorker::~DetectorWorker() {
     // _channel.reset();
@@ -38,7 +35,8 @@ DetectorWorker::~DetectorWorker() {
 
    conf:
    {
-     "model": "../models/face-detection-adas-0001.xml"
+     "model": "../models/face-detection-adas-0001.xml",
+     "warmup": false
    }
 
  */
@@ -49,29 +47,28 @@ void DetectorWorker::debugOutputTensor(const ov::Tensor& output) {
     const size_t face_numbers = shape[2];
     const float* tensor_data = output.data<float>();
 
-    // each batch in output tensor is a 7 floats array.
     // SEE
     // https://docs.openvino.ai/2019_R1/_face_detection_adas_0001_description_face_detection_adas_0001.html
-    size_t object_size = 7;
 
-    for (size_t i = 0 ; i < face_numbers; i ++) {
-        int offset = i * object_size;
+    for (size_t i = 0; i < face_numbers; i++) {
+        int offset = i * _shape_dim;
 
-        float image_id = tensor_data[offset+0];
-        float label = tensor_data[offset+1];
-        float conf = tensor_data[offset+2];
-        float x_min = tensor_data[offset+3];
-        float y_min = tensor_data[offset+4];
-        float x_max = tensor_data[offset+5];
-        float y_max = tensor_data[offset+6];
+        float image_id = tensor_data[offset + 0];
+        float label = tensor_data[offset + 1];
+        float conf = tensor_data[offset + 2];
+        float x_min = tensor_data[offset + 3];
+        float y_min = tensor_data[offset + 4];
+        float x_max = tensor_data[offset + 5];
+        float y_max = tensor_data[offset + 6];
 
         if (conf < _min_confidence) {
             continue;
         }
 
         _logger->info("face-{}", i);
-        _logger->info("\t image_id: {}, label: {}, conf: {}, x_min: {}, y_min: {}, x_max: {}, y_max: {} \n",
-                       image_id, label, conf, x_min, y_min, x_max, y_max);
+        _logger->info(
+            "\t image_id: {}, label: {}, conf: {}, x_min: {}, y_min: {}, x_max: {}, y_max: {} \n",
+            image_id, label, conf, x_min, y_min, x_max, y_max);
     }
 }
 
@@ -115,22 +112,29 @@ RetCode DetectorWorker::Init(json conf, int i, std::string device_id) {
     _image_width = input_shape[ov::layout::width_idx(tensor_layout)];
     _image_height = input_shape[ov::layout::height_idx(tensor_layout)];
 
-    // output shape: [1, 1, N, 7], where N is the number of detected bounding boxes
-    // SEE https://docs.openvino.ai/2019_R1/_face_detection_adas_0001_description_face_detection_adas_0001.html
+    // output shape: [1, 1, N, 7],
+    // where N is the number of detected bounding boxes
+    // each batch in output tensor is a 7 floats array.
+    // SEE
+    // https://github.com/openvinotoolkit/open_model_zoo/blob/master/models/intel/face-detection-adas-0001/README.md
     ov::Shape output_shape = model->output().get_shape();
     _max_faces = output_shape[2];
+    _shape_dim = output_shape[3]; // 7
 
     _compiled_model
         = std::make_shared<ov::CompiledModel>(std::move(core.compile_model(model, "CPU")));
     _infer_request
         = std::make_shared<ov::InferRequest>(std::move(_compiled_model->create_infer_request()));
 
-    // warmup img
-    std::string warmup_image = "./contrib/data/test_image_5_person.jpeg";
-    cv::Mat img = cv::imread(warmup_image);
+    bool need_warnmup = conf["warmup"];
+    if (need_warnmup) {
+        // warmup img
+        std::string warmup_image = "./contrib/data/test_image_5_person.jpeg";
+        cv::Mat img = cv::imread(warmup_image);
 
-    DetectResult result;
-    process(img, result);
+        DetectResult result;
+        process(img, result);
+    }
 
     return RET_OK;
 }
@@ -148,7 +152,7 @@ void DetectorWorker::run() {
                 Value input = msg->getRequest();
                 if (input.valueType != ValueFrame) {
                     _logger->error("DetectorWorker input value is not a frame! wrong valueType: {}",
-                                  input.valueType);
+                                   input.valueType);
                     continue;
                 }
                 std::shared_ptr<Frame> f = std::static_pointer_cast<Frame>(input.valuePtr);
@@ -172,7 +176,7 @@ void DetectorWorker::run() {
 // resize input img, and do inference
 RetCode DetectorWorker::process(const cv::Mat& img, DetectResult& result) {
     _logger->debug("resize image from [{} x {}] to [{} x {}] \n", img.cols, img.rows,
-                  (int)_image_width, (int)_image_height);
+                   (int)_image_width, (int)_image_height);
 
     int orig_img_width = img.size().width;
     int orig_img_height = img.size().height;
@@ -199,33 +203,29 @@ RetCode DetectorWorker::process(const cv::Mat& img, DetectResult& result) {
     debugOutputTensor(output_tensor);
 
     const float* tensor_data = output_tensor.data<float>();
-    std::vector<DetectFace> detected;
+    std::vector<FaceDetection> detected;
     detected.reserve(10);
 
-    // each batch in output tensor is a 7 floats array.
-    // SEE
-    // https://docs.openvino.ai/2019_R1/_face_detection_adas_0001_description_face_detection_adas_0001.html
-    size_t object_size = 7;
+    for (size_t i = 0; i < _max_faces; i++) {
+        int offset = i * _shape_dim;
 
-    for (size_t i = 0 ; i < _max_faces; i ++) {
-        int offset = i * object_size;
-
-        float image_id = tensor_data[offset+0];
-        float label = tensor_data[offset+1];
-        float conf = tensor_data[offset+2];
-        float x_min = tensor_data[offset+3];
-        float y_min = tensor_data[offset+4];
-        float x_max = tensor_data[offset+5];
-        float y_max = tensor_data[offset+6];
+        float image_id = tensor_data[offset + 0];
+        float label = tensor_data[offset + 1];
+        float conf = tensor_data[offset + 2];
+        float x_min = tensor_data[offset + 3];
+        float y_min = tensor_data[offset + 4];
+        float x_max = tensor_data[offset + 5];
+        float y_max = tensor_data[offset + 6];
 
         if (conf < _min_confidence) {
             continue;
         }
 
-        DetectFace face;
+        FaceDetection face;
 
         face.box = cv::Rect{(int)(x_min * orig_img_width), (int)(y_min * orig_img_height),
-                            (int)((x_max - x_min) * orig_img_width), (int)((y_max - y_min) * orig_img_height)};
+                            (int)((x_max - x_min) * orig_img_width),
+                            (int)((y_max - y_min) * orig_img_height)};
         face.confidence = conf;
         detected.emplace_back(face);
     }

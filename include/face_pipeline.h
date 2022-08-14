@@ -25,11 +25,11 @@ class FacePipeline {
 
     RetCode Terminate();
 
-    // the caller should free memory
     std::shared_ptr<Frame> Decode(const vector<uint8_t>& image_data);
 
-    // the caller should free memory
     std::shared_ptr<DetectResult> Detect(const std::shared_ptr<Frame> frame);
+
+    std::shared_ptr<LandmarksResult> Landmarks(const std::shared_ptr<DetectResult> detect_result);
 
   private:
     json _config;

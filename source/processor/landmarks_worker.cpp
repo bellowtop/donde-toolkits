@@ -17,6 +17,7 @@
 #include <memory>
 #include <opencv2/core/types.hpp>
 #include <string>
+#include <vector>
 
 using Poco::Notification;
 using Poco::NotificationQueue;
@@ -34,41 +35,22 @@ LandmarksWorker::~LandmarksWorker() {
    conf:
    {
      "model": "../models/facial-landmarks-35-adas-0002.xml"
+     "warmup": false
    }
 
  */
 
-void LandmarksWorker::debugOutputTensor(const ov::Tensor& output) {
-    ov::Shape shape = output.get_shape();
-    const size_t batch_size = shape[0];
-    const size_t face_numbers = shape[2];
-    const float* tensor_data = output.data<float>();
+void LandmarksWorker::debugOutputTensor(const ov::Tensor& output_tensor) {
+    const float* tensor_data = output_tensor.data<float>();
 
-    // each batch in output tensor is a 7 floats array.
-    // SEE
-    // https://docs.openvino.ai/2019_R1/_face_detection_adas_0001_description_face_detection_adas_0001.html
-    size_t object_size = 7;
-
-    for (size_t i = 0; i < face_numbers; i++) {
-        int offset = i * object_size;
-
-        float image_id = tensor_data[offset + 0];
-        float label = tensor_data[offset + 1];
-        float conf = tensor_data[offset + 2];
-        float x_min = tensor_data[offset + 3];
-        float y_min = tensor_data[offset + 4];
-        float x_max = tensor_data[offset + 5];
-        float y_max = tensor_data[offset + 6];
-
-        if (conf < _min_confidence) {
-            continue;
-        }
-
-        _logger->info("face-{}", i);
-        _logger->info(
-            "\t image_id: {}, label: {}, conf: {}, x_min: {}, y_min: {}, x_max: {}, y_max: {} \n",
-            image_id, label, conf, x_min, y_min, x_max, y_max);
+    // only one batch yet.
+    size_t batch_idx = 0;
+    const std::vector<float> arr(tensor_data, tensor_data + _landmarks_length);
+    std::cout << "landmarks: ";
+    for (float f : arr) {
+        std::cout << f << " ";
     }
+    std::cout << std::endl;
 }
 
 RetCode LandmarksWorker::Init(json conf, int i, std::string device_id) {
@@ -115,23 +97,27 @@ RetCode LandmarksWorker::Init(json conf, int i, std::string device_id) {
     // SEE
     // https://github.com/openvinotoolkit/open_model_zoo/blob/master/models/intel/facial-landmarks-35-adas-0002/README.md
     ov::Shape output_shape = model->output().get_shape();
-    _landmarks_length = output_shape[2];
+    _landmarks_length = output_shape[1];
 
     _compiled_model
         = std::make_shared<ov::CompiledModel>(std::move(core.compile_model(model, "CPU")));
     _infer_request
         = std::make_shared<ov::InferRequest>(std::move(_compiled_model->create_infer_request()));
 
-    // warmup img
-    std::string warmup_image = "./contrib/data/test_image_5_person.jpeg";
-    cv::Mat img = cv::imread(warmup_image);
+    bool need_warnmup = conf["warmup"];
+    if (need_warnmup) {
+        // warmup img
+        std::string warmup_image = "./contrib/data/test_image_5_person.jpeg";
+        cv::Mat img = cv::imread(warmup_image);
+        cv::Rect face{839, 114, 256, 331};
 
-    cv::Rect face{839, 114, 256, 331};
-    DetectResult detect_result;
-    detect_result.faces.push_back(DetectFace{0.9, face});
+        DetectResult detect_result;
+        detect_result.faces.push_back(FaceDetection{0.9, face});
+        detect_result.frame = std::make_shared<Frame>(img);
 
-    LandmarksResult result;
-    process(detect_result, result);
+        LandmarksResult result;
+        process(detect_result, result);
+    }
 
     return RET_OK;
 }
@@ -147,19 +133,20 @@ void LandmarksWorker::run() {
                     break;
                 }
                 Value input = msg->getRequest();
-                if (input.valueType != ValueFrame) {
+                if (input.valueType != ValueDetectResult) {
                     _logger->error(
-                        "LandmarksWorker input value is not a frame! wrong valueType: {}",
+                        "LandmarksWorker input value is not a ValueDetectResult! wrong valueType: {}",
                         input.valueType);
                     continue;
                 }
-                std::shared_ptr<DetectResult> detect_result = std::static_pointer_cast<DetectResult>(input.valuePtr);
+                std::shared_ptr<DetectResult> detect_result
+                    = std::static_pointer_cast<DetectResult>(input.valuePtr);
                 std::shared_ptr<LandmarksResult> result = std::make_shared<LandmarksResult>();
 
                 RetCode ret = process(*detect_result, *result);
                 _logger->debug("process ret: {}", ret);
 
-                Value output{ValueDetectResult, result};
+                Value output{ValueLandmarksResult, result};
                 msg->setResponse(output);
             }
         } else {
@@ -170,6 +157,57 @@ void LandmarksWorker::run() {
 
 // resize input img, and do inference
 RetCode LandmarksWorker::process(const DetectResult& detect_result, LandmarksResult& result) {
+
+    result.faces.reserve(detect_result.faces.size());
+
+    for (auto& detect_face : detect_result.faces) {
+        cv::Mat img = (detect_result.frame->image)(detect_face.box);
+
+        int orig_img_width = img.size().width;
+        int orig_img_height = img.size().height;
+
+        const size_t data_length = img.channels() * _image_width * _image_height;
+        std::shared_ptr<unsigned char> data_ptr;
+        data_ptr.reset(new unsigned char[data_length], std::default_delete<unsigned char[]>());
+
+        // size of each batch.
+        const size_t image_size
+            = ov::shape_size(_compiled_model->input().get_shape()) / _batch_size;
+        assert(image_size == data_length);
+
+        cv::Mat resized_img(img);
+        if (static_cast<int>(_image_width) != img.size().width
+            || static_cast<int>(_image_height) != img.size().height) {
+            cv::resize(img, resized_img, cv::Size(_image_width, _image_height));
+        }
+
+        ov::Tensor input_tensor = _infer_request->get_input_tensor();
+
+        std::memcpy(input_tensor.data<std::uint8_t>(), data_ptr.get(), image_size);
+
+        _infer_request->infer();
+
+        const ov::Tensor output_tensor = _infer_request->get_output_tensor();
+        const float* tensor_data = output_tensor.data<float>();
+
+        debugOutputTensor(output_tensor);
+
+        FaceLandmarks lm;
+        lm.normalized_points.reserve(_landmarks_length);
+
+        // only one batch yet.
+        size_t batch_idx = 0;
+        size_t offset = batch_idx * _landmarks_length;
+        for (size_t i = 0; i < _landmarks_length / 2; i++) {
+            int x = static_cast<int>(tensor_data[offset + 2 * i] * orig_img_width
+                                     + detect_face.box.tl().x);
+            int y = static_cast<int>(tensor_data[offset + 2 * i + 1] * orig_img_height
+                                     + detect_face.box.tl().y);
+            lm.normalized_points.push_back(cv::Point(x, y));
+        }
+
+        result.faces.push_back(lm);
+    }
 
     return RetCode::RET_OK;
 }

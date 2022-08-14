@@ -151,7 +151,7 @@ RetCode ConcurrentProcessor<T>::Init(const json& conf) {
 
 template <typename T>
 RetCode ConcurrentProcessor<T>::Process(const Value& input, Value& output) {
-    spdlog::info("input.valueType : {}, valuePtr: {}\n", input.valueType, input.valuePtr.get());
+    spdlog::info("input.valueType : {}, valuePtr: {}\n", format(input.valueType), input.valuePtr.get());
 
     WorkMessage::Ptr msg = WorkMessage::Ptr(new WorkMessage(input, false));
     _channel->enqueueNotification(msg);
@@ -161,7 +161,7 @@ RetCode ConcurrentProcessor<T>::Process(const Value& input, Value& output) {
     Value resp = msg->getResponse();
     output = resp;
 
-    spdlog::info("output.valueType : {}, valuePtr: {}\n", output.valueType, output.valuePtr.get());
+    spdlog::info("output.valueType : {}, valuePtr: {}\n", format(output.valueType), output.valuePtr.get());
 
     return RET_OK;
 }

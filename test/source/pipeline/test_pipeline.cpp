@@ -24,7 +24,8 @@ TEST_CASE("FacePipeline can decode image binary to frame, aka cv::Mat.") {
     json conf = R"(
  {
         "detector": {
-            "model": "./contrib/models/face-detection-adas-0001.xml"
+            "model": "./contrib/models/face-detection-adas-0001.xml",
+            "warmup": false
         }
  }
 )"_json;
@@ -36,7 +37,7 @@ TEST_CASE("FacePipeline can decode image binary to frame, aka cv::Mat.") {
     int concurrent = 1;
     auto detectorProcessor
         = std::make_shared<ConcurrentProcessor<DetectorWorker>>(conf, concurrent, device_id);
-    pipeline.Init(detectorProcessor, detectorProcessor, detectorProcessor, detectorProcessor);
+    pipeline.Init(detectorProcessor, nullptr, nullptr, nullptr);
 
     // read image data;
     // std::string img_path = "./contrib/data/test_image2.png";
@@ -50,7 +51,10 @@ TEST_CASE("FacePipeline can decode image binary to frame, aka cv::Mat.") {
     std::ifstream f{img_path, std::ios::binary};
     f.read((char*)image_data.data(), image_data.size());
 
+    // test decode
     std::shared_ptr<Frame> frame = pipeline.Decode(image_data);
+
+    // test detect face
     std::shared_ptr<DetectResult> result = pipeline.Detect(frame);
 
     std::vector<cv::Rect> boxes(result->faces.size());
@@ -71,6 +75,56 @@ TEST_CASE("FacePipeline can decode image binary to frame, aka cv::Mat.") {
 
         boxes.push_back(box);
     }
+
+    // drawRectangleInImage(img_path, boxes);
+
+    // std::shared_ptr<Processor> a;
+
+    // RetCode ret = pipe.Init(a, a, a, a);
+
+    // CHECK(ret == RET_OK);
+
+    // pipe.Terminate();
+
+    CHECK("aa" == "aa");
+};
+
+TEST_CASE("FacePipeline can detect landmarks from DetectResult.") {
+
+    json conf = R"(
+ {
+        "landmarks": {
+            "model": "./contrib/models/facial-landmarks-35-adas-0002.xml",
+            "warmup": false
+        }
+ }
+)"_json;
+
+    string device_id = "CPU";
+
+    FacePipeline pipeline{conf, device_id};
+
+    int concurrent = 1;
+    auto landmarksProcessor
+        = std::make_shared<ConcurrentProcessor<LandmarksWorker>>(conf, concurrent, device_id);
+    pipeline.Init(nullptr, landmarksProcessor, nullptr, nullptr);
+
+    std::string warmup_image = "./contrib/data/test_image_5_person.jpeg";
+    cv::Mat img = cv::imread(warmup_image);
+    cv::Rect face_rect{839, 114, 256, 331};
+    FaceDetection face = FaceDetection{0.9, face_rect};
+
+    std::shared_ptr<DetectResult> detect_result = std::make_shared<DetectResult>();
+    detect_result->faces.push_back(face);
+    detect_result->frame = std::make_shared<Frame>(img);
+
+    std::shared_ptr<LandmarksResult> result = pipeline.Landmarks(detect_result);
+
+    CHECK(result->faces.size() == 1);
+    CHECK(result->faces.at(0).normalized_points.size() == 35);
+    CHECK(result->faces.at(0).normalized_points.at(0).x != 0);
+    CHECK(result->faces.at(0).normalized_points.at(0).y != 0);
+
 
     // drawRectangleInImage(img_path, boxes);
 

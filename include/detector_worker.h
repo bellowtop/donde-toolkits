@@ -35,6 +35,7 @@ class DetectorWorker : public Worker {
 
     int _batch_size = 1;
     int _max_faces;
+    int _shape_dim;
     int _image_width;
     int _image_height;
     int _color_channel = 3;
