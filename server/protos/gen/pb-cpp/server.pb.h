@@ -98,32 +98,32 @@ namespace com {
 namespace sekirocc {
 namespace face_service {
 
-enum StatusCode : int {
+enum ResultCode : int {
   OK = 0,
   SERVER_ERROR = 10001,
   CLIENT_ERROR = 10101,
   FACE_NOT_FOUND = 10102,
-  StatusCode_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
-  StatusCode_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+  ResultCode_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  ResultCode_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
 };
-bool StatusCode_IsValid(int value);
-constexpr StatusCode StatusCode_MIN = OK;
-constexpr StatusCode StatusCode_MAX = FACE_NOT_FOUND;
-constexpr int StatusCode_ARRAYSIZE = StatusCode_MAX + 1;
+bool ResultCode_IsValid(int value);
+constexpr ResultCode ResultCode_MIN = OK;
+constexpr ResultCode ResultCode_MAX = FACE_NOT_FOUND;
+constexpr int ResultCode_ARRAYSIZE = ResultCode_MAX + 1;
 
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* StatusCode_descriptor();
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ResultCode_descriptor();
 template<typename T>
-inline const std::string& StatusCode_Name(T enum_t_value) {
-  static_assert(::std::is_same<T, StatusCode>::value ||
+inline const std::string& ResultCode_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, ResultCode>::value ||
     ::std::is_integral<T>::value,
-    "Incorrect type passed to function StatusCode_Name.");
+    "Incorrect type passed to function ResultCode_Name.");
   return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
-    StatusCode_descriptor(), enum_t_value);
+    ResultCode_descriptor(), enum_t_value);
 }
-inline bool StatusCode_Parse(
-    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, StatusCode* value) {
-  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<StatusCode>(
-    StatusCode_descriptor(), name, value);
+inline bool ResultCode_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, ResultCode* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<ResultCode>(
+    ResultCode_descriptor(), name, value);
 }
 enum ImageFormat : int {
   IMAGE_UNKNOWN = 0,
@@ -1285,13 +1285,13 @@ class FaceObject final :
       ::com::sekirocc::face_service::FaceFeature* feature);
   ::com::sekirocc::face_service::FaceFeature* unsafe_arena_release_feature();
 
-  // .com.sekirocc.face_service.StatusCode code = 1;
+  // .com.sekirocc.face_service.ResultCode code = 1;
   void clear_code();
-  ::com::sekirocc::face_service::StatusCode code() const;
-  void set_code(::com::sekirocc::face_service::StatusCode value);
+  ::com::sekirocc::face_service::ResultCode code() const;
+  void set_code(::com::sekirocc::face_service::ResultCode value);
   private:
-  ::com::sekirocc::face_service::StatusCode _internal_code() const;
-  void _internal_set_code(::com::sekirocc::face_service::StatusCode value);
+  ::com::sekirocc::face_service::ResultCode _internal_code() const;
+  void _internal_set_code(::com::sekirocc::face_service::ResultCode value);
   public:
 
   // float quality = 3;
@@ -2009,22 +2009,22 @@ inline void FaceFeature::set_version(int32_t value) {
 
 // FaceObject
 
-// .com.sekirocc.face_service.StatusCode code = 1;
+// .com.sekirocc.face_service.ResultCode code = 1;
 inline void FaceObject::clear_code() {
   code_ = 0;
 }
-inline ::com::sekirocc::face_service::StatusCode FaceObject::_internal_code() const {
-  return static_cast< ::com::sekirocc::face_service::StatusCode >(code_);
+inline ::com::sekirocc::face_service::ResultCode FaceObject::_internal_code() const {
+  return static_cast< ::com::sekirocc::face_service::ResultCode >(code_);
 }
-inline ::com::sekirocc::face_service::StatusCode FaceObject::code() const {
+inline ::com::sekirocc::face_service::ResultCode FaceObject::code() const {
   // @@protoc_insertion_point(field_get:com.sekirocc.face_service.FaceObject.code)
   return _internal_code();
 }
-inline void FaceObject::_internal_set_code(::com::sekirocc::face_service::StatusCode value) {
+inline void FaceObject::_internal_set_code(::com::sekirocc::face_service::ResultCode value) {
   
   code_ = value;
 }
-inline void FaceObject::set_code(::com::sekirocc::face_service::StatusCode value) {
+inline void FaceObject::set_code(::com::sekirocc::face_service::ResultCode value) {
   _internal_set_code(value);
   // @@protoc_insertion_point(field_set:com.sekirocc.face_service.FaceObject.code)
 }
@@ -2319,10 +2319,10 @@ DetectionResponse::faces() const {
 
 PROTOBUF_NAMESPACE_OPEN
 
-template <> struct is_proto_enum< ::com::sekirocc::face_service::StatusCode> : ::std::true_type {};
+template <> struct is_proto_enum< ::com::sekirocc::face_service::ResultCode> : ::std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::com::sekirocc::face_service::StatusCode>() {
-  return ::com::sekirocc::face_service::StatusCode_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::com::sekirocc::face_service::ResultCode>() {
+  return ::com::sekirocc::face_service::ResultCode_descriptor();
 }
 template <> struct is_proto_enum< ::com::sekirocc::face_service::ImageFormat> : ::std::true_type {};
 template <>

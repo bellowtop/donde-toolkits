@@ -3,73 +3,64 @@ syntax = "proto3";
 // option go_package = "github.com/sekirocc/face-recognition-service/api/face_service";
 // option java_package = "com.sekirocc.face_recognition_service";
 
-
 package com.sekirocc.face_service;
 
-enum StatusCode {
-        OK = 0;
-        reserved 1 to 10000;
+enum ResultCode {
+    OK = 0;
+    reserved 1 to 10000;
 
-        SERVER_ERROR = 10001;
-        reserved 10002 to 10100;
+    SERVER_ERROR = 10001;
+    reserved 10002 to 10100;
 
-        CLIENT_ERROR = 10101;
-        FACE_NOT_FOUND = 10102;
-        reserved 10103 to 10200;
+    CLIENT_ERROR = 10101;
+    FACE_NOT_FOUND = 10102;
+    reserved 10103 to 10200;
 }
 
 message Rect {
-  Point point = 1;
-  Size size = 2;
+    Point point = 1;
+    Size size = 2;
 }
 
 message Point {
-        int32 x = 1;
-        int32 y = 2;
+    int32 x = 1;
+    int32 y = 2;
 }
 
 message Size {
-        int32 width = 1;
-        int32 height = 2;
+    int32 width = 1;
+    int32 height = 2;
 }
 
 enum ImageFormat {
-        IMAGE_UNKNOWN = 0;
-        IMAGE_JPEG = 1;
-        IMAGE_PNG = 2;
+    IMAGE_UNKNOWN = 0;
+    IMAGE_JPEG = 1;
+    IMAGE_PNG = 2;
 }
 
 message Image {
-        ImageFormat format = 1;
-        bytes data = 2;
+    ImageFormat format = 1;
+    bytes data = 2;
 }
 
-message DetectionRequest {
-        Image image = 1;
-}
-
+message DetectionRequest { Image image = 1; }
 
 message FaceFeature {
-        bytes blob = 1;
-        int32 version = 2;
+    bytes blob = 1;
+    int32 version = 2;
 }
 
 message FaceObject {
-  StatusCode code = 1;
-        Rect rectangle = 2;
-        float quality = 3;
-        float confidence = 4;
-        FaceFeature feature = 5;
+    ResultCode code = 1;
+    Rect rectangle = 2;
+    float quality = 3;
+    float confidence = 4;
+    FaceFeature feature = 5;
 }
 
-message DetectionResponse {
-        repeated FaceObject faces = 1;
-}
-
+message DetectionResponse { repeated FaceObject faces = 1; }
 
 // 人脸检测
 service FaceService {
-        rpc Detect(DetectionRequest) returns (DetectionResponse) {
-
-        }
+    rpc Detect(DetectionRequest) returns (DetectionResponse) {}
 }

@@ -234,13 +234,13 @@ const char descriptor_table_protodef_server_2eproto[] PROTOBUF_SECTION_VARIABLE(
   "age\030\001 \001(\0132 .com.sekirocc.face_service.Im"
   "age\",\n\013FaceFeature\022\014\n\004blob\030\001 \001(\014\022\017\n\007vers"
   "ion\030\002 \001(\005\"\323\001\n\nFaceObject\0223\n\004code\030\001 \001(\0162%"
-  ".com.sekirocc.face_service.StatusCode\0222\n"
+  ".com.sekirocc.face_service.ResultCode\0222\n"
   "\trectangle\030\002 \001(\0132\037.com.sekirocc.face_ser"
   "vice.Rect\022\017\n\007quality\030\003 \001(\002\022\022\n\nconfidence"
   "\030\004 \001(\002\0227\n\007feature\030\005 \001(\0132&.com.sekirocc.f"
   "ace_service.FaceFeature\"I\n\021DetectionResp"
   "onse\0224\n\005faces\030\001 \003(\0132%.com.sekirocc.face_"
-  "service.FaceObject*f\n\nStatusCode\022\006\n\002OK\020\000"
+  "service.FaceObject*f\n\nResultCode\022\006\n\002OK\020\000"
   "\022\021\n\014SERVER_ERROR\020\221N\022\021\n\014CLIENT_ERROR\020\365N\022\023"
   "\n\016FACE_NOT_FOUND\020\366N\"\005\010\001\020\220N\"\006\010\222N\020\364N\"\006\010\367N\020"
   "\330O*\?\n\013ImageFormat\022\021\n\rIMAGE_UNKNOWN\020\000\022\016\n\n"
@@ -265,11 +265,11 @@ PROTOBUF_ATTRIBUTE_INIT_PRIORITY static ::PROTOBUF_NAMESPACE_ID::internal::AddDe
 namespace com {
 namespace sekirocc {
 namespace face_service {
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* StatusCode_descriptor() {
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ResultCode_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_server_2eproto);
   return file_level_enum_descriptors_server_2eproto[0];
 }
-bool StatusCode_IsValid(int value) {
+bool ResultCode_IsValid(int value) {
   switch (value) {
     case 0:
     case 10001:
@@ -1711,12 +1711,12 @@ const char* FaceObject::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID:
     uint32_t tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // .com.sekirocc.face_service.StatusCode code = 1;
+      // .com.sekirocc.face_service.ResultCode code = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
           uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-          _internal_set_code(static_cast<::com::sekirocc::face_service::StatusCode>(val));
+          _internal_set_code(static_cast<::com::sekirocc::face_service::ResultCode>(val));
         } else
           goto handle_unusual;
         continue;
@@ -1781,7 +1781,7 @@ uint8_t* FaceObject::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .com.sekirocc.face_service.StatusCode code = 1;
+  // .com.sekirocc.face_service.ResultCode code = 1;
   if (this->_internal_code() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
@@ -1854,7 +1854,7 @@ size_t FaceObject::ByteSizeLong() const {
         *feature_);
   }
 
-  // .com.sekirocc.face_service.StatusCode code = 1;
+  // .com.sekirocc.face_service.ResultCode code = 1;
   if (this->_internal_code() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_code());

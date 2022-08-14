@@ -36,7 +36,8 @@ using com::sekirocc::face_service::DetectionResponse;
 
 using com::sekirocc::face_service::FaceService;
 
-// using com::sekirocc::face_service::StatusCode;
+using com::sekirocc::face_service::ResultCode;
+using com::sekirocc::face_service::Rect;
 
 using com::sekirocc::face_service::FaceFeature;
 using com::sekirocc::face_service::FaceObject;
@@ -73,7 +74,25 @@ Status FaceServiceImpl::Detect(ServerContext* context, const DetectionRequest* r
     const std::string& image_data = request->image().data();
     const std::vector<uint8_t> image_char_vec(image_data.begin(), image_data.end());
     Frame* frame = pipeline.Decode(image_char_vec);
-    DetectResult* ret = pipeline.Detect(*frame);
+    DetectResult* result = pipeline.Detect(*frame);
+
+    // scope exit
+    std::shared_ptr<int> ggg(NULL, [&](int*) {
+        delete frame;
+        delete result;
+    });
+
+    // fill response
+    FaceObject* face = response->add_faces();
+    face->set_code(ResultCode::OK);
+    face->set_quality(0.0f); // TODO quality unimplemented
+
+    Rect* rect = face->mutable_rectangle();
+    rect->mutable_point()->set_x(result->box.x);
+    rect->mutable_point()->set_y(result->box.y);
+    rect->mutable_size()->set_width(result->box.width);
+    rect->mutable_size()->set_height(result->box.height);
+
 
     // int count = request->requests_size();
     // std::vector<Frame*> frames;
@@ -96,7 +115,7 @@ Status FaceServiceImpl::Detect(ServerContext* context, const DetectionRequest* r
     // }
     // DetectResult* ret = pipeline.Detect(*frames[0]);
 
-    logger.debug("pipeline.Detect DetectResult: %s", ret);
+    logger.debug("pipeline.Detect DetectResult: %s", result);
 
     return Status::OK;
 }
