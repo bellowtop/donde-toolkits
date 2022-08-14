@@ -27,7 +27,6 @@
 #include <sstream>
 #include <string>
 
-
 using namespace std;
 
 using com::sekirocc::face_service::DetectionRequest;
@@ -79,16 +78,20 @@ Status FaceServiceImpl::Detect(ServerContext* context, const DetectionRequest* r
         delete result;
     });
 
-    // fill response
-    FaceObject* face = response->add_faces();
-    face->set_code(ResultCode::OK);
-    face->set_quality(0.0f); // TODO quality unimplemented
+    for (auto& detected_face : result->faces) {
+        // fill response
+        FaceObject* face_obj = response->add_faces();
+        face_obj->set_code(ResultCode::OK);
+        face_obj->set_quality(0.0f); // TODO quality unimplemented
 
-    Rect* rect = face->mutable_rectangle();
-    rect->mutable_point()->set_x(result->box.x);
-    rect->mutable_point()->set_y(result->box.y);
-    rect->mutable_size()->set_width(result->box.width);
-    rect->mutable_size()->set_height(result->box.height);
+        Rect* rect = face_obj->mutable_rectangle();
+        rect->mutable_point()->set_x(detected_face.box.x);
+        rect->mutable_point()->set_y(detected_face.box.y);
+        rect->mutable_size()->set_width(detected_face.box.width);
+        rect->mutable_size()->set_height(detected_face.box.height);
+
+        spdlog::debug("pipeline.Detect DetectResult.confidence: {}", detected_face.confidence);
+    }
 
     // int count = request->requests_size();
     // std::vector<Frame*> frames;
@@ -110,8 +113,6 @@ Status FaceServiceImpl::Detect(ServerContext* context, const DetectionRequest* r
     //     frames.push_back(frame);
     // }
     // DetectResult* ret = pipeline.Detect(*frames[0]);
-
-    spdlog::debug("pipeline.Detect DetectResult.confidence: {}", result->confidence);
 
     return Status::OK;
 }

@@ -34,9 +34,12 @@ class DetectorWorker : public Worker {
     void debugOutputTensor(const ov::Tensor& output);
 
     int _batch_size = 1;
+    int _max_faces;
     int _image_width;
     int _image_height;
     int _color_channel = 3;
+
+    constexpr static const float _min_confidence = 0.3f;
 
     std::shared_ptr<ov::CompiledModel> _compiled_model;
     std::shared_ptr<ov::InferRequest> _infer_request;

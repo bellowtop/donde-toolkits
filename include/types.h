@@ -19,9 +19,13 @@ struct AlignFace {
     cv::Mat face;
 };
 
-struct DetectResult {
+struct DetectFace {
     float confidence;
     cv::Rect box;
+};
+
+struct DetectResult {
+    std::vector<DetectFace> faces;
 };
 
 struct LandmarksResult {
