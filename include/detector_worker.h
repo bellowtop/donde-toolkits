@@ -88,18 +88,25 @@ class LandmarksWorker : public Worker {
 //     Poco::Logger& _logger;
 // };
 //
-// class AlignerWorker : public Worker {
-//   public:
-//     AlignerWorker(std::shared_ptr<NotificationQueue> ch);
-//     ~AlignerWorker();
-//
-//     RetCode Init(json conf, int id, std::string device_id) override;
-//
-//     void run() override;
-//
-//   private:
-//     Poco::Logger& _logger;
-// };
+class AlignerWorker : public Worker {
+  public:
+    AlignerWorker(std::shared_ptr<NotificationQueue> ch);
+
+    ~AlignerWorker();
+
+    RetCode Init(json conf, int id, std::string device_id) override;
+
+    void run() override;
+
+  private:
+
+    RetCode process(const LandmarksResult& landmarks_result, AlignerResult& result);
+
+    RetCode align_face(const cv::Mat& face_image, const std::vector<cv::Point2f>& landmarks);
+
+    std::shared_ptr<spdlog::logger> _logger;
+};
+
 //
 // class FeatureWorker : public Worker {
 //   public:

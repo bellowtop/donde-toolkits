@@ -112,3 +112,19 @@ std::shared_ptr<LandmarksResult> FacePipeline::Landmarks(std::shared_ptr<DetectR
 
     return std::static_pointer_cast<LandmarksResult>(output.valuePtr);
 }
+
+std::shared_ptr<AlignerResult> FacePipeline::Align(std::shared_ptr<LandmarksResult> landmarks_result) {
+    Value input{ValueLandmarksResult, landmarks_result};
+    // output.valuePtr memory is allocated by inner Process();
+    Value output;
+
+    RetCode ret = _alignerProcessor->Process(input, output);
+    spdlog::info("FacePipeline::Align ret: {}", ret);
+
+    if (output.valueType != ValueAlignerResult) {
+        spdlog::error("Detect output is not ValueAlignerResult, return empty result");
+        return nullptr;
+    }
+
+    return std::static_pointer_cast<AlignerResult>(output.valuePtr);
+}

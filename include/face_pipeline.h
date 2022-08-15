@@ -31,6 +31,9 @@ class FacePipeline {
 
     std::shared_ptr<LandmarksResult> Landmarks(const std::shared_ptr<DetectResult> detect_result);
 
+    std::shared_ptr<AlignerResult> Align(const std::shared_ptr<LandmarksResult> landmarks_result);
+
+
   private:
     json _config;
     std::string _device_id;

@@ -1,12 +1,12 @@
 #pragma once
 
-#include <map>
-#include <string>
 #include <cstdint>
+#include <map>
 #include <memory>
 #include <opencv2/core/mat.hpp>
 #include <opencv2/core/types.hpp>
 #include <ostream>
+#include <string>
 #include <vector>
 
 using namespace std;
@@ -29,20 +29,25 @@ struct DetectResult {
     std::vector<FaceDetection> faces;
 };
 
-struct FaceLandmarks {
-    std::vector<cv::Point> normalized_points;
+struct LandmarksResult {
+    std::vector<cv::Mat> faces;
+    std::vector<std::vector<cv::Point2f>> face_landmarks;
 };
 
-struct LandmarksResult {
-    std::vector<FaceLandmarks> faces;
+struct AlignerResult {
+    std::vector<cv::Mat> aligned_faces;
 };
 
 struct Feature {
     std::vector<float> data;
 };
 
-enum ValueType { ValueFrame, ValueDetectResult, ValueLandmarksResult, ValueFeature
-
+enum ValueType {
+    ValueFrame,
+    ValueDetectResult,
+    ValueLandmarksResult,
+    ValueAlignerResult,
+    ValueFeature
 };
 
 inline std::string format(const ValueType typ) {
@@ -52,6 +57,7 @@ inline std::string format(const ValueType typ) {
         insert_elem(ValueFrame);
         insert_elem(ValueDetectResult);
         insert_elem(ValueLandmarksResult);
+        insert_elem(ValueAlignerResult);
         insert_elem(ValueFeature);
 #undef insert_elem
     }
