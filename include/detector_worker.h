@@ -102,7 +102,7 @@ class AlignerWorker : public Worker {
 
     RetCode process(const LandmarksResult& landmarks_result, AlignerResult& result);
 
-    RetCode align_face(const cv::Mat& face_image, const std::vector<cv::Point2f>& landmarks);
+    cv::Mat align_face(const cv::Mat& face_image, const std::vector<cv::Point2f>& landmarks);
 
     std::shared_ptr<spdlog::logger> _logger;
 };

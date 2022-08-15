@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_CXX_STANDARD 17)
+
 
 # use llvm clang, not the apple clang
-set(CMAKE_C_COMPILER    /usr/local/opt/llvm/bin/clang)
-set(CMAKE_CXX_COMPILER  /usr/local/opt/llvm/bin/clang++)
+# set(CMAKE_C_COMPILER    /usr/local/opt/llvm/bin/clang)
+# set(CMAKE_CXX_COMPILER  /usr/local/opt/llvm/bin/clang++)
 
 project(FaceRecognitionTests LANGUAGES CXX)
 
@@ -36,8 +38,6 @@ file(GLOB_RECURSE sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/source/*
 add_executable(${PROJECT_NAME} ${headers} ${sources})
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
-
-set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17 OUTPUT_NAME "FaceRecognitionTests")
 
 target_include_directories(${PROJECT_NAME}
   PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/../include>

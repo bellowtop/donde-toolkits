@@ -18,6 +18,7 @@ endif
 
 all: check conan build
 
+
 conan:
 	conan install --build=missing --profile conan/conanprofile  -if build ./conan
 
@@ -36,7 +37,7 @@ build-test:
 build-lib:
 	cmake --build build
 
-build-all: build-lib build-server build-test
+build-all: build-pre build-lib build-server build-test
 
 
 run-server:

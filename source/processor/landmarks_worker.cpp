@@ -192,7 +192,7 @@ RetCode LandmarksWorker::process(const DetectResult& detect_result, LandmarksRes
 
         debugOutputTensor(output_tensor);
 
-        std::vector<cv::Point2f> lm(_landmarks_length);
+        std::vector<cv::Point2f> lm(_landmarks_length / 2);
 
         // int face_img_width = face_img.size().width;
         // int face_img_height = face_img.size().height;
@@ -203,7 +203,7 @@ RetCode LandmarksWorker::process(const DetectResult& detect_result, LandmarksRes
         for (size_t i = 0; i < _landmarks_length / 2; i++) {
             float x = tensor_data[offset + 2 * i];
             float y = tensor_data[offset + 2 * i + 1];
-            lm.push_back(cv::Point2f(x, y));
+            lm[i] = cv::Point2f(x, y);
 
             // x, y is the real points in original big image. but we don't need them.
             // int x = static_cast<int>(tensor_data[offset + 2 * i] * face_img_width

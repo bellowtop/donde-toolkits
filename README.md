@@ -52,26 +52,24 @@ find_package(OpenVINO REQUIRED COMPONENTS Runtime)
 activate openvino env
 
 ```
+python3.8 -m venv venv3.8
+source venv3.8/bin/activate
 source /opt/intel/openvino_2022/setupvars.sh
 ```
 
 
 #### Install llvm clang
 
-The project can be built use llvm clang, not use apple clang
+The project can be built use llvm clang (version 14), not use apple clang
 
 ```
 brew install llvm
 
-# double check your llvm location, modify CMakeLists.txt if needed.
-
-set(CMAKE_C_COMPILER    /usr/local/opt/llvm/bin/clang)
-set(CMAKE_CXX_COMPILER  /usr/local/opt/llvm/bin/clang++)
-
+/usr/local/opt/llvm/bin/clang --version
+Homebrew clang version 14.0.6
 
 # explict set CC and CXX, for sure
 export CC=/usr/local/opt/llvm/bin/clang ; export CXX=/usr/local/opt/llvm/bin/clang++
-
 ```
 
 #### Build conan dependency packages
@@ -177,3 +175,8 @@ Run failed with message `dyld[4593]: Library not loaded: @rpath/libopenvinod.dyl
 A:
 It's because we need `source /opt/intel/openvino_2022/setupvars.sh`, but xcode doesn't know that.
 Edit `FaceRecognitionServer` scheme, add environment variable `DYLD_LIBRARY_PATH`, value `/opt/intel/openvino_2022/runtime/3rdparty/tbb/lib::/opt/intel/openvino_2022/runtime/lib/intel64/Release:/opt/intel/openvino_2022/runtime/lib/intel64/Debug`
+
+
+A2:
+for i in `ls /opt/intel/openvino_2022/runtime/lib/intel64/Debug/`; do sudo ln -s /opt/intel/openvino_2022/runtime/lib/intel64/Debug/$i /usr/local/lib; done
+for i in `ls /opt/intel/openvino_2022/runtime/3rdparty/tbb/lib/`; do sudo ln -s /opt/intel/openvino_2022.1.0.643/runtime/3rdparty/tbb/lib/$i /usr/local/lib; done

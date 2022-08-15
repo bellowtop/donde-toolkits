@@ -69,8 +69,21 @@ RetCode FacePipeline::Init(std::shared_ptr<Processor> detectorProcessor,
 }
 
 RetCode FacePipeline::Terminate() {
-    RetCode ret = _detectorProcessor->Terminate();
-    spdlog::info("processor terminate ret: {}\n", ret);
+    if (_detectorProcessor) {
+        RetCode ret = _detectorProcessor->Terminate();
+    }
+
+    if (_landmarksProcessor) {
+        RetCode ret = _landmarksProcessor->Terminate();
+    }
+
+    if (_alignerProcessor) {
+        RetCode ret = _alignerProcessor->Terminate();
+    }
+
+    if (_featureProcessor) {
+        RetCode ret = _featureProcessor->Terminate();
+    }
 
     return RET_OK;
 }
@@ -106,7 +119,7 @@ std::shared_ptr<LandmarksResult> FacePipeline::Landmarks(std::shared_ptr<DetectR
     spdlog::info("FacePipeline::Landmarks ret: {}", ret);
 
     if (output.valueType != ValueLandmarksResult) {
-        spdlog::error("Detect output is not ValueLandmarksResult, return empty result");
+        spdlog::error("Landmarks output is not ValueLandmarksResult, return empty result");
         return nullptr;
     }
 
@@ -122,7 +135,7 @@ std::shared_ptr<AlignerResult> FacePipeline::Align(std::shared_ptr<LandmarksResu
     spdlog::info("FacePipeline::Align ret: {}", ret);
 
     if (output.valueType != ValueAlignerResult) {
-        spdlog::error("Detect output is not ValueAlignerResult, return empty result");
+        spdlog::error("Align output is not ValueAlignerResult, return empty result");
         return nullptr;
     }
 

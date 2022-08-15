@@ -1,4 +1,5 @@
 #include "concurrent_processor.h"
+#include "detector_worker.h"
 #include "face_pipeline.h"
 #include "types.h"
 #include "utils.h"
@@ -107,7 +108,9 @@ TEST_CASE("FacePipeline can detect landmarks from DetectResult.") {
     int concurrent = 1;
     auto landmarksProcessor
         = std::make_shared<ConcurrentProcessor<LandmarksWorker>>(conf, concurrent, device_id);
-    pipeline.Init(nullptr, landmarksProcessor, nullptr, nullptr);
+    auto alignerProcessor
+        = std::make_shared<ConcurrentProcessor<AlignerWorker>>(conf, concurrent, device_id);
+    pipeline.Init(nullptr, landmarksProcessor, alignerProcessor, nullptr);
 
     std::string warmup_image = "./contrib/data/test_image_5_person.jpeg";
     cv::Mat img = cv::imread(warmup_image);
@@ -120,11 +123,14 @@ TEST_CASE("FacePipeline can detect landmarks from DetectResult.") {
 
     std::shared_ptr<LandmarksResult> result = pipeline.Landmarks(detect_result);
 
+    // we only set one face
     CHECK(result->faces.size() == 1);
-    CHECK(result->faces.at(0).normalized_points.size() == 35);
-    CHECK(result->faces.at(0).normalized_points.at(0).x != 0);
-    CHECK(result->faces.at(0).normalized_points.at(0).y != 0);
+    CHECK(result->face_landmarks.size() == 1);
+    CHECK(result->face_landmarks[0].size() == 35);
+    CHECK(result->face_landmarks[0][0].x > 0.0f);
+    CHECK(result->face_landmarks[0][0].y > 0.0f);
 
+    std::shared_ptr<AlignerResult> align_result = pipeline.Align(result);
 
     // drawRectangleInImage(img_path, boxes);
 
@@ -134,7 +140,7 @@ TEST_CASE("FacePipeline can detect landmarks from DetectResult.") {
 
     // CHECK(ret == RET_OK);
 
-    // pipe.Terminate();
+    pipeline.Terminate();
 
     CHECK("aa" == "aa");
 };
