@@ -42,6 +42,38 @@
           "FaceService"
         ]
       }
+    },
+    "/extract_feature": {
+      "post": {
+        "operationId": "FaceService_ExtractFeature",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/face_serviceExtractionResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/face_serviceExtractionRequest"
+            }
+          }
+        ],
+        "tags": [
+          "FaceService"
+        ]
+      }
     }
   },
   "definitions": {
@@ -56,10 +88,41 @@
     "face_serviceDetectionResponse": {
       "type": "object",
       "properties": {
-        "faces": {
+        "code": {
+          "$ref": "#/definitions/face_serviceResultCode"
+        },
+        "face_rects": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/face_serviceFaceObject"
+            "$ref": "#/definitions/face_serviceFaceRectangle"
+          }
+        }
+      }
+    },
+    "face_serviceExtractionRequest": {
+      "type": "object",
+      "properties": {
+        "image": {
+          "$ref": "#/definitions/face_serviceImage"
+        }
+      }
+    },
+    "face_serviceExtractionResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/face_serviceResultCode"
+        },
+        "face_rects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/face_serviceFaceRectangle"
+          }
+        },
+        "face_features": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/face_serviceFaceFeature"
           }
         }
       }
@@ -67,22 +130,19 @@
     "face_serviceFaceFeature": {
       "type": "object",
       "properties": {
-        "blob": {
-          "type": "string",
-          "format": "byte"
-        },
         "version": {
           "type": "integer",
           "format": "int32"
+        },
+        "blob": {
+          "type": "string",
+          "format": "byte"
         }
       }
     },
-    "face_serviceFaceObject": {
+    "face_serviceFaceRectangle": {
       "type": "object",
       "properties": {
-        "code": {
-          "$ref": "#/definitions/face_serviceResultCode"
-        },
         "rectangle": {
           "$ref": "#/definitions/face_serviceRect"
         },
@@ -93,9 +153,6 @@
         "confidence": {
           "type": "number",
           "format": "float"
-        },
-        "feature": {
-          "$ref": "#/definitions/face_serviceFaceFeature"
         }
       }
     },

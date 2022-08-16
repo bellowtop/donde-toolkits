@@ -29,7 +29,7 @@ namespace com {
 namespace sekirocc {
 namespace face_service {
 
-// 人脸检测
+// face service
 class FaceService final {
  public:
   static constexpr char const* service_full_name() {
@@ -45,11 +45,20 @@ class FaceService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::DetectionResponse>> PrepareAsyncDetect(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DetectionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::DetectionResponse>>(PrepareAsyncDetectRaw(context, request, cq));
     }
+    virtual ::grpc::Status ExtractFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::ExtractionRequest& request, ::com::sekirocc::face_service::ExtractionResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::ExtractionResponse>> AsyncExtractFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::ExtractionRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::ExtractionResponse>>(AsyncExtractFeatureRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::ExtractionResponse>> PrepareAsyncExtractFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::ExtractionRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::ExtractionResponse>>(PrepareAsyncExtractFeatureRaw(context, request, cq));
+    }
     class async_interface {
      public:
       virtual ~async_interface() {}
       virtual void Detect(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DetectionRequest* request, ::com::sekirocc::face_service::DetectionResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void Detect(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DetectionRequest* request, ::com::sekirocc::face_service::DetectionResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void ExtractFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::ExtractionRequest* request, ::com::sekirocc::face_service::ExtractionResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void ExtractFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::ExtractionRequest* request, ::com::sekirocc::face_service::ExtractionResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
@@ -57,6 +66,8 @@ class FaceService final {
    private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::DetectionResponse>* AsyncDetectRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DetectionRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::DetectionResponse>* PrepareAsyncDetectRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DetectionRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::ExtractionResponse>* AsyncExtractFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::ExtractionRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::ExtractionResponse>* PrepareAsyncExtractFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::ExtractionRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -68,11 +79,20 @@ class FaceService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::DetectionResponse>> PrepareAsyncDetect(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DetectionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::DetectionResponse>>(PrepareAsyncDetectRaw(context, request, cq));
     }
+    ::grpc::Status ExtractFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::ExtractionRequest& request, ::com::sekirocc::face_service::ExtractionResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::ExtractionResponse>> AsyncExtractFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::ExtractionRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::ExtractionResponse>>(AsyncExtractFeatureRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::ExtractionResponse>> PrepareAsyncExtractFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::ExtractionRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::ExtractionResponse>>(PrepareAsyncExtractFeatureRaw(context, request, cq));
+    }
     class async final :
       public StubInterface::async_interface {
      public:
       void Detect(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DetectionRequest* request, ::com::sekirocc::face_service::DetectionResponse* response, std::function<void(::grpc::Status)>) override;
       void Detect(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DetectionRequest* request, ::com::sekirocc::face_service::DetectionResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void ExtractFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::ExtractionRequest* request, ::com::sekirocc::face_service::ExtractionResponse* response, std::function<void(::grpc::Status)>) override;
+      void ExtractFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::ExtractionRequest* request, ::com::sekirocc::face_service::ExtractionResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -86,7 +106,10 @@ class FaceService final {
     class async async_stub_{this};
     ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::DetectionResponse>* AsyncDetectRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DetectionRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::DetectionResponse>* PrepareAsyncDetectRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DetectionRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::ExtractionResponse>* AsyncExtractFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::ExtractionRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::ExtractionResponse>* PrepareAsyncExtractFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::ExtractionRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_Detect_;
+    const ::grpc::internal::RpcMethod rpcmethod_ExtractFeature_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -95,6 +118,7 @@ class FaceService final {
     Service();
     virtual ~Service();
     virtual ::grpc::Status Detect(::grpc::ServerContext* context, const ::com::sekirocc::face_service::DetectionRequest* request, ::com::sekirocc::face_service::DetectionResponse* response);
+    virtual ::grpc::Status ExtractFeature(::grpc::ServerContext* context, const ::com::sekirocc::face_service::ExtractionRequest* request, ::com::sekirocc::face_service::ExtractionResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_Detect : public BaseClass {
@@ -116,7 +140,27 @@ class FaceService final {
       ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_Detect<Service > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_ExtractFeature : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_ExtractFeature() {
+      ::grpc::Service::MarkMethodAsync(1);
+    }
+    ~WithAsyncMethod_ExtractFeature() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ExtractFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::ExtractionRequest* /*request*/, ::com::sekirocc::face_service::ExtractionResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestExtractFeature(::grpc::ServerContext* context, ::com::sekirocc::face_service::ExtractionRequest* request, ::grpc::ServerAsyncResponseWriter< ::com::sekirocc::face_service::ExtractionResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_Detect<WithAsyncMethod_ExtractFeature<Service > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_Detect : public BaseClass {
    private:
@@ -144,7 +188,34 @@ class FaceService final {
     virtual ::grpc::ServerUnaryReactor* Detect(
       ::grpc::CallbackServerContext* /*context*/, const ::com::sekirocc::face_service::DetectionRequest* /*request*/, ::com::sekirocc::face_service::DetectionResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_Detect<Service > CallbackService;
+  template <class BaseClass>
+  class WithCallbackMethod_ExtractFeature : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_ExtractFeature() {
+      ::grpc::Service::MarkMethodCallback(1,
+          new ::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::face_service::ExtractionRequest, ::com::sekirocc::face_service::ExtractionResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::com::sekirocc::face_service::ExtractionRequest* request, ::com::sekirocc::face_service::ExtractionResponse* response) { return this->ExtractFeature(context, request, response); }));}
+    void SetMessageAllocatorFor_ExtractFeature(
+        ::grpc::MessageAllocator< ::com::sekirocc::face_service::ExtractionRequest, ::com::sekirocc::face_service::ExtractionResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(1);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::face_service::ExtractionRequest, ::com::sekirocc::face_service::ExtractionResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_ExtractFeature() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ExtractFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::ExtractionRequest* /*request*/, ::com::sekirocc::face_service::ExtractionResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* ExtractFeature(
+      ::grpc::CallbackServerContext* /*context*/, const ::com::sekirocc::face_service::ExtractionRequest* /*request*/, ::com::sekirocc::face_service::ExtractionResponse* /*response*/)  { return nullptr; }
+  };
+  typedef WithCallbackMethod_Detect<WithCallbackMethod_ExtractFeature<Service > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_Detect : public BaseClass {
@@ -159,6 +230,23 @@ class FaceService final {
     }
     // disable synchronous version of this method
     ::grpc::Status Detect(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::DetectionRequest* /*request*/, ::com::sekirocc::face_service::DetectionResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_ExtractFeature : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_ExtractFeature() {
+      ::grpc::Service::MarkMethodGeneric(1);
+    }
+    ~WithGenericMethod_ExtractFeature() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ExtractFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::ExtractionRequest* /*request*/, ::com::sekirocc::face_service::ExtractionResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -184,6 +272,26 @@ class FaceService final {
     }
   };
   template <class BaseClass>
+  class WithRawMethod_ExtractFeature : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_ExtractFeature() {
+      ::grpc::Service::MarkMethodRaw(1);
+    }
+    ~WithRawMethod_ExtractFeature() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ExtractFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::ExtractionRequest* /*request*/, ::com::sekirocc::face_service::ExtractionResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestExtractFeature(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithRawCallbackMethod_Detect : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
@@ -203,6 +311,28 @@ class FaceService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::ServerUnaryReactor* Detect(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_ExtractFeature : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_ExtractFeature() {
+      ::grpc::Service::MarkMethodRawCallback(1,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->ExtractFeature(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_ExtractFeature() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ExtractFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::ExtractionRequest* /*request*/, ::com::sekirocc::face_service::ExtractionResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* ExtractFeature(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
@@ -232,9 +362,36 @@ class FaceService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedDetect(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::com::sekirocc::face_service::DetectionRequest,::com::sekirocc::face_service::DetectionResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_Detect<Service > StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_ExtractFeature : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_ExtractFeature() {
+      ::grpc::Service::MarkMethodStreamed(1,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::com::sekirocc::face_service::ExtractionRequest, ::com::sekirocc::face_service::ExtractionResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::com::sekirocc::face_service::ExtractionRequest, ::com::sekirocc::face_service::ExtractionResponse>* streamer) {
+                       return this->StreamedExtractFeature(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_ExtractFeature() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status ExtractFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::ExtractionRequest* /*request*/, ::com::sekirocc::face_service::ExtractionResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedExtractFeature(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::com::sekirocc::face_service::ExtractionRequest,::com::sekirocc::face_service::ExtractionResponse>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_Detect<WithStreamedUnaryMethod_ExtractFeature<Service > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_Detect<Service > StreamedService;
+  typedef WithStreamedUnaryMethod_Detect<WithStreamedUnaryMethod_ExtractFeature<Service > > StreamedService;
 };
 
 }  // namespace face_service

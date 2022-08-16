@@ -72,18 +72,6 @@ struct ImageDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ImageDefaultTypeInternal _Image_default_instance_;
-constexpr DetectionRequest::DetectionRequest(
-  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : image_(nullptr){}
-struct DetectionRequestDefaultTypeInternal {
-  constexpr DetectionRequestDefaultTypeInternal()
-    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
-  ~DetectionRequestDefaultTypeInternal() {}
-  union {
-    DetectionRequest _instance;
-  };
-};
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT DetectionRequestDefaultTypeInternal _DetectionRequest_default_instance_;
 constexpr FaceFeature::FaceFeature(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : blob_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
@@ -97,26 +85,37 @@ struct FaceFeatureDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT FaceFeatureDefaultTypeInternal _FaceFeature_default_instance_;
-constexpr FaceObject::FaceObject(
+constexpr FaceRectangle::FaceRectangle(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : rectangle_(nullptr)
-  , feature_(nullptr)
-  , code_(0)
-
   , quality_(0)
   , confidence_(0){}
-struct FaceObjectDefaultTypeInternal {
-  constexpr FaceObjectDefaultTypeInternal()
+struct FaceRectangleDefaultTypeInternal {
+  constexpr FaceRectangleDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
-  ~FaceObjectDefaultTypeInternal() {}
+  ~FaceRectangleDefaultTypeInternal() {}
   union {
-    FaceObject _instance;
+    FaceRectangle _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT FaceObjectDefaultTypeInternal _FaceObject_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT FaceRectangleDefaultTypeInternal _FaceRectangle_default_instance_;
+constexpr DetectionRequest::DetectionRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : image_(nullptr){}
+struct DetectionRequestDefaultTypeInternal {
+  constexpr DetectionRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~DetectionRequestDefaultTypeInternal() {}
+  union {
+    DetectionRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT DetectionRequestDefaultTypeInternal _DetectionRequest_default_instance_;
 constexpr DetectionResponse::DetectionResponse(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : faces_(){}
+  : face_rects_()
+  , code_(0)
+{}
 struct DetectionResponseDefaultTypeInternal {
   constexpr DetectionResponseDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -126,10 +125,37 @@ struct DetectionResponseDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT DetectionResponseDefaultTypeInternal _DetectionResponse_default_instance_;
+constexpr ExtractionRequest::ExtractionRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : image_(nullptr){}
+struct ExtractionRequestDefaultTypeInternal {
+  constexpr ExtractionRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~ExtractionRequestDefaultTypeInternal() {}
+  union {
+    ExtractionRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ExtractionRequestDefaultTypeInternal _ExtractionRequest_default_instance_;
+constexpr ExtractionResponse::ExtractionResponse(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : face_rects_()
+  , face_features_()
+  , code_(0)
+{}
+struct ExtractionResponseDefaultTypeInternal {
+  constexpr ExtractionResponseDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~ExtractionResponseDefaultTypeInternal() {}
+  union {
+    ExtractionResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ExtractionResponseDefaultTypeInternal _ExtractionResponse_default_instance_;
 }  // namespace face_service
 }  // namespace sekirocc
 }  // namespace com
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_server_2eproto[8];
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_server_2eproto[10];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_server_2eproto[2];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_server_2eproto = nullptr;
 
@@ -167,6 +193,23 @@ const uint32_t TableStruct_server_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(p
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::Image, format_),
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::Image, data_),
   ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::FaceFeature, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::FaceFeature, version_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::FaceFeature, blob_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::FaceRectangle, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::FaceRectangle, rectangle_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::FaceRectangle, quality_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::FaceRectangle, confidence_),
+  ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::DetectionRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -174,41 +217,41 @@ const uint32_t TableStruct_server_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(p
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::DetectionRequest, image_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::FaceFeature, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::FaceFeature, blob_),
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::FaceFeature, version_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::FaceObject, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::FaceObject, code_),
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::FaceObject, rectangle_),
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::FaceObject, quality_),
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::FaceObject, confidence_),
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::FaceObject, feature_),
-  ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::DetectionResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::DetectionResponse, faces_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::DetectionResponse, code_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::DetectionResponse, face_rects_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::ExtractionRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::ExtractionRequest, image_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::ExtractionResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::ExtractionResponse, code_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::ExtractionResponse, face_rects_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::ExtractionResponse, face_features_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::com::sekirocc::face_service::Rect)},
   { 8, -1, -1, sizeof(::com::sekirocc::face_service::Point)},
   { 16, -1, -1, sizeof(::com::sekirocc::face_service::Size)},
   { 24, -1, -1, sizeof(::com::sekirocc::face_service::Image)},
-  { 32, -1, -1, sizeof(::com::sekirocc::face_service::DetectionRequest)},
-  { 39, -1, -1, sizeof(::com::sekirocc::face_service::FaceFeature)},
-  { 47, -1, -1, sizeof(::com::sekirocc::face_service::FaceObject)},
-  { 58, -1, -1, sizeof(::com::sekirocc::face_service::DetectionResponse)},
+  { 32, -1, -1, sizeof(::com::sekirocc::face_service::FaceFeature)},
+  { 40, -1, -1, sizeof(::com::sekirocc::face_service::FaceRectangle)},
+  { 49, -1, -1, sizeof(::com::sekirocc::face_service::DetectionRequest)},
+  { 56, -1, -1, sizeof(::com::sekirocc::face_service::DetectionResponse)},
+  { 64, -1, -1, sizeof(::com::sekirocc::face_service::ExtractionRequest)},
+  { 71, -1, -1, sizeof(::com::sekirocc::face_service::ExtractionResponse)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -216,43 +259,60 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::com::sekirocc::face_service::_Point_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::com::sekirocc::face_service::_Size_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::com::sekirocc::face_service::_Image_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::com::sekirocc::face_service::_DetectionRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::com::sekirocc::face_service::_FaceFeature_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::com::sekirocc::face_service::_FaceObject_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::com::sekirocc::face_service::_FaceRectangle_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::com::sekirocc::face_service::_DetectionRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::com::sekirocc::face_service::_DetectionResponse_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::com::sekirocc::face_service::_ExtractionRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::com::sekirocc::face_service::_ExtractionResponse_default_instance_),
 };
 
 const char descriptor_table_protodef_server_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\014server.proto\022\031com.sekirocc.face_servic"
-  "e\"f\n\004Rect\022/\n\005point\030\001 \001(\0132 .com.sekirocc."
-  "face_service.Point\022-\n\004size\030\002 \001(\0132\037.com.s"
-  "ekirocc.face_service.Size\"\035\n\005Point\022\t\n\001x\030"
-  "\001 \001(\005\022\t\n\001y\030\002 \001(\005\"%\n\004Size\022\r\n\005width\030\001 \001(\005\022"
-  "\016\n\006height\030\002 \001(\005\"M\n\005Image\0226\n\006format\030\001 \001(\016"
-  "2&.com.sekirocc.face_service.ImageFormat"
-  "\022\014\n\004data\030\002 \001(\014\"C\n\020DetectionRequest\022/\n\005im"
-  "age\030\001 \001(\0132 .com.sekirocc.face_service.Im"
-  "age\",\n\013FaceFeature\022\014\n\004blob\030\001 \001(\014\022\017\n\007vers"
-  "ion\030\002 \001(\005\"\323\001\n\nFaceObject\0223\n\004code\030\001 \001(\0162%"
-  ".com.sekirocc.face_service.ResultCode\0222\n"
-  "\trectangle\030\002 \001(\0132\037.com.sekirocc.face_ser"
-  "vice.Rect\022\017\n\007quality\030\003 \001(\002\022\022\n\nconfidence"
-  "\030\004 \001(\002\0227\n\007feature\030\005 \001(\0132&.com.sekirocc.f"
-  "ace_service.FaceFeature\"I\n\021DetectionResp"
-  "onse\0224\n\005faces\030\001 \003(\0132%.com.sekirocc.face_"
-  "service.FaceObject*f\n\nResultCode\022\006\n\002OK\020\000"
-  "\022\021\n\014SERVER_ERROR\020\221N\022\021\n\014CLIENT_ERROR\020\365N\022\023"
-  "\n\016FACE_NOT_FOUND\020\366N\"\005\010\001\020\220N\"\006\010\222N\020\364N\"\006\010\367N\020"
-  "\330O*\?\n\013ImageFormat\022\021\n\rIMAGE_UNKNOWN\020\000\022\016\n\n"
-  "IMAGE_JPEG\020\001\022\r\n\tIMAGE_PNG\020\0022t\n\013FaceServi"
-  "ce\022e\n\006Detect\022+.com.sekirocc.face_service"
-  ".DetectionRequest\032,.com.sekirocc.face_se"
-  "rvice.DetectionResponse\"\000b\006proto3"
+  "e\032\034google/api/annotations.proto\"f\n\004Rect\022"
+  "/\n\005point\030\001 \001(\0132 .com.sekirocc.face_servi"
+  "ce.Point\022-\n\004size\030\002 \001(\0132\037.com.sekirocc.fa"
+  "ce_service.Size\"\035\n\005Point\022\t\n\001x\030\001 \001(\005\022\t\n\001y"
+  "\030\002 \001(\005\"%\n\004Size\022\r\n\005width\030\001 \001(\005\022\016\n\006height\030"
+  "\002 \001(\005\"M\n\005Image\0226\n\006format\030\001 \001(\0162&.com.sek"
+  "irocc.face_service.ImageFormat\022\014\n\004data\030\002"
+  " \001(\014\",\n\013FaceFeature\022\017\n\007version\030\001 \001(\005\022\014\n\004"
+  "blob\030\002 \001(\014\"h\n\rFaceRectangle\0222\n\trectangle"
+  "\030\002 \001(\0132\037.com.sekirocc.face_service.Rect\022"
+  "\017\n\007quality\030\003 \001(\002\022\022\n\nconfidence\030\004 \001(\002\"C\n\020"
+  "DetectionRequest\022/\n\005image\030\001 \001(\0132 .com.se"
+  "kirocc.face_service.Image\"\206\001\n\021DetectionR"
+  "esponse\0223\n\004code\030\001 \001(\0162%.com.sekirocc.fac"
+  "e_service.ResultCode\022<\n\nface_rects\030\002 \003(\013"
+  "2(.com.sekirocc.face_service.FaceRectang"
+  "le\"D\n\021ExtractionRequest\022/\n\005image\030\001 \001(\0132 "
+  ".com.sekirocc.face_service.Image\"\306\001\n\022Ext"
+  "ractionResponse\0223\n\004code\030\001 \001(\0162%.com.seki"
+  "rocc.face_service.ResultCode\022<\n\nface_rec"
+  "ts\030\002 \003(\0132(.com.sekirocc.face_service.Fac"
+  "eRectangle\022=\n\rface_features\030\003 \003(\0132&.com."
+  "sekirocc.face_service.FaceFeature*f\n\nRes"
+  "ultCode\022\006\n\002OK\020\000\022\021\n\014SERVER_ERROR\020\221N\022\021\n\014CL"
+  "IENT_ERROR\020\365N\022\023\n\016FACE_NOT_FOUND\020\366N\"\005\010\001\020\220"
+  "N\"\006\010\222N\020\364N\"\006\010\367N\020\330O*\?\n\013ImageFormat\022\021\n\rIMAG"
+  "E_UNKNOWN\020\000\022\016\n\nIMAGE_JPEG\020\001\022\r\n\tIMAGE_PNG"
+  "\020\0022\230\002\n\013FaceService\022|\n\006Detect\022+.com.sekir"
+  "occ.face_service.DetectionRequest\032,.com."
+  "sekirocc.face_service.DetectionResponse\""
+  "\027\202\323\344\223\002\021\"\014/detect_face:\001*\022\212\001\n\016ExtractFeat"
+  "ure\022,.com.sekirocc.face_service.Extracti"
+  "onRequest\032-.com.sekirocc.face_service.Ex"
+  "tractionResponse\"\033\202\323\344\223\002\025\"\020/extract_featu"
+  "re:\001*B;Z9github.com/sekirocc/face-recogn"
+  "ition-service/face_serviceb\006proto3"
   ;
+static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_server_2eproto_deps[1] = {
+  &::descriptor_table_google_2fapi_2fannotations_2eproto,
+};
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_server_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_server_2eproto = {
-  false, false, 993, descriptor_table_protodef_server_2eproto, "server.proto", 
-  &descriptor_table_server_2eproto_once, nullptr, 0, 8,
+  false, false, 1474, descriptor_table_protodef_server_2eproto, "server.proto", 
+  &descriptor_table_server_2eproto_once, descriptor_table_server_2eproto_deps, 1, 10,
   schemas, file_default_instances, TableStruct_server_2eproto::offsets,
   file_level_metadata_server_2eproto, file_level_enum_descriptors_server_2eproto, file_level_service_descriptors_server_2eproto,
 };
@@ -1194,6 +1254,507 @@ void Image::InternalSwap(Image* other) {
 
 // ===================================================================
 
+class FaceFeature::_Internal {
+ public:
+};
+
+FaceFeature::FaceFeature(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:com.sekirocc.face_service.FaceFeature)
+}
+FaceFeature::FaceFeature(const FaceFeature& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  blob_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    blob_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_blob().empty()) {
+    blob_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_blob(), 
+      GetArenaForAllocation());
+  }
+  version_ = from.version_;
+  // @@protoc_insertion_point(copy_constructor:com.sekirocc.face_service.FaceFeature)
+}
+
+inline void FaceFeature::SharedCtor() {
+blob_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  blob_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+version_ = 0;
+}
+
+FaceFeature::~FaceFeature() {
+  // @@protoc_insertion_point(destructor:com.sekirocc.face_service.FaceFeature)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void FaceFeature::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  blob_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+void FaceFeature::ArenaDtor(void* object) {
+  FaceFeature* _this = reinterpret_cast< FaceFeature* >(object);
+  (void)_this;
+}
+void FaceFeature::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void FaceFeature::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void FaceFeature::Clear() {
+// @@protoc_insertion_point(message_clear_start:com.sekirocc.face_service.FaceFeature)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  blob_.ClearToEmpty();
+  version_ = 0;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* FaceFeature::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // int32 version = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
+          version_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // bytes blob = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          auto str = _internal_mutable_blob();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* FaceFeature::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.face_service.FaceFeature)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int32 version = 1;
+  if (this->_internal_version() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_version(), target);
+  }
+
+  // bytes blob = 2;
+  if (!this->_internal_blob().empty()) {
+    target = stream->WriteBytesMaybeAliased(
+        2, this->_internal_blob(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.face_service.FaceFeature)
+  return target;
+}
+
+size_t FaceFeature::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.face_service.FaceFeature)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // bytes blob = 2;
+  if (!this->_internal_blob().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
+        this->_internal_blob());
+  }
+
+  // int32 version = 1;
+  if (this->_internal_version() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32SizePlusOne(this->_internal_version());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData FaceFeature::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    FaceFeature::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*FaceFeature::GetClassData() const { return &_class_data_; }
+
+void FaceFeature::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<FaceFeature *>(to)->MergeFrom(
+      static_cast<const FaceFeature &>(from));
+}
+
+
+void FaceFeature::MergeFrom(const FaceFeature& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.face_service.FaceFeature)
+  GOOGLE_DCHECK_NE(&from, this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_blob().empty()) {
+    _internal_set_blob(from._internal_blob());
+  }
+  if (from._internal_version() != 0) {
+    _internal_set_version(from._internal_version());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void FaceFeature::CopyFrom(const FaceFeature& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.face_service.FaceFeature)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool FaceFeature::IsInitialized() const {
+  return true;
+}
+
+void FaceFeature::InternalSwap(FaceFeature* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &blob_, lhs_arena,
+      &other->blob_, rhs_arena
+  );
+  swap(version_, other->version_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata FaceFeature::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_server_2eproto_getter, &descriptor_table_server_2eproto_once,
+      file_level_metadata_server_2eproto[4]);
+}
+
+// ===================================================================
+
+class FaceRectangle::_Internal {
+ public:
+  static const ::com::sekirocc::face_service::Rect& rectangle(const FaceRectangle* msg);
+};
+
+const ::com::sekirocc::face_service::Rect&
+FaceRectangle::_Internal::rectangle(const FaceRectangle* msg) {
+  return *msg->rectangle_;
+}
+FaceRectangle::FaceRectangle(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:com.sekirocc.face_service.FaceRectangle)
+}
+FaceRectangle::FaceRectangle(const FaceRectangle& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_rectangle()) {
+    rectangle_ = new ::com::sekirocc::face_service::Rect(*from.rectangle_);
+  } else {
+    rectangle_ = nullptr;
+  }
+  ::memcpy(&quality_, &from.quality_,
+    static_cast<size_t>(reinterpret_cast<char*>(&confidence_) -
+    reinterpret_cast<char*>(&quality_)) + sizeof(confidence_));
+  // @@protoc_insertion_point(copy_constructor:com.sekirocc.face_service.FaceRectangle)
+}
+
+inline void FaceRectangle::SharedCtor() {
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&rectangle_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&confidence_) -
+    reinterpret_cast<char*>(&rectangle_)) + sizeof(confidence_));
+}
+
+FaceRectangle::~FaceRectangle() {
+  // @@protoc_insertion_point(destructor:com.sekirocc.face_service.FaceRectangle)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void FaceRectangle::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete rectangle_;
+}
+
+void FaceRectangle::ArenaDtor(void* object) {
+  FaceRectangle* _this = reinterpret_cast< FaceRectangle* >(object);
+  (void)_this;
+}
+void FaceRectangle::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void FaceRectangle::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void FaceRectangle::Clear() {
+// @@protoc_insertion_point(message_clear_start:com.sekirocc.face_service.FaceRectangle)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaForAllocation() == nullptr && rectangle_ != nullptr) {
+    delete rectangle_;
+  }
+  rectangle_ = nullptr;
+  ::memset(&quality_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&confidence_) -
+      reinterpret_cast<char*>(&quality_)) + sizeof(confidence_));
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* FaceRectangle::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // .com.sekirocc.face_service.Rect rectangle = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          ptr = ctx->ParseMessage(_internal_mutable_rectangle(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // float quality = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 29)) {
+          quality_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      // float confidence = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 37)) {
+          confidence_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* FaceRectangle::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.face_service.FaceRectangle)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .com.sekirocc.face_service.Rect rectangle = 2;
+  if (this->_internal_has_rectangle()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        2, _Internal::rectangle(this), target, stream);
+  }
+
+  // float quality = 3;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_quality = this->_internal_quality();
+  uint32_t raw_quality;
+  memcpy(&raw_quality, &tmp_quality, sizeof(tmp_quality));
+  if (raw_quality != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->_internal_quality(), target);
+  }
+
+  // float confidence = 4;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_confidence = this->_internal_confidence();
+  uint32_t raw_confidence;
+  memcpy(&raw_confidence, &tmp_confidence, sizeof(tmp_confidence));
+  if (raw_confidence != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(4, this->_internal_confidence(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.face_service.FaceRectangle)
+  return target;
+}
+
+size_t FaceRectangle::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.face_service.FaceRectangle)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .com.sekirocc.face_service.Rect rectangle = 2;
+  if (this->_internal_has_rectangle()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *rectangle_);
+  }
+
+  // float quality = 3;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_quality = this->_internal_quality();
+  uint32_t raw_quality;
+  memcpy(&raw_quality, &tmp_quality, sizeof(tmp_quality));
+  if (raw_quality != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float confidence = 4;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_confidence = this->_internal_confidence();
+  uint32_t raw_confidence;
+  memcpy(&raw_confidence, &tmp_confidence, sizeof(tmp_confidence));
+  if (raw_confidence != 0) {
+    total_size += 1 + 4;
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData FaceRectangle::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    FaceRectangle::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*FaceRectangle::GetClassData() const { return &_class_data_; }
+
+void FaceRectangle::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<FaceRectangle *>(to)->MergeFrom(
+      static_cast<const FaceRectangle &>(from));
+}
+
+
+void FaceRectangle::MergeFrom(const FaceRectangle& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.face_service.FaceRectangle)
+  GOOGLE_DCHECK_NE(&from, this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_has_rectangle()) {
+    _internal_mutable_rectangle()->::com::sekirocc::face_service::Rect::MergeFrom(from._internal_rectangle());
+  }
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_quality = from._internal_quality();
+  uint32_t raw_quality;
+  memcpy(&raw_quality, &tmp_quality, sizeof(tmp_quality));
+  if (raw_quality != 0) {
+    _internal_set_quality(from._internal_quality());
+  }
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_confidence = from._internal_confidence();
+  uint32_t raw_confidence;
+  memcpy(&raw_confidence, &tmp_confidence, sizeof(tmp_confidence));
+  if (raw_confidence != 0) {
+    _internal_set_confidence(from._internal_confidence());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void FaceRectangle::CopyFrom(const FaceRectangle& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.face_service.FaceRectangle)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool FaceRectangle::IsInitialized() const {
+  return true;
+}
+
+void FaceRectangle::InternalSwap(FaceRectangle* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(FaceRectangle, confidence_)
+      + sizeof(FaceRectangle::confidence_)
+      - PROTOBUF_FIELD_OFFSET(FaceRectangle, rectangle_)>(
+          reinterpret_cast<char*>(&rectangle_),
+          reinterpret_cast<char*>(&other->rectangle_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata FaceRectangle::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_server_2eproto_getter, &descriptor_table_server_2eproto_once,
+      file_level_metadata_server_2eproto[5]);
+}
+
+// ===================================================================
+
 class DetectionRequest::_Internal {
  public:
   static const ::com::sekirocc::face_service::Image& image(const DetectionRequest* msg);
@@ -1384,573 +1945,6 @@ void DetectionRequest::InternalSwap(DetectionRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata DetectionRequest::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_server_2eproto_getter, &descriptor_table_server_2eproto_once,
-      file_level_metadata_server_2eproto[4]);
-}
-
-// ===================================================================
-
-class FaceFeature::_Internal {
- public:
-};
-
-FaceFeature::FaceFeature(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
-  // @@protoc_insertion_point(arena_constructor:com.sekirocc.face_service.FaceFeature)
-}
-FaceFeature::FaceFeature(const FaceFeature& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  blob_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    blob_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_blob().empty()) {
-    blob_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_blob(), 
-      GetArenaForAllocation());
-  }
-  version_ = from.version_;
-  // @@protoc_insertion_point(copy_constructor:com.sekirocc.face_service.FaceFeature)
-}
-
-inline void FaceFeature::SharedCtor() {
-blob_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  blob_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-version_ = 0;
-}
-
-FaceFeature::~FaceFeature() {
-  // @@protoc_insertion_point(destructor:com.sekirocc.face_service.FaceFeature)
-  if (GetArenaForAllocation() != nullptr) return;
-  SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-}
-
-inline void FaceFeature::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  blob_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-}
-
-void FaceFeature::ArenaDtor(void* object) {
-  FaceFeature* _this = reinterpret_cast< FaceFeature* >(object);
-  (void)_this;
-}
-void FaceFeature::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
-void FaceFeature::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
-}
-
-void FaceFeature::Clear() {
-// @@protoc_insertion_point(message_clear_start:com.sekirocc.face_service.FaceFeature)
-  uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  blob_.ClearToEmpty();
-  version_ = 0;
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-}
-
-const char* FaceFeature::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    uint32_t tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // bytes blob = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
-          auto str = _internal_mutable_blob();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // int32 version = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
-          version_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
-}
-
-uint8_t* FaceFeature::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.face_service.FaceFeature)
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // bytes blob = 1;
-  if (!this->_internal_blob().empty()) {
-    target = stream->WriteBytesMaybeAliased(
-        1, this->_internal_blob(), target);
-  }
-
-  // int32 version = 2;
-  if (this->_internal_version() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_version(), target);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.face_service.FaceFeature)
-  return target;
-}
-
-size_t FaceFeature::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.face_service.FaceFeature)
-  size_t total_size = 0;
-
-  uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  // bytes blob = 1;
-  if (!this->_internal_blob().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
-        this->_internal_blob());
-  }
-
-  // int32 version = 2;
-  if (this->_internal_version() != 0) {
-    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32SizePlusOne(this->_internal_version());
-  }
-
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
-}
-
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData FaceFeature::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
-    FaceFeature::MergeImpl
-};
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*FaceFeature::GetClassData() const { return &_class_data_; }
-
-void FaceFeature::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<FaceFeature *>(to)->MergeFrom(
-      static_cast<const FaceFeature &>(from));
-}
-
-
-void FaceFeature::MergeFrom(const FaceFeature& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.face_service.FaceFeature)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (!from._internal_blob().empty()) {
-    _internal_set_blob(from._internal_blob());
-  }
-  if (from._internal_version() != 0) {
-    _internal_set_version(from._internal_version());
-  }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void FaceFeature::CopyFrom(const FaceFeature& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.face_service.FaceFeature)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool FaceFeature::IsInitialized() const {
-  return true;
-}
-
-void FaceFeature::InternalSwap(FaceFeature* other) {
-  using std::swap;
-  auto* lhs_arena = GetArenaForAllocation();
-  auto* rhs_arena = other->GetArenaForAllocation();
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &blob_, lhs_arena,
-      &other->blob_, rhs_arena
-  );
-  swap(version_, other->version_);
-}
-
-::PROTOBUF_NAMESPACE_ID::Metadata FaceFeature::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
-      &descriptor_table_server_2eproto_getter, &descriptor_table_server_2eproto_once,
-      file_level_metadata_server_2eproto[5]);
-}
-
-// ===================================================================
-
-class FaceObject::_Internal {
- public:
-  static const ::com::sekirocc::face_service::Rect& rectangle(const FaceObject* msg);
-  static const ::com::sekirocc::face_service::FaceFeature& feature(const FaceObject* msg);
-};
-
-const ::com::sekirocc::face_service::Rect&
-FaceObject::_Internal::rectangle(const FaceObject* msg) {
-  return *msg->rectangle_;
-}
-const ::com::sekirocc::face_service::FaceFeature&
-FaceObject::_Internal::feature(const FaceObject* msg) {
-  return *msg->feature_;
-}
-FaceObject::FaceObject(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
-  if (!is_message_owned) {
-    RegisterArenaDtor(arena);
-  }
-  // @@protoc_insertion_point(arena_constructor:com.sekirocc.face_service.FaceObject)
-}
-FaceObject::FaceObject(const FaceObject& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_rectangle()) {
-    rectangle_ = new ::com::sekirocc::face_service::Rect(*from.rectangle_);
-  } else {
-    rectangle_ = nullptr;
-  }
-  if (from._internal_has_feature()) {
-    feature_ = new ::com::sekirocc::face_service::FaceFeature(*from.feature_);
-  } else {
-    feature_ = nullptr;
-  }
-  ::memcpy(&code_, &from.code_,
-    static_cast<size_t>(reinterpret_cast<char*>(&confidence_) -
-    reinterpret_cast<char*>(&code_)) + sizeof(confidence_));
-  // @@protoc_insertion_point(copy_constructor:com.sekirocc.face_service.FaceObject)
-}
-
-inline void FaceObject::SharedCtor() {
-::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&rectangle_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&confidence_) -
-    reinterpret_cast<char*>(&rectangle_)) + sizeof(confidence_));
-}
-
-FaceObject::~FaceObject() {
-  // @@protoc_insertion_point(destructor:com.sekirocc.face_service.FaceObject)
-  if (GetArenaForAllocation() != nullptr) return;
-  SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-}
-
-inline void FaceObject::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete rectangle_;
-  if (this != internal_default_instance()) delete feature_;
-}
-
-void FaceObject::ArenaDtor(void* object) {
-  FaceObject* _this = reinterpret_cast< FaceObject* >(object);
-  (void)_this;
-}
-void FaceObject::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
-void FaceObject::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
-}
-
-void FaceObject::Clear() {
-// @@protoc_insertion_point(message_clear_start:com.sekirocc.face_service.FaceObject)
-  uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  if (GetArenaForAllocation() == nullptr && rectangle_ != nullptr) {
-    delete rectangle_;
-  }
-  rectangle_ = nullptr;
-  if (GetArenaForAllocation() == nullptr && feature_ != nullptr) {
-    delete feature_;
-  }
-  feature_ = nullptr;
-  ::memset(&code_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&confidence_) -
-      reinterpret_cast<char*>(&code_)) + sizeof(confidence_));
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-}
-
-const char* FaceObject::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    uint32_t tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .com.sekirocc.face_service.ResultCode code = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-          _internal_set_code(static_cast<::com::sekirocc::face_service::ResultCode>(val));
-        } else
-          goto handle_unusual;
-        continue;
-      // .com.sekirocc.face_service.Rect rectangle = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
-          ptr = ctx->ParseMessage(_internal_mutable_rectangle(), ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // float quality = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 29)) {
-          quality_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else
-          goto handle_unusual;
-        continue;
-      // float confidence = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 37)) {
-          confidence_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else
-          goto handle_unusual;
-        continue;
-      // .com.sekirocc.face_service.FaceFeature feature = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 42)) {
-          ptr = ctx->ParseMessage(_internal_mutable_feature(), ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
-}
-
-uint8_t* FaceObject::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.face_service.FaceObject)
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // .com.sekirocc.face_service.ResultCode code = 1;
-  if (this->_internal_code() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
-      1, this->_internal_code(), target);
-  }
-
-  // .com.sekirocc.face_service.Rect rectangle = 2;
-  if (this->_internal_has_rectangle()) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        2, _Internal::rectangle(this), target, stream);
-  }
-
-  // float quality = 3;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_quality = this->_internal_quality();
-  uint32_t raw_quality;
-  memcpy(&raw_quality, &tmp_quality, sizeof(tmp_quality));
-  if (raw_quality != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->_internal_quality(), target);
-  }
-
-  // float confidence = 4;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_confidence = this->_internal_confidence();
-  uint32_t raw_confidence;
-  memcpy(&raw_confidence, &tmp_confidence, sizeof(tmp_confidence));
-  if (raw_confidence != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(4, this->_internal_confidence(), target);
-  }
-
-  // .com.sekirocc.face_service.FaceFeature feature = 5;
-  if (this->_internal_has_feature()) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(
-        5, _Internal::feature(this), target, stream);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.face_service.FaceObject)
-  return target;
-}
-
-size_t FaceObject::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.face_service.FaceObject)
-  size_t total_size = 0;
-
-  uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  // .com.sekirocc.face_service.Rect rectangle = 2;
-  if (this->_internal_has_rectangle()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *rectangle_);
-  }
-
-  // .com.sekirocc.face_service.FaceFeature feature = 5;
-  if (this->_internal_has_feature()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *feature_);
-  }
-
-  // .com.sekirocc.face_service.ResultCode code = 1;
-  if (this->_internal_code() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_code());
-  }
-
-  // float quality = 3;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_quality = this->_internal_quality();
-  uint32_t raw_quality;
-  memcpy(&raw_quality, &tmp_quality, sizeof(tmp_quality));
-  if (raw_quality != 0) {
-    total_size += 1 + 4;
-  }
-
-  // float confidence = 4;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_confidence = this->_internal_confidence();
-  uint32_t raw_confidence;
-  memcpy(&raw_confidence, &tmp_confidence, sizeof(tmp_confidence));
-  if (raw_confidence != 0) {
-    total_size += 1 + 4;
-  }
-
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
-}
-
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData FaceObject::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
-    FaceObject::MergeImpl
-};
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*FaceObject::GetClassData() const { return &_class_data_; }
-
-void FaceObject::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<FaceObject *>(to)->MergeFrom(
-      static_cast<const FaceObject &>(from));
-}
-
-
-void FaceObject::MergeFrom(const FaceObject& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.face_service.FaceObject)
-  GOOGLE_DCHECK_NE(&from, this);
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (from._internal_has_rectangle()) {
-    _internal_mutable_rectangle()->::com::sekirocc::face_service::Rect::MergeFrom(from._internal_rectangle());
-  }
-  if (from._internal_has_feature()) {
-    _internal_mutable_feature()->::com::sekirocc::face_service::FaceFeature::MergeFrom(from._internal_feature());
-  }
-  if (from._internal_code() != 0) {
-    _internal_set_code(from._internal_code());
-  }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_quality = from._internal_quality();
-  uint32_t raw_quality;
-  memcpy(&raw_quality, &tmp_quality, sizeof(tmp_quality));
-  if (raw_quality != 0) {
-    _internal_set_quality(from._internal_quality());
-  }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_confidence = from._internal_confidence();
-  uint32_t raw_confidence;
-  memcpy(&raw_confidence, &tmp_confidence, sizeof(tmp_confidence));
-  if (raw_confidence != 0) {
-    _internal_set_confidence(from._internal_confidence());
-  }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void FaceObject::CopyFrom(const FaceObject& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.face_service.FaceObject)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool FaceObject::IsInitialized() const {
-  return true;
-}
-
-void FaceObject::InternalSwap(FaceObject* other) {
-  using std::swap;
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(FaceObject, confidence_)
-      + sizeof(FaceObject::confidence_)
-      - PROTOBUF_FIELD_OFFSET(FaceObject, rectangle_)>(
-          reinterpret_cast<char*>(&rectangle_),
-          reinterpret_cast<char*>(&other->rectangle_));
-}
-
-::PROTOBUF_NAMESPACE_ID::Metadata FaceObject::GetMetadata() const {
-  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
-      &descriptor_table_server_2eproto_getter, &descriptor_table_server_2eproto_once,
       file_level_metadata_server_2eproto[6]);
 }
 
@@ -1963,7 +1957,7 @@ class DetectionResponse::_Internal {
 DetectionResponse::DetectionResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
-  faces_(arena) {
+  face_rects_(arena) {
   SharedCtor();
   if (!is_message_owned) {
     RegisterArenaDtor(arena);
@@ -1972,12 +1966,14 @@ DetectionResponse::DetectionResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
 }
 DetectionResponse::DetectionResponse(const DetectionResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
-      faces_(from.faces_) {
+      face_rects_(from.face_rects_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  code_ = from.code_;
   // @@protoc_insertion_point(copy_constructor:com.sekirocc.face_service.DetectionResponse)
 }
 
 inline void DetectionResponse::SharedCtor() {
+code_ = 0;
 }
 
 DetectionResponse::~DetectionResponse() {
@@ -2007,7 +2003,8 @@ void DetectionResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  faces_.Clear();
+  face_rects_.Clear();
+  code_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -2017,16 +2014,25 @@ const char* DetectionResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESP
     uint32_t tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // repeated .com.sekirocc.face_service.FaceObject faces = 1;
+      // .com.sekirocc.face_service.ResultCode code = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+          _internal_set_code(static_cast<::com::sekirocc::face_service::ResultCode>(val));
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated .com.sekirocc.face_service.FaceRectangle face_rects = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           ptr -= 1;
           do {
             ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_faces(), ptr);
+            ptr = ctx->ParseMessage(_internal_add_face_rects(), ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
         } else
           goto handle_unusual;
         continue;
@@ -2059,12 +2065,19 @@ uint8_t* DetectionResponse::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated .com.sekirocc.face_service.FaceObject faces = 1;
+  // .com.sekirocc.face_service.ResultCode code = 1;
+  if (this->_internal_code() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
+      1, this->_internal_code(), target);
+  }
+
+  // repeated .com.sekirocc.face_service.FaceRectangle face_rects = 2;
   for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->_internal_faces_size()); i < n; i++) {
+      n = static_cast<unsigned int>(this->_internal_face_rects_size()); i < n; i++) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, this->_internal_faces(i), target, stream);
+      InternalWriteMessage(2, this->_internal_face_rects(i), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2083,11 +2096,17 @@ size_t DetectionResponse::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated .com.sekirocc.face_service.FaceObject faces = 1;
-  total_size += 1UL * this->_internal_faces_size();
-  for (const auto& msg : this->faces_) {
+  // repeated .com.sekirocc.face_service.FaceRectangle face_rects = 2;
+  total_size += 1UL * this->_internal_face_rects_size();
+  for (const auto& msg : this->face_rects_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  // .com.sekirocc.face_service.ResultCode code = 1;
+  if (this->_internal_code() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_code());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
@@ -2112,7 +2131,10 @@ void DetectionResponse::MergeFrom(const DetectionResponse& from) {
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  faces_.MergeFrom(from.faces_);
+  face_rects_.MergeFrom(from.face_rects_);
+  if (from._internal_code() != 0) {
+    _internal_set_code(from._internal_code());
+  }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -2130,13 +2152,456 @@ bool DetectionResponse::IsInitialized() const {
 void DetectionResponse::InternalSwap(DetectionResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  faces_.InternalSwap(&other->faces_);
+  face_rects_.InternalSwap(&other->face_rects_);
+  swap(code_, other->code_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata DetectionResponse::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_server_2eproto_getter, &descriptor_table_server_2eproto_once,
       file_level_metadata_server_2eproto[7]);
+}
+
+// ===================================================================
+
+class ExtractionRequest::_Internal {
+ public:
+  static const ::com::sekirocc::face_service::Image& image(const ExtractionRequest* msg);
+};
+
+const ::com::sekirocc::face_service::Image&
+ExtractionRequest::_Internal::image(const ExtractionRequest* msg) {
+  return *msg->image_;
+}
+ExtractionRequest::ExtractionRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:com.sekirocc.face_service.ExtractionRequest)
+}
+ExtractionRequest::ExtractionRequest(const ExtractionRequest& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_image()) {
+    image_ = new ::com::sekirocc::face_service::Image(*from.image_);
+  } else {
+    image_ = nullptr;
+  }
+  // @@protoc_insertion_point(copy_constructor:com.sekirocc.face_service.ExtractionRequest)
+}
+
+inline void ExtractionRequest::SharedCtor() {
+image_ = nullptr;
+}
+
+ExtractionRequest::~ExtractionRequest() {
+  // @@protoc_insertion_point(destructor:com.sekirocc.face_service.ExtractionRequest)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void ExtractionRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete image_;
+}
+
+void ExtractionRequest::ArenaDtor(void* object) {
+  ExtractionRequest* _this = reinterpret_cast< ExtractionRequest* >(object);
+  (void)_this;
+}
+void ExtractionRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void ExtractionRequest::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void ExtractionRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:com.sekirocc.face_service.ExtractionRequest)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaForAllocation() == nullptr && image_ != nullptr) {
+    delete image_;
+  }
+  image_ = nullptr;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* ExtractionRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // .com.sekirocc.face_service.Image image = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_image(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* ExtractionRequest::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.face_service.ExtractionRequest)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .com.sekirocc.face_service.Image image = 1;
+  if (this->_internal_has_image()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        1, _Internal::image(this), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.face_service.ExtractionRequest)
+  return target;
+}
+
+size_t ExtractionRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.face_service.ExtractionRequest)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .com.sekirocc.face_service.Image image = 1;
+  if (this->_internal_has_image()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *image_);
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ExtractionRequest::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ExtractionRequest::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ExtractionRequest::GetClassData() const { return &_class_data_; }
+
+void ExtractionRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<ExtractionRequest *>(to)->MergeFrom(
+      static_cast<const ExtractionRequest &>(from));
+}
+
+
+void ExtractionRequest::MergeFrom(const ExtractionRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.face_service.ExtractionRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_has_image()) {
+    _internal_mutable_image()->::com::sekirocc::face_service::Image::MergeFrom(from._internal_image());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void ExtractionRequest::CopyFrom(const ExtractionRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.face_service.ExtractionRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ExtractionRequest::IsInitialized() const {
+  return true;
+}
+
+void ExtractionRequest::InternalSwap(ExtractionRequest* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(image_, other->image_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata ExtractionRequest::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_server_2eproto_getter, &descriptor_table_server_2eproto_once,
+      file_level_metadata_server_2eproto[8]);
+}
+
+// ===================================================================
+
+class ExtractionResponse::_Internal {
+ public:
+};
+
+ExtractionResponse::ExtractionResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
+  face_rects_(arena),
+  face_features_(arena) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:com.sekirocc.face_service.ExtractionResponse)
+}
+ExtractionResponse::ExtractionResponse(const ExtractionResponse& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      face_rects_(from.face_rects_),
+      face_features_(from.face_features_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  code_ = from.code_;
+  // @@protoc_insertion_point(copy_constructor:com.sekirocc.face_service.ExtractionResponse)
+}
+
+inline void ExtractionResponse::SharedCtor() {
+code_ = 0;
+}
+
+ExtractionResponse::~ExtractionResponse() {
+  // @@protoc_insertion_point(destructor:com.sekirocc.face_service.ExtractionResponse)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void ExtractionResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+}
+
+void ExtractionResponse::ArenaDtor(void* object) {
+  ExtractionResponse* _this = reinterpret_cast< ExtractionResponse* >(object);
+  (void)_this;
+}
+void ExtractionResponse::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void ExtractionResponse::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void ExtractionResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:com.sekirocc.face_service.ExtractionResponse)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  face_rects_.Clear();
+  face_features_.Clear();
+  code_ = 0;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* ExtractionResponse::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // .com.sekirocc.face_service.ResultCode code = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+          _internal_set_code(static_cast<::com::sekirocc::face_service::ResultCode>(val));
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated .com.sekirocc.face_service.FaceRectangle face_rects = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_face_rects(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated .com.sekirocc.face_service.FaceFeature face_features = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_face_features(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<26>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* ExtractionResponse::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.face_service.ExtractionResponse)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .com.sekirocc.face_service.ResultCode code = 1;
+  if (this->_internal_code() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
+      1, this->_internal_code(), target);
+  }
+
+  // repeated .com.sekirocc.face_service.FaceRectangle face_rects = 2;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->_internal_face_rects_size()); i < n; i++) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(2, this->_internal_face_rects(i), target, stream);
+  }
+
+  // repeated .com.sekirocc.face_service.FaceFeature face_features = 3;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->_internal_face_features_size()); i < n; i++) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(3, this->_internal_face_features(i), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.face_service.ExtractionResponse)
+  return target;
+}
+
+size_t ExtractionResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.face_service.ExtractionResponse)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated .com.sekirocc.face_service.FaceRectangle face_rects = 2;
+  total_size += 1UL * this->_internal_face_rects_size();
+  for (const auto& msg : this->face_rects_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  // repeated .com.sekirocc.face_service.FaceFeature face_features = 3;
+  total_size += 1UL * this->_internal_face_features_size();
+  for (const auto& msg : this->face_features_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  // .com.sekirocc.face_service.ResultCode code = 1;
+  if (this->_internal_code() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_code());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ExtractionResponse::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ExtractionResponse::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ExtractionResponse::GetClassData() const { return &_class_data_; }
+
+void ExtractionResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<ExtractionResponse *>(to)->MergeFrom(
+      static_cast<const ExtractionResponse &>(from));
+}
+
+
+void ExtractionResponse::MergeFrom(const ExtractionResponse& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.face_service.ExtractionResponse)
+  GOOGLE_DCHECK_NE(&from, this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  face_rects_.MergeFrom(from.face_rects_);
+  face_features_.MergeFrom(from.face_features_);
+  if (from._internal_code() != 0) {
+    _internal_set_code(from._internal_code());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void ExtractionResponse::CopyFrom(const ExtractionResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.face_service.ExtractionResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ExtractionResponse::IsInitialized() const {
+  return true;
+}
+
+void ExtractionResponse::InternalSwap(ExtractionResponse* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  face_rects_.InternalSwap(&other->face_rects_);
+  face_features_.InternalSwap(&other->face_features_);
+  swap(code_, other->code_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata ExtractionResponse::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_server_2eproto_getter, &descriptor_table_server_2eproto_once,
+      file_level_metadata_server_2eproto[9]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
@@ -2156,17 +2621,23 @@ template<> PROTOBUF_NOINLINE ::com::sekirocc::face_service::Size* Arena::CreateM
 template<> PROTOBUF_NOINLINE ::com::sekirocc::face_service::Image* Arena::CreateMaybeMessage< ::com::sekirocc::face_service::Image >(Arena* arena) {
   return Arena::CreateMessageInternal< ::com::sekirocc::face_service::Image >(arena);
 }
-template<> PROTOBUF_NOINLINE ::com::sekirocc::face_service::DetectionRequest* Arena::CreateMaybeMessage< ::com::sekirocc::face_service::DetectionRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::com::sekirocc::face_service::DetectionRequest >(arena);
-}
 template<> PROTOBUF_NOINLINE ::com::sekirocc::face_service::FaceFeature* Arena::CreateMaybeMessage< ::com::sekirocc::face_service::FaceFeature >(Arena* arena) {
   return Arena::CreateMessageInternal< ::com::sekirocc::face_service::FaceFeature >(arena);
 }
-template<> PROTOBUF_NOINLINE ::com::sekirocc::face_service::FaceObject* Arena::CreateMaybeMessage< ::com::sekirocc::face_service::FaceObject >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::com::sekirocc::face_service::FaceObject >(arena);
+template<> PROTOBUF_NOINLINE ::com::sekirocc::face_service::FaceRectangle* Arena::CreateMaybeMessage< ::com::sekirocc::face_service::FaceRectangle >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::sekirocc::face_service::FaceRectangle >(arena);
+}
+template<> PROTOBUF_NOINLINE ::com::sekirocc::face_service::DetectionRequest* Arena::CreateMaybeMessage< ::com::sekirocc::face_service::DetectionRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::sekirocc::face_service::DetectionRequest >(arena);
 }
 template<> PROTOBUF_NOINLINE ::com::sekirocc::face_service::DetectionResponse* Arena::CreateMaybeMessage< ::com::sekirocc::face_service::DetectionResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::com::sekirocc::face_service::DetectionResponse >(arena);
+}
+template<> PROTOBUF_NOINLINE ::com::sekirocc::face_service::ExtractionRequest* Arena::CreateMaybeMessage< ::com::sekirocc::face_service::ExtractionRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::sekirocc::face_service::ExtractionRequest >(arena);
+}
+template<> PROTOBUF_NOINLINE ::com::sekirocc::face_service::ExtractionResponse* Arena::CreateMaybeMessage< ::com::sekirocc::face_service::ExtractionResponse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::sekirocc::face_service::ExtractionResponse >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

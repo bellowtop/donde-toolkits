@@ -16,9 +16,6 @@
 #include <grpcpp/server_context.h>
 #include <iostream>
 
-using Poco::format;
-using Poco::Timestamp;
-
 using namespace std;
 
 using com::sekirocc::face_service::DetectionRequest;

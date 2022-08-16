@@ -7,7 +7,6 @@ option go_package = "github.com/sekirocc/face-recognition-service/face_service";
 
 package com.sekirocc.face_service;
 
-
 enum ResultCode {
     OK = 0;
     reserved 1 to 10000;
@@ -46,29 +45,46 @@ message Image {
     bytes data = 2;
 }
 
-message DetectionRequest { Image image = 1; }
-
 message FaceFeature {
-    bytes blob = 1;
-    int32 version = 2;
+    int32 version = 1;
+    bytes blob = 2;
 }
 
-message FaceObject {
-    ResultCode code = 1;
+message FaceRectangle {
     Rect rectangle = 2;
     float quality = 3;
     float confidence = 4;
-    FaceFeature feature = 5;
 }
 
-message DetectionResponse { repeated FaceObject faces = 1; }
+message DetectionRequest { Image image = 1; }
 
-// 人脸检测
+message DetectionResponse {
+    ResultCode code = 1;
+    repeated FaceRectangle face_rects = 2;
+}
+
+message ExtractionRequest { Image image = 1; }
+
+message ExtractionResponse {
+    ResultCode code = 1;
+    repeated FaceRectangle face_rects = 2;
+    repeated FaceFeature face_features = 3;
+}
+
+// face service
 service FaceService {
+
     rpc Detect(DetectionRequest) returns (DetectionResponse) {
-      option (google.api.http) = {
-	post : "/detect_face"
-	body : "*"
-      };
+        option (google.api.http) = {
+            post : "/detect_face"
+            body : "*"
+        };
+    }
+
+    rpc ExtractFeature(ExtractionRequest) returns (ExtractionResponse) {
+        option (google.api.http) = {
+            post : "/extract_feature"
+            body : "*"
+        };
     }
 }
