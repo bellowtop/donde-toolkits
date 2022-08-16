@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-import "google/api/annotations.proto";
+// import "google/api/annotations.proto";
 
 option go_package = "github.com/sekirocc/face-recognition-service/face_service";
 // option java_package = "com.sekirocc.face_recognition_service";
@@ -75,16 +75,16 @@ message ExtractionResponse {
 service FaceService {
 
     rpc Detect(DetectionRequest) returns (DetectionResponse) {
-        option (google.api.http) = {
-            post : "/detect_face"
-            body : "*"
-        };
+        // option (google.api.http) = {
+        //     post : "/detect_face"
+        //     body : "*"
+        // };
     }
 
     rpc ExtractFeature(ExtractionRequest) returns (ExtractionResponse) {
-        option (google.api.http) = {
-            post : "/extract_feature"
-            body : "*"
-        };
+        // option (google.api.http) = {
+        //     post : "/extract_feature"
+        //     body : "*"
+        // };
     }
 }

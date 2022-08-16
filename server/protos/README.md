@@ -63,7 +63,7 @@ docker build -t face-service-grpc-gateway gen/grpc-gateway/
 ### start the gateway http server
 
 ```
-docker run -p 8080:80 -it docker.io/library/face-service-grpc-gateway --backend 192.168.31.60:9595
+docker run -p 8080:80 -it face-service-grpc-gateway:latest --backend 192.168.31.60:9595
 ```
 
 telnet localhost:8080
