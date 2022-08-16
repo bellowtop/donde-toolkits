@@ -64,7 +64,7 @@ RetCode FeatureWorker::Init(json conf, int i, std::string device_id) {
     std::string model_path = conf["model"];
 
     _logger->info("loading model: {}", model_path);
-    _logger->info("abs path: {}", std::filesystem::canonical(model_path).string());
+    _logger->info("absolute path: {}", std::filesystem::canonical(model_path).string());
 
     ov::Core core;
     std::shared_ptr<ov::Model> model = core.read_model(model_path);
