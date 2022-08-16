@@ -1,4 +1,4 @@
-#include "detector_worker.h"
+#include "pipeline_worker.h"
 
 #include "Poco/AutoPtr.h"
 #include "Poco/Logger.h"
@@ -17,6 +17,7 @@
 #include <iostream>
 #include <memory>
 #include <opencv2/core/types.hpp>
+#include <spdlog/common.h>
 #include <string>
 
 using Poco::Logger;
@@ -74,7 +75,7 @@ void DetectorWorker::debugOutputTensor(const ov::Tensor& output) {
 
 RetCode DetectorWorker::Init(json conf, int i, std::string device_id) {
     _name = "detector-worker-" + std::to_string(i);
-    _logger = spdlog::stdout_color_mt(_name);
+    init_log(_name);
 
     _id = i;
     _device_id = device_id;

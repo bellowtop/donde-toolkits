@@ -45,7 +45,6 @@ class DetectorWorker : public Worker {
     std::shared_ptr<ov::CompiledModel> _compiled_model;
     std::shared_ptr<ov::InferRequest> _infer_request;
 
-    std::shared_ptr<spdlog::logger> _logger;
 };
 
 class LandmarksWorker : public Worker {
@@ -72,7 +71,6 @@ class LandmarksWorker : public Worker {
     std::shared_ptr<ov::CompiledModel> _compiled_model;
     std::shared_ptr<ov::InferRequest> _infer_request;
 
-    std::shared_ptr<spdlog::logger> _logger;
 };
 
 // class LandmarksWorker : public Worker {
@@ -85,7 +83,6 @@ class LandmarksWorker : public Worker {
 //     void run() override;
 //
 //   private:
-//     Poco::Logger& _logger;
 // };
 //
 
@@ -106,7 +103,6 @@ class AlignerWorker : public Worker {
 
     cv::Mat align_face(const cv::Mat& face_image, const std::vector<cv::Point2f>& landmarks);
 
-    std::shared_ptr<spdlog::logger> _logger;
 };
 
 
@@ -134,7 +130,6 @@ class FeatureWorker : public Worker {
     std::shared_ptr<ov::CompiledModel> _compiled_model;
     std::shared_ptr<ov::InferRequest> _infer_request;
 
-    std::shared_ptr<spdlog::logger> _logger;
 };
 
 
@@ -149,6 +144,5 @@ class FeatureWorker : public Worker {
 //     void run() override;
 //
 //   private:
-//     Poco::Logger& _logger;
 // };
 //

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "concurrent_processor.h"
-#include "detector_worker.h"
+#include "pipeline_worker.h"
 #include "nlohmann/json.hpp"
 #include "types.h"
 

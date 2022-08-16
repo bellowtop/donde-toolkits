@@ -4,7 +4,7 @@
 #include "Poco/Timestamp.h"
 #include "concurrent_processor.h"
 #include "config.h"
-#include "detector_worker.h"
+#include "pipeline_worker.h"
 #include "face_pipeline.h"
 #include "gen/pb-cpp/server.grpc.pb.h"
 #include "gen/pb-cpp/server.pb.h"

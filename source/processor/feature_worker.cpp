@@ -3,7 +3,7 @@
 #include "Poco/Notification.h"
 #include "Poco/NotificationQueue.h"
 #include "concurrent_processor.h"
-#include "detector_worker.h"
+#include "pipeline_worker.h"
 #include "opencv2/opencv.hpp"
 #include "openvino/openvino.hpp"
 #include "spdlog/sinks/stdout_color_sinks.h"
@@ -55,7 +55,7 @@ void FeatureWorker::debugOutputTensor(const ov::Tensor& output_tensor) {
 
 RetCode FeatureWorker::Init(json conf, int i, std::string device_id) {
     _name = "feature-extract-worker-" + std::to_string(i);
-    _logger = spdlog::stdout_color_mt(_name);
+    init_log(_name);
 
     _id = i;
     _device_id = device_id;

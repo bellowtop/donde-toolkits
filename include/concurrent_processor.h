@@ -7,6 +7,7 @@
 #include "Poco/Thread.h"
 #include "Poco/ThreadPool.h"
 #include "nlohmann/json.hpp"
+#include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
 #include "types.h"
 
@@ -30,6 +31,14 @@ class Worker : public Runnable {
     Worker(std::shared_ptr<NotificationQueue> ch) : _channel(ch){};
     virtual RetCode Init(json conf, int id, std::string device_id) = 0;
 
+    inline void init_log(const std::string& name) {
+        try {
+            _logger = spdlog::stdout_color_mt(name);
+        } catch (const spdlog::spdlog_ex& ex) {
+            _logger = spdlog::get(name);
+        }
+    }
+
     virtual void run() = 0;
 
   protected:
@@ -38,6 +47,8 @@ class Worker : public Runnable {
     json _conf;
     std::string _name;
     std::string _device_id;
+
+    std::shared_ptr<spdlog::logger> _logger;
 };
 
 class WorkMessage : public Notification {
@@ -151,7 +162,8 @@ RetCode ConcurrentProcessor<T>::Init(const json& conf) {
 
 template <typename T>
 RetCode ConcurrentProcessor<T>::Process(const Value& input, Value& output) {
-    spdlog::info("input.valueType : {}, valuePtr: {}\n", format(input.valueType), input.valuePtr.get());
+    spdlog::info("input.valueType : {}, valuePtr: {}\n", format(input.valueType),
+                 input.valuePtr.get());
 
     WorkMessage::Ptr msg = WorkMessage::Ptr(new WorkMessage(input, false));
     _channel->enqueueNotification(msg);
@@ -161,7 +173,8 @@ RetCode ConcurrentProcessor<T>::Process(const Value& input, Value& output) {
     Value resp = msg->getResponse();
     output = resp;
 
-    spdlog::info("output.valueType : {}, valuePtr: {}\n", format(output.valueType), output.valuePtr.get());
+    spdlog::info("output.valueType : {}, valuePtr: {}\n", format(output.valueType),
+                 output.valuePtr.get());
 
     return RET_OK;
 }

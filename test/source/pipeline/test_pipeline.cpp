@@ -1,5 +1,5 @@
 #include "concurrent_processor.h"
-#include "detector_worker.h"
+#include "pipeline_worker.h"
 #include "face_pipeline.h"
 #include "types.h"
 #include "utils.h"
