@@ -38,15 +38,18 @@ struct AlignerResult {
     std::vector<cv::Mat> aligned_faces;
 };
 
-struct Feature {
-    std::vector<float> data;
+struct FeatureResult {
+    int version;
+    std::vector<float> blob;
 };
+
 
 enum ValueType {
     ValueFrame,
     ValueDetectResult,
     ValueLandmarksResult,
     ValueAlignerResult,
+    ValueFeatureResult,
     ValueFeature
 };
 

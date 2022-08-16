@@ -88,6 +88,8 @@ class LandmarksWorker : public Worker {
 //     Poco::Logger& _logger;
 // };
 //
+
+
 class AlignerWorker : public Worker {
   public:
     AlignerWorker(std::shared_ptr<NotificationQueue> ch);
@@ -106,6 +108,35 @@ class AlignerWorker : public Worker {
 
     std::shared_ptr<spdlog::logger> _logger;
 };
+
+
+class FeatureWorker : public Worker {
+  public:
+    FeatureWorker(std::shared_ptr<NotificationQueue> ch);
+
+    ~FeatureWorker();
+
+    RetCode Init(json conf, int id, std::string device_id) override;
+
+    void run() override;
+
+  private:
+
+    void debugOutputTensor(const ov::Tensor& output);
+    RetCode process(const AlignerResult& aligner_result, FeatureResult& result);
+
+    int _batch_size = 1;
+    int _landmarks_length;
+    int _image_width;
+    int _image_height;
+    int _color_channel = 3;
+
+    std::shared_ptr<ov::CompiledModel> _compiled_model;
+    std::shared_ptr<ov::InferRequest> _infer_request;
+
+    std::shared_ptr<spdlog::logger> _logger;
+};
+
 
 //
 // class FeatureWorker : public Worker {
