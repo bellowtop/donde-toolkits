@@ -1,6 +1,6 @@
 #include "concurrent_processor.h"
-#include "pipeline_worker.h"
 #include "face_pipeline.h"
+#include "processor_worker.h"
 #include "types.h"
 #include "utils.h"
 
@@ -147,7 +147,6 @@ TEST_CASE("FacePipeline can detect landmarks from DetectResult.") {
     CHECK("aa" == "aa");
 };
 
-
 TEST_CASE("FacePipeline extract face feature from image file.") {
 
     json conf = R"(
@@ -201,17 +200,19 @@ TEST_CASE("FacePipeline extract face feature from image file.") {
 
     std::shared_ptr<DetectResult> detect_result = pipeline.Detect(frame);
 
-    for (auto& detected_face : detect_result->faces) {
-        auto box = detected_face.box;
-        spdlog::debug("confidence: {}", detected_face.confidence);
-        spdlog::debug("box.x: {}", box.x);
-        spdlog::debug("box.y: {}", box.y);
-        spdlog::debug("box.width: {}", box.width);
-        spdlog::debug("box.height: {}", box.height);
-        CHECK(box.empty() == false);
-        CHECK_GT(box.size().width, 10);
-        CHECK_GT(box.size().height, 10);
-        CHECK_GT(detected_face.confidence, 0.8);
+    {
+        for (auto& detected_face : detect_result->faces) {
+            auto box = detected_face.box;
+            spdlog::debug("confidence: {}", detected_face.confidence);
+            spdlog::debug("box.x: {}", box.x);
+            spdlog::debug("box.y: {}", box.y);
+            spdlog::debug("box.width: {}", box.width);
+            spdlog::debug("box.height: {}", box.height);
+            CHECK(box.empty() == false);
+            CHECK_GT(box.size().width, 10);
+            CHECK_GT(box.size().height, 10);
+            CHECK_GT(detected_face.confidence, 0.8);
+        }
     }
 
     std::shared_ptr<LandmarksResult> landmarks_result = pipeline.Landmarks(detect_result);
@@ -224,10 +225,18 @@ TEST_CASE("FacePipeline extract face feature from image file.") {
         CHECK(landmarks_result->face_landmarks[0][0].y > 0.0f);
     }
 
-
     std::shared_ptr<AlignerResult> aligner_result = pipeline.Align(landmarks_result);
 
     std::shared_ptr<FeatureResult> feature_result = pipeline.Extract(aligner_result);
+
+    {
+        for (Feature& ft : feature_result->face_features) {
+            std::cout << "face_feature:\n\t";
+            for (float& f : ft.blob)
+                std::cout << f << " ";
+            std::cout << std::endl;
+        }
+    }
 
     pipeline.Terminate();
 

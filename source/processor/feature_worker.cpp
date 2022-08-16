@@ -3,7 +3,7 @@
 #include "Poco/Notification.h"
 #include "Poco/NotificationQueue.h"
 #include "concurrent_processor.h"
-#include "pipeline_worker.h"
+#include "processor_worker.h"
 #include "opencv2/opencv.hpp"
 #include "openvino/openvino.hpp"
 #include "spdlog/sinks/stdout_color_sinks.h"
@@ -179,7 +179,21 @@ RetCode FeatureWorker::process(const AlignerResult& aligner_result, FeatureResul
         const ov::Tensor output_tensor = _infer_request->get_output_tensor();
         const float* tensor_data = output_tensor.data<float>();
 
-        debugOutputTensor(output_tensor);
+        // debugOutputTensor(output_tensor);
+
+        Feature ft;
+        ft.blob.reserve(_feature_length);
+        ft.version = 10000;
+
+        // only one batch yet.
+        size_t batch_idx = 0;
+        size_t offset = batch_idx * _feature_length;
+        for (size_t i = 0; i < _feature_length; i++) {
+            float x = tensor_data[offset + i];
+            ft.blob.push_back(x);
+        }
+
+        result.face_features.push_back(ft);
     }
 
     return RetCode::RET_OK;

@@ -3,7 +3,7 @@
 #include "Poco/Notification.h"
 #include "Poco/NotificationQueue.h"
 #include "concurrent_processor.h"
-#include "pipeline_worker.h"
+#include "processor_worker.h"
 #include "opencv2/opencv.hpp"
 #include "openvino/openvino.hpp"
 #include "spdlog/sinks/stdout_color_sinks.h"

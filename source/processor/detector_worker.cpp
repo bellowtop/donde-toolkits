@@ -1,4 +1,4 @@
-#include "pipeline_worker.h"
+#include "processor_worker.h"
 
 #include "Poco/AutoPtr.h"
 #include "Poco/Logger.h"
