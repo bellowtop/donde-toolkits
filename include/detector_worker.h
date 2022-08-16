@@ -126,7 +126,7 @@ class FeatureWorker : public Worker {
     RetCode process(const AlignerResult& aligner_result, FeatureResult& result);
 
     int _batch_size = 1;
-    int _landmarks_length;
+    int _feature_length;
     int _image_width;
     int _image_height;
     int _color_channel = 3;

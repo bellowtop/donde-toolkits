@@ -38,9 +38,13 @@ struct AlignerResult {
     std::vector<cv::Mat> aligned_faces;
 };
 
-struct FeatureResult {
+struct Feature {
     int version;
     std::vector<float> blob;
+};
+
+struct FeatureResult {
+    std::vector<Feature> face_features;
 };
 
 

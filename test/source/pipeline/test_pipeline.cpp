@@ -35,7 +35,8 @@ TEST_CASE("FacePipeline can decode image binary to frame, aka cv::Mat.") {
 
     FacePipeline pipeline{conf, device_id};
 
-    int concurrent = 1;
+    int concurrent = conf.value("concurrent", 1);
+
     auto detectorProcessor
         = std::make_shared<ConcurrentProcessor<DetectorWorker>>(conf, concurrent, device_id);
     pipeline.Init(detectorProcessor, nullptr, nullptr, nullptr);
@@ -85,7 +86,7 @@ TEST_CASE("FacePipeline can decode image binary to frame, aka cv::Mat.") {
 
     // CHECK(ret == RET_OK);
 
-    // pipe.Terminate();
+    pipeline.Terminate();
 
     CHECK("aa" == "aa");
 };
@@ -105,7 +106,8 @@ TEST_CASE("FacePipeline can detect landmarks from DetectResult.") {
 
     FacePipeline pipeline{conf, device_id};
 
-    int concurrent = 1;
+    int concurrent = conf.value("concurrent", 1);
+
     auto landmarksProcessor
         = std::make_shared<ConcurrentProcessor<LandmarksWorker>>(conf, concurrent, device_id);
     auto alignerProcessor
@@ -139,6 +141,93 @@ TEST_CASE("FacePipeline can detect landmarks from DetectResult.") {
     // RetCode ret = pipe.Init(a, a, a, a);
 
     // CHECK(ret == RET_OK);
+
+    pipeline.Terminate();
+
+    CHECK("aa" == "aa");
+};
+
+
+TEST_CASE("FacePipeline extract face feature from image file.") {
+
+    json conf = R"(
+ {
+    "detector": {
+        "model": "./contrib/models/face-detection-adas-0001.xml",
+	    "warmup": false
+    },
+	"landmarks": {
+            "model": "./contrib/models/facial-landmarks-35-adas-0002.xml",
+	    "warmup": false
+    },
+	"aligner": {
+	    "warmup": false
+    },
+	"feature": {
+        "model": "./contrib/models/Sphereface.xml",
+	    "warmup": false
+    }
+  }
+)"_json;
+
+    string device_id = "CPU";
+
+    FacePipeline pipeline{conf, device_id};
+
+    int concurrent = conf.value("concurrent", 1);
+
+    auto detectorProcessor
+        = std::make_shared<ConcurrentProcessor<DetectorWorker>>(conf, concurrent, device_id);
+    auto landmarksProcessor
+        = std::make_shared<ConcurrentProcessor<LandmarksWorker>>(conf, concurrent, device_id);
+    auto alignerProcessor
+        = std::make_shared<ConcurrentProcessor<AlignerWorker>>(conf, concurrent, device_id);
+    auto featureProcessor
+        = std::make_shared<ConcurrentProcessor<FeatureWorker>>(conf, concurrent, device_id);
+
+    pipeline.Init(detectorProcessor, landmarksProcessor, alignerProcessor, featureProcessor);
+
+    std::string img_path = "./contrib/data/test_image_5_person.jpeg";
+    // std::string img_path = "./contrib/data/zly_1.jpeg";
+    // std::string img_path = "./contrib/data/zly_2.jpeg";
+
+    double len = std::filesystem::file_size(img_path);
+    std::vector<uint8_t> image_data(len);
+
+    std::ifstream f{img_path, std::ios::binary};
+    f.read((char*)image_data.data(), image_data.size());
+
+    std::shared_ptr<Frame> frame = pipeline.Decode(image_data);
+
+    std::shared_ptr<DetectResult> detect_result = pipeline.Detect(frame);
+
+    for (auto& detected_face : detect_result->faces) {
+        auto box = detected_face.box;
+        spdlog::debug("confidence: {}", detected_face.confidence);
+        spdlog::debug("box.x: {}", box.x);
+        spdlog::debug("box.y: {}", box.y);
+        spdlog::debug("box.width: {}", box.width);
+        spdlog::debug("box.height: {}", box.height);
+        CHECK(box.empty() == false);
+        CHECK_GT(box.size().width, 10);
+        CHECK_GT(box.size().height, 10);
+        CHECK_GT(detected_face.confidence, 0.8);
+    }
+
+    std::shared_ptr<LandmarksResult> landmarks_result = pipeline.Landmarks(detect_result);
+
+    {
+        CHECK(landmarks_result->faces.size() == 5);
+        CHECK(landmarks_result->face_landmarks.size() == 5);
+        CHECK(landmarks_result->face_landmarks[0].size() == 35);
+        CHECK(landmarks_result->face_landmarks[0][0].x > 0.0f);
+        CHECK(landmarks_result->face_landmarks[0][0].y > 0.0f);
+    }
+
+
+    std::shared_ptr<AlignerResult> aligner_result = pipeline.Align(landmarks_result);
+
+    std::shared_ptr<FeatureResult> feature_result = pipeline.Extract(aligner_result);
 
     pipeline.Terminate();
 

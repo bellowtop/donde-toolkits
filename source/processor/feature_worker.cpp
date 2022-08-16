@@ -34,7 +34,7 @@ FeatureWorker::~FeatureWorker() {
 
    conf:
    {
-     "model": "../models/facial-landmarks-35-adas-0002.xml"
+     "model": "../models/Sphereface.xml"
      "warmup": false
    }
 
@@ -45,8 +45,8 @@ void FeatureWorker::debugOutputTensor(const ov::Tensor& output_tensor) {
 
     // only one batch yet.
     size_t batch_idx = 0;
-    const std::vector<float> arr(tensor_data, tensor_data + _landmarks_length);
-    std::cout << "landmarks: ";
+    const std::vector<float> arr(tensor_data, tensor_data + _feature_length);
+    std::cout << "feature-extract: ";
     for (float f : arr) {
         std::cout << f << " ";
     }
@@ -54,7 +54,7 @@ void FeatureWorker::debugOutputTensor(const ov::Tensor& output_tensor) {
 }
 
 RetCode FeatureWorker::Init(json conf, int i, std::string device_id) {
-    _name = "landmarks-worker-" + std::to_string(i);
+    _name = "feature-extract-worker-" + std::to_string(i);
     _logger = spdlog::stdout_color_mt(_name);
 
     _id = i;
@@ -93,11 +93,11 @@ RetCode FeatureWorker::Init(json conf, int i, std::string device_id) {
     _image_width = input_shape[ov::layout::width_idx(tensor_layout)];
     _image_height = input_shape[ov::layout::height_idx(tensor_layout)];
 
-    // output shape: [1, 70], where 70 means [x0, y0, x1, y1....], 35 points
+    // Face embeddings, name - fc5, shape - 1, 512, output data format - B, C, where
     // SEE
-    // https://github.com/openvinotoolkit/open_model_zoo/blob/master/models/intel/facial-landmarks-35-adas-0002/README.md
+    // https://github.com/openvinotoolkit/open_model_zoo/blob/master/models/public/Sphereface/README.md
     ov::Shape output_shape = model->output().get_shape();
-    _landmarks_length = output_shape[1];
+    _feature_length = output_shape[1];
 
     _compiled_model
         = std::make_shared<ov::CompiledModel>(std::move(core.compile_model(model, "CPU")));
@@ -106,11 +106,11 @@ RetCode FeatureWorker::Init(json conf, int i, std::string device_id) {
 
     bool need_warnmup = conf["warmup"];
     if (need_warnmup) {
+        // TODO
         // warmup img
         std::string warmup_image = "./contrib/data/test_image_5_person.jpeg";
         cv::Mat img = cv::imread(warmup_image);
         cv::Rect face{839, 114, 256, 331};
-
     }
 
     return RET_OK;
@@ -128,16 +128,16 @@ void FeatureWorker::run() {
                 }
                 Value input = msg->getRequest();
                 if (input.valueType != ValueAlignerResult) {
-                    _logger->error("FeatureWorker input value is not a ValueAligner! wrong "
+                    _logger->error("FeatureWorker input value is not a ValueAlignerResult! wrong "
                                    "valueType: {}",
                                    format(input.valueType));
                     continue;
                 }
-                std::shared_ptr<AlignerResult> detect_result
+                std::shared_ptr<AlignerResult> aligner_result
                     = std::static_pointer_cast<AlignerResult>(input.valuePtr);
                 std::shared_ptr<FeatureResult> result = std::make_shared<FeatureResult>();
 
-                RetCode ret = process(*detect_result, *result);
+                RetCode ret = process(*aligner_result, *result);
                 _logger->debug("process ret: {}", ret);
 
                 Value output{ValueFeatureResult, result};
@@ -150,7 +150,37 @@ void FeatureWorker::run() {
 }
 
 // resize input img, and do inference
-RetCode FeatureWorker::process(const AlignerResult& detect_result, FeatureResult& result) {
+RetCode FeatureWorker::process(const AlignerResult& aligner_result, FeatureResult& result) {
+    result.face_features.reserve(aligner_result.aligned_faces.size());
+
+    for (const cv::Mat& face_img : aligner_result.aligned_faces) {
+
+        const size_t data_length = face_img.channels() * _image_width * _image_height;
+        std::shared_ptr<unsigned char> data_ptr;
+        data_ptr.reset(new unsigned char[data_length], std::default_delete<unsigned char[]>());
+
+        // size of each batch.
+        const size_t image_size
+            = ov::shape_size(_compiled_model->input().get_shape()) / _batch_size;
+        assert(image_size == data_length);
+
+        cv::Mat resized_img(face_img);
+        if (static_cast<int>(_image_width) != face_img.size().width
+            || static_cast<int>(_image_height) != face_img.size().height) {
+            cv::resize(face_img, resized_img, cv::Size(_image_width, _image_height));
+        }
+
+        ov::Tensor input_tensor = _infer_request->get_input_tensor();
+
+        std::memcpy(input_tensor.data<std::uint8_t>(), data_ptr.get(), image_size);
+
+        _infer_request->infer();
+
+        const ov::Tensor output_tensor = _infer_request->get_output_tensor();
+        const float* tensor_data = output_tensor.data<float>();
+
+        debugOutputTensor(output_tensor);
+    }
 
     return RetCode::RET_OK;
 }

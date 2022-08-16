@@ -52,7 +52,7 @@ FaceServiceImpl::FaceServiceImpl(Config& server_config)
 
 void FaceServiceImpl::Start() {
     const json& conf = pipeline.GetConfig();
-    int concurrent = 4;
+    int concurrent = conf.value("concurrent", 1);
 
     auto detectorProcessor
         = std::make_shared<ConcurrentProcessor<DetectorWorker>>(conf, concurrent, device_id);

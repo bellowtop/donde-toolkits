@@ -1,7 +1,7 @@
 {
     "title": "this is a toml document",
 
-    "device_id": "0",
+    "device_id": "CPU",
     "loglevel": "debug",
 
     "server": {
@@ -9,12 +9,20 @@
     },
 
     "pipeline": {
+	"concurrent": 4,
         "detector": {
             "model": "./contrib/models/face-detection-adas-0001.xml",
 	    "warmup": false
         },
 	"landmarks": {
             "model": "./contrib/models/facial-landmarks-35-adas-0002.xml",
+	    "warmup": false
+        },
+	"aligner": {
+	    "warmup": false
+        },
+	"feature": {
+            "model": "./contrib/models/Sphereface.xml",
 	    "warmup": false
         }
     }

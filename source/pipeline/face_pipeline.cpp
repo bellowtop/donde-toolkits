@@ -23,16 +23,16 @@ using json = nlohmann::json;
    json conf:
    {
        "detector": {
-           "model": "xxxx.bin"
+           "model": "xxxx.xml"
        },
        "landmarks": {
-           "model": "xxxx.bin"
+           "model": "xxxx.xml"
        },
        "aligner": {
-           "model": "xxxx.bin"
+           "model": "xxxx.xml"
        },
        "feature": {
-           "model": "xxxx.bin"
+           "model": "xxxx.xml"
        }
    }
  */
@@ -140,4 +140,20 @@ std::shared_ptr<AlignerResult> FacePipeline::Align(std::shared_ptr<LandmarksResu
     }
 
     return std::static_pointer_cast<AlignerResult>(output.valuePtr);
+}
+
+std::shared_ptr<FeatureResult> FacePipeline::Extract(std::shared_ptr<AlignerResult> aligner_result) {
+    Value input{ValueAlignerResult, aligner_result};
+    // output.valuePtr memory is allocated by inner Process();
+    Value output;
+
+    RetCode ret = _featureProcessor->Process(input, output);
+    spdlog::info("FacePipeline::Extract ret: {}", ret);
+
+    if (output.valueType != ValueFeatureResult) {
+        spdlog::error("Align output is not ValueFeatureResult, return empty result");
+        return nullptr;
+    }
+
+    return std::static_pointer_cast<FeatureResult>(output.valuePtr);
 }

@@ -33,6 +33,7 @@ class FacePipeline {
 
     std::shared_ptr<AlignerResult> Align(const std::shared_ptr<LandmarksResult> landmarks_result);
 
+    std::shared_ptr<FeatureResult> Extract(std::shared_ptr<AlignerResult> aligner_result);
 
   private:
     json _config;
