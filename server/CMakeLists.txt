@@ -27,6 +27,7 @@ set(OpenVINO_DIR "/opt/intel/openvino_2022/runtime/cmake")
 find_package(OpenVINO REQUIRED COMPONENTS Runtime)
 
 
+
 # ----- GRPC pb ----
 file(GLOB_RECURSE pb_headers CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/protos/gen/pb-cpp/*.h")
 file(GLOB_RECURSE pb_sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/protos/gen/pb-cpp/*.cc")
