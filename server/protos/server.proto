@@ -47,7 +47,8 @@ message Image {
 
 message FaceFeature {
     int32 version = 1;
-    bytes blob = 2;
+  string model = 2;
+    repeated float feature = 3;
 }
 
 message FaceRectangle {

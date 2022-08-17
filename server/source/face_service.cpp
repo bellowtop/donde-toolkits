@@ -37,7 +37,8 @@ using com::sekirocc::face_service::FaceService;
 using com::sekirocc::face_service::Rect;
 using com::sekirocc::face_service::ResultCode;
 
-using com::sekirocc::face_service::FaceObject;
+using com::sekirocc::face_service::FaceFeature;
+using com::sekirocc::face_service::FaceRectangle;
 
 using grpc::ServerContext;
 using grpc::Status;
@@ -76,13 +77,15 @@ Status FaceServiceImpl::Detect(ServerContext* context, const DetectionRequest* r
     std::shared_ptr<Frame> frame = pipeline.Decode(image_char_vec);
     std::shared_ptr<DetectResult> result = pipeline.Detect(frame);
 
+    response->set_code(ResultCode::OK);
+
     for (auto& detected_face : result->faces) {
         // fill response
-        FaceObject* face_obj = response->add_faces();
-        face_obj->set_code(ResultCode::OK);
-        face_obj->set_quality(0.0f); // TODO quality unimplemented
+        FaceRectangle* face_rect = response->add_face_rects();
+        face_rect->set_quality(1.0f); // TODO quality unimplemented
+        face_rect->set_confidence(detected_face.confidence);
 
-        Rect* rect = face_obj->mutable_rectangle();
+        Rect* rect = face_rect->mutable_rectangle();
         rect->mutable_point()->set_x(detected_face.box.x);
         rect->mutable_point()->set_y(detected_face.box.y);
         rect->mutable_size()->set_width(detected_face.box.width);

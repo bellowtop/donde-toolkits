@@ -74,7 +74,8 @@ struct ImageDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ImageDefaultTypeInternal _Image_default_instance_;
 constexpr FaceFeature::FaceFeature(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : blob_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  : feature_()
+  , model_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , version_(0){}
 struct FaceFeatureDefaultTypeInternal {
   constexpr FaceFeatureDefaultTypeInternal()
@@ -199,7 +200,8 @@ const uint32_t TableStruct_server_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(p
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::FaceFeature, version_),
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::FaceFeature, blob_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::FaceFeature, model_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::FaceFeature, feature_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::FaceRectangle, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -247,11 +249,11 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 16, -1, -1, sizeof(::com::sekirocc::face_service::Size)},
   { 24, -1, -1, sizeof(::com::sekirocc::face_service::Image)},
   { 32, -1, -1, sizeof(::com::sekirocc::face_service::FaceFeature)},
-  { 40, -1, -1, sizeof(::com::sekirocc::face_service::FaceRectangle)},
-  { 49, -1, -1, sizeof(::com::sekirocc::face_service::DetectionRequest)},
-  { 56, -1, -1, sizeof(::com::sekirocc::face_service::DetectionResponse)},
-  { 64, -1, -1, sizeof(::com::sekirocc::face_service::ExtractionRequest)},
-  { 71, -1, -1, sizeof(::com::sekirocc::face_service::ExtractionResponse)},
+  { 41, -1, -1, sizeof(::com::sekirocc::face_service::FaceRectangle)},
+  { 50, -1, -1, sizeof(::com::sekirocc::face_service::DetectionRequest)},
+  { 57, -1, -1, sizeof(::com::sekirocc::face_service::DetectionResponse)},
+  { 65, -1, -1, sizeof(::com::sekirocc::face_service::ExtractionRequest)},
+  { 72, -1, -1, sizeof(::com::sekirocc::face_service::ExtractionResponse)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -275,38 +277,39 @@ const char descriptor_table_protodef_server_2eproto[] PROTOBUF_SECTION_VARIABLE(
   "\001 \001(\005\022\t\n\001y\030\002 \001(\005\"%\n\004Size\022\r\n\005width\030\001 \001(\005\022"
   "\016\n\006height\030\002 \001(\005\"M\n\005Image\0226\n\006format\030\001 \001(\016"
   "2&.com.sekirocc.face_service.ImageFormat"
-  "\022\014\n\004data\030\002 \001(\014\",\n\013FaceFeature\022\017\n\007version"
-  "\030\001 \001(\005\022\014\n\004blob\030\002 \001(\014\"h\n\rFaceRectangle\0222\n"
-  "\trectangle\030\002 \001(\0132\037.com.sekirocc.face_ser"
-  "vice.Rect\022\017\n\007quality\030\003 \001(\002\022\022\n\nconfidence"
-  "\030\004 \001(\002\"C\n\020DetectionRequest\022/\n\005image\030\001 \001("
-  "\0132 .com.sekirocc.face_service.Image\"\206\001\n\021"
-  "DetectionResponse\0223\n\004code\030\001 \001(\0162%.com.se"
-  "kirocc.face_service.ResultCode\022<\n\nface_r"
-  "ects\030\002 \003(\0132(.com.sekirocc.face_service.F"
-  "aceRectangle\"D\n\021ExtractionRequest\022/\n\005ima"
-  "ge\030\001 \001(\0132 .com.sekirocc.face_service.Ima"
-  "ge\"\306\001\n\022ExtractionResponse\0223\n\004code\030\001 \001(\0162"
-  "%.com.sekirocc.face_service.ResultCode\022<"
-  "\n\nface_rects\030\002 \003(\0132(.com.sekirocc.face_s"
-  "ervice.FaceRectangle\022=\n\rface_features\030\003 "
-  "\003(\0132&.com.sekirocc.face_service.FaceFeat"
-  "ure*f\n\nResultCode\022\006\n\002OK\020\000\022\021\n\014SERVER_ERRO"
-  "R\020\221N\022\021\n\014CLIENT_ERROR\020\365N\022\023\n\016FACE_NOT_FOUN"
-  "D\020\366N\"\005\010\001\020\220N\"\006\010\222N\020\364N\"\006\010\367N\020\330O*\?\n\013ImageForm"
-  "at\022\021\n\rIMAGE_UNKNOWN\020\000\022\016\n\nIMAGE_JPEG\020\001\022\r\n"
-  "\tIMAGE_PNG\020\0022\345\001\n\013FaceService\022e\n\006Detect\022+"
-  ".com.sekirocc.face_service.DetectionRequ"
-  "est\032,.com.sekirocc.face_service.Detectio"
-  "nResponse\"\000\022o\n\016ExtractFeature\022,.com.seki"
-  "rocc.face_service.ExtractionRequest\032-.co"
-  "m.sekirocc.face_service.ExtractionRespon"
-  "se\"\000B;Z9github.com/sekirocc/face-recogni"
-  "tion-service/face_serviceb\006proto3"
+  "\022\014\n\004data\030\002 \001(\014\">\n\013FaceFeature\022\017\n\007version"
+  "\030\001 \001(\005\022\r\n\005model\030\002 \001(\t\022\017\n\007feature\030\003 \003(\002\"h"
+  "\n\rFaceRectangle\0222\n\trectangle\030\002 \001(\0132\037.com"
+  ".sekirocc.face_service.Rect\022\017\n\007quality\030\003"
+  " \001(\002\022\022\n\nconfidence\030\004 \001(\002\"C\n\020DetectionReq"
+  "uest\022/\n\005image\030\001 \001(\0132 .com.sekirocc.face_"
+  "service.Image\"\206\001\n\021DetectionResponse\0223\n\004c"
+  "ode\030\001 \001(\0162%.com.sekirocc.face_service.Re"
+  "sultCode\022<\n\nface_rects\030\002 \003(\0132(.com.sekir"
+  "occ.face_service.FaceRectangle\"D\n\021Extrac"
+  "tionRequest\022/\n\005image\030\001 \001(\0132 .com.sekiroc"
+  "c.face_service.Image\"\306\001\n\022ExtractionRespo"
+  "nse\0223\n\004code\030\001 \001(\0162%.com.sekirocc.face_se"
+  "rvice.ResultCode\022<\n\nface_rects\030\002 \003(\0132(.c"
+  "om.sekirocc.face_service.FaceRectangle\022="
+  "\n\rface_features\030\003 \003(\0132&.com.sekirocc.fac"
+  "e_service.FaceFeature*f\n\nResultCode\022\006\n\002O"
+  "K\020\000\022\021\n\014SERVER_ERROR\020\221N\022\021\n\014CLIENT_ERROR\020\365"
+  "N\022\023\n\016FACE_NOT_FOUND\020\366N\"\005\010\001\020\220N\"\006\010\222N\020\364N\"\006\010"
+  "\367N\020\330O*\?\n\013ImageFormat\022\021\n\rIMAGE_UNKNOWN\020\000\022"
+  "\016\n\nIMAGE_JPEG\020\001\022\r\n\tIMAGE_PNG\020\0022\345\001\n\013FaceS"
+  "ervice\022e\n\006Detect\022+.com.sekirocc.face_ser"
+  "vice.DetectionRequest\032,.com.sekirocc.fac"
+  "e_service.DetectionResponse\"\000\022o\n\016Extract"
+  "Feature\022,.com.sekirocc.face_service.Extr"
+  "actionRequest\032-.com.sekirocc.face_servic"
+  "e.ExtractionResponse\"\000B;Z9github.com/sek"
+  "irocc/face-recognition-service/face_serv"
+  "iceb\006proto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_server_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_server_2eproto = {
-  false, false, 1393, descriptor_table_protodef_server_2eproto, "server.proto", 
+  false, false, 1411, descriptor_table_protodef_server_2eproto, "server.proto", 
   &descriptor_table_server_2eproto_once, nullptr, 0, 10,
   schemas, file_default_instances, TableStruct_server_2eproto::offsets,
   file_level_metadata_server_2eproto, file_level_enum_descriptors_server_2eproto, file_level_service_descriptors_server_2eproto,
@@ -1255,7 +1258,8 @@ class FaceFeature::_Internal {
 
 FaceFeature::FaceFeature(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
+  feature_(arena) {
   SharedCtor();
   if (!is_message_owned) {
     RegisterArenaDtor(arena);
@@ -1263,14 +1267,15 @@ FaceFeature::FaceFeature(::PROTOBUF_NAMESPACE_ID::Arena* arena,
   // @@protoc_insertion_point(arena_constructor:com.sekirocc.face_service.FaceFeature)
 }
 FaceFeature::FaceFeature(const FaceFeature& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      feature_(from.feature_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  blob_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  model_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    blob_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+    model_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_blob().empty()) {
-    blob_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_blob(), 
+  if (!from._internal_model().empty()) {
+    model_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_model(), 
       GetArenaForAllocation());
   }
   version_ = from.version_;
@@ -1278,9 +1283,9 @@ FaceFeature::FaceFeature(const FaceFeature& from)
 }
 
 inline void FaceFeature::SharedCtor() {
-blob_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+model_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  blob_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  model_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 version_ = 0;
 }
@@ -1294,7 +1299,7 @@ FaceFeature::~FaceFeature() {
 
 inline void FaceFeature::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  blob_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  model_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void FaceFeature::ArenaDtor(void* object) {
@@ -1313,7 +1318,8 @@ void FaceFeature::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  blob_.ClearToEmpty();
+  feature_.Clear();
+  model_.ClearToEmpty();
   version_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
@@ -1332,12 +1338,24 @@ const char* FaceFeature::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
         } else
           goto handle_unusual;
         continue;
-      // bytes blob = 2;
+      // string model = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
-          auto str = _internal_mutable_blob();
+          auto str = _internal_mutable_model();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "com.sekirocc.face_service.FaceFeature.model"));
           CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated float feature = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedFloatParser(_internal_mutable_feature(), ptr, ctx);
+          CHK_(ptr);
+        } else if (static_cast<uint8_t>(tag) == 29) {
+          _internal_add_feature(::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr));
+          ptr += sizeof(float);
         } else
           goto handle_unusual;
         continue;
@@ -1376,10 +1394,19 @@ uint8_t* FaceFeature::_InternalSerialize(
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_version(), target);
   }
 
-  // bytes blob = 2;
-  if (!this->_internal_blob().empty()) {
-    target = stream->WriteBytesMaybeAliased(
-        2, this->_internal_blob(), target);
+  // string model = 2;
+  if (!this->_internal_model().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_model().data(), static_cast<int>(this->_internal_model().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "com.sekirocc.face_service.FaceFeature.model");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_model(), target);
+  }
+
+  // repeated float feature = 3;
+  if (this->_internal_feature_size() > 0) {
+    target = stream->WriteFixedPacked(3, _internal_feature(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1398,11 +1425,23 @@ size_t FaceFeature::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // bytes blob = 2;
-  if (!this->_internal_blob().empty()) {
+  // repeated float feature = 3;
+  {
+    unsigned int count = static_cast<unsigned int>(this->_internal_feature_size());
+    size_t data_size = 4UL * count;
+    if (data_size > 0) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+            static_cast<int32_t>(data_size));
+    }
+    total_size += data_size;
+  }
+
+  // string model = 2;
+  if (!this->_internal_model().empty()) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
-        this->_internal_blob());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_model());
   }
 
   // int32 version = 1;
@@ -1432,8 +1471,9 @@ void FaceFeature::MergeFrom(const FaceFeature& from) {
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_blob().empty()) {
-    _internal_set_blob(from._internal_blob());
+  feature_.MergeFrom(from.feature_);
+  if (!from._internal_model().empty()) {
+    _internal_set_model(from._internal_model());
   }
   if (from._internal_version() != 0) {
     _internal_set_version(from._internal_version());
@@ -1457,10 +1497,11 @@ void FaceFeature::InternalSwap(FaceFeature* other) {
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  feature_.InternalSwap(&other->feature_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &blob_, lhs_arena,
-      &other->blob_, rhs_arena
+      &model_, lhs_arena,
+      &other->model_, rhs_arena
   );
   swap(version_, other->version_);
 }

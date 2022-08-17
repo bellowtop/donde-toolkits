@@ -40,6 +40,7 @@ struct AlignerResult {
 
 struct Feature {
     int version;
+    std::string model;
     std::vector<float> blob;
 };
 

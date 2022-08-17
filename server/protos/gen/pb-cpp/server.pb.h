@@ -934,21 +934,44 @@ class FaceFeature final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kBlobFieldNumber = 2,
+    kFeatureFieldNumber = 3,
+    kModelFieldNumber = 2,
     kVersionFieldNumber = 1,
   };
-  // bytes blob = 2;
-  void clear_blob();
-  const std::string& blob() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_blob(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_blob();
-  PROTOBUF_NODISCARD std::string* release_blob();
-  void set_allocated_blob(std::string* blob);
+  // repeated float feature = 3;
+  int feature_size() const;
   private:
-  const std::string& _internal_blob() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_blob(const std::string& value);
-  std::string* _internal_mutable_blob();
+  int _internal_feature_size() const;
+  public:
+  void clear_feature();
+  private:
+  float _internal_feature(int index) const;
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >&
+      _internal_feature() const;
+  void _internal_add_feature(float value);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >*
+      _internal_mutable_feature();
+  public:
+  float feature(int index) const;
+  void set_feature(int index, float value);
+  void add_feature(float value);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >&
+      feature() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >*
+      mutable_feature();
+
+  // string model = 2;
+  void clear_model();
+  const std::string& model() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_model(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_model();
+  PROTOBUF_NODISCARD std::string* release_model();
+  void set_allocated_model(std::string* model);
+  private:
+  const std::string& _internal_model() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_model(const std::string& value);
+  std::string* _internal_mutable_model();
   public:
 
   // int32 version = 1;
@@ -967,7 +990,8 @@ class FaceFeature final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr blob_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< float > feature_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr model_;
   int32_t version_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_server_2eproto;
@@ -2189,55 +2213,102 @@ inline void FaceFeature::set_version(int32_t value) {
   // @@protoc_insertion_point(field_set:com.sekirocc.face_service.FaceFeature.version)
 }
 
-// bytes blob = 2;
-inline void FaceFeature::clear_blob() {
-  blob_.ClearToEmpty();
+// string model = 2;
+inline void FaceFeature::clear_model() {
+  model_.ClearToEmpty();
 }
-inline const std::string& FaceFeature::blob() const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.FaceFeature.blob)
-  return _internal_blob();
+inline const std::string& FaceFeature::model() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.FaceFeature.model)
+  return _internal_model();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void FaceFeature::set_blob(ArgT0&& arg0, ArgT... args) {
+void FaceFeature::set_model(ArgT0&& arg0, ArgT... args) {
  
- blob_.SetBytes(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:com.sekirocc.face_service.FaceFeature.blob)
+ model_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:com.sekirocc.face_service.FaceFeature.model)
 }
-inline std::string* FaceFeature::mutable_blob() {
-  std::string* _s = _internal_mutable_blob();
-  // @@protoc_insertion_point(field_mutable:com.sekirocc.face_service.FaceFeature.blob)
+inline std::string* FaceFeature::mutable_model() {
+  std::string* _s = _internal_mutable_model();
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.face_service.FaceFeature.model)
   return _s;
 }
-inline const std::string& FaceFeature::_internal_blob() const {
-  return blob_.Get();
+inline const std::string& FaceFeature::_internal_model() const {
+  return model_.Get();
 }
-inline void FaceFeature::_internal_set_blob(const std::string& value) {
+inline void FaceFeature::_internal_set_model(const std::string& value) {
   
-  blob_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+  model_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
 }
-inline std::string* FaceFeature::_internal_mutable_blob() {
+inline std::string* FaceFeature::_internal_mutable_model() {
   
-  return blob_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+  return model_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
 }
-inline std::string* FaceFeature::release_blob() {
-  // @@protoc_insertion_point(field_release:com.sekirocc.face_service.FaceFeature.blob)
-  return blob_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+inline std::string* FaceFeature::release_model() {
+  // @@protoc_insertion_point(field_release:com.sekirocc.face_service.FaceFeature.model)
+  return model_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
 }
-inline void FaceFeature::set_allocated_blob(std::string* blob) {
-  if (blob != nullptr) {
+inline void FaceFeature::set_allocated_model(std::string* model) {
+  if (model != nullptr) {
     
   } else {
     
   }
-  blob_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), blob,
+  model_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), model,
       GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (blob_.IsDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited())) {
-    blob_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
+  if (model_.IsDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited())) {
+    model_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), "", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.face_service.FaceFeature.blob)
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.face_service.FaceFeature.model)
+}
+
+// repeated float feature = 3;
+inline int FaceFeature::_internal_feature_size() const {
+  return feature_.size();
+}
+inline int FaceFeature::feature_size() const {
+  return _internal_feature_size();
+}
+inline void FaceFeature::clear_feature() {
+  feature_.Clear();
+}
+inline float FaceFeature::_internal_feature(int index) const {
+  return feature_.Get(index);
+}
+inline float FaceFeature::feature(int index) const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.FaceFeature.feature)
+  return _internal_feature(index);
+}
+inline void FaceFeature::set_feature(int index, float value) {
+  feature_.Set(index, value);
+  // @@protoc_insertion_point(field_set:com.sekirocc.face_service.FaceFeature.feature)
+}
+inline void FaceFeature::_internal_add_feature(float value) {
+  feature_.Add(value);
+}
+inline void FaceFeature::add_feature(float value) {
+  _internal_add_feature(value);
+  // @@protoc_insertion_point(field_add:com.sekirocc.face_service.FaceFeature.feature)
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >&
+FaceFeature::_internal_feature() const {
+  return feature_;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >&
+FaceFeature::feature() const {
+  // @@protoc_insertion_point(field_list:com.sekirocc.face_service.FaceFeature.feature)
+  return _internal_feature();
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >*
+FaceFeature::_internal_mutable_feature() {
+  return &feature_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >*
+FaceFeature::mutable_feature() {
+  // @@protoc_insertion_point(field_mutable_list:com.sekirocc.face_service.FaceFeature.feature)
+  return _internal_mutable_feature();
 }
 
 // -------------------------------------------------------------------

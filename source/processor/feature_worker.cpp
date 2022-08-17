@@ -184,6 +184,7 @@ RetCode FeatureWorker::process(const AlignerResult& aligner_result, FeatureResul
         Feature ft;
         ft.blob.reserve(_feature_length);
         ft.version = 10000;
+        ft.model = "Sphereface";
 
         // only one batch yet.
         size_t batch_idx = 0;
