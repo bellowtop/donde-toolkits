@@ -45,10 +45,6 @@ class FaceService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::DetectionResponse>> PrepareAsyncDetect(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DetectionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::DetectionResponse>>(PrepareAsyncDetectRaw(context, request, cq));
     }
-    // option (google.api.http) = {
-    //     post : "/detect_face"
-    //     body : "*"
-    // };
     virtual ::grpc::Status ExtractFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::ExtractionRequest& request, ::com::sekirocc::face_service::ExtractionResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::ExtractionResponse>> AsyncExtractFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::ExtractionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::ExtractionResponse>>(AsyncExtractFeatureRaw(context, request, cq));
@@ -56,25 +52,13 @@ class FaceService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::ExtractionResponse>> PrepareAsyncExtractFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::ExtractionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::ExtractionResponse>>(PrepareAsyncExtractFeatureRaw(context, request, cq));
     }
-    // option (google.api.http) = {
-    //     post : "/extract_feature"
-    //     body : "*"
-    // };
     class async_interface {
      public:
       virtual ~async_interface() {}
       virtual void Detect(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DetectionRequest* request, ::com::sekirocc::face_service::DetectionResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void Detect(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DetectionRequest* request, ::com::sekirocc::face_service::DetectionResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // option (google.api.http) = {
-      //     post : "/detect_face"
-      //     body : "*"
-      // };
       virtual void ExtractFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::ExtractionRequest* request, ::com::sekirocc::face_service::ExtractionResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void ExtractFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::ExtractionRequest* request, ::com::sekirocc::face_service::ExtractionResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // option (google.api.http) = {
-      //     post : "/extract_feature"
-      //     body : "*"
-      // };
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
@@ -134,15 +118,7 @@ class FaceService final {
     Service();
     virtual ~Service();
     virtual ::grpc::Status Detect(::grpc::ServerContext* context, const ::com::sekirocc::face_service::DetectionRequest* request, ::com::sekirocc::face_service::DetectionResponse* response);
-    // option (google.api.http) = {
-    //     post : "/detect_face"
-    //     body : "*"
-    // };
     virtual ::grpc::Status ExtractFeature(::grpc::ServerContext* context, const ::com::sekirocc::face_service::ExtractionRequest* request, ::com::sekirocc::face_service::ExtractionResponse* response);
-    // option (google.api.http) = {
-    //     post : "/extract_feature"
-    //     body : "*"
-    // };
   };
   template <class BaseClass>
   class WithAsyncMethod_Detect : public BaseClass {
