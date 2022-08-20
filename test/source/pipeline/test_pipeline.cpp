@@ -23,23 +23,20 @@ using nlohmann::json;
 TEST_CASE("FacePipeline can decode image binary to frame, aka cv::Mat.") {
 
     json conf = R"(
- {
-        "detector": {
-            "model": "./contrib/models/face-detection-adas-0001.xml",
-            "warmup": false
-        }
- }
+{
+  "detector": {
+    "concurrent": 2,
+    "device_id": "CPU",
+    "model": "./contrib/models/face-detection-adas-0001.xml",
+    "warmup": false
+  }
+}
+
+
 )"_json;
 
-    string device_id = "CPU";
-
-    FacePipeline pipeline{conf, device_id};
-
-    int concurrent = conf.value("concurrent", 1);
-
-    auto detectorProcessor
-        = std::make_shared<ConcurrentProcessor<DetectorWorker>>(conf, concurrent, device_id);
-    pipeline.Init(detectorProcessor, nullptr, nullptr, nullptr);
+    FacePipeline pipeline{conf};
+    pipeline.Init();
 
     // read image data;
     // std::string img_path = "./contrib/data/test_image2.png";
@@ -95,24 +92,22 @@ TEST_CASE("FacePipeline can detect landmarks from DetectResult.") {
 
     json conf = R"(
  {
-        "landmarks": {
-            "model": "./contrib/models/facial-landmarks-35-adas-0002.xml",
-            "warmup": false
-        }
- }
+  "landmarks": {
+    "concurrent": 2,
+    "device_id": "CPU",
+    "model": "./contrib/models/facial-landmarks-35-adas-0002.xml",
+    "warmup": false
+  },
+  "aligner": {
+    "concurrent": 2,
+    "device_id": "CPU",
+    "warmup": false
+  }
+}
 )"_json;
 
-    string device_id = "CPU";
-
-    FacePipeline pipeline{conf, device_id};
-
-    int concurrent = conf.value("concurrent", 1);
-
-    auto landmarksProcessor
-        = std::make_shared<ConcurrentProcessor<LandmarksWorker>>(conf, concurrent, device_id);
-    auto alignerProcessor
-        = std::make_shared<ConcurrentProcessor<AlignerWorker>>(conf, concurrent, device_id);
-    pipeline.Init(nullptr, landmarksProcessor, alignerProcessor, nullptr);
+    FacePipeline pipeline{conf};
+    pipeline.Init();
 
     std::string warmup_image = "./contrib/data/test_image_5_person.jpeg";
     cv::Mat img = cv::imread(warmup_image);
@@ -151,40 +146,34 @@ TEST_CASE("FacePipeline extract face feature from image file.") {
 
     json conf = R"(
  {
-    "detector": {
-        "model": "./contrib/models/face-detection-adas-0001.xml",
-	    "warmup": false
-    },
-	"landmarks": {
-            "model": "./contrib/models/facial-landmarks-35-adas-0002.xml",
-	    "warmup": false
-    },
-	"aligner": {
-	    "warmup": false
-    },
-	"feature": {
-        "model": "./contrib/models/Sphereface.xml",
-	    "warmup": false
-    }
+  "detector": {
+    "concurrent": 2,
+    "device_id": "CPU",
+    "model": "./contrib/models/face-detection-adas-0001.xml",
+    "warmup": false
+  },
+  "landmarks": {
+    "concurrent": 2,
+    "device_id": "CPU",
+    "model": "./contrib/models/facial-landmarks-35-adas-0002.xml",
+    "warmup": false
+  },
+  "aligner": {
+    "concurrent": 2,
+    "device_id": "CPU",
+    "warmup": false
+  },
+  "feature": {
+    "concurrent": 2,
+    "device_id": "CPU",
+    "model": "./contrib/models/Sphereface.xml",
+    "warmup": false
   }
+}
 )"_json;
 
-    string device_id = "CPU";
-
-    FacePipeline pipeline{conf, device_id};
-
-    int concurrent = conf.value("concurrent", 1);
-
-    auto detectorProcessor
-        = std::make_shared<ConcurrentProcessor<DetectorWorker>>(conf, concurrent, device_id);
-    auto landmarksProcessor
-        = std::make_shared<ConcurrentProcessor<LandmarksWorker>>(conf, concurrent, device_id);
-    auto alignerProcessor
-        = std::make_shared<ConcurrentProcessor<AlignerWorker>>(conf, concurrent, device_id);
-    auto featureProcessor
-        = std::make_shared<ConcurrentProcessor<FeatureWorker>>(conf, concurrent, device_id);
-
-    pipeline.Init(detectorProcessor, landmarksProcessor, alignerProcessor, featureProcessor);
+    FacePipeline pipeline{conf};
+    pipeline.Init();
 
     std::string img_path = "./contrib/data/test_image_5_person.jpeg";
     // std::string img_path = "./contrib/data/zly_1.jpeg";

@@ -104,8 +104,7 @@ RetCode FeatureWorker::Init(json conf, int i, std::string device_id) {
     _infer_request
         = std::make_shared<ov::InferRequest>(std::move(_compiled_model->create_infer_request()));
 
-    bool need_warnmup = conf["warmup"];
-    if (need_warnmup) {
+    if (conf.contains("warmup") && conf["warmup"]) {
         // TODO
         // warmup img
         std::string warmup_image = "./contrib/data/test_image_5_person.jpeg";

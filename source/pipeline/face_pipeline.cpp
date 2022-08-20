@@ -45,48 +45,55 @@ using json = nlohmann::json;
    }
  */
 
-FacePipeline::FacePipeline(const json& conf, const std::string& device_id)
-    : _config(conf), _device_id(device_id),
+FacePipeline::FacePipeline(const json& conf)
+    : _config(conf),
       _detectorProcessor(std::make_shared<ConcurrentProcessor<DetectorWorker>>()),
       _landmarksProcessor(std::make_shared<ConcurrentProcessor<LandmarksWorker>>()),
       _alignerProcessor(std::make_shared<ConcurrentProcessor<AlignerWorker>>()),
-      _featureProcessor(std::make_shared<ConcurrentProcessor<FeatureWorker>>()) {
-}
+      _featureProcessor(std::make_shared<ConcurrentProcessor<FeatureWorker>>()) {}
 
 RetCode FacePipeline::Init() {
-    if (_detectorProcessor) {
+    if (_config.contains("detector")) {
         RetCode ret = _detectorProcessor->Init(_config["detector"]);
+    } else {
+        spdlog::warn("no detector found in _config json, skip init detector processor");
     }
 
-    if (_landmarksProcessor) {
+    if (_config.contains("landmarks")) {
         RetCode ret = _landmarksProcessor->Init(_config["landmarks"]);
+    } else {
+        spdlog::warn("no landmarks found in _config json, skip init landmarks processor");
     }
 
-    if (_alignerProcessor) {
+    if (_config.contains("aligner")) {
         RetCode ret = _alignerProcessor->Init(_config["aligner"]);
+    } else {
+        spdlog::warn("no aligner found in _config json, skip init aligner processor");
     }
 
-    if (_featureProcessor) {
+    if (_config.contains("feature")) {
         RetCode ret = _featureProcessor->Init(_config["feature"]);
+    } else {
+        spdlog::warn("no feature found in _config json, skip init feature processor");
     }
 
     return RET_OK;
 }
 
 RetCode FacePipeline::Terminate() {
-    if (_detectorProcessor) {
+    if (_detectorProcessor->IsInited()) {
         RetCode ret = _detectorProcessor->Terminate();
     }
 
-    if (_landmarksProcessor) {
+    if (_landmarksProcessor->IsInited()) {
         RetCode ret = _landmarksProcessor->Terminate();
     }
 
-    if (_alignerProcessor) {
+    if (_alignerProcessor->IsInited()) {
         RetCode ret = _alignerProcessor->Terminate();
     }
 
-    if (_featureProcessor) {
+    if (_featureProcessor->IsInited()) {
         RetCode ret = _featureProcessor->Terminate();
     }
 
@@ -115,7 +122,8 @@ std::shared_ptr<DetectResult> FacePipeline::Detect(std::shared_ptr<Frame> frame)
     return std::static_pointer_cast<DetectResult>(output.valuePtr);
 }
 
-std::shared_ptr<LandmarksResult> FacePipeline::Landmarks(std::shared_ptr<DetectResult> detect_result) {
+std::shared_ptr<LandmarksResult>
+FacePipeline::Landmarks(std::shared_ptr<DetectResult> detect_result) {
     Value input{ValueDetectResult, detect_result};
     // output.valuePtr memory is allocated by inner Process();
     Value output;
@@ -131,7 +139,8 @@ std::shared_ptr<LandmarksResult> FacePipeline::Landmarks(std::shared_ptr<DetectR
     return std::static_pointer_cast<LandmarksResult>(output.valuePtr);
 }
 
-std::shared_ptr<AlignerResult> FacePipeline::Align(std::shared_ptr<LandmarksResult> landmarks_result) {
+std::shared_ptr<AlignerResult>
+FacePipeline::Align(std::shared_ptr<LandmarksResult> landmarks_result) {
     Value input{ValueLandmarksResult, landmarks_result};
     // output.valuePtr memory is allocated by inner Process();
     Value output;
@@ -147,7 +156,8 @@ std::shared_ptr<AlignerResult> FacePipeline::Align(std::shared_ptr<LandmarksResu
     return std::static_pointer_cast<AlignerResult>(output.valuePtr);
 }
 
-std::shared_ptr<FeatureResult> FacePipeline::Extract(std::shared_ptr<AlignerResult> aligner_result) {
+std::shared_ptr<FeatureResult>
+FacePipeline::Extract(std::shared_ptr<AlignerResult> aligner_result) {
     Value input{ValueAlignerResult, aligner_result};
     // output.valuePtr memory is allocated by inner Process();
     Value output;

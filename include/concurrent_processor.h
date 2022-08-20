@@ -30,7 +30,7 @@ class Worker : public Runnable {
   public:
     Worker(std::shared_ptr<NotificationQueue> ch) : _channel(ch){};
     virtual RetCode Init(json conf, int id, std::string device_id) = 0;
-    std::string GetName() {return _name;};
+    std::string GetName() { return _name; };
 
     inline void init_log(const std::string& name) {
         try {
@@ -76,19 +76,23 @@ class WorkMessage : public Notification {
 class Processor {
   public:
     virtual RetCode Init(const json& cfg) = 0;
+    virtual bool IsInited() = 0;
     virtual RetCode Process(const Value& input, Value& output) = 0;
     virtual RetCode Terminate() = 0;
     virtual std::string GetName() = 0;
+
+  protected:
+    bool _is_inited;
 };
 
-template <typename T,
-          typename U = std::enable_if_t< std::is_base_of_v<Worker, T> >>
+template <typename T, typename U = std::enable_if_t<std::is_base_of_v<Worker, T>>>
 class ConcurrentProcessor final : public Processor {
   public:
     ConcurrentProcessor();
     ~ConcurrentProcessor();
 
     RetCode Init(const json& cfg) override;
+    bool IsInited() override;
     RetCode Process(const Value& input, Value& output) override;
     RetCode Terminate() override;
 
@@ -142,7 +146,14 @@ RetCode ConcurrentProcessor<T, U>::Init(const json& conf) {
     }
     spdlog::info("{} concurrency: {}, created {} workers", _name, concurrent, _workers.size());
 
+    _is_inited = true;
+
     return RET_OK;
+}
+
+template <typename T, typename U>
+bool ConcurrentProcessor<T, U>::IsInited() {
+    return _is_inited;
 }
 
 template <typename T, typename U>

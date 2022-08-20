@@ -14,7 +14,7 @@ using json = nlohmann::json;
 
 class FacePipeline {
   public:
-    FacePipeline(const json& config, const std::string& device_id);
+    FacePipeline(const json& config);
 
     const json& GetConfig() { return _config; };
 
@@ -34,7 +34,6 @@ class FacePipeline {
 
   private:
     json _config;
-    std::string _device_id;
 
     std::shared_ptr<Processor> _detectorProcessor;
     std::shared_ptr<Processor> _landmarksProcessor;

@@ -65,24 +65,18 @@ TEST_CASE("ConcurrentProcessor comunicate with DummyWorker using channel.") {
         };
     };
 
-    //
-    // test it.
-    //
-
-    json config = R"({})";
-    int concurrent = 3;
-    std::string device_id = "CPU";
-
-    ConcurrentProcessor<DummyWorker> processor{config, concurrent, device_id};
-
     json conf = R"(
 {
-        "detector": {
-            "model": "./contrib/models/face-detection-adas-0001.xml"
-        }
- })"_json;
+  "dummy": {
+    "model": "./contrib/models/face-detection-adas-0001.xml",
+    "concurrent": 2,
+    "device_id": "CPU",
+    "warmup": false
+  }
+})"_json;
 
-    processor.Init(conf);
+    ConcurrentProcessor<DummyWorker> processor;
+    processor.Init(conf["dummy"]);
 
     std::shared_ptr<Frame> f = std::make_shared<Frame>();
     Value input{ValueFrame, f};
@@ -98,6 +92,7 @@ TEST_CASE("ConcurrentProcessor comunicate with DummyWorker using channel.") {
 
     processor.Process(input, output);
     processor.Process(input, output);
+
     // Process is  blocking function, it will wait for output.
     CHECK(processedMsg == 3);
 
