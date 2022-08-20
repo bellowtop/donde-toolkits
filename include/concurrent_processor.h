@@ -13,9 +13,9 @@
 
 #include <iostream>
 #include <memory>
+#include <type_traits>
 
 using Poco::AutoPtr;
-using Poco::FastMutex;
 using Poco::Notification;
 using Poco::NotificationQueue;
 using Poco::Runnable;
@@ -30,6 +30,7 @@ class Worker : public Runnable {
   public:
     Worker(std::shared_ptr<NotificationQueue> ch) : _channel(ch){};
     virtual RetCode Init(json conf, int id, std::string device_id) = 0;
+    std::string GetName() {return _name;};
 
     inline void init_log(const std::string& name) {
         try {
@@ -80,10 +81,11 @@ class Processor {
     virtual std::string GetName() = 0;
 };
 
-template <typename T>
+template <typename T,
+          typename U = std::enable_if_t< std::is_base_of_v<Worker, T> >>
 class ConcurrentProcessor final : public Processor {
   public:
-    ConcurrentProcessor(const json& conf, int concurrency, const std::string& device_id);
+    ConcurrentProcessor();
     ~ConcurrentProcessor();
 
     RetCode Init(const json& cfg) override;
@@ -93,75 +95,58 @@ class ConcurrentProcessor final : public Processor {
     std::string GetName() override;
 
   private:
-    int _concurrency;
-    json _conf;
     std::string _name;
-    std::string _device_id;
     ThreadPool _pool;
     std::shared_ptr<NotificationQueue> _channel;
-
     std::vector<std::shared_ptr<T>> _workers;
-    void CreateWorkers(int concurrent);
 };
 
 //
 // Definition of this templating class.
 //
 
-template <typename T>
-ConcurrentProcessor<T>::ConcurrentProcessor(const json& conf, int concurrent,
-                                            const std::string& device_id)
-    : _concurrency(concurrent),
-      _conf(conf),
-      _name("concurrent-process-master"),
-      _device_id(device_id),
-      _pool(Poco::ThreadPool(1, concurrent)),
+template <typename T, typename U>
+ConcurrentProcessor<T, U>::ConcurrentProcessor()
+    : _name("concurrent-process-master"),
+      _pool(Poco::ThreadPool(1, 1)),
       _channel(std::make_shared<NotificationQueue>()), // create a channel
-      _workers(0) {
-    CreateWorkers(concurrent);
-};
+      _workers(0){};
 
-template <typename T>
-ConcurrentProcessor<T>::~ConcurrentProcessor() {
+template <typename T, typename U>
+ConcurrentProcessor<T, U>::~ConcurrentProcessor() {
     // _channel.reset();
     _workers.clear();
 };
 
-template <typename T>
-void ConcurrentProcessor<T>::CreateWorkers(int concurrent) {
+template <typename T, typename U>
+RetCode ConcurrentProcessor<T, U>::Init(const json& conf) {
+    int concurrent = conf["concurrent"];
+    std::string device_id = conf["device_id"];
+
+    _pool.addCapacity(concurrent);
+
     for (int i = 0; i < concurrent; i++) {
-        _workers.push_back(std::make_shared<T>(T(_channel)));
-    }
-    std::cout << _name << " create workers: " << _workers.size() << std::endl;
-}
-
-template <typename T>
-RetCode ConcurrentProcessor<T>::Init(const json& conf) {
-    // json v = config["id"];
-    // Value *value = (Value *)(std::uintptr_t)v;
-
-    // std::cout << "value->type: " << value->type << std::endl;
-    // std::cout << "value->content: " << value->content << std::endl;
-
-    int id = 0;
-    for (auto it = _workers.begin(); it != _workers.end(); it++) {
-        RetCode ret = (*it)->Init(conf, id++, _device_id);
+        auto worker = std::make_shared<T>(T(_channel));
+        RetCode ret = worker->Init(conf, i, device_id);
         if (ret != RET_OK) {
-            // Logger::Errorf("failed to init worker");
+            spdlog::error("failed to init worker");
             return ret;
         }
+        spdlog::info("add {} worker-{}", worker->GetName(), i);
+        _workers.push_back(worker);
     }
 
     // start workers
     for (auto it = _workers.begin(); it != _workers.end(); it++) {
         _pool.start(*(it->get()));
     }
+    spdlog::info("{} concurrency: {}, created {} workers", _name, concurrent, _workers.size());
 
     return RET_OK;
 }
 
-template <typename T>
-RetCode ConcurrentProcessor<T>::Process(const Value& input, Value& output) {
+template <typename T, typename U>
+RetCode ConcurrentProcessor<T, U>::Process(const Value& input, Value& output) {
     spdlog::info("input.valueType : {}, valuePtr: {}", format(input.valueType),
                  input.valuePtr.get());
 
@@ -179,8 +164,8 @@ RetCode ConcurrentProcessor<T>::Process(const Value& input, Value& output) {
     return RET_OK;
 }
 
-template <typename T>
-RetCode ConcurrentProcessor<T>::Terminate() {
+template <typename T, typename U>
+RetCode ConcurrentProcessor<T, U>::Terminate() {
     // enqueue quit message.
     Value empty{};
     for (size_t i = 0; i < _workers.size(); i++) {
@@ -202,7 +187,7 @@ RetCode ConcurrentProcessor<T>::Terminate() {
     return RET_OK;
 }
 
-template <typename T>
-std::string ConcurrentProcessor<T>::GetName() {
+template <typename T, typename U>
+std::string ConcurrentProcessor<T, U>::GetName() {
     return _name;
 }

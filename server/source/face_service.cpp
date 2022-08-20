@@ -37,7 +37,6 @@ using com::sekirocc::face_service::FaceService;
 using com::sekirocc::face_service::Rect;
 using com::sekirocc::face_service::ResultCode;
 
-using com::sekirocc::face_service::FaceFeature;
 using com::sekirocc::face_service::FaceRectangle;
 
 using grpc::ServerContext;
@@ -52,14 +51,7 @@ FaceServiceImpl::FaceServiceImpl(Config& server_config)
       pipeline(config.get_pipeline_config(), device_id){};
 
 void FaceServiceImpl::Start() {
-    const json& conf = pipeline.GetConfig();
-    int concurrent = conf.value("concurrent", 1);
-
-    auto detectorProcessor
-        = std::make_shared<ConcurrentProcessor<DetectorWorker>>(conf, concurrent, device_id);
-    auto landmarksProcessor
-        = std::make_shared<ConcurrentProcessor<LandmarksWorker>>(conf, concurrent, device_id);
-    pipeline.Init(detectorProcessor, landmarksProcessor, detectorProcessor, detectorProcessor);
+    pipeline.Init();
 };
 
 void FaceServiceImpl::Stop() { pipeline.Terminate(); };

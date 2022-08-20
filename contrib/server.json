@@ -1,27 +1,30 @@
 {
     "title": "this is a toml document",
-
-    "device_id": "CPU",
     "loglevel": "debug",
-
     "server": {
         "name": "FaceDetectService"
     },
-
     "pipeline": {
-	"concurrent": 4,
         "detector": {
+    	    "concurrent": 4,
+	    "device_id": "CPU",
             "model": "./contrib/models/face-detection-adas-0001.xml",
 	    "warmup": false
         },
 	"landmarks": {
+    	    "concurrent": 4,
+	    "device_id": "CPU",
             "model": "./contrib/models/facial-landmarks-35-adas-0002.xml",
 	    "warmup": false
         },
 	"aligner": {
+    	    "concurrent": 4,
+	    "device_id": "CPU",
 	    "warmup": false
         },
 	"feature": {
+    	    "concurrent": 4,
+	    "device_id": "CPU",
             "model": "./contrib/models/Sphereface.xml",
 	    "warmup": false
         }

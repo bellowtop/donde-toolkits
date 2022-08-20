@@ -23,32 +23,37 @@ using json = nlohmann::json;
    json conf:
    {
        "detector": {
+           "device_id": "CPU",
+           "concurrent": 4,
            "model": "xxxx.xml"
        },
        "landmarks": {
+           "device_id": "CPU",
+           "concurrent": 4,
            "model": "xxxx.xml"
        },
        "aligner": {
+           "device_id": "CPU",
+           "concurrent": 4,
            "model": "xxxx.xml"
        },
        "feature": {
+           "device_id": "CPU",
+           "concurrent": 4,
            "model": "xxxx.xml"
        }
    }
  */
 
 FacePipeline::FacePipeline(const json& conf, const std::string& device_id)
-    : _config(conf), _device_id(device_id) {}
+    : _config(conf), _device_id(device_id),
+      _detectorProcessor(std::make_shared<ConcurrentProcessor<DetectorWorker>>()),
+      _landmarksProcessor(std::make_shared<ConcurrentProcessor<LandmarksWorker>>()),
+      _alignerProcessor(std::make_shared<ConcurrentProcessor<AlignerWorker>>()),
+      _featureProcessor(std::make_shared<ConcurrentProcessor<FeatureWorker>>()) {
+}
 
-RetCode FacePipeline::Init(std::shared_ptr<Processor> detectorProcessor,
-                           std::shared_ptr<Processor> landmarksProcessor,
-                           std::shared_ptr<Processor> alignerProcessor,
-                           std::shared_ptr<Processor> featureProcessor) {
-    _detectorProcessor = detectorProcessor;
-    _landmarksProcessor = landmarksProcessor;
-    _alignerProcessor = alignerProcessor;
-    _featureProcessor = featureProcessor;
-
+RetCode FacePipeline::Init() {
     if (_detectorProcessor) {
         RetCode ret = _detectorProcessor->Init(_config["detector"]);
     }

@@ -29,7 +29,7 @@ build-pre: conan
 	cmake -S .      -B build
 
 build-server:
-	cmake --build build/server
+	cmake --build build/server -- -j 4
 
 build-test:
 	cmake --build build/test

@@ -36,8 +36,8 @@ DetectorWorker::~DetectorWorker() {
 
    conf:
    {
-     "model": "../models/face-detection-adas-0001.xml",
-     "warmup": false
+       "model": "../models/face-detection-adas-0001.xml",
+       "warmup": false
    }
 
  */

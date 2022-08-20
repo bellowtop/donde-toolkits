@@ -18,10 +18,7 @@ class FacePipeline {
 
     const json& GetConfig() { return _config; };
 
-    RetCode Init(std::shared_ptr<Processor> detectorProcessor,
-                 std::shared_ptr<Processor> alignerProcessor,
-                 std::shared_ptr<Processor> landmarksProcessor,
-                 std::shared_ptr<Processor> featureProcessor);
+    RetCode Init();
 
     RetCode Terminate();
 
