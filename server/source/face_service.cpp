@@ -48,7 +48,7 @@ using json = nlohmann::json;
 FaceServiceImpl::FaceServiceImpl(Config& server_config)
     : config(server_config),
       device_id(server_config.get_device_id()),
-      pipeline(config.get_pipeline_config(), device_id){};
+      pipeline(config.get_pipeline_config()){};
 
 void FaceServiceImpl::Start() {
     pipeline.Init();

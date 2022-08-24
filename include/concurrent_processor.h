@@ -85,8 +85,12 @@ class Processor {
     bool _is_inited;
 };
 
-template <typename T, typename U = std::enable_if_t<std::is_base_of_v<Worker, T>>>
-class ConcurrentProcessor final : public Processor {
+template <typename T, typename U = void>
+class ConcurrentProcessor {};
+
+template <typename T>
+class ConcurrentProcessor<T, typename std::enable_if_t<std::is_base_of_v<Worker, T>>> final
+    : public Processor {
   public:
     ConcurrentProcessor();
     ~ConcurrentProcessor();
@@ -109,21 +113,24 @@ class ConcurrentProcessor final : public Processor {
 // Definition of this templating class.
 //
 
-template <typename T, typename U>
-ConcurrentProcessor<T, U>::ConcurrentProcessor()
+template <typename T>
+ConcurrentProcessor<T,
+                    typename std::enable_if_t<std::is_base_of_v<Worker, T>>>::ConcurrentProcessor()
     : _name("concurrent-process-master"),
       _pool(Poco::ThreadPool(1, 1)),
       _channel(std::make_shared<NotificationQueue>()), // create a channel
       _workers(0){};
 
-template <typename T, typename U>
-ConcurrentProcessor<T, U>::~ConcurrentProcessor() {
+template <typename T>
+ConcurrentProcessor<
+    T, typename std::enable_if_t<std::is_base_of_v<Worker, T>>>::~ConcurrentProcessor() {
     // _channel.reset();
     _workers.clear();
 };
 
-template <typename T, typename U>
-RetCode ConcurrentProcessor<T, U>::Init(const json& conf) {
+template <typename T>
+RetCode ConcurrentProcessor<T, typename std::enable_if_t<std::is_base_of_v<Worker, T>>>::Init(
+    const json& conf) {
     int concurrent = conf["concurrent"];
     std::string device_id = conf["device_id"];
 
@@ -151,13 +158,14 @@ RetCode ConcurrentProcessor<T, U>::Init(const json& conf) {
     return RET_OK;
 }
 
-template <typename T, typename U>
-bool ConcurrentProcessor<T, U>::IsInited() {
+template <typename T>
+bool ConcurrentProcessor<T, typename std::enable_if_t<std::is_base_of_v<Worker, T>>>::IsInited() {
     return _is_inited;
 }
 
-template <typename T, typename U>
-RetCode ConcurrentProcessor<T, U>::Process(const Value& input, Value& output) {
+template <typename T>
+RetCode ConcurrentProcessor<T, typename std::enable_if_t<std::is_base_of_v<Worker, T>>>::Process(
+    const Value& input, Value& output) {
     spdlog::info("input.valueType : {}, valuePtr: {}", format(input.valueType),
                  input.valuePtr.get());
 
@@ -175,8 +183,9 @@ RetCode ConcurrentProcessor<T, U>::Process(const Value& input, Value& output) {
     return RET_OK;
 }
 
-template <typename T, typename U>
-RetCode ConcurrentProcessor<T, U>::Terminate() {
+template <typename T>
+RetCode
+ConcurrentProcessor<T, typename std::enable_if_t<std::is_base_of_v<Worker, T>>>::Terminate() {
     // enqueue quit message.
     Value empty{};
     for (size_t i = 0; i < _workers.size(); i++) {
@@ -198,7 +207,8 @@ RetCode ConcurrentProcessor<T, U>::Terminate() {
     return RET_OK;
 }
 
-template <typename T, typename U>
-std::string ConcurrentProcessor<T, U>::GetName() {
+template <typename T>
+std::string
+ConcurrentProcessor<T, typename std::enable_if_t<std::is_base_of_v<Worker, T>>>::GetName() {
     return _name;
 }
