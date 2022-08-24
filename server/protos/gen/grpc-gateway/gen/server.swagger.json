@@ -11,6 +11,38 @@
     "application/json"
   ],
   "paths": {
+    "/compare_face_feature": {
+      "post": {
+        "operationId": "FaceService_CompareFeature",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/face_serviceCompareResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/face_serviceCompareRequest"
+            }
+          }
+        ],
+        "tags": [
+          "FaceService"
+        ]
+      }
+    },
     "/detect_face": {
       "post": {
         "operationId": "FaceService_Detect",
@@ -77,6 +109,29 @@
     }
   },
   "definitions": {
+    "face_serviceCompareRequest": {
+      "type": "object",
+      "properties": {
+        "one": {
+          "$ref": "#/definitions/face_serviceFaceFeature"
+        },
+        "two": {
+          "$ref": "#/definitions/face_serviceFaceFeature"
+        }
+      }
+    },
+    "face_serviceCompareResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/face_serviceResultCode"
+        },
+        "score": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    },
     "face_serviceDetectionRequest": {
       "type": "object",
       "properties": {

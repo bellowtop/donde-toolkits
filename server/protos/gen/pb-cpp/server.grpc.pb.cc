@@ -26,6 +26,7 @@ namespace face_service {
 static const char* FaceService_method_names[] = {
   "/com.sekirocc.face_service.FaceService/Detect",
   "/com.sekirocc.face_service.FaceService/ExtractFeature",
+  "/com.sekirocc.face_service.FaceService/CompareFeature",
 };
 
 std::unique_ptr< FaceService::Stub> FaceService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -37,6 +38,7 @@ std::unique_ptr< FaceService::Stub> FaceService::NewStub(const std::shared_ptr< 
 FaceService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
   : channel_(channel), rpcmethod_Detect_(FaceService_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_ExtractFeature_(FaceService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_CompareFeature_(FaceService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status FaceService::Stub::Detect(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DetectionRequest& request, ::com::sekirocc::face_service::DetectionResponse* response) {
@@ -85,6 +87,29 @@ void FaceService::Stub::async::ExtractFeature(::grpc::ClientContext* context, co
   return result;
 }
 
+::grpc::Status FaceService::Stub::CompareFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::CompareRequest& request, ::com::sekirocc::face_service::CompareResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::com::sekirocc::face_service::CompareRequest, ::com::sekirocc::face_service::CompareResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_CompareFeature_, context, request, response);
+}
+
+void FaceService::Stub::async::CompareFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::CompareRequest* request, ::com::sekirocc::face_service::CompareResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::com::sekirocc::face_service::CompareRequest, ::com::sekirocc::face_service::CompareResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CompareFeature_, context, request, response, std::move(f));
+}
+
+void FaceService::Stub::async::CompareFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::CompareRequest* request, ::com::sekirocc::face_service::CompareResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CompareFeature_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::CompareResponse>* FaceService::Stub::PrepareAsyncCompareFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::CompareRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::com::sekirocc::face_service::CompareResponse, ::com::sekirocc::face_service::CompareRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_CompareFeature_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::CompareResponse>* FaceService::Stub::AsyncCompareFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::CompareRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncCompareFeatureRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 FaceService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       FaceService_method_names[0],
@@ -106,6 +131,16 @@ FaceService::Service::Service() {
              ::com::sekirocc::face_service::ExtractionResponse* resp) {
                return service->ExtractFeature(ctx, req, resp);
              }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      FaceService_method_names[2],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< FaceService::Service, ::com::sekirocc::face_service::CompareRequest, ::com::sekirocc::face_service::CompareResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](FaceService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::com::sekirocc::face_service::CompareRequest* req,
+             ::com::sekirocc::face_service::CompareResponse* resp) {
+               return service->CompareFeature(ctx, req, resp);
+             }, this)));
 }
 
 FaceService::Service::~Service() {
@@ -119,6 +154,13 @@ FaceService::Service::~Service() {
 }
 
 ::grpc::Status FaceService::Service::ExtractFeature(::grpc::ServerContext* context, const ::com::sekirocc::face_service::ExtractionRequest* request, ::com::sekirocc::face_service::ExtractionResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status FaceService::Service::CompareFeature(::grpc::ServerContext* context, const ::com::sekirocc::face_service::CompareRequest* request, ::com::sekirocc::face_service::CompareResponse* response) {
   (void) context;
   (void) request;
   (void) response;

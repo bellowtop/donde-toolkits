@@ -27,6 +27,7 @@
 #include <memory>
 #include <sstream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -35,6 +36,9 @@ using com::sekirocc::face_service::DetectionResponse;
 
 using com::sekirocc::face_service::ExtractionRequest;
 using com::sekirocc::face_service::ExtractionResponse;
+
+using com::sekirocc::face_service::CompareRequest;
+using com::sekirocc::face_service::CompareResponse;
 
 using com::sekirocc::face_service::FaceService;
 
@@ -158,6 +162,44 @@ Status FaceServiceImpl::ExtractFeature(ServerContext* context, const ExtractionR
 
         face_feat->set_blob(str);
     }
+
+    return Status::OK;
+}
+
+Status FaceServiceImpl::CompareFeature(ServerContext* context, const CompareRequest* request,
+                                       CompareResponse* response) {
+
+    FaceFeature one = request->one();
+    FaceFeature two = request->two();
+
+    const std::string& one_blob = one.blob();
+    const std::string& two_blob = two.blob();
+
+    const char* one_char_ptr = reinterpret_cast<const char *>(one_blob.data());
+    std::vector<float> one_float_vec(one_blob.size() / sizeof(float));
+    for (size_t i = 0; i < one_float_vec.size(); i ++) {
+        one_float_vec[i] = *reinterpret_cast<const float*>(one_char_ptr + i * sizeof(float));
+    }
+    std::cout << "one size" << one_float_vec.size() << std::endl;
+
+    Feature ft1(std::move(one_float_vec));
+
+    const char* two_char_ptr = reinterpret_cast<const char *>(two_blob.data());
+    std::vector<float> two_float_vec(two_blob.size() / sizeof(float));
+    for (size_t i = 0; i < two_float_vec.size(); i ++) {
+        two_float_vec[i] = *reinterpret_cast<const float*>(two_char_ptr + i * sizeof(float));
+    }
+    std::cout << "two size" << two_float_vec.size() << std::endl;
+    Feature ft2(std::move(two_float_vec));
+
+    if (one_float_vec.size() != two_float_vec.size()) {
+        return Status(StatusCode::INVALID_ARGUMENT, "invalid request feature", "number one & number two feature size no equal");
+    }
+
+    float score = ft1.compare(ft2);
+
+    response->set_code(ResultCode::OK);
+    response->set_score(score);
 
     return Status::OK;
 }

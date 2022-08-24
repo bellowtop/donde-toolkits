@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+#include <iostream>
 #include <cstdint>
 #include <map>
 #include <memory>
@@ -42,12 +44,39 @@ struct Feature {
     int version;
     std::string model;
     std::vector<float> raw;
+
+    Feature() = default;
+    Feature(std::vector<float>&& data) : raw(data){};
+
+    float compare(const Feature& other) {
+        float dot_product;
+        float len1, len2;
+
+        for (int i = 0; i < raw.size(); i++) {
+            dot_product += raw[i] * other.raw[i];
+
+            len1 += raw[i] * raw[i];
+            len2 += other.raw[i] * other.raw[i];
+        }
+
+        len1 = sqrtf(len1);
+        len2 = sqrtf(len2);
+
+        float angle_cos = dot_product / (len1 * len2);
+        if (angle_cos < -1.0)
+            angle_cos = -1.0;
+        if (angle_cos > 1.0)
+            angle_cos = 1.0;
+
+        float score = acosf(angle_cos);
+        std::cout << "score" << score << std::endl;
+        return score;
+    };
 };
 
 struct FeatureResult {
     std::vector<Feature> face_features;
 };
-
 
 enum ValueType {
     ValueFrame,

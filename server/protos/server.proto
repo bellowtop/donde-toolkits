@@ -72,6 +72,16 @@ message ExtractionResponse {
     repeated FaceFeature face_features = 3;
 }
 
+message CompareRequest {
+    FaceFeature one = 1;
+    FaceFeature two = 2;
+}
+
+message CompareResponse {
+    ResultCode code = 1;
+    float score = 2;
+}
+
 // face service
 service FaceService {
 
@@ -85,6 +95,13 @@ service FaceService {
     rpc ExtractFeature(ExtractionRequest) returns (ExtractionResponse) {
         option (google.api.http) = {
             post : "/extract_face_feature"
+            body : "*"
+        };
+    }
+
+    rpc CompareFeature(CompareRequest) returns (CompareResponse) {
+        option (google.api.http) = {
+            post : "/compare_face_feature"
             body : "*"
         };
     }

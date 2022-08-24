@@ -49,6 +49,12 @@ extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table
 namespace com {
 namespace sekirocc {
 namespace face_service {
+class CompareRequest;
+struct CompareRequestDefaultTypeInternal;
+extern CompareRequestDefaultTypeInternal _CompareRequest_default_instance_;
+class CompareResponse;
+struct CompareResponseDefaultTypeInternal;
+extern CompareResponseDefaultTypeInternal _CompareResponse_default_instance_;
 class DetectionRequest;
 struct DetectionRequestDefaultTypeInternal;
 extern DetectionRequestDefaultTypeInternal _DetectionRequest_default_instance_;
@@ -83,6 +89,8 @@ extern SizeDefaultTypeInternal _Size_default_instance_;
 }  // namespace sekirocc
 }  // namespace com
 PROTOBUF_NAMESPACE_OPEN
+template<> ::com::sekirocc::face_service::CompareRequest* Arena::CreateMaybeMessage<::com::sekirocc::face_service::CompareRequest>(Arena*);
+template<> ::com::sekirocc::face_service::CompareResponse* Arena::CreateMaybeMessage<::com::sekirocc::face_service::CompareResponse>(Arena*);
 template<> ::com::sekirocc::face_service::DetectionRequest* Arena::CreateMaybeMessage<::com::sekirocc::face_service::DetectionRequest>(Arena*);
 template<> ::com::sekirocc::face_service::DetectionResponse* Arena::CreateMaybeMessage<::com::sekirocc::face_service::DetectionResponse>(Arena*);
 template<> ::com::sekirocc::face_service::ExtractionRequest* Arena::CreateMaybeMessage<::com::sekirocc::face_service::ExtractionRequest>(Arena*);
@@ -1839,6 +1847,342 @@ class ExtractionResponse final :
   union { Impl_ _impl_; };
   friend struct ::TableStruct_server_2eproto;
 };
+// -------------------------------------------------------------------
+
+class CompareRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.face_service.CompareRequest) */ {
+ public:
+  inline CompareRequest() : CompareRequest(nullptr) {}
+  ~CompareRequest() override;
+  explicit PROTOBUF_CONSTEXPR CompareRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  CompareRequest(const CompareRequest& from);
+  CompareRequest(CompareRequest&& from) noexcept
+    : CompareRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline CompareRequest& operator=(const CompareRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CompareRequest& operator=(CompareRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CompareRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const CompareRequest* internal_default_instance() {
+    return reinterpret_cast<const CompareRequest*>(
+               &_CompareRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    10;
+
+  friend void swap(CompareRequest& a, CompareRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(CompareRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CompareRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  CompareRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<CompareRequest>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const CompareRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const CompareRequest& from) {
+    CompareRequest::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(CompareRequest* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "com.sekirocc.face_service.CompareRequest";
+  }
+  protected:
+  explicit CompareRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kOneFieldNumber = 1,
+    kTwoFieldNumber = 2,
+  };
+  // .com.sekirocc.face_service.FaceFeature one = 1;
+  bool has_one() const;
+  private:
+  bool _internal_has_one() const;
+  public:
+  void clear_one();
+  const ::com::sekirocc::face_service::FaceFeature& one() const;
+  PROTOBUF_NODISCARD ::com::sekirocc::face_service::FaceFeature* release_one();
+  ::com::sekirocc::face_service::FaceFeature* mutable_one();
+  void set_allocated_one(::com::sekirocc::face_service::FaceFeature* one);
+  private:
+  const ::com::sekirocc::face_service::FaceFeature& _internal_one() const;
+  ::com::sekirocc::face_service::FaceFeature* _internal_mutable_one();
+  public:
+  void unsafe_arena_set_allocated_one(
+      ::com::sekirocc::face_service::FaceFeature* one);
+  ::com::sekirocc::face_service::FaceFeature* unsafe_arena_release_one();
+
+  // .com.sekirocc.face_service.FaceFeature two = 2;
+  bool has_two() const;
+  private:
+  bool _internal_has_two() const;
+  public:
+  void clear_two();
+  const ::com::sekirocc::face_service::FaceFeature& two() const;
+  PROTOBUF_NODISCARD ::com::sekirocc::face_service::FaceFeature* release_two();
+  ::com::sekirocc::face_service::FaceFeature* mutable_two();
+  void set_allocated_two(::com::sekirocc::face_service::FaceFeature* two);
+  private:
+  const ::com::sekirocc::face_service::FaceFeature& _internal_two() const;
+  ::com::sekirocc::face_service::FaceFeature* _internal_mutable_two();
+  public:
+  void unsafe_arena_set_allocated_two(
+      ::com::sekirocc::face_service::FaceFeature* two);
+  ::com::sekirocc::face_service::FaceFeature* unsafe_arena_release_two();
+
+  // @@protoc_insertion_point(class_scope:com.sekirocc.face_service.CompareRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::com::sekirocc::face_service::FaceFeature* one_;
+    ::com::sekirocc::face_service::FaceFeature* two_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_server_2eproto;
+};
+// -------------------------------------------------------------------
+
+class CompareResponse final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.face_service.CompareResponse) */ {
+ public:
+  inline CompareResponse() : CompareResponse(nullptr) {}
+  ~CompareResponse() override;
+  explicit PROTOBUF_CONSTEXPR CompareResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  CompareResponse(const CompareResponse& from);
+  CompareResponse(CompareResponse&& from) noexcept
+    : CompareResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline CompareResponse& operator=(const CompareResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CompareResponse& operator=(CompareResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CompareResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const CompareResponse* internal_default_instance() {
+    return reinterpret_cast<const CompareResponse*>(
+               &_CompareResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    11;
+
+  friend void swap(CompareResponse& a, CompareResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(CompareResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CompareResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  CompareResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<CompareResponse>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const CompareResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const CompareResponse& from) {
+    CompareResponse::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(CompareResponse* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "com.sekirocc.face_service.CompareResponse";
+  }
+  protected:
+  explicit CompareResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kCodeFieldNumber = 1,
+    kScoreFieldNumber = 2,
+  };
+  // .com.sekirocc.face_service.ResultCode code = 1;
+  void clear_code();
+  ::com::sekirocc::face_service::ResultCode code() const;
+  void set_code(::com::sekirocc::face_service::ResultCode value);
+  private:
+  ::com::sekirocc::face_service::ResultCode _internal_code() const;
+  void _internal_set_code(::com::sekirocc::face_service::ResultCode value);
+  public:
+
+  // float score = 2;
+  void clear_score();
+  float score() const;
+  void set_score(float value);
+  private:
+  float _internal_score() const;
+  void _internal_set_score(float value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:com.sekirocc.face_service.CompareResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    int code_;
+    float score_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_server_2eproto;
+};
 // ===================================================================
 
 
@@ -2806,9 +3150,241 @@ ExtractionResponse::face_features() const {
   return _impl_.face_features_;
 }
 
+// -------------------------------------------------------------------
+
+// CompareRequest
+
+// .com.sekirocc.face_service.FaceFeature one = 1;
+inline bool CompareRequest::_internal_has_one() const {
+  return this != internal_default_instance() && _impl_.one_ != nullptr;
+}
+inline bool CompareRequest::has_one() const {
+  return _internal_has_one();
+}
+inline void CompareRequest::clear_one() {
+  if (GetArenaForAllocation() == nullptr && _impl_.one_ != nullptr) {
+    delete _impl_.one_;
+  }
+  _impl_.one_ = nullptr;
+}
+inline const ::com::sekirocc::face_service::FaceFeature& CompareRequest::_internal_one() const {
+  const ::com::sekirocc::face_service::FaceFeature* p = _impl_.one_;
+  return p != nullptr ? *p : reinterpret_cast<const ::com::sekirocc::face_service::FaceFeature&>(
+      ::com::sekirocc::face_service::_FaceFeature_default_instance_);
+}
+inline const ::com::sekirocc::face_service::FaceFeature& CompareRequest::one() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.CompareRequest.one)
+  return _internal_one();
+}
+inline void CompareRequest::unsafe_arena_set_allocated_one(
+    ::com::sekirocc::face_service::FaceFeature* one) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.one_);
+  }
+  _impl_.one_ = one;
+  if (one) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:com.sekirocc.face_service.CompareRequest.one)
+}
+inline ::com::sekirocc::face_service::FaceFeature* CompareRequest::release_one() {
+  
+  ::com::sekirocc::face_service::FaceFeature* temp = _impl_.one_;
+  _impl_.one_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::com::sekirocc::face_service::FaceFeature* CompareRequest::unsafe_arena_release_one() {
+  // @@protoc_insertion_point(field_release:com.sekirocc.face_service.CompareRequest.one)
+  
+  ::com::sekirocc::face_service::FaceFeature* temp = _impl_.one_;
+  _impl_.one_ = nullptr;
+  return temp;
+}
+inline ::com::sekirocc::face_service::FaceFeature* CompareRequest::_internal_mutable_one() {
+  
+  if (_impl_.one_ == nullptr) {
+    auto* p = CreateMaybeMessage<::com::sekirocc::face_service::FaceFeature>(GetArenaForAllocation());
+    _impl_.one_ = p;
+  }
+  return _impl_.one_;
+}
+inline ::com::sekirocc::face_service::FaceFeature* CompareRequest::mutable_one() {
+  ::com::sekirocc::face_service::FaceFeature* _msg = _internal_mutable_one();
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.face_service.CompareRequest.one)
+  return _msg;
+}
+inline void CompareRequest::set_allocated_one(::com::sekirocc::face_service::FaceFeature* one) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete _impl_.one_;
+  }
+  if (one) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(one);
+    if (message_arena != submessage_arena) {
+      one = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, one, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.one_ = one;
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.face_service.CompareRequest.one)
+}
+
+// .com.sekirocc.face_service.FaceFeature two = 2;
+inline bool CompareRequest::_internal_has_two() const {
+  return this != internal_default_instance() && _impl_.two_ != nullptr;
+}
+inline bool CompareRequest::has_two() const {
+  return _internal_has_two();
+}
+inline void CompareRequest::clear_two() {
+  if (GetArenaForAllocation() == nullptr && _impl_.two_ != nullptr) {
+    delete _impl_.two_;
+  }
+  _impl_.two_ = nullptr;
+}
+inline const ::com::sekirocc::face_service::FaceFeature& CompareRequest::_internal_two() const {
+  const ::com::sekirocc::face_service::FaceFeature* p = _impl_.two_;
+  return p != nullptr ? *p : reinterpret_cast<const ::com::sekirocc::face_service::FaceFeature&>(
+      ::com::sekirocc::face_service::_FaceFeature_default_instance_);
+}
+inline const ::com::sekirocc::face_service::FaceFeature& CompareRequest::two() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.CompareRequest.two)
+  return _internal_two();
+}
+inline void CompareRequest::unsafe_arena_set_allocated_two(
+    ::com::sekirocc::face_service::FaceFeature* two) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.two_);
+  }
+  _impl_.two_ = two;
+  if (two) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:com.sekirocc.face_service.CompareRequest.two)
+}
+inline ::com::sekirocc::face_service::FaceFeature* CompareRequest::release_two() {
+  
+  ::com::sekirocc::face_service::FaceFeature* temp = _impl_.two_;
+  _impl_.two_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::com::sekirocc::face_service::FaceFeature* CompareRequest::unsafe_arena_release_two() {
+  // @@protoc_insertion_point(field_release:com.sekirocc.face_service.CompareRequest.two)
+  
+  ::com::sekirocc::face_service::FaceFeature* temp = _impl_.two_;
+  _impl_.two_ = nullptr;
+  return temp;
+}
+inline ::com::sekirocc::face_service::FaceFeature* CompareRequest::_internal_mutable_two() {
+  
+  if (_impl_.two_ == nullptr) {
+    auto* p = CreateMaybeMessage<::com::sekirocc::face_service::FaceFeature>(GetArenaForAllocation());
+    _impl_.two_ = p;
+  }
+  return _impl_.two_;
+}
+inline ::com::sekirocc::face_service::FaceFeature* CompareRequest::mutable_two() {
+  ::com::sekirocc::face_service::FaceFeature* _msg = _internal_mutable_two();
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.face_service.CompareRequest.two)
+  return _msg;
+}
+inline void CompareRequest::set_allocated_two(::com::sekirocc::face_service::FaceFeature* two) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete _impl_.two_;
+  }
+  if (two) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(two);
+    if (message_arena != submessage_arena) {
+      two = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, two, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.two_ = two;
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.face_service.CompareRequest.two)
+}
+
+// -------------------------------------------------------------------
+
+// CompareResponse
+
+// .com.sekirocc.face_service.ResultCode code = 1;
+inline void CompareResponse::clear_code() {
+  _impl_.code_ = 0;
+}
+inline ::com::sekirocc::face_service::ResultCode CompareResponse::_internal_code() const {
+  return static_cast< ::com::sekirocc::face_service::ResultCode >(_impl_.code_);
+}
+inline ::com::sekirocc::face_service::ResultCode CompareResponse::code() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.CompareResponse.code)
+  return _internal_code();
+}
+inline void CompareResponse::_internal_set_code(::com::sekirocc::face_service::ResultCode value) {
+  
+  _impl_.code_ = value;
+}
+inline void CompareResponse::set_code(::com::sekirocc::face_service::ResultCode value) {
+  _internal_set_code(value);
+  // @@protoc_insertion_point(field_set:com.sekirocc.face_service.CompareResponse.code)
+}
+
+// float score = 2;
+inline void CompareResponse::clear_score() {
+  _impl_.score_ = 0;
+}
+inline float CompareResponse::_internal_score() const {
+  return _impl_.score_;
+}
+inline float CompareResponse::score() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.CompareResponse.score)
+  return _internal_score();
+}
+inline void CompareResponse::_internal_set_score(float value) {
+  
+  _impl_.score_ = value;
+}
+inline void CompareResponse::set_score(float value) {
+  _internal_set_score(value);
+  // @@protoc_insertion_point(field_set:com.sekirocc.face_service.CompareResponse.score)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

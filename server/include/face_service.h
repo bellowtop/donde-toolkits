@@ -22,6 +22,8 @@ using com::sekirocc::face_service::DetectionRequest;
 using com::sekirocc::face_service::DetectionResponse;
 using com::sekirocc::face_service::ExtractionRequest;
 using com::sekirocc::face_service::ExtractionResponse;
+using com::sekirocc::face_service::CompareRequest;
+using com::sekirocc::face_service::CompareResponse;
 using com::sekirocc::face_service::FaceService;
 
 using grpc::ServerContext;
@@ -39,6 +41,9 @@ class FaceServiceImpl final : public FaceService::Service {
 
     Status ExtractFeature(ServerContext* context, const ExtractionRequest* request,
                           ExtractionResponse* response) override;
+
+    Status CompareFeature(ServerContext* context, const CompareRequest* request,
+                          CompareResponse* response) override;
 
 
   private:
