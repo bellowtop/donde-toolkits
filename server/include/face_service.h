@@ -20,6 +20,8 @@ using namespace std;
 
 using com::sekirocc::face_service::DetectionRequest;
 using com::sekirocc::face_service::DetectionResponse;
+using com::sekirocc::face_service::ExtractionRequest;
+using com::sekirocc::face_service::ExtractionResponse;
 using com::sekirocc::face_service::FaceService;
 
 using grpc::ServerContext;
@@ -34,6 +36,10 @@ class FaceServiceImpl final : public FaceService::Service {
 
     Status Detect(ServerContext* context, const DetectionRequest* request,
                   DetectionResponse* response) override;
+
+    Status ExtractFeature(ServerContext* context, const ExtractionRequest* request,
+                          ExtractionResponse* response) override;
+
 
   private:
     Config& config;

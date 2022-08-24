@@ -47,8 +47,8 @@ message Image {
 
 message FaceFeature {
     int32 version = 1;
-  string model = 2;
-    repeated float feature = 3;
+    string model = 2;
+    bytes blob = 3;
 }
 
 message FaceRectangle {
@@ -88,5 +88,4 @@ service FaceService {
             body : "*"
         };
     }
-
 }

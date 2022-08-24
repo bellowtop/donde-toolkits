@@ -221,7 +221,7 @@ TEST_CASE("FacePipeline extract face feature from image file.") {
     {
         for (Feature& ft : feature_result->face_features) {
             std::cout << "face_feature:\n\t";
-            for (float& f : ft.blob)
+            for (float& f : ft.raw)
                 std::cout << f << " ";
             std::cout << std::endl;
         }

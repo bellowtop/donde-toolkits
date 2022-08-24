@@ -181,7 +181,7 @@ RetCode FeatureWorker::process(const AlignerResult& aligner_result, FeatureResul
         // debugOutputTensor(output_tensor);
 
         Feature ft;
-        ft.blob.reserve(_feature_length);
+        ft.raw.reserve(_feature_length);
         ft.version = 10000;
         ft.model = "Sphereface";
 
@@ -190,7 +190,7 @@ RetCode FeatureWorker::process(const AlignerResult& aligner_result, FeatureResul
         size_t offset = batch_idx * _feature_length;
         for (size_t i = 0; i < _feature_length; i++) {
             float x = tensor_data[offset + i];
-            ft.blob.push_back(x);
+            ft.raw.push_back(x);
         }
 
         result.face_features.push_back(ft);

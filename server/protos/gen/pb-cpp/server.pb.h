@@ -933,32 +933,10 @@ class FaceFeature final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kFeatureFieldNumber = 3,
     kModelFieldNumber = 2,
+    kBlobFieldNumber = 3,
     kVersionFieldNumber = 1,
   };
-  // repeated float feature = 3;
-  int feature_size() const;
-  private:
-  int _internal_feature_size() const;
-  public:
-  void clear_feature();
-  private:
-  float _internal_feature(int index) const;
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >&
-      _internal_feature() const;
-  void _internal_add_feature(float value);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >*
-      _internal_mutable_feature();
-  public:
-  float feature(int index) const;
-  void set_feature(int index, float value);
-  void add_feature(float value);
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >&
-      feature() const;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >*
-      mutable_feature();
-
   // string model = 2;
   void clear_model();
   const std::string& model() const;
@@ -971,6 +949,20 @@ class FaceFeature final :
   const std::string& _internal_model() const;
   inline PROTOBUF_ALWAYS_INLINE void _internal_set_model(const std::string& value);
   std::string* _internal_mutable_model();
+  public:
+
+  // bytes blob = 3;
+  void clear_blob();
+  const std::string& blob() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_blob(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_blob();
+  PROTOBUF_NODISCARD std::string* release_blob();
+  void set_allocated_blob(std::string* blob);
+  private:
+  const std::string& _internal_blob() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_blob(const std::string& value);
+  std::string* _internal_mutable_blob();
   public:
 
   // int32 version = 1;
@@ -990,8 +982,8 @@ class FaceFeature final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::RepeatedField< float > feature_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr model_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr blob_;
     int32_t version_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -2274,51 +2266,54 @@ inline void FaceFeature::set_allocated_model(std::string* model) {
   // @@protoc_insertion_point(field_set_allocated:com.sekirocc.face_service.FaceFeature.model)
 }
 
-// repeated float feature = 3;
-inline int FaceFeature::_internal_feature_size() const {
-  return _impl_.feature_.size();
+// bytes blob = 3;
+inline void FaceFeature::clear_blob() {
+  _impl_.blob_.ClearToEmpty();
 }
-inline int FaceFeature::feature_size() const {
-  return _internal_feature_size();
+inline const std::string& FaceFeature::blob() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.FaceFeature.blob)
+  return _internal_blob();
 }
-inline void FaceFeature::clear_feature() {
-  _impl_.feature_.Clear();
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void FaceFeature::set_blob(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.blob_.SetBytes(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:com.sekirocc.face_service.FaceFeature.blob)
 }
-inline float FaceFeature::_internal_feature(int index) const {
-  return _impl_.feature_.Get(index);
+inline std::string* FaceFeature::mutable_blob() {
+  std::string* _s = _internal_mutable_blob();
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.face_service.FaceFeature.blob)
+  return _s;
 }
-inline float FaceFeature::feature(int index) const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.FaceFeature.feature)
-  return _internal_feature(index);
+inline const std::string& FaceFeature::_internal_blob() const {
+  return _impl_.blob_.Get();
 }
-inline void FaceFeature::set_feature(int index, float value) {
-  _impl_.feature_.Set(index, value);
-  // @@protoc_insertion_point(field_set:com.sekirocc.face_service.FaceFeature.feature)
+inline void FaceFeature::_internal_set_blob(const std::string& value) {
+  
+  _impl_.blob_.Set(value, GetArenaForAllocation());
 }
-inline void FaceFeature::_internal_add_feature(float value) {
-  _impl_.feature_.Add(value);
+inline std::string* FaceFeature::_internal_mutable_blob() {
+  
+  return _impl_.blob_.Mutable(GetArenaForAllocation());
 }
-inline void FaceFeature::add_feature(float value) {
-  _internal_add_feature(value);
-  // @@protoc_insertion_point(field_add:com.sekirocc.face_service.FaceFeature.feature)
+inline std::string* FaceFeature::release_blob() {
+  // @@protoc_insertion_point(field_release:com.sekirocc.face_service.FaceFeature.blob)
+  return _impl_.blob_.Release();
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >&
-FaceFeature::_internal_feature() const {
-  return _impl_.feature_;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >&
-FaceFeature::feature() const {
-  // @@protoc_insertion_point(field_list:com.sekirocc.face_service.FaceFeature.feature)
-  return _internal_feature();
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >*
-FaceFeature::_internal_mutable_feature() {
-  return &_impl_.feature_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< float >*
-FaceFeature::mutable_feature() {
-  // @@protoc_insertion_point(field_mutable_list:com.sekirocc.face_service.FaceFeature.feature)
-  return _internal_mutable_feature();
+inline void FaceFeature::set_allocated_blob(std::string* blob) {
+  if (blob != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.blob_.SetAllocated(blob, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.blob_.IsDefault()) {
+    _impl_.blob_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.face_service.FaceFeature.blob)
 }
 
 // -------------------------------------------------------------------

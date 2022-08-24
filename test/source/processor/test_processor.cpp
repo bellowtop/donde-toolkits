@@ -53,7 +53,7 @@ TEST_CASE("ConcurrentProcessor comunicate with DummyWorker using channel.") {
                         // allocate memory in heap, the caller is responsible to free it!
                         std::shared_ptr<Feature> result = std::make_shared<Feature>();
 
-                        result->blob.resize(100);
+                        result->raw.resize(100);
                         Value output{ValueFeature, result};
 
                         msg->setResponse(output);
@@ -88,7 +88,7 @@ TEST_CASE("ConcurrentProcessor comunicate with DummyWorker using channel.") {
     CHECK(output.valuePtr != nullptr);
 
     std::shared_ptr<Feature> feature = std::static_pointer_cast<Feature>(output.valuePtr);
-    CHECK(feature->blob.size() == 100);
+    CHECK(feature->raw.size() == 100);
 
     processor.Process(input, output);
     processor.Process(input, output);
