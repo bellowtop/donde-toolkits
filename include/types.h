@@ -1,13 +1,16 @@
 #pragma once
 
+#include "spdlog/spdlog.h"
+
 #include <cmath>
-#include <iostream>
 #include <cstdint>
+#include <iostream>
 #include <map>
 #include <memory>
 #include <opencv2/core/mat.hpp>
 #include <opencv2/core/types.hpp>
 #include <ostream>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -46,30 +49,44 @@ struct Feature {
     std::vector<float> raw;
 
     Feature() = default;
-    Feature(std::vector<float>&& data) : raw(data){};
+    Feature(std::vector<float>&& data) : raw{data}{};
+    Feature(std::vector<float>&& data, std::string&& model, int version) : raw{data}, model{model}, version{version}{};
 
-    float compare(const Feature& other) {
-        float dot_product;
-        float len1, len2;
+    void debugPrint() const {
+        std::stringstream ss;
+        ss << "ft:" << " dim:" << raw.size() << " model:" << model << " version:" << version << std::endl;
+        for (float f : raw) {
+            ss << f << " ";
+        }
+        ss << std::endl;
+        spdlog::debug(ss.str());
+    };
 
-        for (int i = 0; i < raw.size(); i++) {
-            dot_product += raw[i] * other.raw[i];
+    const std::vector<float> normalize(const std::vector<float> raw_floats) const {
+        std::vector norm(raw_floats.size(), 0.f);
+        float len = 0.f;
+        for (int i = 0; i < raw_floats.size(); i++) {
+            len += raw_floats[i] * raw_floats[i];
+        }
+        len = sqrtf(len);
+        for (int i = 0; i < norm.size(); i++) {
+            norm[i] = raw_floats[i] / len;
+        }
+        return norm;
+    };
 
-            len1 += raw[i] * raw[i];
-            len2 += other.raw[i] * other.raw[i];
+    float compare(const Feature& other) const{
+        float score = 0.f;
+
+        auto norm1 = normalize(raw);
+        auto norm2 = normalize(other.raw);
+
+        for (int i = 0; i < norm1.size(); i++) {
+            score += norm1[i] * norm2[i];
         }
 
-        len1 = sqrtf(len1);
-        len2 = sqrtf(len2);
+        spdlog::debug("score: {}", score);
 
-        float angle_cos = dot_product / (len1 * len2);
-        if (angle_cos < -1.0)
-            angle_cos = -1.0;
-        if (angle_cos > 1.0)
-            angle_cos = 1.0;
-
-        float score = acosf(angle_cos);
-        std::cout << "score" << score << std::endl;
         return score;
     };
 };

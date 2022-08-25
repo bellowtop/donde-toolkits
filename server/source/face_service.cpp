@@ -152,8 +152,10 @@ Status FaceServiceImpl::ExtractFeature(ServerContext* context, const ExtractionR
     }
 
     for (auto& ft : feature_result->face_features) {
+        ft.debugPrint();
+
         FaceFeature* face_feat = response->add_face_features();
-        const char* p = reinterpret_cast<const char *>(&ft.raw[0]);
+        const char* p = reinterpret_cast<const char*>(&ft.raw[0]);
         size_t size = sizeof(float) * ft.raw.size();
 
         std::string str;
@@ -161,6 +163,8 @@ Status FaceServiceImpl::ExtractFeature(ServerContext* context, const ExtractionR
         std::copy(p, p + size, str.data());
 
         face_feat->set_blob(str);
+        face_feat->set_version(ft.version);
+        face_feat->set_model(ft.model);
     }
 
     return Status::OK;
@@ -175,26 +179,31 @@ Status FaceServiceImpl::CompareFeature(ServerContext* context, const CompareRequ
     const std::string& one_blob = one.blob();
     const std::string& two_blob = two.blob();
 
-    const char* one_char_ptr = reinterpret_cast<const char *>(one_blob.data());
+    const char* one_char_ptr = reinterpret_cast<const char*>(one_blob.data());
     std::vector<float> one_float_vec(one_blob.size() / sizeof(float));
-    for (size_t i = 0; i < one_float_vec.size(); i ++) {
+    for (size_t i = 0; i < one_float_vec.size(); i++) {
         one_float_vec[i] = *reinterpret_cast<const float*>(one_char_ptr + i * sizeof(float));
     }
-    std::cout << "one size" << one_float_vec.size() << std::endl;
+    std::cout << "vector one size: " << one_float_vec.size() << std::endl;
 
-    Feature ft1(std::move(one_float_vec));
+    Feature ft1(std::move(one_float_vec), std::string(one.model()), one.version());
 
-    const char* two_char_ptr = reinterpret_cast<const char *>(two_blob.data());
+    const char* two_char_ptr = reinterpret_cast<const char*>(two_blob.data());
     std::vector<float> two_float_vec(two_blob.size() / sizeof(float));
-    for (size_t i = 0; i < two_float_vec.size(); i ++) {
+    for (size_t i = 0; i < two_float_vec.size(); i++) {
         two_float_vec[i] = *reinterpret_cast<const float*>(two_char_ptr + i * sizeof(float));
     }
-    std::cout << "two size" << two_float_vec.size() << std::endl;
-    Feature ft2(std::move(two_float_vec));
+    std::cout << "vector two size: " << two_float_vec.size() << std::endl;
+
+    Feature ft2(std::move(two_float_vec), std::string(two.model()), two.version());
 
     if (one_float_vec.size() != two_float_vec.size()) {
-        return Status(StatusCode::INVALID_ARGUMENT, "invalid request feature", "number one & number two feature size no equal");
+        return Status(StatusCode::INVALID_ARGUMENT, "invalid request feature",
+                      "number one & number two feature size no equal");
     }
+
+    ft1.debugPrint();
+    ft2.debugPrint();
 
     float score = ft1.compare(ft2);
 
