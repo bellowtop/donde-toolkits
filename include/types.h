@@ -44,9 +44,9 @@ struct AlignerResult {
 };
 
 struct Feature {
-    int version;
-    std::string model;
     std::vector<float> raw;
+    std::string model;
+    int version;
 
     Feature() = default;
     Feature(std::vector<float>&& data) : raw{data}{};
@@ -65,11 +65,11 @@ struct Feature {
     const std::vector<float> normalize(const std::vector<float> raw_floats) const {
         std::vector norm(raw_floats.size(), 0.f);
         float len = 0.f;
-        for (int i = 0; i < raw_floats.size(); i++) {
+        for (size_t i = 0; i < raw_floats.size(); i++) {
             len += raw_floats[i] * raw_floats[i];
         }
         len = sqrtf(len);
-        for (int i = 0; i < norm.size(); i++) {
+        for (size_t i = 0; i < norm.size(); i++) {
             norm[i] = raw_floats[i] / len;
         }
         return norm;
@@ -81,7 +81,7 @@ struct Feature {
         auto norm1 = normalize(raw);
         auto norm2 = normalize(other.raw);
 
-        for (int i = 0; i < norm1.size(); i++) {
+        for (size_t i = 0; i < norm1.size(); i++) {
             score += norm1[i] * norm2[i];
         }
 

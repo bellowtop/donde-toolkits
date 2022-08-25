@@ -1,6 +1,6 @@
 #include "concurrent_processor.h"
 #include "face_pipeline.h"
-#include "processor_worker.h"
+#include "openvino_worker/workers.h"
 #include "types.h"
 #include "utils.h"
 
@@ -17,6 +17,7 @@
 #include <string>
 
 using namespace std;
+using namespace openvino_worker;
 
 using nlohmann::json;
 
