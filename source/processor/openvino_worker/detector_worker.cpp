@@ -1,4 +1,4 @@
-#include "processor_worker.h"
+#include "openvino_worker/workers.h"
 
 #include "Poco/AutoPtr.h"
 #include "Poco/Logger.h"
@@ -25,6 +25,7 @@ using Poco::Notification;
 using Poco::NotificationQueue;
 
 using namespace Poco;
+using namespace openvino_worker;
 
 DetectorWorker::DetectorWorker(std::shared_ptr<NotificationQueue> ch) : Worker(ch) {}
 

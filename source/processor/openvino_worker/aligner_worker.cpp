@@ -3,7 +3,7 @@
 #include "Poco/Notification.h"
 #include "Poco/NotificationQueue.h"
 #include "concurrent_processor.h"
-#include "processor_worker.h"
+#include "openvino_worker/workers.h"
 #include "opencv2/opencv.hpp"
 #include "openvino/openvino.hpp"
 #include "spdlog/sinks/stdout_color_sinks.h"
@@ -27,6 +27,7 @@ using Poco::Notification;
 using Poco::NotificationQueue;
 
 using namespace Poco;
+using namespace openvino_worker;
 
 AlignerWorker::AlignerWorker(std::shared_ptr<NotificationQueue> ch) : Worker(ch) {}
 

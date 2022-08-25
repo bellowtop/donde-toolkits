@@ -1,7 +1,6 @@
 #pragma once
 
 #include "concurrent_processor.h"
-#include "processor_worker.h"
 #include "nlohmann/json.hpp"
 #include "types.h"
 

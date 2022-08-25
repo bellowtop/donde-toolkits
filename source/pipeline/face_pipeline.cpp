@@ -1,8 +1,10 @@
 #include "face_pipeline.h"
 
-#include "Poco/Logger.h"
 #include "Poco/Thread.h"
 #include "concurrent_processor.h"
+
+#include "openvino_worker/workers.h"
+
 #include "nlohmann/json.hpp"
 #include "spdlog/spdlog.h"
 #include "types.h"
@@ -14,8 +16,7 @@
 #include <opencv2/opencv.hpp>
 
 using namespace std;
-
-using Poco::Logger;
+using namespace openvino_worker;
 
 using json = nlohmann::json;
 

@@ -3,7 +3,8 @@
 #include "Poco/Notification.h"
 #include "Poco/NotificationQueue.h"
 #include "concurrent_processor.h"
-#include "processor_worker.h"
+#include "openvino_worker/workers.h"
+
 #include "opencv2/opencv.hpp"
 #include "openvino/openvino.hpp"
 #include "spdlog/sinks/stdout_color_sinks.h"
@@ -23,10 +24,11 @@ using Poco::Notification;
 using Poco::NotificationQueue;
 
 using namespace Poco;
+using namespace openvino_worker;
 
-FeatureWorker::FeatureWorker(std::shared_ptr<NotificationQueue> ch) : Worker(ch) {}
+LandmarksWorker::LandmarksWorker(std::shared_ptr<NotificationQueue> ch) : Worker(ch) {}
 
-FeatureWorker::~FeatureWorker() {
+LandmarksWorker::~LandmarksWorker() {
     // _channel.reset();
 }
 
@@ -34,27 +36,27 @@ FeatureWorker::~FeatureWorker() {
 
    conf:
    {
-     "model": "../models/Sphereface.xml"
+     "model": "../models/facial-landmarks-35-adas-0002.xml"
      "warmup": false
    }
 
  */
 
-void FeatureWorker::debugOutputTensor(const ov::Tensor& output_tensor) {
+void LandmarksWorker::debugOutputTensor(const ov::Tensor& output_tensor) {
     const float* tensor_data = output_tensor.data<float>();
 
     // only one batch yet.
     size_t batch_idx = 0;
-    const std::vector<float> arr(tensor_data, tensor_data + _feature_length);
-    std::cout << "feature-extract: ";
+    const std::vector<float> arr(tensor_data, tensor_data + _landmarks_length);
+    std::cout << "landmarks: ";
     for (float f : arr) {
         std::cout << f << " ";
     }
     std::cout << std::endl;
 }
 
-RetCode FeatureWorker::Init(json conf, int i, std::string device_id) {
-    _name = "feature-extract-worker-" + std::to_string(i);
+RetCode LandmarksWorker::Init(json conf, int i, std::string device_id) {
+    _name = "landmarks-worker-" + std::to_string(i);
     init_log(_name);
 
     _id = i;
@@ -93,11 +95,11 @@ RetCode FeatureWorker::Init(json conf, int i, std::string device_id) {
     _image_width = input_shape[ov::layout::width_idx(tensor_layout)];
     _image_height = input_shape[ov::layout::height_idx(tensor_layout)];
 
-    // Face embeddings, name - fc5, shape - 1, 512, output data format - B, C, where
+    // output shape: [1, 70], where 70 means [x0, y0, x1, y1....], 35 points
     // SEE
-    // https://github.com/openvinotoolkit/open_model_zoo/blob/master/models/public/Sphereface/README.md
+    // https://github.com/openvinotoolkit/open_model_zoo/blob/master/models/intel/facial-landmarks-35-adas-0002/README.md
     ov::Shape output_shape = model->output().get_shape();
-    _feature_length = output_shape[1];
+    _landmarks_length = output_shape[1];
 
     _compiled_model
         = std::make_shared<ov::CompiledModel>(std::move(core.compile_model(model, "CPU")));
@@ -105,17 +107,23 @@ RetCode FeatureWorker::Init(json conf, int i, std::string device_id) {
         = std::make_shared<ov::InferRequest>(std::move(_compiled_model->create_infer_request()));
 
     if (conf.contains("warmup") && conf["warmup"]) {
-        // TODO
         // warmup img
         std::string warmup_image = "./contrib/data/test_image_5_person.jpeg";
         cv::Mat img = cv::imread(warmup_image);
         cv::Rect face{839, 114, 256, 331};
+
+        DetectResult detect_result;
+        detect_result.faces.push_back(FaceDetection{0.9, face});
+        detect_result.frame = std::make_shared<Frame>(img);
+
+        LandmarksResult result;
+        process(detect_result, result);
     }
 
     return RET_OK;
 }
 
-void FeatureWorker::run() {
+void LandmarksWorker::run() {
     for (;;) {
         Notification::Ptr pNf(_channel->waitDequeueNotification());
 
@@ -126,20 +134,20 @@ void FeatureWorker::run() {
                     break;
                 }
                 Value input = msg->getRequest();
-                if (input.valueType != ValueAlignerResult) {
-                    _logger->error("FeatureWorker input value is not a ValueAlignerResult! wrong "
+                if (input.valueType != ValueDetectResult) {
+                    _logger->error("LandmarksWorker input value is not a ValueDetectResult! wrong "
                                    "valueType: {}",
                                    format(input.valueType));
                     continue;
                 }
-                std::shared_ptr<AlignerResult> aligner_result
-                    = std::static_pointer_cast<AlignerResult>(input.valuePtr);
-                std::shared_ptr<FeatureResult> result = std::make_shared<FeatureResult>();
+                std::shared_ptr<DetectResult> detect_result
+                    = std::static_pointer_cast<DetectResult>(input.valuePtr);
+                std::shared_ptr<LandmarksResult> result = std::make_shared<LandmarksResult>();
 
-                RetCode ret = process(*aligner_result, *result);
+                RetCode ret = process(*detect_result, *result);
                 _logger->debug("process ret: {}", ret);
 
-                Value output{ValueFeatureResult, result};
+                Value output{ValueLandmarksResult, result};
                 msg->setResponse(output);
             }
         } else {
@@ -149,10 +157,15 @@ void FeatureWorker::run() {
 }
 
 // resize input img, and do inference
-RetCode FeatureWorker::process(const AlignerResult& aligner_result, FeatureResult& result) {
-    result.face_features.reserve(aligner_result.aligned_faces.size());
+RetCode LandmarksWorker::process(const DetectResult& detect_result, LandmarksResult& result) {
 
-    for (const cv::Mat& face_img : aligner_result.aligned_faces) {
+    result.faces.reserve(detect_result.faces.size());
+    result.face_landmarks.reserve(detect_result.faces.size());
+
+    for (auto& detect_face : detect_result.faces) {
+        // img is smallface, image(rect) => small image
+        cv::Mat face_img = (detect_result.frame->image)(detect_face.box);
+        result.faces.push_back(face_img);
 
         const size_t data_length = face_img.channels() * _image_width * _image_height;
         std::shared_ptr<unsigned char> data_ptr;
@@ -178,22 +191,29 @@ RetCode FeatureWorker::process(const AlignerResult& aligner_result, FeatureResul
         const ov::Tensor output_tensor = _infer_request->get_output_tensor();
         const float* tensor_data = output_tensor.data<float>();
 
-        // debugOutputTensor(output_tensor);
+        debugOutputTensor(output_tensor);
 
-        Feature ft;
-        ft.raw.reserve(_feature_length);
-        ft.version = 10000;
-        ft.model = "Sphereface";
+        std::vector<cv::Point2f> lm(_landmarks_length / 2);
+
+        // int face_img_width = face_img.size().width;
+        // int face_img_height = face_img.size().height;
 
         // only one batch yet.
         size_t batch_idx = 0;
-        size_t offset = batch_idx * _feature_length;
-        for (size_t i = 0; i < _feature_length; i++) {
-            float x = tensor_data[offset + i];
-            ft.raw.push_back(x);
+        size_t offset = batch_idx * _landmarks_length;
+        for (size_t i = 0; i < _landmarks_length / 2; i++) {
+            float x = tensor_data[offset + 2 * i];
+            float y = tensor_data[offset + 2 * i + 1];
+            lm[i] = cv::Point2f(x, y);
+
+            // x, y is the real points in original big image. but we don't need them.
+            // int x = static_cast<int>(tensor_data[offset + 2 * i] * face_img_width
+            //                          + detect_face.box.tl().x);
+            // int y = static_cast<int>(tensor_data[offset + 2 * i + 1] * face_img_height
+            //                          + detect_face.box.tl().y);
         }
 
-        result.face_features.push_back(ft);
+        result.face_landmarks.push_back(lm);
     }
 
     return RetCode::RET_OK;
