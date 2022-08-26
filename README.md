@@ -1,23 +1,37 @@
-# Face Recognition Service [WIP]
+# Face Recognition Service
 
-Example grpc face recognition service with openvino, develop to learn openvino and modern cpp. still work in progress...
+Example grpc face recognition service with openvino, develop to learn openvino and modern cpp.
 
-Currently developed in macOS, llvm-clang
+Currently developed with macOS, llvm-clang
 
 
 ## Features
 
 - [Modern CMake practices](https://pabloariasal.github.io/2018/02/19/its-time-to-do-cmake-right/)
-- Based on openvino
-- Master - Workers architecture
-- Use Poco to send messages between master-workers
+- Openvino inference
+- Full pipeline detect/landmarks/align/extract
+- Feature searching with faiss - TODO
+- Feature clustering with faiss - TODO
+
+Tech stack
+
+- Master/Workers architecture, Poco message
 - Conan to manage dependencies
-- CMake library/server/test layout
 - Protobuf proto & GRPC server
 
 ## Dependencies
 
 openvino, you need to install(download from openvino website) it first. other depencencies are managed by `conan/conanfile.txt`.
+
+### Models
+
+| name                          | type      | desc                 | urldesc                                                                                                                  |
+|-------------------------------|-----------|----------------------|--------------------------------------------------------------------------------------------------------------------------|
+| face-detection-adas-0001      | detect    | detect face          | https://github.com/openvinotoolkit/open_model_zoo/blob/master/models/intel/face-detection-adas-0001/README.mddetect face |
+| facial-landmarks-35-adas-0002 | landmarks | 70 points landmarks  | https://github.com/openvinotoolkit/open_model_zoo/blob/master/models/intel/facial-landmarks-35-adas-0002/README.md       |
+| Sphereface.xml                | feature   | extract face feature | https://github.com/openvinotoolkit/open_model_zoo/blob/master/models/public/Sphereface/README.md                         |
+
+
 
 ## Project layout
 
@@ -27,10 +41,6 @@ openvino, you need to install(download from openvino website) it first. other de
 * `server` is used to build the server binary, which use the `FaceRecognition` lib, see `server/CMakelists.txt` for more details.
 
 * `test` contains unit-tests, they also use the `FaceRecognition` lib, and of-cause they test it.
-
-* `conan` manage conan packages and export buildinfo to `build` dir
-
-* `cmake` manage CPM tool.
 
 
 ## Usage
@@ -99,11 +109,6 @@ cmake --build build/server
 ```
 
 
-### Models
-
-TODO.
-
-
 
 ### Use Makefile
 
@@ -132,13 +137,14 @@ make build-lib
 ### Build proto
 
 ```
-cd server
+cd server/protos
 
-/usr/bin/protoc -I/usr/include -I. \
-   --cpp_out=./api \
-   --grpc_out=./api \
-   --plugin=protoc-gen-grpc=/usr/local/bin/grpc_cpp_plugin \
-   ./protos/server.proto
+# build protobuf definitions of grpc and service
+./build_proto.sh
+
+# build grpc-gateway, for rest-api [optional]
+./build_gateway.sh
+
 ```
 
 
@@ -173,10 +179,13 @@ Q:
 Run failed with message `dyld[4593]: Library not loaded: @rpath/libopenvinod.dylib`
 
 A:
+
 It's because we need `source /opt/intel/openvino_2022/setupvars.sh`, but xcode doesn't know that.
 Edit `FaceRecognitionServer` scheme, add environment variable `DYLD_LIBRARY_PATH`, value `/opt/intel/openvino_2022/runtime/3rdparty/tbb/lib::/opt/intel/openvino_2022/runtime/lib/intel64/Release:/opt/intel/openvino_2022/runtime/lib/intel64/Debug`
 
 
 A2:
+```
 for i in `ls /opt/intel/openvino_2022/runtime/lib/intel64/Debug/`; do sudo ln -s /opt/intel/openvino_2022/runtime/lib/intel64/Debug/$i /usr/local/lib; done
 for i in `ls /opt/intel/openvino_2022/runtime/3rdparty/tbb/lib/`; do sudo ln -s /opt/intel/openvino_2022.1.0.643/runtime/3rdparty/tbb/lib/$i /usr/local/lib; done
+```

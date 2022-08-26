@@ -82,6 +82,23 @@ message CompareResponse {
     float score = 2;
 }
 
+
+message AddFeatureRequest {
+    FaceFeature feature = 1;
+}
+
+message AddFeatureResponse {
+    ResultCode code = 1;
+}
+
+message SearchFeatureRequest {
+    FaceFeature query = 1;
+}
+
+message SearchFeatureResponse {
+    ResultCode code = 1;
+}
+
 // face service
 service FaceService {
 
@@ -105,4 +122,23 @@ service FaceService {
             body : "*"
         };
     }
+}
+
+// feature search service
+service FeatureSearch {
+
+    rpc AddFeature(AddFeatureRequest) returns (AddFeatureResponse) {
+        option (google.api.http) = {
+            post : "/add_feature"
+            body : "*"
+        };
+    }
+
+    rpc SearchFeature(SearchFeatureRequest) returns (SearchFeatureResponse) {
+        option (google.api.http) = {
+            post : "/search_feature"
+            body : "*"
+        };
+    }
+
 }
