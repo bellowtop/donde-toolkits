@@ -1,6 +1,7 @@
 #pragma once
 
 #include "nlohmann/json.hpp"
+#include "search/searcher.h"
 #include "types.h"
 
 #include <map>
@@ -11,8 +12,6 @@ using json = nlohmann::json;
 
 namespace search {
 
-class FaissSearch {
+    class FaissSearch : public SearchEngine {};
 
-};
-
-}
+} // namespace search
