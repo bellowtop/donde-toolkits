@@ -4,6 +4,8 @@
 #include "nlohmann/json.hpp"
 #include "types.h"
 
+#include "faiss/Index2Layer.h"
+
 #include <map>
 
 using namespace Poco;

@@ -28,5 +28,12 @@
             "model": "./contrib/models/Sphereface.xml",
 	    "warmup": false
         }
+    },
+    "search": {
+	"storage_backend": "posix",
+	"search_engine": "brute_force",
+	"faiss": {
+	    "index": "./contrib/faiss/index.ivf"
+	}
     }
 }

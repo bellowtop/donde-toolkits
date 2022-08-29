@@ -20,6 +20,14 @@ include_directories(${CONAN_INCLUDE_DIRS})
 set(OpenVINO_DIR "/opt/intel/openvino_2022/runtime/cmake")
 find_package(OpenVINO REQUIRED COMPONENTS Runtime)
 
+# faiss
+find_package(faiss CONFIG REQUIRED)
+if (faiss_FOUND)
+  message(STATUS "faiss found ${faiss_FOUND}, ${faiss_INCLUDE_DIR}, ${faiss_LIBRARIES}")
+else()
+  message(STATUS "faiss not found, ${faiss_INCLUDE_DIR}, ${faiss_LIBRARIES}")
+endif()
+
 
 # ---- Create library ----
 file(GLOB_RECURSE sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp)
@@ -42,4 +50,5 @@ target_link_libraries(${PROJECT_NAME}
 	CONAN_PKG::poco
 	CONAN_PKG::nlohmann_json
 	openvino::runtime
+	faiss
 	)

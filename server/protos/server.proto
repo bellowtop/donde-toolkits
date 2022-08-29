@@ -57,6 +57,8 @@ message FaceRectangle {
     float confidence = 4;
 }
 
+
+// Face Service
 message DetectionRequest { Image image = 1; }
 
 message DetectionResponse {
@@ -82,6 +84,13 @@ message CompareResponse {
     float score = 2;
 }
 
+// Search Service
+message TrainIndexRequest {
+}
+
+message TrainIndexResponse {
+    ResultCode code = 1;
+}
 
 message AddFeatureRequest {
     FaceFeature feature = 1;
@@ -98,6 +107,7 @@ message SearchFeatureRequest {
 message SearchFeatureResponse {
     ResultCode code = 1;
 }
+
 
 // face service
 service FaceService {
@@ -126,6 +136,13 @@ service FaceService {
 
 // feature search service
 service FeatureSearch {
+
+    rpc TrainIndex(TrainIndexRequest) returns (TrainIndexResponse) {
+        option (google.api.http) = {
+            post : "/train_index"
+            body : "*"
+        };
+    }
 
     rpc AddFeature(AddFeatureRequest) returns (AddFeatureResponse) {
         option (google.api.http) = {
