@@ -9,7 +9,7 @@ googleapis/cci.20220711
 grpc-proto/cci.20220627
 protobuf/3.21.4
 
-
+ffmpeg/4.3.2
 
 toml11/3.7.1
 nlohmann_json/3.10.5
@@ -29,3 +29,29 @@ poco:enable_data_odbc=False
 poco:enable_data_postgresql=False
 poco:enable_data_sqlite=False
 poco:enable_redis=False
+
+ffmpeg:with_appkit=False
+ffmpeg:with_asm=False
+ffmpeg:with_audiotoolbox=False
+ffmpeg:with_avfoundation=False
+ffmpeg:with_bzip2=False
+ffmpeg:with_coreimage=False
+ffmpeg:with_freetype=False
+ffmpeg:with_libfdk_aac=False
+ffmpeg:with_libiconv=False
+ffmpeg:with_libmp3lame=False
+ffmpeg:with_libvpx=False
+ffmpeg:with_libwebp=False
+ffmpeg:with_libx264=False
+ffmpeg:with_libx265=False
+ffmpeg:with_lzma=False
+ffmpeg:with_openh264=False
+ffmpeg:with_openjpeg=False
+ffmpeg:with_opus=False
+ffmpeg:with_programs=False
+ffmpeg:with_sdl=False
+ffmpeg:with_ssl=False
+ffmpeg:with_videotoolbox=False
+ffmpeg:with_vorbis=False
+ffmpeg:with_zeromq=False
+ffmpeg:with_zlib=False

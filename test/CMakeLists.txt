@@ -26,7 +26,8 @@ include_directories(${CONAN_INCLUDE_DIRS})
 
 # ----- openvino library ----
 # install openvino distribution for macos
-set(OpenVINO_DIR "/opt/intel/openvino_2022/runtime/cmake")
+
+set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}, "/usr/local/runtime/cmake")
 find_package(OpenVINO REQUIRED COMPONENTS Runtime)
 
 

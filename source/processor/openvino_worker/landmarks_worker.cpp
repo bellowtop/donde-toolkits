@@ -102,7 +102,7 @@ RetCode LandmarksWorker::Init(json conf, int i, std::string device_id) {
     _landmarks_length = output_shape[1];
 
     _compiled_model
-        = std::make_shared<ov::CompiledModel>(std::move(core.compile_model(model, "CPU")));
+        = std::make_shared<ov::CompiledModel>(std::move(core.compile_model(model, _device_id)));
     _infer_request
         = std::make_shared<ov::InferRequest>(std::move(_compiled_model->create_infer_request()));
 
