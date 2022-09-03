@@ -189,3 +189,8 @@ A2:
 for i in `ls /opt/intel/openvino_2022/runtime/lib/intel64/Debug/`; do sudo ln -s /opt/intel/openvino_2022/runtime/lib/intel64/Debug/$i /usr/local/lib; done
 for i in `ls /opt/intel/openvino_2022/runtime/3rdparty/tbb/lib/`; do sudo ln -s /opt/intel/openvino_2022.1.0.643/runtime/3rdparty/tbb/lib/$i /usr/local/lib; done
 ```
+
+
+## Mac M1
+
+[README mac m1](./README_mac_m1.md)
