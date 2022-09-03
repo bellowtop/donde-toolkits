@@ -18,12 +18,12 @@
 
 using namespace std;
 
+using com::sekirocc::face_service::CompareRequest;
+using com::sekirocc::face_service::CompareResponse;
 using com::sekirocc::face_service::DetectionRequest;
 using com::sekirocc::face_service::DetectionResponse;
 using com::sekirocc::face_service::ExtractionRequest;
 using com::sekirocc::face_service::ExtractionResponse;
-using com::sekirocc::face_service::CompareRequest;
-using com::sekirocc::face_service::CompareResponse;
 using com::sekirocc::face_service::FaceService;
 
 using grpc::ServerContext;
@@ -32,6 +32,7 @@ using grpc::Status;
 class FaceServiceImpl final : public FaceService::Service {
   public:
     FaceServiceImpl(Config& server_config);
+    ~FaceServiceImpl();
 
     void Start();
     void Stop();
@@ -44,7 +45,6 @@ class FaceServiceImpl final : public FaceService::Service {
 
     Status CompareFeature(ServerContext* context, const CompareRequest* request,
                           CompareResponse* response) override;
-
 
   private:
     Config& config;

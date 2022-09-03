@@ -41,6 +41,7 @@ build-all: build-pre build-lib build-server build-test
 
 
 run-server:
+	install_name_tool -add_rpath /usr/local/runtime/lib/arm64/Release/ ./build/server/bin/FaceRecognitionServer || true
 	./build/server/bin/FaceRecognitionServer --config_path ./contrib/server.json
 
 run-test:

@@ -8,7 +8,6 @@
 #include "gen/pb-cpp/server.grpc.pb.h"
 #include "gen/pb-cpp/server.pb.h"
 #include "nlohmann/json.hpp"
-
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
 #include "types.h"
@@ -58,6 +57,7 @@ FaceServiceImpl::FaceServiceImpl(Config& server_config)
     : config(server_config),
       device_id(server_config.get_device_id()),
       pipeline(config.get_pipeline_config()){};
+FaceServiceImpl::~FaceServiceImpl(){};
 
 void FaceServiceImpl::Start() { pipeline.Init(); };
 

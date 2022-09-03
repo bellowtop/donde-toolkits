@@ -98,6 +98,15 @@ message AddFeatureRequest {
 
 message AddFeatureResponse {
     ResultCode code = 1;
+  int64 feature_id = 2;
+}
+
+message DeleteFeatureRequest {
+  int64 feature_id = 1;
+}
+
+message DeleteFeatureResponse {
+    ResultCode code = 1;
 }
 
 message SearchFeatureRequest {
@@ -147,6 +156,13 @@ service FeatureSearch {
     rpc AddFeature(AddFeatureRequest) returns (AddFeatureResponse) {
         option (google.api.http) = {
             post : "/add_feature"
+            body : "*"
+        };
+    }
+
+    rpc DeleteFeature(DeleteFeatureRequest) returns (DeleteFeatureResponse) {
+        option (google.api.http) = {
+            post : "/delete_feature"
             body : "*"
         };
     }

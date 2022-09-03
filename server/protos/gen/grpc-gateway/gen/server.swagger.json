@@ -11,6 +11,38 @@
     "application/json"
   ],
   "paths": {
+    "/add_feature": {
+      "post": {
+        "operationId": "FeatureSearch_AddFeature",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/face_serviceAddFeatureResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/face_serviceAddFeatureRequest"
+            }
+          }
+        ],
+        "tags": [
+          "FeatureSearch"
+        ]
+      }
+    },
     "/compare_face_feature": {
       "post": {
         "operationId": "FaceService_CompareFeature",
@@ -40,6 +72,38 @@
         ],
         "tags": [
           "FaceService"
+        ]
+      }
+    },
+    "/delete_feature": {
+      "post": {
+        "operationId": "FeatureSearch_DeleteFeature",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/face_serviceDeleteFeatureResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/face_serviceDeleteFeatureRequest"
+            }
+          }
+        ],
+        "tags": [
+          "FeatureSearch"
         ]
       }
     },
@@ -106,9 +170,93 @@
           "FaceService"
         ]
       }
+    },
+    "/search_feature": {
+      "post": {
+        "operationId": "FeatureSearch_SearchFeature",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/face_serviceSearchFeatureResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/face_serviceSearchFeatureRequest"
+            }
+          }
+        ],
+        "tags": [
+          "FeatureSearch"
+        ]
+      }
+    },
+    "/train_index": {
+      "post": {
+        "operationId": "FeatureSearch_TrainIndex",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/face_serviceTrainIndexResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/face_serviceTrainIndexRequest"
+            }
+          }
+        ],
+        "tags": [
+          "FeatureSearch"
+        ]
+      }
     }
   },
   "definitions": {
+    "face_serviceAddFeatureRequest": {
+      "type": "object",
+      "properties": {
+        "feature": {
+          "$ref": "#/definitions/face_serviceFaceFeature"
+        }
+      }
+    },
+    "face_serviceAddFeatureResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/face_serviceResultCode"
+        },
+        "feature_id": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
     "face_serviceCompareRequest": {
       "type": "object",
       "properties": {
@@ -132,13 +280,31 @@
         }
       }
     },
+    "face_serviceDeleteFeatureRequest": {
+      "type": "object",
+      "properties": {
+        "feature_id": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "face_serviceDeleteFeatureResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/face_serviceResultCode"
+        }
+      }
+    },
     "face_serviceDetectionRequest": {
       "type": "object",
       "properties": {
         "image": {
           "$ref": "#/definitions/face_serviceImage"
         }
-      }
+      },
+      "title": "Face Service"
     },
     "face_serviceDetectionResponse": {
       "type": "object",
@@ -269,6 +435,22 @@
       ],
       "default": "OK"
     },
+    "face_serviceSearchFeatureRequest": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "$ref": "#/definitions/face_serviceFaceFeature"
+        }
+      }
+    },
+    "face_serviceSearchFeatureResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/face_serviceResultCode"
+        }
+      }
+    },
     "face_serviceSize": {
       "type": "object",
       "properties": {
@@ -279,6 +461,18 @@
         "height": {
           "type": "integer",
           "format": "int32"
+        }
+      }
+    },
+    "face_serviceTrainIndexRequest": {
+      "type": "object",
+      "title": "Search Service"
+    },
+    "face_serviceTrainIndexResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/face_serviceResultCode"
         }
       }
     },
