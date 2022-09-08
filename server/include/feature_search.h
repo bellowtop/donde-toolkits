@@ -6,9 +6,11 @@
 #include "config.h"
 #include "face_pipeline.h"
 #include "gen/pb-cpp/server.grpc.pb.h"
+#include "search/searcher.h"
 
 // #include "spdlog/spdlog.h"
 
+#include <__memory/shared_ptr.h>
 #include <grpc/grpc.h>
 #include <grpcpp/security/server_credentials.h>
 #include <grpcpp/server.h>
@@ -53,6 +55,6 @@ class FeatureSearchImpl final : public FeatureSearch::Service {
 
   private:
     Config& config;
+    std::shared_ptr<search::Searcher> searcher;
     // spdlog::Logger& logger;
-    std::string device_id;
 };

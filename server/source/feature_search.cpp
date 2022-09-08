@@ -8,9 +8,11 @@
 #include "gen/pb-cpp/server.grpc.pb.h"
 #include "gen/pb-cpp/server.pb.h"
 #include "nlohmann/json.hpp"
+#include "search/searcher.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
 #include "types.h"
+#include "utils.h"
 
 #include <algorithm>
 #include <cassert>
@@ -24,6 +26,7 @@
 #include <iostream>
 #include <iterator>
 #include <memory>
+#include <opencv2/core/hal/interface.h>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -39,19 +42,22 @@ using com::sekirocc::face_service::SearchFeatureResponse;
 using com::sekirocc::face_service::TrainIndexRequest;
 using com::sekirocc::face_service::TrainIndexResponse;
 
+using com::sekirocc::face_service::ResultCode;
+
+
 using grpc::ServerContext;
 using grpc::Status;
 
 using json = nlohmann::json;
 
 FeatureSearchImpl::FeatureSearchImpl(Config& server_config)
-    : config(server_config), device_id(server_config.get_device_id()){};
+    : config(server_config), searcher(new search::Searcher(server_config.get_searcher_config())){};
 
 FeatureSearchImpl::~FeatureSearchImpl(){};
 
-void FeatureSearchImpl::Start(){};
+void FeatureSearchImpl::Start() { searcher->Init(); };
 
-void FeatureSearchImpl::Stop(){};
+void FeatureSearchImpl::Stop() { searcher->Terminate(); };
 
 Status FeatureSearchImpl::TrainIndex(ServerContext* context, const TrainIndexRequest* request,
                                      TrainIndexResponse* response) {
@@ -60,6 +66,16 @@ Status FeatureSearchImpl::TrainIndex(ServerContext* context, const TrainIndexReq
 
 Status FeatureSearchImpl::AddFeature(ServerContext* context, const AddFeatureRequest* request,
                                      AddFeatureResponse* response) {
+    auto ft = request->feature();
+    Feature feature(convertFeatureBlobToFloats(ft.blob()), std::string(ft.model()), ft.version());
+
+    std::vector<Feature> fts{feature};
+    std::vector<uint64> ids;
+    ids.reserve(fts.size());
+
+    searcher->AddFeatures(fts, ids);
+
+    response->set_code(ResultCode::OK);
     return Status::OK;
 };
 

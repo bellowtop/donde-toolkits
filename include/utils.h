@@ -40,6 +40,17 @@ inline void printInputAndOutputsInfo(const ov::Model& network) {
     }
 }
 
+inline std::vector<float> convertFeatureBlobToFloats(const std::string& blob) {
+    const char* char_ptr = reinterpret_cast<const char*>(blob.data());
+    std::vector<float> float_vec(blob.size() / sizeof(float));
+    for (size_t i = 0; i < float_vec.size(); i++) {
+        float_vec[i] = *reinterpret_cast<const float*>(char_ptr + i * sizeof(float));
+    }
+    std::cout << "vector one size: " << float_vec.size() << std::endl;
+
+    return float_vec;
+};
+
 inline void drawRectangleInImage(const std::string& image_path, const std::vector<cv::Rect> rects) {
     cv::Mat img = cv::imread(image_path);
 

@@ -11,6 +11,7 @@
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
 #include "types.h"
+#include "utils.h"
 
 #include <algorithm>
 #include <cassert>
@@ -179,25 +180,10 @@ Status FaceServiceImpl::CompareFeature(ServerContext* context, const CompareRequ
     const std::string& one_blob = one.blob();
     const std::string& two_blob = two.blob();
 
-    const char* one_char_ptr = reinterpret_cast<const char*>(one_blob.data());
-    std::vector<float> one_float_vec(one_blob.size() / sizeof(float));
-    for (size_t i = 0; i < one_float_vec.size(); i++) {
-        one_float_vec[i] = *reinterpret_cast<const float*>(one_char_ptr + i * sizeof(float));
-    }
-    std::cout << "vector one size: " << one_float_vec.size() << std::endl;
+    Feature ft1(convertFeatureBlobToFloats(one_blob), std::string(one.model()), one.version());
+    Feature ft2(convertFeatureBlobToFloats(two_blob), std::string(two.model()), two.version());
 
-    Feature ft1(std::move(one_float_vec), std::string(one.model()), one.version());
-
-    const char* two_char_ptr = reinterpret_cast<const char*>(two_blob.data());
-    std::vector<float> two_float_vec(two_blob.size() / sizeof(float));
-    for (size_t i = 0; i < two_float_vec.size(); i++) {
-        two_float_vec[i] = *reinterpret_cast<const float*>(two_char_ptr + i * sizeof(float));
-    }
-    std::cout << "vector two size: " << two_float_vec.size() << std::endl;
-
-    Feature ft2(std::move(two_float_vec), std::string(two.model()), two.version());
-
-    if (one_float_vec.size() != two_float_vec.size()) {
+    if (ft1.raw.size() != ft2.raw.size()) {
         return Status(StatusCode::INVALID_ARGUMENT, "invalid request feature",
                       "number one & number two feature size no equal");
     }

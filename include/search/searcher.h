@@ -6,6 +6,7 @@
 
 #include <map>
 #include <memory>
+#include <opencv2/core/hal/interface.h>
 
 using namespace std;
 
@@ -51,9 +52,9 @@ namespace search {
 
         RetCode Maintaince();
 
-        RetCode AddFeatures(const vector<Feature>& features);
+        RetCode AddFeatures(const std::vector<Feature>& features, std::vector<uint64>& feature_ids);
 
-        RetCode RemoveFeatures(const vector<Feature>& features);
+        RetCode RemoveFeatures(const std::vector<Feature>& features);
 
         std::vector<Feature> SearchFeature(const Feature& query, size_t topK);
 
