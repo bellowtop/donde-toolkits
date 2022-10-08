@@ -1,6 +1,7 @@
 #pragma once
 
 #include "nlohmann/json.hpp"
+#include "search/search_engine.h"
 #include "search/searcher.h"
 #include "types.h"
 
@@ -12,6 +13,6 @@ using json = nlohmann::json;
 
 namespace search {
 
-    class PosixBackend : public StorageBackend {};
+    BruteForceSearch::BruteForceSearch(const json& config) : SearchEngine(config) {}
 
 } // namespace search

@@ -2,6 +2,7 @@
 
 #include "nlohmann/json.hpp"
 #include "search/searcher.h"
+#include "search/search_engine.h"
 #include "types.h"
 
 #include <map>
@@ -12,6 +13,6 @@ using json = nlohmann::json;
 
 namespace search {
 
-    class BruteForceSearch : public SearchEngine {};
+    FaissSearch::FaissSearch(const json& config) : SearchEngine(config) {};
 
 } // namespace search

@@ -2,6 +2,7 @@
 
 #include "nlohmann/json.hpp"
 #include "search/searcher.h"
+#include "search/storage_backend.h"
 #include "types.h"
 
 #include <map>
@@ -12,6 +13,6 @@ using json = nlohmann::json;
 
 namespace search {
 
-    class FaissSearch : public SearchEngine {};
+    FileSystemBackend::FileSystemBackend(const json& config) : StorageBackend(config){};
 
 } // namespace search

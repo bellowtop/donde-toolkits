@@ -10,7 +10,6 @@
 
 // #include "spdlog/spdlog.h"
 
-#include <__memory/shared_ptr.h>
 #include <grpc/grpc.h>
 #include <grpcpp/security/server_credentials.h>
 #include <grpcpp/server.h>
