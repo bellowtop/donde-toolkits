@@ -23,19 +23,18 @@ namespace search {
     class StorageBackend {
 
       public:
-        StorageBackend(const json& config);
+        StorageBackend();
         virtual ~StorageBackend() = default;
 
         virtual std::vector<uint64> AddFeatures(const std::vector<Feature>& features) = 0;
 
         virtual RetCode RemoveFeatures(const std::vector<uint64>& feature_ids) = 0;
-
     };
 
     class SearchEngine {
 
       public:
-        SearchEngine(const json& config);
+        SearchEngine();
         virtual ~SearchEngine() = default;
 
         virtual RetCode TrainIndex() = 0;

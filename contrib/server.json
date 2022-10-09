@@ -30,8 +30,21 @@
         }
     },
     "search": {
-	"storage_backend": "posix",
-	"search_engine": "brute_force",
+	"storage_backend": {
+	    "name": "inmemory",
+	    "file_system": {
+		"database_path": "/tmp/"
+	    },
+	    "inmemory": {
+		"dump_path": "/tmp/face_recognition.db"
+	    },
+	    "cassandra": {}
+	},
+	"search_engine": {
+	    "name": "brute_force",
+	    "brute_force": {},
+	    "faiss": {}
+	},
 	"faiss": {
 	    "index": "./contrib/faiss/index.ivf"
 	}

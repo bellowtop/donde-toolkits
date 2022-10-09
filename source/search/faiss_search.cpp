@@ -13,6 +13,6 @@ using json = nlohmann::json;
 
 namespace search {
 
-    FaissSearch::FaissSearch(const json& config) : SearchEngine(config) {};
+    FaissSearch::FaissSearch(const json& config) : _config(config) {};
 
 } // namespace search

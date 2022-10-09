@@ -13,6 +13,6 @@ using json = nlohmann::json;
 
 namespace search {
 
-    BruteForceSearch::BruteForceSearch(const json& config) : SearchEngine(config) {}
+    BruteForceSearch::BruteForceSearch(const json& config) : _config(config) {}
 
 } // namespace search

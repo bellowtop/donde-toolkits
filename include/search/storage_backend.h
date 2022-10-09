@@ -20,6 +20,9 @@ namespace search {
         std::vector<uint64> AddFeatures(const std::vector<Feature>& features) override;
 
         RetCode RemoveFeatures(const std::vector<uint64>& feature_ids) override;
+
+      private:
+        json _config;
     };
 
 } // namespace search
