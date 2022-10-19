@@ -73,7 +73,7 @@ Status FeatureSearchImpl::AddFeature(ServerContext* context, const AddFeatureReq
     std::vector<uint64> ids;
     ids.reserve(fts.size());
 
-    searcher->AddFeatures(fts, ids);
+    std::vector<std::string> feature_ids = searcher->AddFeatures(fts);
 
     response->set_code(ResultCode::OK);
     return Status::OK;

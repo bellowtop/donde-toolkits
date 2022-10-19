@@ -12,7 +12,7 @@ using json = nlohmann::json;
 
 namespace search {
 
-    class BruteForceSearch : public SearchEngine {
+    class BruteForceSearch : public Engine {
 
       public:
         BruteForceSearch(const json& config);
@@ -22,15 +22,15 @@ namespace search {
 
         std::vector<Feature> Search(const Feature& query, size_t topK) override;
 
-        std::vector<uint64> AddFeatures(const std::vector<Feature>& features) override;
+        std::vector<std::string> AddFeatures(const std::vector<Feature>& features) override;
 
-        RetCode RemoveFeatures(const std::vector<uint64>& feature_ids) override;
+        RetCode RemoveFeatures(const std::vector<std::string>& feature_ids) override;
 
       private:
         json _config;
     };
 
-    class FaissSearch : public SearchEngine {
+    class FaissSearch : public Engine {
 
       public:
         FaissSearch(const json& config);
@@ -40,9 +40,9 @@ namespace search {
 
         std::vector<Feature> Search(const Feature& query, size_t topK) override;
 
-        std::vector<uint64> AddFeatures(const std::vector<Feature>& features) override;
+        std::vector<std::string> AddFeatures(const std::vector<Feature>& features) override;
 
-        RetCode RemoveFeatures(const std::vector<uint64>& feature_ids) override;
+        RetCode RemoveFeatures(const std::vector<std::string>& feature_ids) override;
 
       private:
         json _config;

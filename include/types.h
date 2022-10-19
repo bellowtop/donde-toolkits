@@ -1,10 +1,12 @@
 #pragma once
 
 #include "spdlog/spdlog.h"
+#include "utils.h"
 
 #include <cmath>
 #include <cstdint>
 #include <iostream>
+#include <iterator>
 #include <map>
 #include <memory>
 #include <opencv2/core/mat.hpp>
@@ -47,10 +49,11 @@ struct Feature {
     std::vector<float> raw;
     std::string model;
     int version;
+    int dimension;
 
     Feature() = default;
-    Feature(std::vector<float>&& data) : raw{data}{};
-    Feature(std::vector<float>&& data, std::string&& model, int version) : raw{data}, model{model}, version{version}{};
+    Feature(std::vector<float>&& data) : raw{data}, dimension(data.size()){};
+    Feature(std::vector<float>&& data, std::string&& model, int version) : raw{data}, dimension(data.size()), model{model}, version{version}{};
 
     void debugPrint() const {
         std::stringstream ss;
@@ -90,6 +93,27 @@ struct Feature {
         return score;
     };
 };
+
+
+inline istream& operator>>(istream& is, Feature& ft) {
+    is >> ft.model;
+    is >> ft.version;
+    is >> ft.dimension;
+    // read to `is` stream's end;
+    std::string blob{ istream_iterator<char>(is), {} };
+    ft.raw = convertFeatureBlobToFloats(blob);
+    return is;
+}
+
+inline ostream& operator<<(ostream& os, const Feature& ft) {
+    os << ft.model;
+    os << ft.version;
+    os << ft.dimension;
+    std::string blob((char *)ft.raw.data(), ft.dimension * sizeof(float));
+    os << blob;
+    return os;
+}
+
 
 struct FeatureResult {
     std::vector<Feature> face_features;

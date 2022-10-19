@@ -20,39 +20,40 @@ namespace search {
     const std::string STORAGE_BACKEND_FILE_SYSTEM = "file_system";
     const std::string STORAGE_BACKEND_CASSANDRA = "cassandra";
 
-    class StorageBackend {
+    class Storage {
 
       public:
-        StorageBackend();
-        virtual ~StorageBackend() = default;
+        Storage() = default;
+        virtual ~Storage() = default;
 
-        virtual std::vector<uint64> AddFeatures(const std::vector<Feature>& features) = 0;
+        virtual std::vector<std::string> AddFeatures(const std::vector<Feature>& features) = 0;
 
-        virtual RetCode RemoveFeatures(const std::vector<uint64>& feature_ids) = 0;
+        virtual RetCode RemoveFeatures(const std::vector<std::string>& feature_ids) = 0;
     };
 
-    class SearchEngine {
+    class Engine {
 
       public:
-        SearchEngine();
-        virtual ~SearchEngine() = default;
+        Engine() = default;
+        virtual ~Engine() = default;
 
         virtual RetCode TrainIndex() = 0;
 
         virtual std::vector<Feature> Search(const Feature& query, size_t topK) = 0;
 
-        virtual std::vector<uint64> AddFeatures(const std::vector<Feature>& features) = 0;
+        virtual std::vector<std::string> AddFeatures(const std::vector<Feature>& features) = 0;
 
-        virtual RetCode RemoveFeatures(const std::vector<uint64>& feature_ids) = 0;
+        virtual RetCode RemoveFeatures(const std::vector<std::string>& feature_ids) = 0;
 
       protected:
-        std::shared_ptr<StorageBackend> _backend;
+        std::shared_ptr<Storage> _storage;
     };
 
     class Searcher {
 
       public:
         Searcher(const json& config);
+        ~Searcher() = default;
 
         const json& GetConfig() const { return _config; };
 
@@ -62,16 +63,16 @@ namespace search {
 
         RetCode Maintaince();
 
-        std::vector<uint64> AddFeatures(const std::vector<Feature>& features);
+        std::vector<std::string> AddFeatures(const std::vector<Feature>& features);
 
-        RetCode RemoveFeatures(const std::vector<uint64>& feature_ids);
+        RetCode RemoveFeatures(const std::vector<std::string>& feature_ids);
 
         std::vector<Feature> SearchFeature(const Feature& query, size_t topK);
 
       private:
         json _config;
 
-        std::shared_ptr<SearchEngine> _engine;
+        std::shared_ptr<Engine> _engine;
     };
 
 } // namespace search

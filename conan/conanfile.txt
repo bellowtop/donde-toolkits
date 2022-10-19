@@ -8,6 +8,7 @@ grpc/1.48.0
 googleapis/cci.20220711
 grpc-proto/cci.20220627
 protobuf/3.21.4
+libuuid/1.0.3
 
 ffmpeg/4.3.2
 
