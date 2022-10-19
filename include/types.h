@@ -53,7 +53,7 @@ struct Feature {
 
     Feature() = default;
     Feature(std::vector<float>&& data) : raw{data}, dimension(data.size()){};
-    Feature(std::vector<float>&& data, std::string&& model, int version) : raw{data}, dimension(data.size()), model{model}, version{version}{};
+    Feature(std::vector<float>&& data, std::string&& model, int version) : raw{data}, model{model}, version{version}, dimension(data.size()){};
 
     void debugPrint() const {
         std::stringstream ss;
@@ -95,6 +95,7 @@ struct Feature {
 };
 
 
+// TODO: refactor with MessagePack?
 inline istream& operator>>(istream& is, Feature& ft) {
     is >> ft.model;
     is >> ft.version;

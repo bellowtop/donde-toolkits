@@ -54,13 +54,21 @@ check supported devices.
 
 It will install dynamic libraries to `/usr/local/runtime/lib/arm64/Release`
 
+link it to system lib dir
+```
+sudo ln -s /usr/local/runtime/lib/arm64/Release/libopenvino.2230.dylib /usr/local/lib/
+```
+
 now we can add run path to the our server binary.
 
 ```
 cd face-recognition-service
 
-install_name_tool -add_rpath /usr/local/runtime/lib/arm64/Release/ ./build/server/bin/FaceRecognitionServer
+# run server
 ./build/server/bin/FaceRecognitionServer --config_path ./contrib/server.json
+
+# run test
+./build/test/bin/FaceRecognitionTests
 ```
 
 

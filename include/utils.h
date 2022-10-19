@@ -2,6 +2,7 @@
 
 #include "opencv2/opencv.hpp"
 #include "openvino/openvino.hpp"
+#include "types.h"
 
 #include <iostream>
 #include <opencv2/core/types.hpp>
