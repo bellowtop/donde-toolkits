@@ -12,7 +12,7 @@ using namespace std;
 using nlohmann::json;
 
 template <int size>
-inline Feature gen_feature_dim() {
+Feature gen_feature_dim() {
     std::vector<float> raw(size);
     for (int i = 0; i < size; i++) {
         raw[i] = 0.1;
@@ -24,9 +24,7 @@ TEST_CASE("Feature file can be stored and deleted.") {
 
     json conf = R"(
 {
-		"storage": {
 		    "path": "/tmp/test_store/"
-		}
 })"_json;
 
     search::FileSystemStorage store(conf);
@@ -36,20 +34,22 @@ TEST_CASE("Feature file can be stored and deleted.") {
         fts.push_back(ft);
     }
 
+    std::cout << "in file_system_storage.cpp[test] feature length: "<< fts.size() << std::endl;
+
     std::vector<std::string> feature_ids = store.AddFeatures(fts);
     CHECK(feature_ids.size() == 2);
 
     // file exists
     for (auto& id : feature_ids) {
-        std::string p1("/tmp/test_store/" + id);
+        std::string p1("/tmp/test_store/data/" + id + ".ft");
         CHECK(std::filesystem::exists(p1) == true);
     }
 
-    store.RemoveFeatures(feature_ids);
+    // store.RemoveFeatures(feature_ids);
 
     // file removed
     for (auto& id : feature_ids) {
-        std::string p1("/tmp/test_store/" + id);
+        std::string p1("/tmp/test_store/data/" + id + ".ft");
         CHECK(std::filesystem::exists(p1) == false);
     }
 

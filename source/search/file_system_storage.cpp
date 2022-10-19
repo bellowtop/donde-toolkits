@@ -32,10 +32,13 @@ namespace search {
         std::vector<std::string> feature_ids;
         for (auto& ft : features) {
             std::string feature_id;
+            feature_id.resize(32);
 
             uuid_t uuid;
             uuid_generate(uuid);
             uuid_unparse_lower(uuid, feature_id.data());
+
+            std::cout << "uuid: " << feature_id << std::endl;
 
             auto filepath = _data_dir / (feature_id+".ft");
             try {
