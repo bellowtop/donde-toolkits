@@ -9,8 +9,11 @@
 #include <iterator>
 #include <map>
 #include <memory>
+#include <msgpack/adaptor/define_decl.hpp>
 #include <opencv2/core/mat.hpp>
 #include <opencv2/core/types.hpp>
+
+#include <msgpack.hpp>
 #include <ostream>
 #include <sstream>
 #include <string>
@@ -62,6 +65,7 @@ struct Feature {
             ss << f << " ";
         }
         ss << std::endl;
+        std::cout << ss.str();
         spdlog::debug(ss.str());
     };
 
@@ -92,28 +96,11 @@ struct Feature {
 
         return score;
     };
+
+    // message pack
+    MSGPACK_DEFINE(model, version, dimension, raw);
 };
 
-
-// TODO: refactor with MessagePack?
-inline istream& operator>>(istream& is, Feature& ft) {
-    is >> ft.model;
-    is >> ft.version;
-    is >> ft.dimension;
-    // read to `is` stream's end;
-    std::string blob{ istream_iterator<char>(is), {} };
-    ft.raw = convertFeatureBlobToFloats(blob);
-    return is;
-}
-
-inline ostream& operator<<(ostream& os, const Feature& ft) {
-    os << ft.model;
-    os << ft.version;
-    os << ft.dimension;
-    std::string blob((char *)ft.raw.data(), ft.dimension * sizeof(float));
-    os << blob;
-    return os;
-}
 
 
 struct FeatureResult {

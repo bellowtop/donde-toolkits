@@ -5,8 +5,8 @@ set(CMAKE_CXX_STANDARD 17)
 
 
 # # use llvm clang, not the apple clang
-# set(CMAKE_C_COMPILER    /usr/local/opt/llvm/bin/clang)
-# set(CMAKE_CXX_COMPILER  /usr/local/opt/llvm/bin/clang++)
+# set(CMAKE_C_COMPILER    /opt/homebrew/opt/llvm/bin/clang )
+# set(CMAKE_CXX_COMPILER  /opt/homebrew/opt/llvm/bin/clang++ )
 
 project(FaceRecognition LANGUAGES CXX)
 
@@ -50,6 +50,7 @@ target_link_libraries(${PROJECT_NAME}
 	CONAN_PKG::opencv
 	CONAN_PKG::spdlog
 	CONAN_PKG::poco
+	CONAN_PKG::msgpack
 	CONAN_PKG::libuuid
 	CONAN_PKG::nlohmann_json
 	openvino::runtime

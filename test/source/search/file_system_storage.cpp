@@ -2,6 +2,9 @@
 #include "types.h"
 #include "utils.h"
 
+#include <iostream>
+#include <ostream>
+
 #include <doctest/doctest.h>
 #include <filesystem>
 #include <memory>
@@ -15,22 +18,26 @@ template <int size>
 Feature gen_feature_dim() {
     std::vector<float> raw(size);
     for (int i = 0; i < size; i++) {
-        raw[i] = 0.1;
+        // 0.000 ~ 0.512
+        raw[i] = 0.001 * i;
     }
-    return Feature(std::move(raw));
+    return Feature(std::move(raw), "test-model-face", size);
 }
 
-TEST_CASE("Feature file can be stored and deleted.") {
+
+
+TEST_CASE("Feature file can be stored, loaded, and removed.") {
 
     json conf = R"(
 {
 		    "path": "/tmp/test_store/"
 })"_json;
 
+    const int dim = 512;
     search::FileSystemStorage store(conf);
     std::vector<Feature> fts;
     for (int i = 0; i < 2; i++) {
-        auto ft = gen_feature_dim<512>();
+        auto ft = gen_feature_dim<dim>();
         fts.push_back(ft);
     }
 
@@ -45,7 +52,12 @@ TEST_CASE("Feature file can be stored and deleted.") {
         CHECK(std::filesystem::exists(p1) == true);
     }
 
-    // store.RemoveFeatures(feature_ids);
+    std::vector<Feature> loaded_features = store.LoadFeatures(feature_ids);
+    for (size_t i = 0; i < dim; i ++) {
+        CHECK(fts[0].raw[i] == loaded_features[0].raw[i]);
+    }
+
+    store.RemoveFeatures(feature_ids);
 
     // file removed
     for (auto& id : feature_ids) {

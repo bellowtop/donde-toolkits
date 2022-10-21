@@ -10,6 +10,8 @@ grpc-proto/cci.20220627
 protobuf/3.21.4
 libuuid/1.0.3
 
+msgpack/3.3.0
+
 ffmpeg/4.3.2
 
 toml11/3.7.1

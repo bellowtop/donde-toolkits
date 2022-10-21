@@ -47,7 +47,7 @@ inline std::vector<float> convertFeatureBlobToFloats(const std::string& blob) {
     for (size_t i = 0; i < float_vec.size(); i++) {
         float_vec[i] = *reinterpret_cast<const float*>(char_ptr + i * sizeof(float));
     }
-    std::cout << "vector one size: " << float_vec.size() << std::endl;
+    std::cout << "convertFeatureBlobToFloats: vector size: " << float_vec.size() << std::endl;
 
     return float_vec;
 };

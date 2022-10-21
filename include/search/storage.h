@@ -19,6 +19,8 @@ namespace search {
 
         std::vector<std::string> AddFeatures(const std::vector<Feature>& features) override;
 
+        std::vector<Feature> LoadFeatures(const std::vector<std::string>& feature_ids) override;
+
         RetCode RemoveFeatures(const std::vector<std::string>& feature_ids) override;
 
       private:

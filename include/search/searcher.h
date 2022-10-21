@@ -12,6 +12,8 @@ using namespace std;
 
 using json = nlohmann::json;
 
+
+
 namespace search {
 
     const std::string SEARCH_ENGINE_BRUTE_FORCE = "brute_force";
@@ -27,6 +29,8 @@ namespace search {
         virtual ~Storage() = default;
 
         virtual std::vector<std::string> AddFeatures(const std::vector<Feature>& features) = 0;
+
+        virtual std::vector<Feature> LoadFeatures(const std::vector<std::string>& feature_ids) = 0;
 
         virtual RetCode RemoveFeatures(const std::vector<std::string>& feature_ids) = 0;
     };
