@@ -6,6 +6,11 @@ set(CMAKE_CXX_STANDARD 17)
 # use llvm clang, not the apple clang
 # set(CMAKE_C_COMPILER    /usr/local/opt/llvm/bin/clang)
 # set(CMAKE_CXX_COMPILER  /usr/local/opt/llvm/bin/clang++)
+set(CMAKE_C_COMPILER    /opt/homebrew/opt/llvm@14/bin/clang)
+set(CMAKE_CXX_COMPILER  /opt/homebrew/opt/llvm@14/bin/clang++ )
+
+add_compile_options("-fstandalone-debug")
+add_compile_options("-stdlib=libc++")
 
 project(FaceRecognitionTests LANGUAGES CXX)
 

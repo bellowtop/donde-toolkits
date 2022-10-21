@@ -2,6 +2,9 @@
 #include "types.h"
 #include "utils.h"
 
+#include <iostream>
+#include <ostream>
+
 #include <doctest/doctest.h>
 #include <filesystem>
 #include <memory>
@@ -15,10 +18,13 @@ template <int size>
 Feature gen_feature_dim() {
     std::vector<float> raw(size);
     for (int i = 0; i < size; i++) {
-        raw[i] = 0.1;
+        // 0.000 ~ 0.512
+        raw[i] = 0.001 * i;
     }
     return Feature(std::move(raw));
 }
+
+
 
 TEST_CASE("Feature file can be stored and deleted.") {
 
@@ -43,6 +49,11 @@ TEST_CASE("Feature file can be stored and deleted.") {
     for (auto& id : feature_ids) {
         std::string p1("/tmp/test_store/data/" + id + ".ft");
         CHECK(std::filesystem::exists(p1) == true);
+    }
+
+    std::vector<Feature> loaded_features = store.LoadFeatures(feature_ids);
+    for (int i = 0; i < 512; i ++) {
+        CHECK(fts[0].raw[i] == loaded_features[0].raw[i]);
     }
 
     // store.RemoveFeatures(feature_ids);

@@ -54,6 +54,29 @@ namespace search {
         return feature_ids;
     };
 
+    std::vector<Feature> FileSystemStorage::LoadFeatures(const std::vector<std::string>& feature_ids) {
+        int count = feature_ids.size();
+        std::vector<Feature> features;
+        for (auto& feature_id : feature_ids) {
+            std::cout << "load feature_id: " << feature_id << std::endl;
+
+            auto filepath = _data_dir / (feature_id+".ft");
+            Feature ft;
+
+            try {
+                std::ifstream file(filepath, std::ios::binary | std::ios::in);
+                file >> ft;
+                ft.debugPrint();
+                features.push_back(ft);
+            } catch(...) {
+                std::cerr << "cannot load feature, feature_path: " << filepath << std::endl;
+                features.push_back(ft);
+            }
+        }
+
+        return features;
+    };
+
     RetCode FileSystemStorage::RemoveFeatures(const std::vector<std::string>& feature_ids) {
         for (auto& feature_id : feature_ids) {
             auto filepath = _data_dir / (feature_id+".ft");

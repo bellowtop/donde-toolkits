@@ -95,26 +95,6 @@ struct Feature {
 };
 
 
-// TODO: refactor with MessagePack?
-inline istream& operator>>(istream& is, Feature& ft) {
-    is >> ft.model;
-    is >> ft.version;
-    is >> ft.dimension;
-    // read to `is` stream's end;
-    std::string blob{ istream_iterator<char>(is), {} };
-    ft.raw = convertFeatureBlobToFloats(blob);
-    return is;
-}
-
-inline ostream& operator<<(ostream& os, const Feature& ft) {
-    os << ft.model;
-    os << ft.version;
-    os << ft.dimension;
-    std::string blob((char *)ft.raw.data(), ft.dimension * sizeof(float));
-    os << blob;
-    return os;
-}
-
 
 struct FeatureResult {
     std::vector<Feature> face_features;
