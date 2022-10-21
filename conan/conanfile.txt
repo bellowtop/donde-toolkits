@@ -20,6 +20,9 @@ trompeloeil/42
 
 spdlog/1.10.0
 
+wayland/1.18.0
+expat/2.4.8
+
 [generators]
 cmake
 
@@ -31,12 +34,12 @@ poco:enable_data_postgresql=False
 poco:enable_data_sqlite=False
 poco:enable_redis=False
 
-ffmpeg:with_appkit=False
+# ffmpeg:with_appkit=False
 ffmpeg:with_asm=False
-ffmpeg:with_audiotoolbox=False
-ffmpeg:with_avfoundation=False
+# ffmpeg:with_audiotoolbox=False
+# ffmpeg:with_avfoundation=False
 ffmpeg:with_bzip2=False
-ffmpeg:with_coreimage=False
+# ffmpeg:with_coreimage=False
 ffmpeg:with_freetype=False
 ffmpeg:with_libfdk_aac=False
 ffmpeg:with_libiconv=False
@@ -52,7 +55,7 @@ ffmpeg:with_opus=False
 ffmpeg:with_programs=False
 ffmpeg:with_sdl=False
 ffmpeg:with_ssl=False
-ffmpeg:with_videotoolbox=False
+# ffmpeg:with_videotoolbox=False
 ffmpeg:with_vorbis=False
 ffmpeg:with_zeromq=False
 ffmpeg:with_zlib=False

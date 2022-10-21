@@ -5,8 +5,8 @@ set(CMAKE_CXX_STANDARD 17)
 
 
 # use llvm clang, not the apple clang
-set(CMAKE_C_COMPILER    /opt/homebrew/opt/llvm@14/bin/clang)
-set(CMAKE_CXX_COMPILER  /opt/homebrew/opt/llvm@14/bin/clang++ )
+# set(CMAKE_C_COMPILER    /opt/homebrew/opt/llvm@14/bin/clang)
+# set(CMAKE_CXX_COMPILER  /opt/homebrew/opt/llvm@14/bin/clang++ )
 
 project(FaceRecognitionServer LANGUAGES CXX)
 
