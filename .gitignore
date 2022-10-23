@@ -25,6 +25,8 @@ contrib/models
 
 xcode
 
+/.idea/
+/cmake-build-debug/
 
 conan/conan.lock
 conan/conanbuildinfo.cmake
