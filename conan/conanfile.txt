@@ -11,6 +11,7 @@ protobuf/3.21.4
 libuuid/1.0.3
 
 msgpack/3.3.0
+sqlite3/3.39.4
 
 ffmpeg/4.3.2
 

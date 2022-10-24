@@ -58,6 +58,7 @@ target_link_libraries(${PROJECT_NAME}
 	CONAN_PKG::poco
 	CONAN_PKG::spdlog
 	CONAN_PKG::msgpack
+	CONAN_PKG::sqlite3
 	CONAN_PKG::nlohmann_json
 	CONAN_PKG::toml11
 	CONAN_PKG::doctest

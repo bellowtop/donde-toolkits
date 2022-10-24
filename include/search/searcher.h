@@ -28,6 +28,10 @@ namespace search {
         Storage() = default;
         virtual ~Storage() = default;
 
+        virtual RetCode Init() = 0;
+
+        virtual std::vector<std::string> ListFeautreIDs(int start, int limit) = 0;
+
         virtual std::vector<std::string> AddFeatures(const std::vector<Feature>& features) = 0;
 
         virtual std::vector<Feature> LoadFeatures(const std::vector<std::string>& feature_ids) = 0;
