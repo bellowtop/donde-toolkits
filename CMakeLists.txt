@@ -51,7 +51,7 @@ target_link_libraries(${PROJECT_NAME}
 	CONAN_PKG::spdlog
 	CONAN_PKG::poco
 	CONAN_PKG::msgpack
-	CONAN_PKG::sqlite3
+	CONAN_PKG::sqlitecpp
 	CONAN_PKG::libuuid
 	CONAN_PKG::nlohmann_json
 	openvino::runtime

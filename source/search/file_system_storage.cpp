@@ -4,6 +4,8 @@
 #include "types.h"
 #include "uuid/uuid.h"
 
+#include <SQLiteCpp/Database.h>
+#include <SQLiteCpp/Statement.h>
 #include <exception>
 #include <filesystem>
 #include <fstream>
@@ -34,17 +36,25 @@ namespace search {
         std::filesystem::create_directories(_meta_dir);
 
         std::string db_filepath = _meta_dir / "sqlite3.db";
-        auto db = init_features_meta_db(db_filepath);
 
-        // all set.
-        _meta_db = unique_sqlite3(db);
+        try {
+            _meta_db = std::make_unique<SQLite::Database>(db_filepath, SQLite::OPEN_READWRITE
+                                                                           | SQLite::OPEN_CREATE);
+        } catch (std::exception& exc) {
+            std::cerr << "cannot open database: " << exc.what() << std::endl;
+            std::abort();
+        }
+    };
+
+    RetCode FileSystemStorage::Init() {
+        // init table.
+        init_features_meta_db();
+        return RetCode::RET_OK;
     };
 
     std::vector<std::string> FileSystemStorage::ListFeautreIDs(int start, int limit) {
         return list_features_from_meta_db(start, limit);
     };
-
-    RetCode FileSystemStorage::Init() { return RetCode::RET_OK; };
 
     std::vector<std::string> FileSystemStorage::AddFeatures(const std::vector<Feature>& features) {
         int count = features.size();
@@ -103,7 +113,7 @@ namespace search {
                 // std::cout << "data.size(): " << data.size() << std::endl;
                 auto oh = msgpack::unpack(data.data(), data.size());
                 Feature ft = oh.get().as<Feature>();
-                ft.debugPrint();
+                // ft.debugPrint();
 
                 features.push_back(ft);
             } catch (const std::exception& exc) {
@@ -124,66 +134,65 @@ namespace search {
         return RetCode::RET_OK;
     };
 
-    // meta db implements
-    sqlite3* FileSystemStorage::init_features_meta_db(std::string db_filepath) {
-        sqlite3* db;
-
-        int ret = sqlite3_open(db_filepath.c_str(), &db);
-        if (ret != SQLITE_OK) {
-            throw std::runtime_error("cannot open meta.db sqlite3 database");
-        }
-
-        // now create some table
+    RetCode FileSystemStorage::init_features_meta_db() {
         std::string sql = "create table if not exists features("
-                          "id int primary key not null, "
-                          "feature_id char(64)"
+                          "id integer primary key autoincrement, "
+                          "feature_id char(64), "
+                          "version int "
                           ");";
-
-        char* error_msg;
-        ret = sqlite3_exec(db, sql.c_str(), nullptr, 0, &error_msg);
-        if (ret != SQLITE_OK) {
-            std::cout << "sqlite3 create table err: " << error_msg << std::endl;
-            sqlite3_free(error_msg);
-            sqlite3_close_v2(db);
-            throw std::runtime_error("cannot open create tables in sqlite3 database");
+        try {
+            _meta_db->exec(sql);
+        } catch (std::exception& exc) {
+            std::cerr << "cannot create table: " << exc.what() << std::endl;
+            std::abort();
         }
 
-        return db;
-    }
+        return RetCode::RET_OK;
+    };
 
     std::vector<std::string> FileSystemStorage::list_features_from_meta_db(int start, int limit) {
         std::vector<std::string> feature_ids;
 
-        std::string sql = "select * from features offset ?1 limit ?2 ";
-        sqlite3_stmt* stmt = nullptr;
-        int ret;
+        try {
+            std::string sql("select * from features limit ? offset ?");
+            SQLite::Statement query(*(_meta_db.get()), sql);
+            query.bind(1, limit);
+            query.bind(2, start);
 
-        ret = sqlite3_prepare_v2(_meta_db.get(), sql.c_str(), -1, &stmt, nullptr);
-        if (ret != SQLITE_OK) {
-            std::cout << "error prepare statement" << std::endl;
-            return feature_ids;
-        }
-        ret = sqlite3_bind_int(stmt, 1, start);
-        if (ret != SQLITE_OK) {
-            std::cout << "error bind offset ?1 to start: " << start << std::endl;
-            return feature_ids;
-        }
-        ret = sqlite3_bind_int(stmt, 2, limit);
-        if (ret != SQLITE_OK) {
-            std::cout << "error bind offset ?2 to limit: " << start << std::endl;
-            return feature_ids;
-        }
-
-        while (sqlite3_step(stmt) == SQLITE_ROW) {
-            int id = sqlite3_column_int(stmt, 0);
-            std::string feature_id = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
-            feature_ids.push_back(feature_id);
+            while (query.executeStep()) {
+                int id = query.getColumn(0);
+                const char* value = query.getColumn(1);
+                std::string feature_id(value);
+                feature_ids.push_back(feature_id);
+            }
+        } catch (std::exception& exc) {
+            std::cerr << "cannot select from features table: " << exc.what() << std::endl;
         }
 
         return feature_ids;
     };
 
     RetCode FileSystemStorage::insert_features_to_meta_db(std::vector<std::string> feature_ids) {
+        // TODO: batch control
+        try {
+            int version = 10000; // FIXME
+            std::string sql("insert into features(feature_id, version) values (?, ?)");
+            for (int i = 1; i < feature_ids.size(); i++) {
+                sql += ", (?, ?)";
+            }
+            sql += ";";
+
+            SQLite::Statement query(*(_meta_db.get()), sql);
+            for (int i = 0; i < feature_ids.size(); i++) {
+                query.bind(2*i + 1, feature_ids[i]);
+                query.bind(2*i + 2, version);
+            }
+
+            query.exec();
+        } catch (std::exception& exc) {
+            std::cerr << "cannot insert into features table: " << exc.what() << std::endl;
+        }
+
         return RetCode::RET_OK;
     };
 
