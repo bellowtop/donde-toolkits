@@ -2,13 +2,12 @@
 #include "types.h"
 #include "utils.h"
 
-#include <iostream>
-#include <ostream>
-
 #include <doctest/doctest.h>
 #include <filesystem>
+#include <iostream>
 #include <memory>
 #include <nlohmann/json.hpp>
+#include <ostream>
 
 using namespace std;
 
@@ -23,8 +22,6 @@ Feature gen_feature_dim() {
     }
     return Feature(std::move(raw), "test-model-face", size);
 }
-
-
 
 TEST_CASE("Feature file can be stored, loaded, and removed.") {
 
@@ -43,7 +40,7 @@ TEST_CASE("Feature file can be stored, loaded, and removed.") {
         fts.push_back(ft);
     }
 
-    std::cout << "in file_system_storage.cpp[test] feature length: "<< fts.size() << std::endl;
+    std::cout << "in file_system_storage.cpp[test] feature length: " << fts.size() << std::endl;
 
     std::vector<std::string> feature_ids = store.AddFeatures(fts);
     CHECK(feature_ids.size() == 2);
@@ -60,13 +57,13 @@ TEST_CASE("Feature file can be stored, loaded, and removed.") {
 
     search::PageData<search::FeatureIDList> listed = store.ListFeautreIDs(0, 10);
     CHECK(listed.data.size() == feature_ids.size());
-    for (size_t i = 0; i < listed.data.size(); i ++ ) {
+    for (size_t i = 0; i < listed.data.size(); i++) {
         CHECK(listed.data[i] == feature_ids[i]);
     }
 
     std::vector<Feature> loaded_features = store.LoadFeatures(listed.data);
-    for (size_t j = 0; j < loaded_features.size(); j ++) {
-        for (size_t i = 0; i < dim; i ++) {
+    for (size_t j = 0; j < loaded_features.size(); j++) {
+        for (size_t i = 0; i < dim; i++) {
             CHECK(fts[j].raw[i] == loaded_features[j].raw[i]);
         }
     }
@@ -88,7 +85,6 @@ TEST_CASE("Feature file can be stored, loaded, and removed.") {
     CHECK("aa" == "aa");
 };
 
-
 TEST_CASE("Features meta db support page listing.") {
 
     json conf = R"(
@@ -107,7 +103,7 @@ TEST_CASE("Features meta db support page listing.") {
         fts.push_back(ft);
     }
 
-    std::cout << "in file_system_storage.cpp[test] feature length: "<< fts.size() << std::endl;
+    std::cout << "in file_system_storage.cpp[test] feature length: " << fts.size() << std::endl;
 
     std::vector<std::string> feature_ids = store.AddFeatures(fts);
     CHECK(feature_ids.size() == feature_count);
@@ -120,10 +116,27 @@ TEST_CASE("Features meta db support page listing.") {
     CHECK(listed.perPage == perPage);
     CHECK(listed.totalPage == (feature_count + perPage - 1) / perPage);
 
-    page++;
+    page = 1;
 
     listed = store.ListFeautreIDs(page, perPage);
     CHECK(listed.data.size() == perPage);
+    CHECK(listed.page == page);
+    CHECK(listed.perPage == perPage);
+    CHECK(listed.totalPage == (feature_count + perPage - 1) / perPage);
+
+    // large page
+    page = 10;
+
+    listed = store.ListFeautreIDs(page, perPage);
+    CHECK(listed.data.size() == 5);
+    CHECK(listed.page == page);
+    CHECK(listed.perPage == perPage);
+    CHECK(listed.totalPage == (feature_count + perPage - 1) / perPage);
+
+    page = 11;
+
+    listed = store.ListFeautreIDs(page, perPage);
+    CHECK(listed.data.size() == 0);
     CHECK(listed.page == page);
     CHECK(listed.perPage == perPage);
     CHECK(listed.totalPage == (feature_count + perPage - 1) / perPage);
@@ -136,6 +149,7 @@ TEST_CASE("Features meta db support page listing.") {
     CHECK(listed.perPage == perPage);
     CHECK(listed.totalPage == (feature_count + perPage - 1) / perPage);
 
+    // large perPage
     page = 0;
     perPage = 100;
 
@@ -154,7 +168,7 @@ TEST_CASE("Features meta db support page listing.") {
     CHECK(listed.perPage == perPage);
     CHECK(listed.totalPage == (feature_count + perPage - 1) / perPage);
 
-
+    // even larger perPage
     page = 0;
     perPage = 200;
 
@@ -163,7 +177,6 @@ TEST_CASE("Features meta db support page listing.") {
     CHECK(listed.page == page);
     CHECK(listed.perPage == perPage);
     CHECK(listed.totalPage == (feature_count + perPage - 1) / perPage);
-
 
     // cleanup db file
     std::filesystem::remove_all("/tmp/test_store/");
