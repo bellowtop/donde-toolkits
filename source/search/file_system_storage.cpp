@@ -55,15 +55,10 @@ namespace search {
     PageData<FeatureIDList> FileSystemStorage::ListFeautreIDs(uint page, uint perPage) {
         uint64 count = count_features_in_meta_db();
         uint64 totalPage = count / perPage;
-        std::vector<std::string> feature_ids = list_features_from_meta_db(page * perPage, page);
+        std::vector<std::string> feature_ids = list_features_from_meta_db(page * perPage, perPage);
 
-        PageData<FeatureIDList> ret {
-            uint64(page),
-            uint64(perPage),
-            totalPage,
-            feature_ids,
-        };
-
+        std::cout << "feature_ids size: " << feature_ids.size() << std::endl;
+        PageData<FeatureIDList> ret{uint64(page), uint64(perPage), totalPage, feature_ids};
         return ret;
     };
 
@@ -168,17 +163,18 @@ namespace search {
         return RetCode::RET_OK;
     };
 
-    RetCode FileSystemStorage::delete_features_from_meta_db(const std::vector<std::string>& feature_ids) {
+    RetCode
+    FileSystemStorage::delete_features_from_meta_db(const std::vector<std::string>& feature_ids) {
         try {
             std::string sql = "delete from features where feature_id in (? ";
-            for (int i = 1; i < feature_ids.size(); i ++) {
+            for (int i = 1; i < feature_ids.size(); i++) {
                 sql += ",? ";
             }
             sql += ")";
 
             SQLite::Statement query(*(_meta_db.get()), sql);
 
-            for (int i = 0; i < feature_ids.size(); i ++) {
+            for (int i = 0; i < feature_ids.size(); i++) {
                 query.bind(i + 1, feature_ids[i]);
             }
 
@@ -212,7 +208,8 @@ namespace search {
         return feature_ids;
     };
 
-    RetCode FileSystemStorage::insert_features_to_meta_db(const std::vector<std::string> & feature_ids) {
+    RetCode
+    FileSystemStorage::insert_features_to_meta_db(const std::vector<std::string>& feature_ids) {
         // TODO: batch control
         try {
             int version = 10000; // FIXME
@@ -224,8 +221,8 @@ namespace search {
 
             SQLite::Statement query(*(_meta_db.get()), sql);
             for (int i = 0; i < feature_ids.size(); i++) {
-                query.bind(2*i + 1, feature_ids[i]);
-                query.bind(2*i + 2, version);
+                query.bind(2 * i + 1, feature_ids[i]);
+                query.bind(2 * i + 2, version);
             }
 
             query.exec();
@@ -237,9 +234,19 @@ namespace search {
     };
 
     uint64 FileSystemStorage::count_features_in_meta_db() {
+        int count;
 
-        return 0;
+        try {
+            std::string sql("select count(*) from features;");
+            SQLite::Statement query(*(_meta_db.get()), sql);
+
+            query.executeStep();
+            count = query.getColumn(0);
+        } catch (std::exception& exc) {
+            std::cerr << "cannot select from features table: " << exc.what() << std::endl;
+        }
+
+        return count;
     };
-
 
 } // namespace search

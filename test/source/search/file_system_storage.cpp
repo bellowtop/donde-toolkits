@@ -58,13 +58,13 @@ TEST_CASE("Feature file can be stored, loaded, and removed.") {
         CHECK(std::filesystem::exists(p1) == true);
     }
 
-    std::vector<std::string> listed = store.ListFeautreIDs(0, 10);
-    CHECK(listed.size() == feature_ids.size());
-    for (size_t i = 0; i < listed.size(); i ++ ) {
-        CHECK(listed[i] == feature_ids[i]);
+    search::PageData<search::FeatureIDList> listed = store.ListFeautreIDs(0, 10);
+    CHECK(listed.data.size() == feature_ids.size());
+    for (size_t i = 0; i < listed.data.size(); i ++ ) {
+        CHECK(listed.data[i] == feature_ids[i]);
     }
 
-    std::vector<Feature> loaded_features = store.LoadFeatures(listed);
+    std::vector<Feature> loaded_features = store.LoadFeatures(listed.data);
     for (size_t j = 0; j < loaded_features.size(); j ++) {
         for (size_t i = 0; i < dim; i ++) {
             CHECK(fts[j].raw[i] == loaded_features[j].raw[i]);
@@ -74,7 +74,7 @@ TEST_CASE("Feature file can be stored, loaded, and removed.") {
     store.RemoveFeatures(feature_ids);
     listed = store.ListFeautreIDs(0, 10);
     // no features in db.
-    CHECK(listed.size() == 0);
+    CHECK(listed.data.size() == 0);
 
     // file removed
     for (auto& id : feature_ids) {

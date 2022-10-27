@@ -21,17 +21,18 @@ namespace search {
         uint64 page;
         uint64 perPage;
         uint64 totalPage;
-        const T data;
+        T data;
 
-        PageData(uint64 _page, uint64 _perPage, uint64 _totalPage, const T _data):
-            page(_page), perPage(_perPage), totalPage(_totalPage), data(std::move(_data))
+        PageData(uint64 _page, uint64 _perPage, uint64 _totalPage, T _data):
+            page(_page), perPage(_perPage), totalPage(_totalPage), data(_data)
         {}
 
-        PageData& operator= (const PageData& lhs) {
+        PageData& operator=(const PageData& lhs) {
             page = lhs.page;
             perPage = lhs.perPage;
             totalPage = lhs.totalPage;
             data = lhs.data;
+            return *this;
         };
     };
 
