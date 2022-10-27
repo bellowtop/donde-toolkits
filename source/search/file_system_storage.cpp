@@ -54,7 +54,7 @@ namespace search {
 
     PageData<FeatureIDList> FileSystemStorage::ListFeautreIDs(uint page, uint perPage) {
         uint64 count = count_features_in_meta_db();
-        uint64 totalPage = count / perPage;
+        uint64 totalPage = (count + perPage - 1) / perPage;
         std::vector<std::string> feature_ids = list_features_from_meta_db(page * perPage, perPage);
 
         std::cout << "feature_ids size: " << feature_ids.size() << std::endl;
@@ -73,7 +73,7 @@ namespace search {
             uuid_generate(uuid);
             uuid_unparse_lower(uuid, feature_id.data());
 
-            std::cout << "uuid: " << feature_id << std::endl;
+            // std::cout << "uuid: " << feature_id << std::endl;
 
             auto filepath = _data_dir / (feature_id + ".ft");
             try {
