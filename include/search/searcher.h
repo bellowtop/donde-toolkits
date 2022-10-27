@@ -16,6 +16,27 @@ using json = nlohmann::json;
 
 namespace search {
 
+    template<typename T>
+    struct PageData {
+        uint64 page;
+        uint64 perPage;
+        uint64 totalPage;
+        const T data;
+
+        PageData(uint64 _page, uint64 _perPage, uint64 _totalPage, const T _data):
+            page(_page), perPage(_perPage), totalPage(_totalPage), data(std::move(_data))
+        {}
+
+        PageData& operator= (const PageData& lhs) {
+            page = lhs.page;
+            perPage = lhs.perPage;
+            totalPage = lhs.totalPage;
+            data = lhs.data;
+        };
+    };
+
+    using FeatureIDList = std::vector<std::string>;
+
     const std::string SEARCH_ENGINE_BRUTE_FORCE = "brute_force";
     const std::string SEARCH_ENGINE_FAISS = "brute_force";
 
@@ -30,7 +51,7 @@ namespace search {
 
         virtual RetCode Init() = 0;
 
-        virtual std::vector<std::string> ListFeautreIDs(int start, int limit) = 0;
+        virtual PageData<FeatureIDList> ListFeautreIDs(uint start, uint limit) = 0;
 
         virtual std::vector<std::string> AddFeatures(const std::vector<Feature>& features) = 0;
 

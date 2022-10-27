@@ -19,7 +19,7 @@ namespace search {
         FileSystemStorage(const json& config);
         ~FileSystemStorage() = default;
 
-        std::vector<std::string> ListFeautreIDs(int start, int limit) override;
+        PageData<FeatureIDList> ListFeautreIDs(uint start, uint limit) override;
 
         RetCode Init() override;
 
@@ -39,7 +39,9 @@ namespace search {
 
         RetCode init_features_meta_db();
         std::vector<std::string> list_features_from_meta_db(int start, int limit);
-        RetCode insert_features_to_meta_db(std::vector<std::string> feature_ids);
+        uint64 count_features_in_meta_db();
+        RetCode insert_features_to_meta_db(const std::vector<std::string>& feature_ids);
+        RetCode delete_features_from_meta_db(const std::vector<std::string>& feature_ids);
     };
 
 } // namespace search

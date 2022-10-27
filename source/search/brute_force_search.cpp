@@ -27,6 +27,17 @@ namespace search {
     };
 
     std::vector<Feature> BruteForceSearch::Search(const Feature& query, size_t topK) {
+        uint page = 0;
+        uint perPage = 10;
+        auto pageData = _storage->ListFeautreIDs(page, perPage);
+
+        while (pageData.data.size() != 0) {
+            // feed in max-heap
+
+            // read next page
+            pageData = _storage->ListFeautreIDs(++page, perPage);
+        }
+
         // search with max-heap.
         return std::vector<Feature>();
     };

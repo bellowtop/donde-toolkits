@@ -52,8 +52,19 @@ namespace search {
         return RetCode::RET_OK;
     };
 
-    std::vector<std::string> FileSystemStorage::ListFeautreIDs(int start, int limit) {
-        return list_features_from_meta_db(start, limit);
+    PageData<FeatureIDList> FileSystemStorage::ListFeautreIDs(uint page, uint perPage) {
+        uint64 count = count_features_in_meta_db();
+        uint64 totalPage = count / perPage;
+        std::vector<std::string> feature_ids = list_features_from_meta_db(page * perPage, page);
+
+        PageData<FeatureIDList> ret {
+            uint64(page),
+            uint64(perPage),
+            totalPage,
+            feature_ids,
+        };
+
+        return ret;
     };
 
     std::vector<std::string> FileSystemStorage::AddFeatures(const std::vector<Feature>& features) {
@@ -127,10 +138,17 @@ namespace search {
     };
 
     RetCode FileSystemStorage::RemoveFeatures(const std::vector<std::string>& feature_ids) {
+        if (feature_ids.size() == 0) {
+            return RetCode::RET_OK;
+        }
+
         for (auto& feature_id : feature_ids) {
             auto filepath = _data_dir / (feature_id + ".ft");
             std::filesystem::remove(filepath);
         }
+
+        delete_features_from_meta_db(feature_ids);
+
         return RetCode::RET_OK;
     };
 
@@ -149,6 +167,28 @@ namespace search {
 
         return RetCode::RET_OK;
     };
+
+    RetCode FileSystemStorage::delete_features_from_meta_db(const std::vector<std::string>& feature_ids) {
+        try {
+            std::string sql = "delete from features where feature_id in (? ";
+            for (int i = 1; i < feature_ids.size(); i ++) {
+                sql += ",? ";
+            }
+            sql += ")";
+
+            SQLite::Statement query(*(_meta_db.get()), sql);
+
+            for (int i = 0; i < feature_ids.size(); i ++) {
+                query.bind(i + 1, feature_ids[i]);
+            }
+
+            query.exec();
+        } catch (std::exception& exc) {
+            std::cerr << "cannot delete from features table: " << exc.what() << std::endl;
+        }
+
+        return RetCode::RET_OK;
+    }
 
     std::vector<std::string> FileSystemStorage::list_features_from_meta_db(int start, int limit) {
         std::vector<std::string> feature_ids;
@@ -172,7 +212,7 @@ namespace search {
         return feature_ids;
     };
 
-    RetCode FileSystemStorage::insert_features_to_meta_db(std::vector<std::string> feature_ids) {
+    RetCode FileSystemStorage::insert_features_to_meta_db(const std::vector<std::string> & feature_ids) {
         // TODO: batch control
         try {
             int version = 10000; // FIXME
@@ -195,5 +235,11 @@ namespace search {
 
         return RetCode::RET_OK;
     };
+
+    uint64 FileSystemStorage::count_features_in_meta_db() {
+
+        return 0;
+    };
+
 
 } // namespace search
