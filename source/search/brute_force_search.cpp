@@ -26,7 +26,7 @@ namespace search {
     }
 
     RetCode BruteForceSearch::TrainIndex() {
-        std::cout << "TrainIndex is not implemented by BruteForceSearch" << std::endl;
+        spdlog::warn("TrainIndex is not implemented by BruteForceSearch");
         return RetCode::RET_OK;
     };
 

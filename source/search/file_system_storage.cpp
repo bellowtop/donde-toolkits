@@ -41,7 +41,7 @@ namespace search {
             _meta_db = std::make_unique<SQLite::Database>(db_filepath, SQLite::OPEN_READWRITE
                                                                            | SQLite::OPEN_CREATE);
         } catch (std::exception& exc) {
-            std::cerr << "cannot open database: " << exc.what() << std::endl;
+            spdlog::error("cannot open database: ", exc.what());
             std::abort();
         }
     };
@@ -61,7 +61,7 @@ namespace search {
 
         std::vector<std::string> feature_ids
             = list_features_from_meta_db(_meta_db.get(), page * perPage, perPage);
-        std::cout << "feature_ids size: " << feature_ids.size() << std::endl;
+        spdlog::debug("feature_ids size: ", feature_ids.size());
 
         PageData<FeatureIDList> ret{uint64(page), uint64(perPage), totalPage, feature_ids};
         return ret;
@@ -94,8 +94,7 @@ namespace search {
                 feature_ids.push_back(feature_id);
 
             } catch (const std::exception& exc) {
-                std::cerr << "cannot save feature to " << filepath << ", exc: " << exc.what()
-                          << std::endl;
+                spdlog::error("cannot save feature to : {}, exc: {}", filepath.string(), exc.what());
                 feature_ids.push_back("");
             }
         }
@@ -111,7 +110,7 @@ namespace search {
         int count = feature_ids.size();
         std::vector<Feature> features;
         for (auto& feature_id : feature_ids) {
-            std::cout << "load feature_id: " << feature_id << std::endl;
+            spdlog::debug("load feature_id: {}", feature_id);
 
             auto filepath = _data_dir / (feature_id + ".ft");
             try {
@@ -128,8 +127,7 @@ namespace search {
 
                 features.push_back(ft);
             } catch (const std::exception& exc) {
-                std::cerr << "cannot load feature, feature_path: " << filepath << exc.what()
-                          << std::endl;
+                spdlog::error("cannot load feature, feature_path: {}, exc: {}", filepath.string(), exc.what());
                 features.push_back(Feature{});
             }
         }

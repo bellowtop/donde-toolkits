@@ -23,7 +23,7 @@ namespace search {
         try {
             db->exec(sql);
         } catch (std::exception& exc) {
-            std::cerr << "cannot create table: " << exc.what() << std::endl;
+            spdlog::error("cannot create table: ", exc.what());
             return RetCode::RET_ERR;
         }
 
@@ -47,7 +47,7 @@ namespace search {
 
             query.exec();
         } catch (std::exception& exc) {
-            std::cerr << "cannot delete from features table: " << exc.what() << std::endl;
+            spdlog::error("cannot delete from features table: ", exc.what());
             return RetCode::RET_ERR;
         }
 
@@ -71,7 +71,7 @@ namespace search {
                 feature_ids.push_back(feature_id);
             }
         } catch (std::exception& exc) {
-            std::cerr << "cannot select from features table: " << exc.what() << std::endl;
+            spdlog::error("cannot select from features table: ", exc.what());
             return feature_ids;
         }
 
@@ -97,7 +97,7 @@ namespace search {
 
             query.exec();
         } catch (std::exception& exc) {
-            std::cerr << "cannot insert into features table: " << exc.what() << std::endl;
+            spdlog::error("cannot insert into features table: ", exc.what());
             return RetCode::RET_ERR;
         }
 
@@ -114,7 +114,7 @@ namespace search {
             query.executeStep();
             count = query.getColumn(0);
         } catch (std::exception& exc) {
-            std::cerr << "cannot select from features table: " << exc.what() << std::endl;
+            spdlog::error("cannot select from features table: ", exc.what());
             return -1;
         }
 
