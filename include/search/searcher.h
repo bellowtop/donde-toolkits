@@ -73,7 +73,7 @@ namespace search {
 
         virtual RetCode TrainIndex() = 0;
 
-        virtual std::vector<FeatureSearchResult> Search(const Feature& query, size_t topK) = 0;
+        virtual std::vector<FeatureSearchResult> Search(const Feature& query, size_t topk) = 0;
 
         virtual std::vector<std::string> AddFeatures(const std::vector<Feature>& features) = 0;
 
@@ -95,13 +95,13 @@ namespace search {
 
         RetCode Terminate();
 
-        RetCode Maintaince();
+        RetCode TrainIndex();
 
         std::vector<std::string> AddFeatures(const std::vector<Feature>& features);
 
         RetCode RemoveFeatures(const std::vector<std::string>& feature_ids);
 
-        std::vector<FeatureSearchResult> SearchFeature(const Feature& query, size_t topK);
+        std::vector<FeatureSearchResult> SearchFeature(const Feature& query, size_t topk);
 
       private:
         json _config;

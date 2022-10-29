@@ -31,7 +31,7 @@ namespace search {
     };
 
     std::vector<FeatureSearchResult> BruteForceSearch::Search(const Feature& query,
-                                                                      size_t topK) {
+                                                                      size_t topk) {
 
         struct FeatureScore {
             float score;
@@ -61,7 +61,7 @@ namespace search {
                 float score = ft.compare(query);
                 FeatureScore target{score, query, ft};
 
-                if (min_heap.size() < topK) {
+                if (min_heap.size() < topk) {
                     min_heap.push(target);
                     continue;
                 }

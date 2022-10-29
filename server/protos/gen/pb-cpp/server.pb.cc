@@ -231,7 +231,7 @@ struct AddFeatureRequestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AddFeatureRequestDefaultTypeInternal _AddFeatureRequest_default_instance_;
 PROTOBUF_CONSTEXPR AddFeatureResponse::AddFeatureResponse(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.feature_id_)*/int64_t{0}
+    /*decltype(_impl_.feature_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.code_)*/0
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct AddFeatureResponseDefaultTypeInternal {
@@ -245,7 +245,7 @@ struct AddFeatureResponseDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AddFeatureResponseDefaultTypeInternal _AddFeatureResponse_default_instance_;
 PROTOBUF_CONSTEXPR DeleteFeatureRequest::DeleteFeatureRequest(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.feature_id_)*/int64_t{0}
+    /*decltype(_impl_.feature_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct DeleteFeatureRequestDefaultTypeInternal {
   PROTOBUF_CONSTEXPR DeleteFeatureRequestDefaultTypeInternal()
@@ -272,6 +272,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORIT
 PROTOBUF_CONSTEXPR SearchFeatureRequest::SearchFeatureRequest(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.query_)*/nullptr
+  , /*decltype(_impl_.topk_)*/0
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct SearchFeatureRequestDefaultTypeInternal {
   PROTOBUF_CONSTEXPR SearchFeatureRequestDefaultTypeInternal()
@@ -282,9 +283,24 @@ struct SearchFeatureRequestDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SearchFeatureRequestDefaultTypeInternal _SearchFeatureRequest_default_instance_;
+PROTOBUF_CONSTEXPR SearchItemScore::SearchItemScore(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.feature_)*/nullptr
+  , /*decltype(_impl_.score_)*/0
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct SearchItemScoreDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SearchItemScoreDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SearchItemScoreDefaultTypeInternal() {}
+  union {
+    SearchItemScore _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SearchItemScoreDefaultTypeInternal _SearchItemScore_default_instance_;
 PROTOBUF_CONSTEXPR SearchFeatureResponse::SearchFeatureResponse(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.code_)*/0
+    /*decltype(_impl_.items_)*/{}
+  , /*decltype(_impl_.code_)*/0
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct SearchFeatureResponseDefaultTypeInternal {
   PROTOBUF_CONSTEXPR SearchFeatureResponseDefaultTypeInternal()
@@ -298,7 +314,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORIT
 }  // namespace face_service
 }  // namespace sekirocc
 }  // namespace com
-static ::_pb::Metadata file_level_metadata_server_2eproto[20];
+static ::_pb::Metadata file_level_metadata_server_2eproto[21];
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_server_2eproto[2];
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_server_2eproto = nullptr;
 
@@ -449,6 +465,15 @@ const uint32_t TableStruct_server_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(p
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::SearchFeatureRequest, _impl_.query_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::SearchFeatureRequest, _impl_.topk_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::SearchItemScore, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::SearchItemScore, _impl_.feature_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::SearchItemScore, _impl_.score_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::SearchFeatureResponse, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -456,6 +481,7 @@ const uint32_t TableStruct_server_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(p
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::SearchFeatureResponse, _impl_.code_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::SearchFeatureResponse, _impl_.items_),
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::com::sekirocc::face_service::Rect)},
@@ -477,7 +503,8 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 125, -1, -1, sizeof(::com::sekirocc::face_service::DeleteFeatureRequest)},
   { 132, -1, -1, sizeof(::com::sekirocc::face_service::DeleteFeatureResponse)},
   { 139, -1, -1, sizeof(::com::sekirocc::face_service::SearchFeatureRequest)},
-  { 146, -1, -1, sizeof(::com::sekirocc::face_service::SearchFeatureResponse)},
+  { 147, -1, -1, sizeof(::com::sekirocc::face_service::SearchItemScore)},
+  { 155, -1, -1, sizeof(::com::sekirocc::face_service::SearchFeatureResponse)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -500,6 +527,7 @@ static const ::_pb::Message* const file_default_instances[] = {
   &::com::sekirocc::face_service::_DeleteFeatureRequest_default_instance_._instance,
   &::com::sekirocc::face_service::_DeleteFeatureResponse_default_instance_._instance,
   &::com::sekirocc::face_service::_SearchFeatureRequest_default_instance_._instance,
+  &::com::sekirocc::face_service::_SearchItemScore_default_instance_._instance,
   &::com::sekirocc::face_service::_SearchFeatureResponse_default_instance_._instance,
 };
 
@@ -540,54 +568,58 @@ const char descriptor_table_protodef_server_2eproto[] PROTOBUF_SECTION_VARIABLE(
   "sekirocc.face_service.FaceFeature\"]\n\022Add"
   "FeatureResponse\0223\n\004code\030\001 \001(\0162%.com.seki"
   "rocc.face_service.ResultCode\022\022\n\nfeature_"
-  "id\030\002 \001(\003\"*\n\024DeleteFeatureRequest\022\022\n\nfeat"
-  "ure_id\030\001 \001(\003\"L\n\025DeleteFeatureResponse\0223\n"
+  "id\030\002 \001(\t\"*\n\024DeleteFeatureRequest\022\022\n\nfeat"
+  "ure_id\030\001 \001(\t\"L\n\025DeleteFeatureResponse\0223\n"
   "\004code\030\001 \001(\0162%.com.sekirocc.face_service."
-  "ResultCode\"M\n\024SearchFeatureRequest\0225\n\005qu"
+  "ResultCode\"[\n\024SearchFeatureRequest\0225\n\005qu"
   "ery\030\001 \001(\0132&.com.sekirocc.face_service.Fa"
-  "ceFeature\"L\n\025SearchFeatureResponse\0223\n\004co"
-  "de\030\001 \001(\0162%.com.sekirocc.face_service.Res"
-  "ultCode*f\n\nResultCode\022\006\n\002OK\020\000\022\021\n\014SERVER_"
-  "ERROR\020\221N\022\021\n\014CLIENT_ERROR\020\365N\022\023\n\016FACE_NOT_"
-  "FOUND\020\366N\"\005\010\001\020\220N\"\006\010\222N\020\364N\"\006\010\367N\020\330O*\?\n\013Image"
-  "Format\022\021\n\rIMAGE_UNKNOWN\020\000\022\016\n\nIMAGE_JPEG\020"
-  "\001\022\r\n\tIMAGE_PNG\020\0022\251\003\n\013FaceService\022|\n\006Dete"
-  "ct\022+.com.sekirocc.face_service.Detection"
-  "Request\032,.com.sekirocc.face_service.Dete"
-  "ctionResponse\"\027\202\323\344\223\002\021\"\014/detect_face:\001*\022\217"
-  "\001\n\016ExtractFeature\022,.com.sekirocc.face_se"
-  "rvice.ExtractionRequest\032-.com.sekirocc.f"
-  "ace_service.ExtractionResponse\" \202\323\344\223\002\032\"\025"
-  "/extract_face_feature:\001*\022\211\001\n\016CompareFeat"
-  "ure\022).com.sekirocc.face_service.CompareR"
-  "equest\032*.com.sekirocc.face_service.Compa"
-  "reResponse\" \202\323\344\223\002\032\"\025/compare_face_featur"
-  "e:\001*2\273\004\n\rFeatureSearch\022\202\001\n\nTrainIndex\022,."
-  "com.sekirocc.face_service.TrainIndexRequ"
-  "est\032-.com.sekirocc.face_service.TrainInd"
-  "exResponse\"\027\202\323\344\223\002\021\"\014/train_index:\001*\022\202\001\n\n"
-  "AddFeature\022,.com.sekirocc.face_service.A"
-  "ddFeatureRequest\032-.com.sekirocc.face_ser"
-  "vice.AddFeatureResponse\"\027\202\323\344\223\002\021\"\014/add_fe"
-  "ature:\001*\022\216\001\n\rDeleteFeature\022/.com.sekiroc"
-  "c.face_service.DeleteFeatureRequest\0320.co"
-  "m.sekirocc.face_service.DeleteFeatureRes"
-  "ponse\"\032\202\323\344\223\002\024\"\017/delete_feature:\001*\022\216\001\n\rSe"
-  "archFeature\022/.com.sekirocc.face_service."
-  "SearchFeatureRequest\0320.com.sekirocc.face"
-  "_service.SearchFeatureResponse\"\032\202\323\344\223\002\024\"\017"
-  "/search_feature:\001*B;Z9github.com/sekiroc"
-  "c/face-recognition-service/face_serviceb"
-  "\006proto3"
+  "ceFeature\022\014\n\004topk\030\002 \001(\005\"Y\n\017SearchItemSco"
+  "re\0227\n\007feature\030\001 \001(\0132&.com.sekirocc.face_"
+  "service.FaceFeature\022\r\n\005score\030\002 \001(\002\"\207\001\n\025S"
+  "earchFeatureResponse\0223\n\004code\030\001 \001(\0162%.com"
+  ".sekirocc.face_service.ResultCode\0229\n\005ite"
+  "ms\030\002 \003(\0132*.com.sekirocc.face_service.Sea"
+  "rchItemScore*f\n\nResultCode\022\006\n\002OK\020\000\022\021\n\014SE"
+  "RVER_ERROR\020\221N\022\021\n\014CLIENT_ERROR\020\365N\022\023\n\016FACE"
+  "_NOT_FOUND\020\366N\"\005\010\001\020\220N\"\006\010\222N\020\364N\"\006\010\367N\020\330O*\?\n\013"
+  "ImageFormat\022\021\n\rIMAGE_UNKNOWN\020\000\022\016\n\nIMAGE_"
+  "JPEG\020\001\022\r\n\tIMAGE_PNG\020\0022\251\003\n\013FaceService\022|\n"
+  "\006Detect\022+.com.sekirocc.face_service.Dete"
+  "ctionRequest\032,.com.sekirocc.face_service"
+  ".DetectionResponse\"\027\202\323\344\223\002\021\"\014/detect_face"
+  ":\001*\022\217\001\n\016ExtractFeature\022,.com.sekirocc.fa"
+  "ce_service.ExtractionRequest\032-.com.sekir"
+  "occ.face_service.ExtractionResponse\" \202\323\344"
+  "\223\002\032\"\025/extract_face_feature:\001*\022\211\001\n\016Compar"
+  "eFeature\022).com.sekirocc.face_service.Com"
+  "pareRequest\032*.com.sekirocc.face_service."
+  "CompareResponse\" \202\323\344\223\002\032\"\025/compare_face_f"
+  "eature:\001*2\273\004\n\rFeatureSearch\022\202\001\n\nTrainInd"
+  "ex\022,.com.sekirocc.face_service.TrainInde"
+  "xRequest\032-.com.sekirocc.face_service.Tra"
+  "inIndexResponse\"\027\202\323\344\223\002\021\"\014/train_index:\001*"
+  "\022\202\001\n\nAddFeature\022,.com.sekirocc.face_serv"
+  "ice.AddFeatureRequest\032-.com.sekirocc.fac"
+  "e_service.AddFeatureResponse\"\027\202\323\344\223\002\021\"\014/a"
+  "dd_feature:\001*\022\216\001\n\rDeleteFeature\022/.com.se"
+  "kirocc.face_service.DeleteFeatureRequest"
+  "\0320.com.sekirocc.face_service.DeleteFeatu"
+  "reResponse\"\032\202\323\344\223\002\024\"\017/delete_feature:\001*\022\216"
+  "\001\n\rSearchFeature\022/.com.sekirocc.face_ser"
+  "vice.SearchFeatureRequest\0320.com.sekirocc"
+  ".face_service.SearchFeatureResponse\"\032\202\323\344"
+  "\223\002\024\"\017/search_feature:\001*B;Z9github.com/se"
+  "kirocc/face-recognition-service/face_ser"
+  "viceb\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_server_2eproto_deps[1] = {
   &::descriptor_table_google_2fapi_2fannotations_2eproto,
 };
 static ::_pbi::once_flag descriptor_table_server_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_server_2eproto = {
-    false, false, 2967, descriptor_table_protodef_server_2eproto,
+    false, false, 3132, descriptor_table_protodef_server_2eproto,
     "server.proto",
-    &descriptor_table_server_2eproto_once, descriptor_table_server_2eproto_deps, 1, 20,
+    &descriptor_table_server_2eproto_once, descriptor_table_server_2eproto_deps, 1, 21,
     schemas, file_default_instances, TableStruct_server_2eproto::offsets,
     file_level_metadata_server_2eproto, file_level_enum_descriptors_server_2eproto,
     file_level_service_descriptors_server_2eproto,
@@ -3823,9 +3855,15 @@ AddFeatureResponse::AddFeatureResponse(const AddFeatureResponse& from)
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&_impl_.feature_id_, &from._impl_.feature_id_,
-    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.code_) -
-    reinterpret_cast<char*>(&_impl_.feature_id_)) + sizeof(_impl_.code_));
+  _impl_.feature_id_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.feature_id_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_feature_id().empty()) {
+    _this->_impl_.feature_id_.Set(from._internal_feature_id(), 
+      _this->GetArenaForAllocation());
+  }
+  _this->_impl_.code_ = from._impl_.code_;
   // @@protoc_insertion_point(copy_constructor:com.sekirocc.face_service.AddFeatureResponse)
 }
 
@@ -3834,10 +3872,14 @@ inline void AddFeatureResponse::SharedCtor(
   (void)arena;
   (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.feature_id_){int64_t{0}}
+      decltype(_impl_.feature_id_){}
     , decltype(_impl_.code_){0}
     , /*decltype(_impl_._cached_size_)*/{}
   };
+  _impl_.feature_id_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.feature_id_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 AddFeatureResponse::~AddFeatureResponse() {
@@ -3851,6 +3893,7 @@ AddFeatureResponse::~AddFeatureResponse() {
 
 inline void AddFeatureResponse::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.feature_id_.Destroy();
 }
 
 void AddFeatureResponse::SetCachedSize(int size) const {
@@ -3863,9 +3906,8 @@ void AddFeatureResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ::memset(&_impl_.feature_id_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&_impl_.code_) -
-      reinterpret_cast<char*>(&_impl_.feature_id_)) + sizeof(_impl_.code_));
+  _impl_.feature_id_.ClearToEmpty();
+  _impl_.code_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -3884,11 +3926,13 @@ const char* AddFeatureResponse::_InternalParse(const char* ptr, ::_pbi::ParseCon
         } else
           goto handle_unusual;
         continue;
-      // int64 feature_id = 2;
+      // string feature_id = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
-          _impl_.feature_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          auto str = _internal_mutable_feature_id();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "com.sekirocc.face_service.AddFeatureResponse.feature_id"));
         } else
           goto handle_unusual;
         continue;
@@ -3928,10 +3972,14 @@ uint8_t* AddFeatureResponse::_InternalSerialize(
       1, this->_internal_code(), target);
   }
 
-  // int64 feature_id = 2;
-  if (this->_internal_feature_id() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt64ToArray(2, this->_internal_feature_id(), target);
+  // string feature_id = 2;
+  if (!this->_internal_feature_id().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_feature_id().data(), static_cast<int>(this->_internal_feature_id().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "com.sekirocc.face_service.AddFeatureResponse.feature_id");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_feature_id(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3950,9 +3998,11 @@ size_t AddFeatureResponse::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // int64 feature_id = 2;
-  if (this->_internal_feature_id() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_feature_id());
+  // string feature_id = 2;
+  if (!this->_internal_feature_id().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_feature_id());
   }
 
   // .com.sekirocc.face_service.ResultCode code = 1;
@@ -3979,7 +4029,7 @@ void AddFeatureResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, con
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_feature_id() != 0) {
+  if (!from._internal_feature_id().empty()) {
     _this->_internal_set_feature_id(from._internal_feature_id());
   }
   if (from._internal_code() != 0) {
@@ -4001,13 +4051,14 @@ bool AddFeatureResponse::IsInitialized() const {
 
 void AddFeatureResponse::InternalSwap(AddFeatureResponse* other) {
   using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(AddFeatureResponse, _impl_.code_)
-      + sizeof(AddFeatureResponse::_impl_.code_)
-      - PROTOBUF_FIELD_OFFSET(AddFeatureResponse, _impl_.feature_id_)>(
-          reinterpret_cast<char*>(&_impl_.feature_id_),
-          reinterpret_cast<char*>(&other->_impl_.feature_id_));
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.feature_id_, lhs_arena,
+      &other->_impl_.feature_id_, rhs_arena
+  );
+  swap(_impl_.code_, other->_impl_.code_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata AddFeatureResponse::GetMetadata() const {
@@ -4036,7 +4087,14 @@ DeleteFeatureRequest::DeleteFeatureRequest(const DeleteFeatureRequest& from)
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _this->_impl_.feature_id_ = from._impl_.feature_id_;
+  _impl_.feature_id_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.feature_id_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_feature_id().empty()) {
+    _this->_impl_.feature_id_.Set(from._internal_feature_id(), 
+      _this->GetArenaForAllocation());
+  }
   // @@protoc_insertion_point(copy_constructor:com.sekirocc.face_service.DeleteFeatureRequest)
 }
 
@@ -4045,9 +4103,13 @@ inline void DeleteFeatureRequest::SharedCtor(
   (void)arena;
   (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.feature_id_){int64_t{0}}
+      decltype(_impl_.feature_id_){}
     , /*decltype(_impl_._cached_size_)*/{}
   };
+  _impl_.feature_id_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.feature_id_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 DeleteFeatureRequest::~DeleteFeatureRequest() {
@@ -4061,6 +4123,7 @@ DeleteFeatureRequest::~DeleteFeatureRequest() {
 
 inline void DeleteFeatureRequest::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.feature_id_.Destroy();
 }
 
 void DeleteFeatureRequest::SetCachedSize(int size) const {
@@ -4073,7 +4136,7 @@ void DeleteFeatureRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.feature_id_ = int64_t{0};
+  _impl_.feature_id_.ClearToEmpty();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -4083,11 +4146,13 @@ const char* DeleteFeatureRequest::_InternalParse(const char* ptr, ::_pbi::ParseC
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // int64 feature_id = 1;
+      // string feature_id = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          _impl_.feature_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_feature_id();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "com.sekirocc.face_service.DeleteFeatureRequest.feature_id"));
         } else
           goto handle_unusual;
         continue;
@@ -4120,10 +4185,14 @@ uint8_t* DeleteFeatureRequest::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int64 feature_id = 1;
-  if (this->_internal_feature_id() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt64ToArray(1, this->_internal_feature_id(), target);
+  // string feature_id = 1;
+  if (!this->_internal_feature_id().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_feature_id().data(), static_cast<int>(this->_internal_feature_id().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "com.sekirocc.face_service.DeleteFeatureRequest.feature_id");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_feature_id(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -4142,9 +4211,11 @@ size_t DeleteFeatureRequest::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // int64 feature_id = 1;
-  if (this->_internal_feature_id() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_feature_id());
+  // string feature_id = 1;
+  if (!this->_internal_feature_id().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_feature_id());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -4165,7 +4236,7 @@ void DeleteFeatureRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, c
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_feature_id() != 0) {
+  if (!from._internal_feature_id().empty()) {
     _this->_internal_set_feature_id(from._internal_feature_id());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
@@ -4184,8 +4255,13 @@ bool DeleteFeatureRequest::IsInitialized() const {
 
 void DeleteFeatureRequest::InternalSwap(DeleteFeatureRequest* other) {
   using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_.feature_id_, other->_impl_.feature_id_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.feature_id_, lhs_arena,
+      &other->_impl_.feature_id_, rhs_arena
+  );
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata DeleteFeatureRequest::GetMetadata() const {
@@ -4397,12 +4473,14 @@ SearchFeatureRequest::SearchFeatureRequest(const SearchFeatureRequest& from)
   SearchFeatureRequest* const _this = this; (void)_this;
   new (&_impl_) Impl_{
       decltype(_impl_.query_){nullptr}
+    , decltype(_impl_.topk_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_query()) {
     _this->_impl_.query_ = new ::com::sekirocc::face_service::FaceFeature(*from._impl_.query_);
   }
+  _this->_impl_.topk_ = from._impl_.topk_;
   // @@protoc_insertion_point(copy_constructor:com.sekirocc.face_service.SearchFeatureRequest)
 }
 
@@ -4412,6 +4490,7 @@ inline void SearchFeatureRequest::SharedCtor(
   (void)is_message_owned;
   new (&_impl_) Impl_{
       decltype(_impl_.query_){nullptr}
+    , decltype(_impl_.topk_){0}
     , /*decltype(_impl_._cached_size_)*/{}
   };
 }
@@ -4444,6 +4523,7 @@ void SearchFeatureRequest::Clear() {
     delete _impl_.query_;
   }
   _impl_.query_ = nullptr;
+  _impl_.topk_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -4457,6 +4537,14 @@ const char* SearchFeatureRequest::_InternalParse(const char* ptr, ::_pbi::ParseC
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_query(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 topk = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
+          _impl_.topk_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -4497,6 +4585,12 @@ uint8_t* SearchFeatureRequest::_InternalSerialize(
         _Internal::query(this).GetCachedSize(), target, stream);
   }
 
+  // int32 topk = 2;
+  if (this->_internal_topk() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(2, this->_internal_topk(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -4518,6 +4612,11 @@ size_t SearchFeatureRequest::ByteSizeLong() const {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *_impl_.query_);
+  }
+
+  // int32 topk = 2;
+  if (this->_internal_topk() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_topk());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -4542,6 +4641,9 @@ void SearchFeatureRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, c
     _this->_internal_mutable_query()->::com::sekirocc::face_service::FaceFeature::MergeFrom(
         from._internal_query());
   }
+  if (from._internal_topk() != 0) {
+    _this->_internal_set_topk(from._internal_topk());
+  }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -4559,13 +4661,254 @@ bool SearchFeatureRequest::IsInitialized() const {
 void SearchFeatureRequest::InternalSwap(SearchFeatureRequest* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_.query_, other->_impl_.query_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(SearchFeatureRequest, _impl_.topk_)
+      + sizeof(SearchFeatureRequest::_impl_.topk_)
+      - PROTOBUF_FIELD_OFFSET(SearchFeatureRequest, _impl_.query_)>(
+          reinterpret_cast<char*>(&_impl_.query_),
+          reinterpret_cast<char*>(&other->_impl_.query_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SearchFeatureRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_server_2eproto_getter, &descriptor_table_server_2eproto_once,
       file_level_metadata_server_2eproto[18]);
+}
+
+// ===================================================================
+
+class SearchItemScore::_Internal {
+ public:
+  static const ::com::sekirocc::face_service::FaceFeature& feature(const SearchItemScore* msg);
+};
+
+const ::com::sekirocc::face_service::FaceFeature&
+SearchItemScore::_Internal::feature(const SearchItemScore* msg) {
+  return *msg->_impl_.feature_;
+}
+SearchItemScore::SearchItemScore(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:com.sekirocc.face_service.SearchItemScore)
+}
+SearchItemScore::SearchItemScore(const SearchItemScore& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  SearchItemScore* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.feature_){nullptr}
+    , decltype(_impl_.score_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_feature()) {
+    _this->_impl_.feature_ = new ::com::sekirocc::face_service::FaceFeature(*from._impl_.feature_);
+  }
+  _this->_impl_.score_ = from._impl_.score_;
+  // @@protoc_insertion_point(copy_constructor:com.sekirocc.face_service.SearchItemScore)
+}
+
+inline void SearchItemScore::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.feature_){nullptr}
+    , decltype(_impl_.score_){0}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+}
+
+SearchItemScore::~SearchItemScore() {
+  // @@protoc_insertion_point(destructor:com.sekirocc.face_service.SearchItemScore)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void SearchItemScore::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.feature_;
+}
+
+void SearchItemScore::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void SearchItemScore::Clear() {
+// @@protoc_insertion_point(message_clear_start:com.sekirocc.face_service.SearchItemScore)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaForAllocation() == nullptr && _impl_.feature_ != nullptr) {
+    delete _impl_.feature_;
+  }
+  _impl_.feature_ = nullptr;
+  _impl_.score_ = 0;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* SearchItemScore::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // .com.sekirocc.face_service.FaceFeature feature = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_feature(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // float score = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 21)) {
+          _impl_.score_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* SearchItemScore::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.face_service.SearchItemScore)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .com.sekirocc.face_service.FaceFeature feature = 1;
+  if (this->_internal_has_feature()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(1, _Internal::feature(this),
+        _Internal::feature(this).GetCachedSize(), target, stream);
+  }
+
+  // float score = 2;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_score = this->_internal_score();
+  uint32_t raw_score;
+  memcpy(&raw_score, &tmp_score, sizeof(tmp_score));
+  if (raw_score != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(2, this->_internal_score(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.face_service.SearchItemScore)
+  return target;
+}
+
+size_t SearchItemScore::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.face_service.SearchItemScore)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .com.sekirocc.face_service.FaceFeature feature = 1;
+  if (this->_internal_has_feature()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.feature_);
+  }
+
+  // float score = 2;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_score = this->_internal_score();
+  uint32_t raw_score;
+  memcpy(&raw_score, &tmp_score, sizeof(tmp_score));
+  if (raw_score != 0) {
+    total_size += 1 + 4;
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SearchItemScore::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    SearchItemScore::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SearchItemScore::GetClassData() const { return &_class_data_; }
+
+
+void SearchItemScore::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<SearchItemScore*>(&to_msg);
+  auto& from = static_cast<const SearchItemScore&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.face_service.SearchItemScore)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_has_feature()) {
+    _this->_internal_mutable_feature()->::com::sekirocc::face_service::FaceFeature::MergeFrom(
+        from._internal_feature());
+  }
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_score = from._internal_score();
+  uint32_t raw_score;
+  memcpy(&raw_score, &tmp_score, sizeof(tmp_score));
+  if (raw_score != 0) {
+    _this->_internal_set_score(from._internal_score());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void SearchItemScore::CopyFrom(const SearchItemScore& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.face_service.SearchItemScore)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SearchItemScore::IsInitialized() const {
+  return true;
+}
+
+void SearchItemScore::InternalSwap(SearchItemScore* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(SearchItemScore, _impl_.score_)
+      + sizeof(SearchItemScore::_impl_.score_)
+      - PROTOBUF_FIELD_OFFSET(SearchItemScore, _impl_.feature_)>(
+          reinterpret_cast<char*>(&_impl_.feature_),
+          reinterpret_cast<char*>(&other->_impl_.feature_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata SearchItemScore::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_server_2eproto_getter, &descriptor_table_server_2eproto_once,
+      file_level_metadata_server_2eproto[19]);
 }
 
 // ===================================================================
@@ -4584,7 +4927,8 @@ SearchFeatureResponse::SearchFeatureResponse(const SearchFeatureResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   SearchFeatureResponse* const _this = this; (void)_this;
   new (&_impl_) Impl_{
-      decltype(_impl_.code_){}
+      decltype(_impl_.items_){from._impl_.items_}
+    , decltype(_impl_.code_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
@@ -4597,7 +4941,8 @@ inline void SearchFeatureResponse::SharedCtor(
   (void)arena;
   (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.code_){0}
+      decltype(_impl_.items_){arena}
+    , decltype(_impl_.code_){0}
     , /*decltype(_impl_._cached_size_)*/{}
   };
 }
@@ -4613,6 +4958,7 @@ SearchFeatureResponse::~SearchFeatureResponse() {
 
 inline void SearchFeatureResponse::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.items_.~RepeatedPtrField();
 }
 
 void SearchFeatureResponse::SetCachedSize(int size) const {
@@ -4625,6 +4971,7 @@ void SearchFeatureResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  _impl_.items_.Clear();
   _impl_.code_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
@@ -4641,6 +4988,19 @@ const char* SearchFeatureResponse::_InternalParse(const char* ptr, ::_pbi::Parse
           uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           _internal_set_code(static_cast<::com::sekirocc::face_service::ResultCode>(val));
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated .com.sekirocc.face_service.SearchItemScore items = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_items(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
         } else
           goto handle_unusual;
         continue;
@@ -4680,6 +5040,14 @@ uint8_t* SearchFeatureResponse::_InternalSerialize(
       1, this->_internal_code(), target);
   }
 
+  // repeated .com.sekirocc.face_service.SearchItemScore items = 2;
+  for (unsigned i = 0,
+      n = static_cast<unsigned>(this->_internal_items_size()); i < n; i++) {
+    const auto& repfield = this->_internal_items(i);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+        InternalWriteMessage(2, repfield, repfield.GetCachedSize(), target, stream);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -4695,6 +5063,13 @@ size_t SearchFeatureResponse::ByteSizeLong() const {
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
+
+  // repeated .com.sekirocc.face_service.SearchItemScore items = 2;
+  total_size += 1UL * this->_internal_items_size();
+  for (const auto& msg : this->_impl_.items_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
 
   // .com.sekirocc.face_service.ResultCode code = 1;
   if (this->_internal_code() != 0) {
@@ -4720,6 +5095,7 @@ void SearchFeatureResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, 
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  _this->_impl_.items_.MergeFrom(from._impl_.items_);
   if (from._internal_code() != 0) {
     _this->_internal_set_code(from._internal_code());
   }
@@ -4740,13 +5116,14 @@ bool SearchFeatureResponse::IsInitialized() const {
 void SearchFeatureResponse::InternalSwap(SearchFeatureResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  _impl_.items_.InternalSwap(&other->_impl_.items_);
   swap(_impl_.code_, other->_impl_.code_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SearchFeatureResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_server_2eproto_getter, &descriptor_table_server_2eproto_once,
-      file_level_metadata_server_2eproto[19]);
+      file_level_metadata_server_2eproto[20]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
@@ -4829,6 +5206,10 @@ Arena::CreateMaybeMessage< ::com::sekirocc::face_service::DeleteFeatureResponse 
 template<> PROTOBUF_NOINLINE ::com::sekirocc::face_service::SearchFeatureRequest*
 Arena::CreateMaybeMessage< ::com::sekirocc::face_service::SearchFeatureRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::com::sekirocc::face_service::SearchFeatureRequest >(arena);
+}
+template<> PROTOBUF_NOINLINE ::com::sekirocc::face_service::SearchItemScore*
+Arena::CreateMaybeMessage< ::com::sekirocc::face_service::SearchItemScore >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::sekirocc::face_service::SearchItemScore >(arena);
 }
 template<> PROTOBUF_NOINLINE ::com::sekirocc::face_service::SearchFeatureResponse*
 Arena::CreateMaybeMessage< ::com::sekirocc::face_service::SearchFeatureResponse >(Arena* arena) {

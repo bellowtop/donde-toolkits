@@ -29,12 +29,12 @@
 	    "warmup": false
         }
     },
-    "search": {
+    "searcher": {
 	"engine": {
 	    "name": "brute_force",
 	    "brute_force": {
 		"storage": {
-		    "path": "/tmp/"
+		    "path": "/tmp/brute_force_store"
 		}
 	    },
 	    "faiss": {

@@ -155,6 +155,7 @@ Status FaceServiceImpl::ExtractFeature(ServerContext* context, const ExtractionR
     for (auto& ft : feature_result->face_features) {
         ft.debugPrint();
 
+        // convert ft => face_feat.
         FaceFeature* face_feat = response->add_face_features();
         const char* p = reinterpret_cast<const char*>(&ft.raw[0]);
         size_t size = sizeof(float) * ft.raw.size();

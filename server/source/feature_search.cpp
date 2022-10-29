@@ -42,8 +42,9 @@ using com::sekirocc::face_service::SearchFeatureResponse;
 using com::sekirocc::face_service::TrainIndexRequest;
 using com::sekirocc::face_service::TrainIndexResponse;
 
-using com::sekirocc::face_service::ResultCode;
+using com::sekirocc::face_service::FaceFeature;
 
+using com::sekirocc::face_service::ResultCode;
 
 using grpc::ServerContext;
 using grpc::Status;
@@ -61,6 +62,7 @@ void FeatureSearchImpl::Stop() { searcher->Terminate(); };
 
 Status FeatureSearchImpl::TrainIndex(ServerContext* context, const TrainIndexRequest* request,
                                      TrainIndexResponse* response) {
+    searcher->Maintaince();
     return Status::OK;
 };
 
@@ -70,21 +72,53 @@ Status FeatureSearchImpl::AddFeature(ServerContext* context, const AddFeatureReq
     Feature feature(convertFeatureBlobToFloats(ft.blob()), std::string(ft.model()), ft.version());
 
     std::vector<Feature> fts{feature};
-    std::vector<uint64> ids;
-    ids.reserve(fts.size());
-
     std::vector<std::string> feature_ids = searcher->AddFeatures(fts);
 
+    response->set_feature_id(feature_ids[0]);
     response->set_code(ResultCode::OK);
+
     return Status::OK;
 };
 
 Status FeatureSearchImpl::DeleteFeature(ServerContext* context, const DeleteFeatureRequest* request,
                                         DeleteFeatureResponse* response) {
+
+    std::string feature_id = request->feature_id();
+    std::vector<std::string> feature_ids{feature_id};
+    searcher->RemoveFeatures(feature_ids);
+
     return Status::OK;
 };
 
 Status FeatureSearchImpl::SearchFeature(ServerContext* context, const SearchFeatureRequest* request,
                                         SearchFeatureResponse* response) {
+    auto ft = request->query();
+    auto topk = request->topk();
+    Feature query(convertFeatureBlobToFloats(ft.blob()), std::string(ft.model()), ft.version());
+
+    std::vector<search::FeatureSearchResult> ret = searcher->SearchFeature(query, topk);
+
+    response->set_code(ResultCode::OK);
+
+    for (const auto& feature_search_result : ret) {
+        auto item = response->add_items();
+        item->set_score(feature_search_result.score);
+
+        // convert ft => face_feat.
+        auto ft = feature_search_result.target;
+        FaceFeature* face_feat = item->mutable_feature();
+
+        const char* p = reinterpret_cast<const char*>(&ft.raw[0]);
+        size_t size = sizeof(float) * ft.raw.size();
+
+        std::string str;
+        str.resize(size);
+        std::copy(p, p + size, str.data());
+
+        face_feat->set_blob(str);
+        face_feat->set_version(ft.version);
+        face_feat->set_model(ft.model);
+    }
+
     return Status::OK;
 };

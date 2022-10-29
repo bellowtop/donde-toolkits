@@ -98,11 +98,11 @@ message AddFeatureRequest {
 
 message AddFeatureResponse {
     ResultCode code = 1;
-  int64 feature_id = 2;
+    string feature_id = 2;
 }
 
 message DeleteFeatureRequest {
-  int64 feature_id = 1;
+  string feature_id = 1;
 }
 
 message DeleteFeatureResponse {
@@ -111,10 +111,16 @@ message DeleteFeatureResponse {
 
 message SearchFeatureRequest {
     FaceFeature query = 1;
+  int32 topk = 2;
 }
 
+message SearchItemScore {
+  FaceFeature feature = 1;
+  float score = 2;
+}
 message SearchFeatureResponse {
-    ResultCode code = 1;
+  ResultCode code = 1;
+  repeated SearchItemScore items = 2;
 }
 
 

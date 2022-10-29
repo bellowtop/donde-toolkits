@@ -22,7 +22,7 @@ namespace search {
 
     RetCode Searcher::Terminate() { return RetCode::RET_OK; };
 
-    RetCode Searcher::Maintaince() {
+    RetCode Searcher::TrainIndex() {
         _engine->TrainIndex();
         return RetCode::RET_OK;
     };
@@ -35,8 +35,8 @@ namespace search {
         return _engine->RemoveFeatures(feature_ids);
     };
 
-    std::vector<FeatureSearchResult> Searcher::SearchFeature(const Feature& query, size_t topK) {
-        return _engine->Search(query, topK);
+    std::vector<FeatureSearchResult> Searcher::SearchFeature(const Feature& query, size_t topk) {
+        return _engine->Search(query, topk);
     }
 
 } // namespace search
