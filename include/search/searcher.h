@@ -23,6 +23,8 @@ namespace search {
         uint64 totalPage;
         T data;
 
+        PageData() {}
+
         PageData(uint64 _page, uint64 _perPage, uint64 _totalPage, T _data):
             page(_page), perPage(_perPage), totalPage(_totalPage), data(_data)
         {}
