@@ -1,6 +1,6 @@
 # Face Recognition Service
 
-Example grpc face recognition service with openvino, develop to learn openvino and modern cpp.
+Face feature extraction and searching and clustering service, built with openvino and faiss[todo] [wip].
 
 Currently developed with macOS, llvm-clang
 
@@ -10,14 +10,13 @@ Currently developed with macOS, llvm-clang
 - [Modern CMake practices](https://pabloariasal.github.io/2018/02/19/its-time-to-do-cmake-right/)
 - Openvino inference
 - Full pipeline detect/landmarks/align/extract
+- Feature search service with simple store
 - Feature searching with faiss - TODO
 - Feature clustering with faiss - TODO
-
-Tech stack
-
-- Master/Workers architecture, Poco message
+- Master/Workers architecture, Poco messaging
 - Conan to manage dependencies
 - Protobuf proto & GRPC server
+- GRPC gateway to support http api
 
 ## Dependencies
 
@@ -27,7 +26,7 @@ openvino, you need to install(download from openvino website) it first. other de
 
 | name                          | type      | desc                 | urldesc                                                                                                                  |
 |-------------------------------|-----------|----------------------|--------------------------------------------------------------------------------------------------------------------------|
-| face-detection-adas-0001      | detect    | detect face          | https://github.com/openvinotoolkit/open_model_zoo/blob/master/models/intel/face-detection-adas-0001/README.mddetect face |
+| face-detection-adas-0001      | detect    | detect face          | https://github.com/openvinotoolkit/open_model_zoo/blob/master/models/intel/face-detection-adas-0001/README.md  |
 | facial-landmarks-35-adas-0002 | landmarks | 70 points landmarks  | https://github.com/openvinotoolkit/open_model_zoo/blob/master/models/intel/facial-landmarks-35-adas-0002/README.md       |
 | Sphereface.xml                | feature   | extract face feature | https://github.com/openvinotoolkit/open_model_zoo/blob/master/models/public/Sphereface/README.md                         |
 
