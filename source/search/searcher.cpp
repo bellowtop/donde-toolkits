@@ -14,7 +14,7 @@ namespace search {
             throw std::invalid_argument("searcher config json doesnot contains `engine` field");
         }
         if (_config["engine"] == SEARCH_ENGINE_BRUTE_FORCE) {
-            _engine = std::make_shared<BruteForceSearch>(_config["engine"]);
+            _engine = std::make_shared<BruteForceSearch>(_config[SEARCH_ENGINE_BRUTE_FORCE]);
         }
     };
 
@@ -22,14 +22,21 @@ namespace search {
 
     RetCode Searcher::Terminate() { return RetCode::RET_OK; };
 
-    RetCode Searcher::Maintaince() { return RetCode::RET_OK; };
+    RetCode Searcher::Maintaince() {
+        _engine->TrainIndex();
+        return RetCode::RET_OK;
+    };
 
     std::vector<std::string> Searcher::AddFeatures(const std::vector<Feature>& features) {
-        return {};
+        return _engine->AddFeatures(features);
     };
 
     RetCode Searcher::RemoveFeatures(const std::vector<std::string>& feature_ids) {
-        return RetCode::RET_OK;
+        return _engine->RemoveFeatures(feature_ids);
     };
+
+    std::vector<FeatureSearchResult> Searcher::SearchFeature(const Feature& query, size_t topK) {
+        return _engine->Search(query, topK);
+    }
 
 } // namespace search

@@ -13,16 +13,6 @@ using namespace std;
 
 using nlohmann::json;
 
-template <int size>
-Feature gen_feature_dim() {
-    std::vector<float> raw(size);
-    for (int i = 0; i < size; i++) {
-        // 0.000 ~ 0.512
-        raw[i] = 0.001 * i;
-    }
-    return Feature(std::move(raw), "test-model-face", size);
-}
-
 TEST_CASE("Feature file can be stored, loaded, and removed.") {
 
     json conf = R"(

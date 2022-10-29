@@ -54,9 +54,15 @@ struct Feature {
     int version;
     int dimension;
 
-    Feature() = default;
     Feature(std::vector<float>&& data) : raw{data}, dimension(data.size()){};
     Feature(std::vector<float>&& data, std::string&& model, int version) : raw{data}, model{model}, version{version}, dimension(data.size()){};
+
+    Feature() = default;
+    Feature(const Feature& lhs) = default;
+    Feature& operator=(const Feature& lhs) = default;
+    Feature(Feature&& lhs) = default;
+    Feature& operator=(Feature&& lhs) = default;
+    ~Feature() = default;
 
     void debugPrint() const {
         std::stringstream ss;
@@ -101,6 +107,17 @@ struct Feature {
     MSGPACK_DEFINE(model, version, dimension, raw);
 };
 
+
+
+template <int size>
+Feature gen_feature_dim() {
+    std::vector<float> raw(size);
+    for (int i = 0; i < size; i++) {
+        // [0.000 ~ 1]
+        raw[i] = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+    }
+    return Feature(std::move(raw), "test-model-face", size);
+}
 
 
 struct FeatureResult {

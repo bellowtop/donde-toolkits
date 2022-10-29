@@ -16,23 +16,18 @@ using namespace std;
 
 using nlohmann::json;
 
-TEST_CASE("Searcher can add and features.") {
+TEST_CASE("Search topk features.") {
 
     json conf = R"(
 {
-
-    "engine": "brute_force",
-    "brute_force": {
         "storage": {
 		    "path": "/tmp/test_store/"
         }
-    }
-
 })"_json;
 
     const int feature_count = 100;
     const int dim = 512;
-    search::Searcher searcher(conf);
+    search::BruteForceSearch search(conf);
 
     std::vector<Feature> fts;
     for (int i = 0; i < feature_count; i++) {
@@ -42,12 +37,12 @@ TEST_CASE("Searcher can add and features.") {
 
     std::cout << "in brute_force_search.cpp[test] feature count: " << feature_count << std::endl;
 
-    std::vector<std::string> feature_ids = searcher.AddFeatures(fts);
+    std::vector<std::string> feature_ids = search.AddFeatures(fts);
     CHECK(feature_ids.size() == feature_count);
 
     Feature query{fts[0]};
     int topk = 10;
-    std::vector<search::FeatureSearchResult> search_result = searcher.SearchFeature(query, topk);
+    std::vector<search::FeatureSearchResult> search_result = search.Search(query, topk);
 
     for (const auto& r : search_result) {
         std::cout << "score: " << r.score << std::endl;

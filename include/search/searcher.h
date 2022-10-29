@@ -12,11 +12,9 @@ using namespace std;
 
 using json = nlohmann::json;
 
-
-
 namespace search {
 
-    template<typename T>
+    template <typename T>
     struct PageData {
         uint64 page;
         uint64 perPage;
@@ -25,9 +23,8 @@ namespace search {
 
         PageData() {}
 
-        PageData(uint64 _page, uint64 _perPage, uint64 _totalPage, T _data):
-            page(_page), perPage(_perPage), totalPage(_totalPage), data(_data)
-        {}
+        PageData(uint64 _page, uint64 _perPage, uint64 _totalPage, T _data)
+            : page(_page), perPage(_perPage), totalPage(_totalPage), data(_data) {}
 
         PageData& operator=(const PageData& lhs) {
             page = lhs.page;
@@ -45,6 +42,11 @@ namespace search {
 
     const std::string STORAGE_BACKEND_FILE_SYSTEM = "file_system";
     const std::string STORAGE_BACKEND_CASSANDRA = "cassandra";
+
+    struct FeatureSearchResult {
+        Feature target;
+        float score;
+    };
 
     class Storage {
 
@@ -71,7 +73,7 @@ namespace search {
 
         virtual RetCode TrainIndex() = 0;
 
-        virtual std::vector<Feature> Search(const Feature& query, size_t topK) = 0;
+        virtual std::vector<FeatureSearchResult> Search(const Feature& query, size_t topK) = 0;
 
         virtual std::vector<std::string> AddFeatures(const std::vector<Feature>& features) = 0;
 
@@ -99,7 +101,7 @@ namespace search {
 
         RetCode RemoveFeatures(const std::vector<std::string>& feature_ids);
 
-        std::vector<Feature> SearchFeature(const Feature& query, size_t topK);
+        std::vector<FeatureSearchResult> SearchFeature(const Feature& query, size_t topK);
 
       private:
         json _config;

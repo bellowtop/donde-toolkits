@@ -20,7 +20,7 @@ namespace search {
 
         RetCode TrainIndex() override;
 
-        std::vector<Feature> Search(const Feature& query, size_t topK) override;
+        std::vector<FeatureSearchResult> Search(const Feature& query, size_t topK) override;
 
         std::vector<std::string> AddFeatures(const std::vector<Feature>& features) override;
 
@@ -38,7 +38,7 @@ namespace search {
 
         RetCode TrainIndex() override;
 
-        std::vector<Feature> Search(const Feature& query, size_t topK) override;
+        std::vector<FeatureSearchResult> Search(const Feature& query, size_t topK) override;
 
         std::vector<std::string> AddFeatures(const std::vector<Feature>& features) override;
 
