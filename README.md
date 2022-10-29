@@ -17,6 +17,7 @@ Currently developed with macOS, llvm-clang
 - Conan to manage dependencies
 - Protobuf proto & GRPC server
 - GRPC gateway to support http api
+- Fine tests (important!)
 
 ## Dependencies
 
