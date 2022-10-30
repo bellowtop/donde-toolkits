@@ -24,10 +24,11 @@ TEST_CASE("Feature file can be stored, loaded, and removed.") {
     search::FileSystemStorage store(conf);
     store.Init();
 
-    std::vector<Feature> fts;
+    std::vector<search::FeatureDbItem> fts;
     for (int i = 0; i < 2; i++) {
         auto ft = gen_feature_dim<dim>();
-        fts.push_back(ft);
+        std::map<string, string> meta;
+        fts.push_back({ft, meta});
     }
 
     std::cout << "in file_system_storage.cpp[test] feature length: " << fts.size() << std::endl;
@@ -51,10 +52,10 @@ TEST_CASE("Feature file can be stored, loaded, and removed.") {
         CHECK(listed.data[i] == feature_ids[i]);
     }
 
-    std::vector<Feature> loaded_features = store.LoadFeatures(listed.data);
+    std::vector<search::FeatureDbItem> loaded_features = store.LoadFeatures(listed.data);
     for (size_t j = 0; j < loaded_features.size(); j++) {
         for (size_t i = 0; i < dim; i++) {
-            CHECK(fts[j].raw[i] == loaded_features[j].raw[i]);
+            CHECK(fts[j].feature.raw[i] == loaded_features[j].feature.raw[i]);
         }
     }
 
@@ -87,10 +88,11 @@ TEST_CASE("Features meta db support page listing.") {
     search::FileSystemStorage store(conf);
     store.Init();
 
-    std::vector<Feature> fts;
-    for (int i = 0; i < feature_count; i++) {
+    std::vector<search::FeatureDbItem> fts;
+    for (int i = 0; i < 2; i++) {
         auto ft = gen_feature_dim<dim>();
-        fts.push_back(ft);
+        std::map<string, string> meta;
+        fts.push_back({ft, meta});
     }
 
     std::cout << "in file_system_storage.cpp[test] feature length: " << fts.size() << std::endl;

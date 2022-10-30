@@ -35,7 +35,6 @@ namespace search {
         };
     };
 
-    using FeatureIDList = std::vector<std::string>;
 
     const std::string SEARCH_ENGINE_BRUTE_FORCE = "brute_force";
     const std::string SEARCH_ENGINE_FAISS = "brute_force";
@@ -48,6 +47,14 @@ namespace search {
         float score;
     };
 
+    struct FeatureDbItem {
+        std::string feature_id;
+        Feature feature;
+        std::map<string, string> metadata;
+    };
+
+    using FeatureDbItemList = std::vector<FeatureDbItem>;
+
     class Storage {
 
       public:
@@ -56,11 +63,11 @@ namespace search {
 
         virtual RetCode Init() = 0;
 
-        virtual PageData<FeatureIDList> ListFeautreIDs(uint start, uint limit) = 0;
+        virtual PageData<FeatureDbItemList> ListFeatures(uint start, uint limit) = 0;
 
-        virtual std::vector<std::string> AddFeatures(const std::vector<Feature>& features) = 0;
+        virtual std::vector<FeatureDbItem> AddFeatures( const std::vector<FeatureDbItem>& features) = 0;
 
-        virtual std::vector<Feature> LoadFeatures(const std::vector<std::string>& feature_ids) = 0;
+        virtual std::vector<FeatureDbItem> LoadFeatures(const std::vector<std::string>& feature_ids) = 0;
 
         virtual RetCode RemoveFeatures(const std::vector<std::string>& feature_ids) = 0;
     };
@@ -75,7 +82,7 @@ namespace search {
 
         virtual std::vector<FeatureSearchResult> Search(const Feature& query, size_t topk) = 0;
 
-        virtual std::vector<std::string> AddFeatures(const std::vector<Feature>& features) = 0;
+        virtual std::vector<std::string> AddFeatures(const std::vector<FeatureDbItem>& features) = 0;
 
         virtual RetCode RemoveFeatures(const std::vector<std::string>& feature_ids) = 0;
 
@@ -97,7 +104,7 @@ namespace search {
 
         RetCode TrainIndex();
 
-        std::vector<std::string> AddFeatures(const std::vector<Feature>& features);
+        std::vector<std::string> AddFeatures(const std::vector<FeatureDbItem>& features);
 
         RetCode RemoveFeatures(const std::vector<std::string>& feature_ids);
 

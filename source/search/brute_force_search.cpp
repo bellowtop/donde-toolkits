@@ -56,7 +56,7 @@ namespace search {
 
         while (pageData.data.size() != 0) {
             // feed in min-heap
-            std::vector<Feature> fts = _storage->LoadFeatures(pageData.data);
+            std::vector<FeatureDbItem> fts = _storage->LoadFeatures(pageData.data);
             for (auto& ft : fts) {
                 float score = ft.compare(query);
                 FeatureScore target{score, query, ft};
@@ -88,7 +88,7 @@ namespace search {
         return ret;
     };
 
-    std::vector<std::string> BruteForceSearch::AddFeatures(const std::vector<Feature>& features) {
+    std::vector<std::string> BruteForceSearch::AddFeatures(const std::vector<FeatureDbItem>& features) {
         std::vector<std::string> feature_ids = _storage->AddFeatures(features);
         return feature_ids;
     };

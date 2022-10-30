@@ -27,8 +27,8 @@ namespace search {
         return RetCode::RET_OK;
     };
 
-    std::vector<std::string> Searcher::AddFeatures(const std::vector<Feature>& features) {
-        return _engine->AddFeatures(features);
+    std::vector<std::string> Searcher::AddFeatures(const std::vector<FeatureDbItem>& features) {
+        return _engine->AddFeatures(features, metadata);
     };
 
     RetCode Searcher::RemoveFeatures(const std::vector<std::string>& feature_ids) {

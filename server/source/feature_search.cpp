@@ -34,6 +34,8 @@
 using namespace std;
 
 using com::sekirocc::face_service::AddFeatureRequest;
+using com::sekirocc::face_service::AddFeatureItem;
+
 using com::sekirocc::face_service::AddFeatureResponse;
 using com::sekirocc::face_service::DeleteFeatureRequest;
 using com::sekirocc::face_service::DeleteFeatureResponse;
@@ -62,16 +64,22 @@ void FeatureSearchImpl::Stop() { searcher->Terminate(); };
 
 Status FeatureSearchImpl::TrainIndex(ServerContext* context, const TrainIndexRequest* request,
                                      TrainIndexResponse* response) {
-    searcher->Maintaince();
+    searcher->TrainIndex();
     return Status::OK;
 };
 
 Status FeatureSearchImpl::AddFeature(ServerContext* context, const AddFeatureRequest* request,
                                      AddFeatureResponse* response) {
-    auto ft = request->feature();
-    Feature feature(convertFeatureBlobToFloats(ft.blob()), std::string(ft.model()), ft.version());
+    auto item = request->feature_item();
+    auto ft = item.feature();
 
-    std::vector<Feature> fts{feature};
+    // auto meta = ((AddFeatureRequest*)request)->mutable_meta();
+    // (*meta)["a"] = "b";
+
+    Feature feature(convertFeatureBlobToFloats(ft.blob()), std::string(ft.model()), ft.version());
+    std::map<string, string> meta = convertMetadataToMap(item.meta());
+
+    std::vector<search::FeatureDbItem> fts{ {feature, meta} };
     std::vector<std::string> feature_ids = searcher->AddFeatures(fts);
 
     response->set_feature_id(feature_ids[0]);

@@ -29,10 +29,11 @@ TEST_CASE("Search topk features.") {
     const int dim = 512;
     search::BruteForceSearch search(conf);
 
-    std::vector<Feature> fts;
-    for (int i = 0; i < feature_count; i++) {
+    std::vector<search::FeatureDbItem> fts;
+    for (int i = 0; i < 2; i++) {
         auto ft = gen_feature_dim<dim>();
-        fts.push_back(ft);
+        std::map<string, string> meta;
+        fts.push_back({ft, meta});
     }
 
     std::cout << "in brute_force_search.cpp[test] feature count: " << feature_count << std::endl;
@@ -40,7 +41,7 @@ TEST_CASE("Search topk features.") {
     std::vector<std::string> feature_ids = search.AddFeatures(fts);
     CHECK(feature_ids.size() == feature_count);
 
-    Feature query{fts[0]};
+    Feature query{fts[0].feature};
     int topk = 10;
     std::vector<search::FeatureSearchResult> search_result = search.Search(query, topk);
 
@@ -58,7 +59,7 @@ TEST_CASE("Search topk features.") {
     // t.target.debugPrint();
 
     for (size_t i = 0; i < t.target.raw.size(); i ++) {
-        CHECK(t.target.raw[i] == fts[0].raw[i]);
+        CHECK(t.target.raw[i] == fts[0].feature.raw[i]);
     }
 
     // cleanup db file

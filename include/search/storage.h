@@ -7,6 +7,7 @@
 
 #include <map>
 #include <memory>
+#include <nlohmann/json_fwd.hpp>
 
 using namespace std;
 
@@ -18,6 +19,7 @@ namespace search {
         std::string sql = "create table if not exists features("
                           "id integer primary key autoincrement, "
                           "feature_id char(64), "
+                          "metadata text, "
                           "version int "
                           ");";
         try {
@@ -54,21 +56,29 @@ namespace search {
         return RetCode::RET_OK;
     }
 
-    inline std::vector<std::string> list_features_from_meta_db(SQLite::Database* db, int start,
-                                                               int limit) {
-        std::vector<std::string> feature_ids;
+    inline std::vector<FeatureDbItem> list_features_from_meta_db(SQLite::Database* db, int start,
+                                                                 int limit) {
+        std::vector<FeatureDbItem> feature_ids;
 
         try {
-            std::string sql("select * from features limit ? offset ?");
+            std::string sql("select feature_id, metadata from features limit ? offset ?");
             SQLite::Statement query(*db, sql);
             query.bind(1, limit);
             query.bind(2, start);
 
             while (query.executeStep()) {
                 // int id = query.getColumn(0);
-                const char* value = query.getColumn(1);
-                std::string feature_id(value);
-                feature_ids.push_back(feature_id);
+                const char* value = query.getColumn(0);
+                std::string feature_id{value};
+
+                const char* meta = query.getColumn(1);
+                std::string meta_str{meta};
+                std::map<string, string> meta_map{json::parse(meta_str)};
+
+                feature_ids.push_back(FeatureDbItem{
+                    .feature_id = feature_id,
+                    .metadata = meta_map,
+                });
             }
         } catch (std::exception& exc) {
             spdlog::error("cannot select from features table: ", exc.what());
@@ -79,11 +89,11 @@ namespace search {
     };
 
     inline RetCode insert_features_to_meta_db(SQLite::Database* db,
-                                              const std::vector<std::string>& feature_ids) {
+                                              const std::vector<FeatureDbItem>& feature_ids) {
         // TODO: batch control
         try {
             int version = 10000; // FIXME
-            std::string sql("insert into features(feature_id, version) values (?, ?)");
+            std::string sql("insert into features(feature_id, metadata, version) values (?, ?, ?)");
             for (size_t i = 1; i < feature_ids.size(); i++) {
                 sql += ", (?, ?)";
             }
@@ -91,8 +101,16 @@ namespace search {
 
             SQLite::Statement query(*db, sql);
             for (size_t i = 0; i < feature_ids.size(); i++) {
-                query.bind(2 * i + 1, feature_ids[i]);
-                query.bind(2 * i + 2, version);
+                auto item = feature_ids[i];
+
+                auto feature_id = item.feature_id;
+
+                auto meta_json = json{item.metadata};
+                auto meta_str = meta_json.dump();
+
+                query.bind(2 * i + 1, feature_id);
+                query.bind(2 * i + 2, meta_str);
+                query.bind(2 * i + 3, version);
             }
 
             query.exec();
@@ -126,13 +144,14 @@ namespace search {
         FileSystemStorage(const json& config);
         ~FileSystemStorage() = default;
 
-        PageData<FeatureIDList> ListFeautreIDs(uint start, uint limit) override;
+        PageData<FeatureDbItemList> ListFeatures(uint start, uint limit) override;
 
         RetCode Init() override;
 
-        std::vector<std::string> AddFeatures(const std::vector<Feature>& features) override;
+        std::vector<FeatureDbItem> AddFeatures(const std::vector<FeatureDbItem>& features) override;
 
-        std::vector<Feature> LoadFeatures(const std::vector<std::string>& feature_ids) override;
+        std::vector<FeatureDbItem>
+        LoadFeatures(const std::vector<std::string>& feature_ids) override;
 
         RetCode RemoveFeatures(const std::vector<std::string>& feature_ids) override;
 

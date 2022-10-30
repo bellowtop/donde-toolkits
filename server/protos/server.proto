@@ -92,8 +92,15 @@ message TrainIndexResponse {
     ResultCode code = 1;
 }
 
-message AddFeatureRequest {
+
+message AddFeatureItem {
     FaceFeature feature = 1;
+  map<string, string> meta = 2;
+}
+
+
+message AddFeatureRequest {
+    AddFeatureItem feature_item = 1;
 }
 
 message AddFeatureResponse {

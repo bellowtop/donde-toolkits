@@ -51,26 +51,31 @@ namespace search {
         return init_features_meta_db(_meta_db.get());
     };
 
-    PageData<FeatureIDList> FileSystemStorage::ListFeautreIDs(uint page, uint perPage) {
+    PageData<FeatureDbItemList> FileSystemStorage::ListFeatures(uint page, uint perPage) {
         uint64 count = count_features_in_meta_db(_meta_db.get());
         if (count <= 0) {
-            return PageData<FeatureIDList>();
+            return {};
         }
 
         uint64 totalPage = (count + perPage - 1) / perPage;
 
-        std::vector<std::string> feature_ids
+        std::vector<FeatureDbItem> feature_ids
             = list_features_from_meta_db(_meta_db.get(), page * perPage, perPage);
         spdlog::debug("feature_ids size: ", feature_ids.size());
 
-        PageData<FeatureIDList> ret{uint64(page), uint64(perPage), totalPage, feature_ids};
+        PageData<FeatureDbItemList> ret{uint64(page), uint64(perPage), totalPage, feature_ids};
         return ret;
     };
 
-    std::vector<std::string> FileSystemStorage::AddFeatures(const std::vector<Feature>& features) {
+    std::vector<FeatureDbItem> FileSystemStorage::AddFeatures(const std::vector<FeatureDbItem>& features) {
         int count = features.size();
-        std::vector<std::string> feature_ids;
-        for (auto& ft : features) {
+        std::vector<FeatureDbItem> feature_ids;
+
+        for (auto& item : features) {
+            FeatureDbItem copied { item };
+
+            auto ft = item.feature;
+
             std::string feature_id;
             feature_id.resize(32);
 
@@ -90,25 +95,31 @@ namespace search {
                 std::string data(ss.str());
                 file << data;
 
+                json j{item.metadata};
+
+
+
+                copied.feature_id = feature_id;
                 // std::cout << "write data.size" << data.size() << std::endl;
-                feature_ids.push_back(feature_id);
+                feature_ids.push_back(copied);
 
             } catch (const std::exception& exc) {
                 spdlog::error("cannot save feature to : {}, exc: {}", filepath.string(), exc.what());
-                feature_ids.push_back("");
+                feature_ids.push_back(copied);
             }
         }
 
         // insert feature to meta db.
-        insert_features_to_meta_db(_meta_db.get(), feature_ids);
+        insert_features_to_meta_db(_meta_db.get(), feature_ids, metadatas);
 
         return feature_ids;
     };
 
-    std::vector<Feature>
+    std::vector<FeatureDbItem>
     FileSystemStorage::LoadFeatures(const std::vector<std::string>& feature_ids) {
         int count = feature_ids.size();
-        std::vector<Feature> features;
+        std::vector<FeatureDbItem> features;
+
         for (auto& feature_id : feature_ids) {
             spdlog::debug("load feature_id: {}", feature_id);
 
@@ -125,10 +136,10 @@ namespace search {
                 Feature ft = oh.get().as<Feature>();
                 // ft.debugPrint();
 
-                features.push_back(ft);
+                features.push_back(FeatureDbItem{ft});
             } catch (const std::exception& exc) {
                 spdlog::error("cannot load feature, feature_path: {}, exc: {}", filepath.string(), exc.what());
-                features.push_back(Feature{});
+                features.push_back(FeatureDbItem{});
             }
         }
 

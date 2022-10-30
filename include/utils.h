@@ -4,6 +4,7 @@
 #include "openvino/openvino.hpp"
 #include "types.h"
 
+#include <google/protobuf/map.h>
 #include <iostream>
 #include <opencv2/core/types.hpp>
 #include <opencv2/highgui.hpp>
@@ -40,6 +41,11 @@ inline void printInputAndOutputsInfo(const ov::Model& network) {
         std::cout << "        output shape: " << shape << std::endl;
     }
 }
+
+inline std::map<string, string> convertMetadataToMap(const google::protobuf::Map<string, string>& metadata) {
+    std::map<string, string> m{metadata.begin(), metadata.end()};
+    return m;
+};
 
 inline std::vector<float> convertFeatureBlobToFloats(const std::string& blob) {
     const char* char_ptr = reinterpret_cast<const char*>(blob.data());

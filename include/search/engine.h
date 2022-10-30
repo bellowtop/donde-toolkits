@@ -22,7 +22,7 @@ namespace search {
 
         std::vector<FeatureSearchResult> Search(const Feature& query, size_t topK) override;
 
-        std::vector<std::string> AddFeatures(const std::vector<Feature>& features) override;
+        std::vector<std::string> AddFeatures(const std::vector<FeatureDbItem>& features) override;
 
         RetCode RemoveFeatures(const std::vector<std::string>& feature_ids) override;
 
@@ -40,7 +40,7 @@ namespace search {
 
         std::vector<FeatureSearchResult> Search(const Feature& query, size_t topk) override;
 
-        std::vector<std::string> AddFeatures(const std::vector<Feature>& features) override;
+        std::vector<std::string> AddFeatures(const std::vector<FeatureDbItem>& features) override;
 
         RetCode RemoveFeatures(const std::vector<std::string>& feature_ids) override;
 
