@@ -30,36 +30,44 @@ TEST_CASE("Search topk features.") {
     search::BruteForceSearch search(conf);
 
     std::vector<search::FeatureDbItem> fts;
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < feature_count; i++) {
         auto ft = gen_feature_dim<dim>();
-        std::map<string, string> meta;
-        fts.push_back({ft, meta});
+        std::map<string, string> meta{{"keya", "valueb"}};
+        fts.push_back(search::FeatureDbItem{
+            .feature = ft,
+            .metadata = meta,
+        });
     }
 
     std::cout << "in brute_force_search.cpp[test] feature count: " << feature_count << std::endl;
 
-    std::vector<std::string> feature_ids = search.AddFeatures(fts);
-    CHECK(feature_ids.size() == feature_count);
+    SUBCASE("") {
 
-    Feature query{fts[0].feature};
-    int topk = 10;
-    std::vector<search::FeatureSearchResult> search_result = search.Search(query, topk);
+        std::vector<std::string> feature_ids = search.AddFeatures(fts);
+        CHECK(feature_ids.size() == feature_count);
 
-    for (const auto& r : search_result) {
-        std::cout << "score: " << r.score << std::endl;
-    }
+        Feature query{fts[0].feature};
+        int topk = 10;
+        std::vector<search::FeatureSearchResult> search_result = search.Search(query, topk);
 
-    CHECK(search_result.size() == topk);
+        for (const auto& r : search_result) {
+            std::cout << "score: " << r.score << std::endl;
+        }
 
-    // the most near ft.
-    auto t = search_result[0];
-    CHECK(t.score > 0.99);
+        CHECK(search_result.size() == topk);
+        if (int(search_result.size()) == topk) {
+            // the most near ft.
+            auto t = search_result[0];
+            CHECK(t.score > 0.99);
 
-    // query.debugPrint();
-    // t.target.debugPrint();
+            // query.debugPrint();
+            // t.target.debugPrint();
 
-    for (size_t i = 0; i < t.target.raw.size(); i ++) {
-        CHECK(t.target.raw[i] == fts[0].feature.raw[i]);
+            for (size_t i = 0; i < t.target.raw.size(); i++) {
+                CHECK(t.target.raw[i] == fts[0].feature.raw[i]);
+            }
+        }
+
     }
 
     // cleanup db file

@@ -49,14 +49,15 @@ namespace search {
 
         uint page = 0;
         uint perPage = 10;
-        auto pageData = _storage->ListFeautreIDs(page, perPage);
+        auto pageData = _storage->ListFeatures(page, perPage);
 
         std::priority_queue<FeatureScore, std::vector<FeatureScore>, FeatureScoreComparator>
             min_heap;
 
         while (pageData.data.size() != 0) {
             // feed in min-heap
-            std::vector<FeatureDbItem> fts = _storage->LoadFeatures(pageData.data);
+            std::vector<std::string> feature_ids = search::convert_to_feature_ids(pageData.data);
+            std::vector<Feature> fts = _storage->LoadFeatures(feature_ids);
             for (auto& ft : fts) {
                 float score = ft.compare(query);
                 FeatureScore target{score, query, ft};
@@ -72,7 +73,7 @@ namespace search {
             }
 
             // read next page, caution: copy assignment here!
-            pageData = _storage->ListFeautreIDs(++page, perPage);
+            pageData = _storage->ListFeatures(++page, perPage);
         }
 
         while (!min_heap.empty()) {

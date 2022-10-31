@@ -42,8 +42,8 @@ inline void printInputAndOutputsInfo(const ov::Model& network) {
     }
 }
 
-inline std::map<string, string> convertMetadataToMap(const google::protobuf::Map<string, string>& metadata) {
-    std::map<string, string> m{metadata.begin(), metadata.end()};
+inline std::map<std::string, std::string> convertMetadataToMap(const google::protobuf::Map<std::string, std::string>& metadata) {
+    std::map<std::string, std::string> m{metadata.begin(), metadata.end()};
     return m;
 };
 

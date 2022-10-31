@@ -54,6 +54,7 @@ namespace search {
     PageData<FeatureDbItemList> FileSystemStorage::ListFeatures(uint page, uint perPage) {
         uint64 count = count_features_in_meta_db(_meta_db.get());
         if (count <= 0) {
+            spdlog::warn("FileSystemStorage::ListFeatures, count is {}", count);
             return {};
         }
 
@@ -67,13 +68,12 @@ namespace search {
         return ret;
     };
 
-    std::vector<FeatureDbItem> FileSystemStorage::AddFeatures(const std::vector<FeatureDbItem>& features) {
+    std::vector<std::string> FileSystemStorage::AddFeatures(const std::vector<FeatureDbItem>& features) {
         int count = features.size();
-        std::vector<FeatureDbItem> feature_ids;
+        std::vector<std::string> feature_ids;
+        std::vector<std::string> metadatas;
 
         for (auto& item : features) {
-            FeatureDbItem copied { item };
-
             auto ft = item.feature;
 
             std::string feature_id;
@@ -95,17 +95,17 @@ namespace search {
                 std::string data(ss.str());
                 file << data;
 
-                json j{item.metadata};
+                json j(item.metadata); // must use (), while not {}
+                std::string meta_str{ j.dump() };
+                metadatas.push_back(meta_str);
 
-
-
-                copied.feature_id = feature_id;
                 // std::cout << "write data.size" << data.size() << std::endl;
-                feature_ids.push_back(copied);
+                feature_ids.push_back(feature_id);
 
             } catch (const std::exception& exc) {
                 spdlog::error("cannot save feature to : {}, exc: {}", filepath.string(), exc.what());
-                feature_ids.push_back(copied);
+                feature_ids.push_back("");
+                metadatas.push_back("{}");
             }
         }
 
@@ -115,10 +115,10 @@ namespace search {
         return feature_ids;
     };
 
-    std::vector<FeatureDbItem>
+    std::vector<Feature>
     FileSystemStorage::LoadFeatures(const std::vector<std::string>& feature_ids) {
         int count = feature_ids.size();
-        std::vector<FeatureDbItem> features;
+        std::vector<Feature> features;
 
         for (auto& feature_id : feature_ids) {
             spdlog::debug("load feature_id: {}", feature_id);
@@ -136,10 +136,10 @@ namespace search {
                 Feature ft = oh.get().as<Feature>();
                 // ft.debugPrint();
 
-                features.push_back(FeatureDbItem{ft});
+                features.push_back(ft);
             } catch (const std::exception& exc) {
                 spdlog::error("cannot load feature, feature_path: {}, exc: {}", filepath.string(), exc.what());
-                features.push_back(FeatureDbItem{});
+                features.push_back({});
             }
         }
 

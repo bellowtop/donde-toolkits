@@ -55,6 +55,14 @@ namespace search {
 
     using FeatureDbItemList = std::vector<FeatureDbItem>;
 
+    inline std::vector<std::string> convert_to_feature_ids(const FeatureDbItemList& lst) {
+        std::vector<std::string> ret;
+        for (const auto& item : lst) {
+            ret.push_back(item.feature_id);
+        }
+        return ret;
+    };
+
     class Storage {
 
       public:
@@ -65,9 +73,9 @@ namespace search {
 
         virtual PageData<FeatureDbItemList> ListFeatures(uint start, uint limit) = 0;
 
-        virtual std::vector<FeatureDbItem> AddFeatures( const std::vector<FeatureDbItem>& features) = 0;
+        virtual std::vector<std::string> AddFeatures(const std::vector<FeatureDbItem>& features) = 0;
 
-        virtual std::vector<FeatureDbItem> LoadFeatures(const std::vector<std::string>& feature_ids) = 0;
+        virtual std::vector<Feature> LoadFeatures(const std::vector<std::string>& feature_ids) = 0;
 
         virtual RetCode RemoveFeatures(const std::vector<std::string>& feature_ids) = 0;
     };

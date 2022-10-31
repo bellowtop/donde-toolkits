@@ -25,7 +25,7 @@ namespace search {
         try {
             db->exec(sql);
         } catch (std::exception& exc) {
-            spdlog::error("cannot create table: ", exc.what());
+            spdlog::error("cannot create table: {}", exc.what());
             return RetCode::RET_ERR;
         }
 
@@ -49,7 +49,7 @@ namespace search {
 
             query.exec();
         } catch (std::exception& exc) {
-            spdlog::error("cannot delete from features table: ", exc.what());
+            spdlog::error("cannot delete from features table: {}", exc.what());
             return RetCode::RET_ERR;
         }
 
@@ -68,12 +68,14 @@ namespace search {
 
             while (query.executeStep()) {
                 // int id = query.getColumn(0);
-                const char* value = query.getColumn(0);
-                std::string feature_id{value};
+                std::string feature_id = query.getColumn(0).getString();
+                std::string meta_str = query.getColumn(1).getText();
+                // std::cout << "feature_id: " << feature_id << std::endl;
+                // std::cout << "meta_str: " << meta_str << std::endl;
 
-                const char* meta = query.getColumn(1);
-                std::string meta_str{meta};
-                std::map<string, string> meta_map{json::parse(meta_str)};
+                json j(json::parse(meta_str));
+
+                std::map<string, string> meta_map = j;
 
                 feature_ids.push_back(FeatureDbItem{
                     .feature_id = feature_id,
@@ -81,7 +83,7 @@ namespace search {
                 });
             }
         } catch (std::exception& exc) {
-            spdlog::error("cannot select from features table: ", exc.what());
+            spdlog::error("cannot select from features table: {}", exc.what());
             return feature_ids;
         }
 
@@ -89,33 +91,30 @@ namespace search {
     };
 
     inline RetCode insert_features_to_meta_db(SQLite::Database* db,
-                                              const std::vector<FeatureDbItem>& feature_ids) {
+                                              const std::vector<std::string>& feature_ids,
+                                              const std::vector<std::string>& metadatas) {
         // TODO: batch control
         try {
             int version = 10000; // FIXME
             std::string sql("insert into features(feature_id, metadata, version) values (?, ?, ?)");
             for (size_t i = 1; i < feature_ids.size(); i++) {
-                sql += ", (?, ?)";
+                sql += ", (?, ?, ?)";
             }
             sql += ";";
 
             SQLite::Statement query(*db, sql);
             for (size_t i = 0; i < feature_ids.size(); i++) {
-                auto item = feature_ids[i];
+                auto feature_id = feature_ids[i];
+                auto metadata = metadatas[i];
 
-                auto feature_id = item.feature_id;
-
-                auto meta_json = json{item.metadata};
-                auto meta_str = meta_json.dump();
-
-                query.bind(2 * i + 1, feature_id);
-                query.bind(2 * i + 2, meta_str);
-                query.bind(2 * i + 3, version);
+                query.bind(3 * i + 1, feature_id);
+                query.bind(3 * i + 2, metadata);
+                query.bind(3 * i + 3, version);
             }
 
             query.exec();
         } catch (std::exception& exc) {
-            spdlog::error("cannot insert into features table: ", exc.what());
+            spdlog::error("cannot insert into features table: {}", exc.what());
             return RetCode::RET_ERR;
         }
 
@@ -132,7 +131,7 @@ namespace search {
             query.executeStep();
             count = query.getColumn(0);
         } catch (std::exception& exc) {
-            spdlog::error("cannot select from features table: ", exc.what());
+            spdlog::error("cannot count from features table: {}", exc.what());
             return -1;
         }
 
@@ -148,9 +147,9 @@ namespace search {
 
         RetCode Init() override;
 
-        std::vector<FeatureDbItem> AddFeatures(const std::vector<FeatureDbItem>& features) override;
+        std::vector<std::string> AddFeatures(const std::vector<FeatureDbItem>& features) override;
 
-        std::vector<FeatureDbItem>
+        std::vector<Feature>
         LoadFeatures(const std::vector<std::string>& feature_ids) override;
 
         RetCode RemoveFeatures(const std::vector<std::string>& feature_ids) override;

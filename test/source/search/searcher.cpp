@@ -1,5 +1,6 @@
-#include "search/engine.h"
 #include "search/searcher.h"
+
+#include "search/engine.h"
 #include "search/storage.h"
 #include "types.h"
 #include "utils.h"
@@ -35,36 +36,44 @@ TEST_CASE("Searcher can add and features.") {
     search::Searcher searcher(conf);
 
     std::vector<search::FeatureDbItem> fts;
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < feature_count; i++) {
         auto ft = gen_feature_dim<dim>();
         std::map<string, string> meta;
-        fts.push_back({ft, meta});
+        fts.push_back(search::FeatureDbItem{
+            .feature = ft,
+            .metadata = meta,
+        });
     }
 
     std::cout << "in brute_force_search.cpp[test] feature count: " << feature_count << std::endl;
 
-    std::vector<std::string> feature_ids = searcher.AddFeatures(fts);
-    CHECK(feature_ids.size() == feature_count);
+    SUBCASE("") {
+        std::vector<std::string> feature_ids = searcher.AddFeatures(fts);
+        CHECK(feature_ids.size() == feature_count);
 
-    Feature query{fts[0].feature};
-    int topk = 10;
-    std::vector<search::FeatureSearchResult> search_result = searcher.SearchFeature(query, topk);
+        if (feature_ids.size() == feature_count) {
+            Feature query{fts[0].feature};
+            int topk = 10;
+            std::vector<search::FeatureSearchResult> search_result
+                = searcher.SearchFeature(query, topk);
 
-    for (const auto& r : search_result) {
-        std::cout << "score: " << r.score << std::endl;
-    }
+            for (const auto& r : search_result) {
+                std::cout << "score: " << r.score << std::endl;
+            }
 
-    CHECK(search_result.size() == topk);
+            CHECK(search_result.size() == topk);
 
-    // the most near ft.
-    auto t = search_result[0];
-    CHECK(t.score > 0.99);
+            // the most near ft.
+            auto t = search_result[0];
+            CHECK(t.score > 0.99);
 
-    // query.debugPrint();
-    // t.target.debugPrint();
+            // query.debugPrint();
+            // t.target.debugPrint();
 
-    for (size_t i = 0; i < t.target.raw.size(); i ++) {
-        CHECK(t.target.raw[i] == fts[0].feature.raw[i]);
+            for (size_t i = 0; i < t.target.raw.size(); i++) {
+                CHECK(t.target.raw[i] == fts[0].feature.raw[i]);
+            }
+        }
     }
 
     // cleanup db file

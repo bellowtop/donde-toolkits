@@ -1,3 +1,4 @@
+#include "search/searcher.h"
 #include "search/storage.h"
 #include "types.h"
 #include "utils.h"
@@ -28,7 +29,10 @@ TEST_CASE("Feature file can be stored, loaded, and removed.") {
     for (int i = 0; i < 2; i++) {
         auto ft = gen_feature_dim<dim>();
         std::map<string, string> meta;
-        fts.push_back({ft, meta});
+        fts.push_back({
+                .feature = ft,
+                .metadata= meta,
+            });
     }
 
     std::cout << "in file_system_storage.cpp[test] feature length: " << fts.size() << std::endl;
@@ -46,21 +50,23 @@ TEST_CASE("Feature file can be stored, loaded, and removed.") {
         CHECK(std::filesystem::exists(p1) == true);
     }
 
-    search::PageData<search::FeatureIDList> listed = store.ListFeautreIDs(0, 10);
-    CHECK(listed.data.size() == feature_ids.size());
-    for (size_t i = 0; i < listed.data.size(); i++) {
-        CHECK(listed.data[i] == feature_ids[i]);
+    search::PageData<search::FeatureDbItemList> listed = store.ListFeatures(0, 10);
+    std::vector<std::string> listed_feature_ids = search::convert_to_feature_ids(listed.data);
+    CHECK(listed_feature_ids.size() == feature_ids.size());
+    for (size_t i = 0; i < listed_feature_ids.size(); i++) {
+        CHECK(listed_feature_ids[i] == feature_ids[i]);
     }
 
-    std::vector<search::FeatureDbItem> loaded_features = store.LoadFeatures(listed.data);
+    std::vector<Feature> loaded_features = store.LoadFeatures(listed_feature_ids);
     for (size_t j = 0; j < loaded_features.size(); j++) {
         for (size_t i = 0; i < dim; i++) {
-            CHECK(fts[j].feature.raw[i] == loaded_features[j].feature.raw[i]);
+            CHECK(fts[j].feature.raw[i] == loaded_features[j].raw[i]);
         }
     }
 
     store.RemoveFeatures(feature_ids);
-    listed = store.ListFeautreIDs(0, 10);
+
+    listed = store.ListFeatures(0, 10);
     // no features in db.
     CHECK(listed.data.size() == 0);
 
@@ -89,10 +95,13 @@ TEST_CASE("Features meta db support page listing.") {
     store.Init();
 
     std::vector<search::FeatureDbItem> fts;
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < feature_count; i++) {
         auto ft = gen_feature_dim<dim>();
         std::map<string, string> meta;
-        fts.push_back({ft, meta});
+        fts.push_back({
+                .feature = ft,
+                .metadata= meta,
+            });
     }
 
     std::cout << "in file_system_storage.cpp[test] feature length: " << fts.size() << std::endl;
@@ -102,7 +111,7 @@ TEST_CASE("Features meta db support page listing.") {
 
     int page = 0;
     int perPage = 10;
-    search::PageData<search::FeatureIDList> listed = store.ListFeautreIDs(page, perPage);
+    search::PageData<search::FeatureDbItemList> listed = store.ListFeatures(page, perPage);
     CHECK(listed.data.size() == perPage);
     CHECK(listed.page == page);
     CHECK(listed.perPage == perPage);
@@ -110,7 +119,7 @@ TEST_CASE("Features meta db support page listing.") {
 
     page = 1;
 
-    listed = store.ListFeautreIDs(page, perPage);
+    listed = store.ListFeatures(page, perPage);
     CHECK(listed.data.size() == perPage);
     CHECK(listed.page == page);
     CHECK(listed.perPage == perPage);
@@ -119,7 +128,7 @@ TEST_CASE("Features meta db support page listing.") {
     // large page
     page = 10;
 
-    listed = store.ListFeautreIDs(page, perPage);
+    listed = store.ListFeatures(page, perPage);
     CHECK(listed.data.size() == 5);
     CHECK(listed.page == page);
     CHECK(listed.perPage == perPage);
@@ -127,7 +136,7 @@ TEST_CASE("Features meta db support page listing.") {
 
     page = 11;
 
-    listed = store.ListFeautreIDs(page, perPage);
+    listed = store.ListFeatures(page, perPage);
     CHECK(listed.data.size() == 0);
     CHECK(listed.page == page);
     CHECK(listed.perPage == perPage);
@@ -135,7 +144,7 @@ TEST_CASE("Features meta db support page listing.") {
 
     page = 100;
 
-    listed = store.ListFeautreIDs(page, perPage);
+    listed = store.ListFeatures(page, perPage);
     CHECK(listed.data.size() == 0);
     CHECK(listed.page == page);
     CHECK(listed.perPage == perPage);
@@ -145,7 +154,7 @@ TEST_CASE("Features meta db support page listing.") {
     page = 0;
     perPage = 100;
 
-    listed = store.ListFeautreIDs(page, perPage);
+    listed = store.ListFeatures(page, perPage);
     CHECK(listed.data.size() == 100);
     CHECK(listed.page == page);
     CHECK(listed.perPage == perPage);
@@ -154,7 +163,7 @@ TEST_CASE("Features meta db support page listing.") {
     page = 1;
     perPage = 100;
 
-    listed = store.ListFeautreIDs(page, perPage);
+    listed = store.ListFeatures(page, perPage);
     CHECK(listed.data.size() == 5);
     CHECK(listed.page == page);
     CHECK(listed.perPage == perPage);
@@ -164,7 +173,7 @@ TEST_CASE("Features meta db support page listing.") {
     page = 0;
     perPage = 200;
 
-    listed = store.ListFeautreIDs(page, perPage);
+    listed = store.ListFeatures(page, perPage);
     CHECK(listed.data.size() == 105);
     CHECK(listed.page == page);
     CHECK(listed.perPage == perPage);
