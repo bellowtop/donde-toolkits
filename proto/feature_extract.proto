@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+import "common.proto";
+
+option go_package = "github.com/sekirocc/face-recognition-service/face_service";
+// option java_package = "com.sekirocc.face_recognition_service";
+
+package com.sekirocc.face_service;
+
+
+// Face Service
+message DetectionRequest { Image image = 1; }
+
+message DetectionResponse {
+    ResultCode code = 1;
+    repeated FaceRectangle face_rects = 2;
+}
+
+message ExtractionRequest { Image image = 1; }
+
+message ExtractionResponse {
+    ResultCode code = 1;
+    repeated FaceRectangle face_rects = 2;
+    repeated FaceFeature face_features = 3;
+}
+
+message CompareRequest {
+    FaceFeature one = 1;
+    FaceFeature two = 2;
+}
+
+message CompareResponse {
+    ResultCode code = 1;
+    float score = 2;
+}
+
+// face service
+service FaceService {
+
+    rpc Detect(DetectionRequest) returns (DetectionResponse) {
+        option (google.api.http) = {
+            post : "/detect_face"
+            body : "*"
+        };
+    }
+
+    rpc ExtractFeature(ExtractionRequest) returns (ExtractionResponse) {
+        option (google.api.http) = {
+            post : "/extract_face_feature"
+            body : "*"
+        };
+    }
+
+    rpc CompareFeature(CompareRequest) returns (CompareResponse) {
+        option (google.api.http) = {
+            post : "/compare_face_feature"
+            body : "*"
+        };
+    }
+}

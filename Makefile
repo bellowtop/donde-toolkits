@@ -29,6 +29,9 @@ build-pre: conan
 	cmake -S library -B build/library
 	cmake -S proto   -B build/proto
 
+build-proto:
+	cd proto && ./build_proto.sh
+
 build-server:
 	cmake --build build/servers -- -j 4
 

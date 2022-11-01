@@ -5,7 +5,7 @@
 #include "Poco/Timestamp.h"
 #include "config.h"
 #include "face_pipeline.h"
-#include "gen/pb-cpp/server.grpc.pb.h"
+#include "gen/pb-cpp/feature_extract.grpc.pb.h"
 
 // #include "spdlog/spdlog.h"
 
