@@ -22,7 +22,7 @@ namespace _pbi = _pb::internal;
 
 namespace com {
 namespace sekirocc {
-namespace face_service {
+namespace feature_extract {
 PROTOBUF_CONSTEXPR DetectionRequest::DetectionRequest(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.image_)*/nullptr
@@ -106,7 +106,7 @@ struct CompareResponseDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CompareResponseDefaultTypeInternal _CompareResponse_default_instance_;
-}  // namespace face_service
+}  // namespace feature_extract
 }  // namespace sekirocc
 }  // namespace com
 static ::_pb::Metadata file_level_metadata_feature_5fextract_2eproto[6];
@@ -115,103 +115,104 @@ static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors
 
 const uint32_t TableStruct_feature_5fextract_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::DetectionRequest, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_extract::DetectionRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::DetectionRequest, _impl_.image_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_extract::DetectionRequest, _impl_.image_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::DetectionResponse, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_extract::DetectionResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::DetectionResponse, _impl_.code_),
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::DetectionResponse, _impl_.face_rects_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_extract::DetectionResponse, _impl_.code_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_extract::DetectionResponse, _impl_.face_rects_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::ExtractionRequest, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_extract::ExtractionRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::ExtractionRequest, _impl_.image_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_extract::ExtractionRequest, _impl_.image_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::ExtractionResponse, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_extract::ExtractionResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::ExtractionResponse, _impl_.code_),
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::ExtractionResponse, _impl_.face_rects_),
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::ExtractionResponse, _impl_.face_features_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_extract::ExtractionResponse, _impl_.code_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_extract::ExtractionResponse, _impl_.face_rects_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_extract::ExtractionResponse, _impl_.face_features_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::CompareRequest, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_extract::CompareRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::CompareRequest, _impl_.one_),
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::CompareRequest, _impl_.two_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_extract::CompareRequest, _impl_.one_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_extract::CompareRequest, _impl_.two_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::CompareResponse, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_extract::CompareResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::CompareResponse, _impl_.code_),
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::face_service::CompareResponse, _impl_.score_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_extract::CompareResponse, _impl_.code_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_extract::CompareResponse, _impl_.score_),
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, -1, sizeof(::com::sekirocc::face_service::DetectionRequest)},
-  { 7, -1, -1, sizeof(::com::sekirocc::face_service::DetectionResponse)},
-  { 15, -1, -1, sizeof(::com::sekirocc::face_service::ExtractionRequest)},
-  { 22, -1, -1, sizeof(::com::sekirocc::face_service::ExtractionResponse)},
-  { 31, -1, -1, sizeof(::com::sekirocc::face_service::CompareRequest)},
-  { 39, -1, -1, sizeof(::com::sekirocc::face_service::CompareResponse)},
+  { 0, -1, -1, sizeof(::com::sekirocc::feature_extract::DetectionRequest)},
+  { 7, -1, -1, sizeof(::com::sekirocc::feature_extract::DetectionResponse)},
+  { 15, -1, -1, sizeof(::com::sekirocc::feature_extract::ExtractionRequest)},
+  { 22, -1, -1, sizeof(::com::sekirocc::feature_extract::ExtractionResponse)},
+  { 31, -1, -1, sizeof(::com::sekirocc::feature_extract::CompareRequest)},
+  { 39, -1, -1, sizeof(::com::sekirocc::feature_extract::CompareResponse)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
-  &::com::sekirocc::face_service::_DetectionRequest_default_instance_._instance,
-  &::com::sekirocc::face_service::_DetectionResponse_default_instance_._instance,
-  &::com::sekirocc::face_service::_ExtractionRequest_default_instance_._instance,
-  &::com::sekirocc::face_service::_ExtractionResponse_default_instance_._instance,
-  &::com::sekirocc::face_service::_CompareRequest_default_instance_._instance,
-  &::com::sekirocc::face_service::_CompareResponse_default_instance_._instance,
+  &::com::sekirocc::feature_extract::_DetectionRequest_default_instance_._instance,
+  &::com::sekirocc::feature_extract::_DetectionResponse_default_instance_._instance,
+  &::com::sekirocc::feature_extract::_ExtractionRequest_default_instance_._instance,
+  &::com::sekirocc::feature_extract::_ExtractionResponse_default_instance_._instance,
+  &::com::sekirocc::feature_extract::_CompareRequest_default_instance_._instance,
+  &::com::sekirocc::feature_extract::_CompareResponse_default_instance_._instance,
 };
 
 const char descriptor_table_protodef_feature_5fextract_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\025feature_extract.proto\022\031com.sekirocc.fa"
-  "ce_service\032\034google/api/annotations.proto"
-  "\032\014common.proto\"=\n\020DetectionRequest\022)\n\005im"
-  "age\030\001 \001(\0132\032.com.sekirocc.common.Image\"z\n"
-  "\021DetectionResponse\022-\n\004code\030\001 \001(\0162\037.com.s"
-  "ekirocc.common.ResultCode\0226\n\nface_rects\030"
-  "\002 \003(\0132\".com.sekirocc.common.FaceRectangl"
-  "e\">\n\021ExtractionRequest\022)\n\005image\030\001 \001(\0132\032."
-  "com.sekirocc.common.Image\"\264\001\n\022Extraction"
-  "Response\022-\n\004code\030\001 \001(\0162\037.com.sekirocc.co"
-  "mmon.ResultCode\0226\n\nface_rects\030\002 \003(\0132\".co"
-  "m.sekirocc.common.FaceRectangle\0227\n\rface_"
-  "features\030\003 \003(\0132 .com.sekirocc.common.Fac"
-  "eFeature\"n\n\016CompareRequest\022-\n\003one\030\001 \001(\0132"
-  " .com.sekirocc.common.FaceFeature\022-\n\003two"
-  "\030\002 \001(\0132 .com.sekirocc.common.FaceFeature"
-  "\"O\n\017CompareResponse\022-\n\004code\030\001 \001(\0162\037.com."
-  "sekirocc.common.ResultCode\022\r\n\005score\030\002 \001("
-  "\0022\251\003\n\013FaceService\022|\n\006Detect\022+.com.sekiro"
-  "cc.face_service.DetectionRequest\032,.com.s"
-  "ekirocc.face_service.DetectionResponse\"\027"
-  "\202\323\344\223\002\021\"\014/detect_face:\001*\022\217\001\n\016ExtractFeatu"
-  "re\022,.com.sekirocc.face_service.Extractio"
-  "nRequest\032-.com.sekirocc.face_service.Ext"
-  "ractionResponse\" \202\323\344\223\002\032\"\025/extract_face_f"
-  "eature:\001*\022\211\001\n\016CompareFeature\022).com.sekir"
-  "occ.face_service.CompareRequest\032*.com.se"
-  "kirocc.face_service.CompareResponse\" \202\323\344"
-  "\223\002\032\"\025/compare_face_feature:\001*B;Z9github."
-  "com/sekirocc/face-recognition-service/fa"
-  "ce_serviceb\006proto3"
+  "\n\025feature_extract.proto\022\034com.sekirocc.fe"
+  "ature_extract\032\034google/api/annotations.pr"
+  "oto\032\014common.proto\"=\n\020DetectionRequest\022)\n"
+  "\005image\030\001 \001(\0132\032.com.sekirocc.common.Image"
+  "\"z\n\021DetectionResponse\022-\n\004code\030\001 \001(\0162\037.co"
+  "m.sekirocc.common.ResultCode\0226\n\nface_rec"
+  "ts\030\002 \003(\0132\".com.sekirocc.common.FaceRecta"
+  "ngle\">\n\021ExtractionRequest\022)\n\005image\030\001 \001(\013"
+  "2\032.com.sekirocc.common.Image\"\264\001\n\022Extract"
+  "ionResponse\022-\n\004code\030\001 \001(\0162\037.com.sekirocc"
+  ".common.ResultCode\0226\n\nface_rects\030\002 \003(\0132\""
+  ".com.sekirocc.common.FaceRectangle\0227\n\rfa"
+  "ce_features\030\003 \003(\0132 .com.sekirocc.common."
+  "FaceFeature\"n\n\016CompareRequest\022-\n\003one\030\001 \001"
+  "(\0132 .com.sekirocc.common.FaceFeature\022-\n\003"
+  "two\030\002 \001(\0132 .com.sekirocc.common.FaceFeat"
+  "ure\"O\n\017CompareResponse\022-\n\004code\030\001 \001(\0162\037.c"
+  "om.sekirocc.common.ResultCode\022\r\n\005score\030\002"
+  " \001(\0022\274\003\n\013FaceService\022\202\001\n\006Detect\022..com.se"
+  "kirocc.feature_extract.DetectionRequest\032"
+  "/.com.sekirocc.feature_extract.Detection"
+  "Response\"\027\202\323\344\223\002\021\"\014/detect_face:\001*\022\225\001\n\016Ex"
+  "tractFeature\022/.com.sekirocc.feature_extr"
+  "act.ExtractionRequest\0320.com.sekirocc.fea"
+  "ture_extract.ExtractionResponse\" \202\323\344\223\002\032\""
+  "\025/extract_face_feature:\001*\022\217\001\n\016CompareFea"
+  "ture\022,.com.sekirocc.feature_extract.Comp"
+  "areRequest\032-.com.sekirocc.feature_extrac"
+  "t.CompareResponse\" \202\323\344\223\002\032\"\025/compare_face"
+  "_feature:\001*B>Z<github.com/sekirocc/face-"
+  "recognition-service/feature_extractb\006pro"
+  "to3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_feature_5fextract_2eproto_deps[2] = {
   &::descriptor_table_common_2eproto,
@@ -219,7 +220,7 @@ static const ::_pbi::DescriptorTable* const descriptor_table_feature_5fextract_2
 };
 static ::_pbi::once_flag descriptor_table_feature_5fextract_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_feature_5fextract_2eproto = {
-    false, false, 1218, descriptor_table_protodef_feature_5fextract_2eproto,
+    false, false, 1243, descriptor_table_protodef_feature_5fextract_2eproto,
     "feature_extract.proto",
     &descriptor_table_feature_5fextract_2eproto_once, descriptor_table_feature_5fextract_2eproto_deps, 2, 6,
     schemas, file_default_instances, TableStruct_feature_5fextract_2eproto::offsets,
@@ -234,7 +235,7 @@ PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_feature_
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_feature_5fextract_2eproto(&descriptor_table_feature_5fextract_2eproto);
 namespace com {
 namespace sekirocc {
-namespace face_service {
+namespace feature_extract {
 
 // ===================================================================
 
@@ -257,7 +258,7 @@ DetectionRequest::DetectionRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor(arena, is_message_owned);
-  // @@protoc_insertion_point(arena_constructor:com.sekirocc.face_service.DetectionRequest)
+  // @@protoc_insertion_point(arena_constructor:com.sekirocc.feature_extract.DetectionRequest)
 }
 DetectionRequest::DetectionRequest(const DetectionRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
@@ -270,7 +271,7 @@ DetectionRequest::DetectionRequest(const DetectionRequest& from)
   if (from._internal_has_image()) {
     _this->_impl_.image_ = new ::com::sekirocc::common::Image(*from._impl_.image_);
   }
-  // @@protoc_insertion_point(copy_constructor:com.sekirocc.face_service.DetectionRequest)
+  // @@protoc_insertion_point(copy_constructor:com.sekirocc.feature_extract.DetectionRequest)
 }
 
 inline void DetectionRequest::SharedCtor(
@@ -284,7 +285,7 @@ inline void DetectionRequest::SharedCtor(
 }
 
 DetectionRequest::~DetectionRequest() {
-  // @@protoc_insertion_point(destructor:com.sekirocc.face_service.DetectionRequest)
+  // @@protoc_insertion_point(destructor:com.sekirocc.feature_extract.DetectionRequest)
   if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
   (void)arena;
     return;
@@ -302,7 +303,7 @@ void DetectionRequest::SetCachedSize(int size) const {
 }
 
 void DetectionRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:com.sekirocc.face_service.DetectionRequest)
+// @@protoc_insertion_point(message_clear_start:com.sekirocc.feature_extract.DetectionRequest)
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -353,7 +354,7 @@ failure:
 
 uint8_t* DetectionRequest::_InternalSerialize(
     uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.face_service.DetectionRequest)
+  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.feature_extract.DetectionRequest)
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -368,12 +369,12 @@ uint8_t* DetectionRequest::_InternalSerialize(
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.face_service.DetectionRequest)
+  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.feature_extract.DetectionRequest)
   return target;
 }
 
 size_t DetectionRequest::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.face_service.DetectionRequest)
+// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.feature_extract.DetectionRequest)
   size_t total_size = 0;
 
   uint32_t cached_has_bits = 0;
@@ -400,7 +401,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*DetectionRequest::GetClassData
 void DetectionRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
   auto* const _this = static_cast<DetectionRequest*>(&to_msg);
   auto& from = static_cast<const DetectionRequest&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.face_service.DetectionRequest)
+  // @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.feature_extract.DetectionRequest)
   GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -413,7 +414,7 @@ void DetectionRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const
 }
 
 void DetectionRequest::CopyFrom(const DetectionRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.face_service.DetectionRequest)
+// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.feature_extract.DetectionRequest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -448,7 +449,7 @@ DetectionResponse::DetectionResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor(arena, is_message_owned);
-  // @@protoc_insertion_point(arena_constructor:com.sekirocc.face_service.DetectionResponse)
+  // @@protoc_insertion_point(arena_constructor:com.sekirocc.feature_extract.DetectionResponse)
 }
 DetectionResponse::DetectionResponse(const DetectionResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
@@ -460,7 +461,7 @@ DetectionResponse::DetectionResponse(const DetectionResponse& from)
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   _this->_impl_.code_ = from._impl_.code_;
-  // @@protoc_insertion_point(copy_constructor:com.sekirocc.face_service.DetectionResponse)
+  // @@protoc_insertion_point(copy_constructor:com.sekirocc.feature_extract.DetectionResponse)
 }
 
 inline void DetectionResponse::SharedCtor(
@@ -475,7 +476,7 @@ inline void DetectionResponse::SharedCtor(
 }
 
 DetectionResponse::~DetectionResponse() {
-  // @@protoc_insertion_point(destructor:com.sekirocc.face_service.DetectionResponse)
+  // @@protoc_insertion_point(destructor:com.sekirocc.feature_extract.DetectionResponse)
   if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
   (void)arena;
     return;
@@ -493,7 +494,7 @@ void DetectionResponse::SetCachedSize(int size) const {
 }
 
 void DetectionResponse::Clear() {
-// @@protoc_insertion_point(message_clear_start:com.sekirocc.face_service.DetectionResponse)
+// @@protoc_insertion_point(message_clear_start:com.sekirocc.feature_extract.DetectionResponse)
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -556,7 +557,7 @@ failure:
 
 uint8_t* DetectionResponse::_InternalSerialize(
     uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.face_service.DetectionResponse)
+  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.feature_extract.DetectionResponse)
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -579,12 +580,12 @@ uint8_t* DetectionResponse::_InternalSerialize(
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.face_service.DetectionResponse)
+  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.feature_extract.DetectionResponse)
   return target;
 }
 
 size_t DetectionResponse::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.face_service.DetectionResponse)
+// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.feature_extract.DetectionResponse)
   size_t total_size = 0;
 
   uint32_t cached_has_bits = 0;
@@ -617,7 +618,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*DetectionResponse::GetClassDat
 void DetectionResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
   auto* const _this = static_cast<DetectionResponse*>(&to_msg);
   auto& from = static_cast<const DetectionResponse&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.face_service.DetectionResponse)
+  // @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.feature_extract.DetectionResponse)
   GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -630,7 +631,7 @@ void DetectionResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, cons
 }
 
 void DetectionResponse::CopyFrom(const DetectionResponse& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.face_service.DetectionResponse)
+// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.feature_extract.DetectionResponse)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -674,7 +675,7 @@ ExtractionRequest::ExtractionRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor(arena, is_message_owned);
-  // @@protoc_insertion_point(arena_constructor:com.sekirocc.face_service.ExtractionRequest)
+  // @@protoc_insertion_point(arena_constructor:com.sekirocc.feature_extract.ExtractionRequest)
 }
 ExtractionRequest::ExtractionRequest(const ExtractionRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
@@ -687,7 +688,7 @@ ExtractionRequest::ExtractionRequest(const ExtractionRequest& from)
   if (from._internal_has_image()) {
     _this->_impl_.image_ = new ::com::sekirocc::common::Image(*from._impl_.image_);
   }
-  // @@protoc_insertion_point(copy_constructor:com.sekirocc.face_service.ExtractionRequest)
+  // @@protoc_insertion_point(copy_constructor:com.sekirocc.feature_extract.ExtractionRequest)
 }
 
 inline void ExtractionRequest::SharedCtor(
@@ -701,7 +702,7 @@ inline void ExtractionRequest::SharedCtor(
 }
 
 ExtractionRequest::~ExtractionRequest() {
-  // @@protoc_insertion_point(destructor:com.sekirocc.face_service.ExtractionRequest)
+  // @@protoc_insertion_point(destructor:com.sekirocc.feature_extract.ExtractionRequest)
   if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
   (void)arena;
     return;
@@ -719,7 +720,7 @@ void ExtractionRequest::SetCachedSize(int size) const {
 }
 
 void ExtractionRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:com.sekirocc.face_service.ExtractionRequest)
+// @@protoc_insertion_point(message_clear_start:com.sekirocc.feature_extract.ExtractionRequest)
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -770,7 +771,7 @@ failure:
 
 uint8_t* ExtractionRequest::_InternalSerialize(
     uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.face_service.ExtractionRequest)
+  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.feature_extract.ExtractionRequest)
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -785,12 +786,12 @@ uint8_t* ExtractionRequest::_InternalSerialize(
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.face_service.ExtractionRequest)
+  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.feature_extract.ExtractionRequest)
   return target;
 }
 
 size_t ExtractionRequest::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.face_service.ExtractionRequest)
+// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.feature_extract.ExtractionRequest)
   size_t total_size = 0;
 
   uint32_t cached_has_bits = 0;
@@ -817,7 +818,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ExtractionRequest::GetClassDat
 void ExtractionRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
   auto* const _this = static_cast<ExtractionRequest*>(&to_msg);
   auto& from = static_cast<const ExtractionRequest&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.face_service.ExtractionRequest)
+  // @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.feature_extract.ExtractionRequest)
   GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -830,7 +831,7 @@ void ExtractionRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, cons
 }
 
 void ExtractionRequest::CopyFrom(const ExtractionRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.face_service.ExtractionRequest)
+// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.feature_extract.ExtractionRequest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -868,7 +869,7 @@ ExtractionResponse::ExtractionResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor(arena, is_message_owned);
-  // @@protoc_insertion_point(arena_constructor:com.sekirocc.face_service.ExtractionResponse)
+  // @@protoc_insertion_point(arena_constructor:com.sekirocc.feature_extract.ExtractionResponse)
 }
 ExtractionResponse::ExtractionResponse(const ExtractionResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
@@ -881,7 +882,7 @@ ExtractionResponse::ExtractionResponse(const ExtractionResponse& from)
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   _this->_impl_.code_ = from._impl_.code_;
-  // @@protoc_insertion_point(copy_constructor:com.sekirocc.face_service.ExtractionResponse)
+  // @@protoc_insertion_point(copy_constructor:com.sekirocc.feature_extract.ExtractionResponse)
 }
 
 inline void ExtractionResponse::SharedCtor(
@@ -897,7 +898,7 @@ inline void ExtractionResponse::SharedCtor(
 }
 
 ExtractionResponse::~ExtractionResponse() {
-  // @@protoc_insertion_point(destructor:com.sekirocc.face_service.ExtractionResponse)
+  // @@protoc_insertion_point(destructor:com.sekirocc.feature_extract.ExtractionResponse)
   if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
   (void)arena;
     return;
@@ -916,7 +917,7 @@ void ExtractionResponse::SetCachedSize(int size) const {
 }
 
 void ExtractionResponse::Clear() {
-// @@protoc_insertion_point(message_clear_start:com.sekirocc.face_service.ExtractionResponse)
+// @@protoc_insertion_point(message_clear_start:com.sekirocc.feature_extract.ExtractionResponse)
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -993,7 +994,7 @@ failure:
 
 uint8_t* ExtractionResponse::_InternalSerialize(
     uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.face_service.ExtractionResponse)
+  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.feature_extract.ExtractionResponse)
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1024,12 +1025,12 @@ uint8_t* ExtractionResponse::_InternalSerialize(
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.face_service.ExtractionResponse)
+  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.feature_extract.ExtractionResponse)
   return target;
 }
 
 size_t ExtractionResponse::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.face_service.ExtractionResponse)
+// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.feature_extract.ExtractionResponse)
   size_t total_size = 0;
 
   uint32_t cached_has_bits = 0;
@@ -1069,7 +1070,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ExtractionResponse::GetClassDa
 void ExtractionResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
   auto* const _this = static_cast<ExtractionResponse*>(&to_msg);
   auto& from = static_cast<const ExtractionResponse&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.face_service.ExtractionResponse)
+  // @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.feature_extract.ExtractionResponse)
   GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -1083,7 +1084,7 @@ void ExtractionResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, con
 }
 
 void ExtractionResponse::CopyFrom(const ExtractionResponse& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.face_service.ExtractionResponse)
+// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.feature_extract.ExtractionResponse)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -1139,7 +1140,7 @@ CompareRequest::CompareRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor(arena, is_message_owned);
-  // @@protoc_insertion_point(arena_constructor:com.sekirocc.face_service.CompareRequest)
+  // @@protoc_insertion_point(arena_constructor:com.sekirocc.feature_extract.CompareRequest)
 }
 CompareRequest::CompareRequest(const CompareRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
@@ -1156,7 +1157,7 @@ CompareRequest::CompareRequest(const CompareRequest& from)
   if (from._internal_has_two()) {
     _this->_impl_.two_ = new ::com::sekirocc::common::FaceFeature(*from._impl_.two_);
   }
-  // @@protoc_insertion_point(copy_constructor:com.sekirocc.face_service.CompareRequest)
+  // @@protoc_insertion_point(copy_constructor:com.sekirocc.feature_extract.CompareRequest)
 }
 
 inline void CompareRequest::SharedCtor(
@@ -1171,7 +1172,7 @@ inline void CompareRequest::SharedCtor(
 }
 
 CompareRequest::~CompareRequest() {
-  // @@protoc_insertion_point(destructor:com.sekirocc.face_service.CompareRequest)
+  // @@protoc_insertion_point(destructor:com.sekirocc.feature_extract.CompareRequest)
   if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
   (void)arena;
     return;
@@ -1190,7 +1191,7 @@ void CompareRequest::SetCachedSize(int size) const {
 }
 
 void CompareRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:com.sekirocc.face_service.CompareRequest)
+// @@protoc_insertion_point(message_clear_start:com.sekirocc.feature_extract.CompareRequest)
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -1253,7 +1254,7 @@ failure:
 
 uint8_t* CompareRequest::_InternalSerialize(
     uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.face_service.CompareRequest)
+  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.feature_extract.CompareRequest)
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1275,12 +1276,12 @@ uint8_t* CompareRequest::_InternalSerialize(
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.face_service.CompareRequest)
+  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.feature_extract.CompareRequest)
   return target;
 }
 
 size_t CompareRequest::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.face_service.CompareRequest)
+// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.feature_extract.CompareRequest)
   size_t total_size = 0;
 
   uint32_t cached_has_bits = 0;
@@ -1314,7 +1315,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CompareRequest::GetClassData()
 void CompareRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
   auto* const _this = static_cast<CompareRequest*>(&to_msg);
   auto& from = static_cast<const CompareRequest&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.face_service.CompareRequest)
+  // @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.feature_extract.CompareRequest)
   GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -1331,7 +1332,7 @@ void CompareRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const :
 }
 
 void CompareRequest::CopyFrom(const CompareRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.face_service.CompareRequest)
+// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.feature_extract.CompareRequest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -1368,7 +1369,7 @@ CompareResponse::CompareResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor(arena, is_message_owned);
-  // @@protoc_insertion_point(arena_constructor:com.sekirocc.face_service.CompareResponse)
+  // @@protoc_insertion_point(arena_constructor:com.sekirocc.feature_extract.CompareResponse)
 }
 CompareResponse::CompareResponse(const CompareResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
@@ -1382,7 +1383,7 @@ CompareResponse::CompareResponse(const CompareResponse& from)
   ::memcpy(&_impl_.code_, &from._impl_.code_,
     static_cast<size_t>(reinterpret_cast<char*>(&_impl_.score_) -
     reinterpret_cast<char*>(&_impl_.code_)) + sizeof(_impl_.score_));
-  // @@protoc_insertion_point(copy_constructor:com.sekirocc.face_service.CompareResponse)
+  // @@protoc_insertion_point(copy_constructor:com.sekirocc.feature_extract.CompareResponse)
 }
 
 inline void CompareResponse::SharedCtor(
@@ -1397,7 +1398,7 @@ inline void CompareResponse::SharedCtor(
 }
 
 CompareResponse::~CompareResponse() {
-  // @@protoc_insertion_point(destructor:com.sekirocc.face_service.CompareResponse)
+  // @@protoc_insertion_point(destructor:com.sekirocc.feature_extract.CompareResponse)
   if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
   (void)arena;
     return;
@@ -1414,7 +1415,7 @@ void CompareResponse::SetCachedSize(int size) const {
 }
 
 void CompareResponse::Clear() {
-// @@protoc_insertion_point(message_clear_start:com.sekirocc.face_service.CompareResponse)
+// @@protoc_insertion_point(message_clear_start:com.sekirocc.feature_extract.CompareResponse)
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -1473,7 +1474,7 @@ failure:
 
 uint8_t* CompareResponse::_InternalSerialize(
     uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.face_service.CompareResponse)
+  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.feature_extract.CompareResponse)
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1498,12 +1499,12 @@ uint8_t* CompareResponse::_InternalSerialize(
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.face_service.CompareResponse)
+  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.feature_extract.CompareResponse)
   return target;
 }
 
 size_t CompareResponse::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.face_service.CompareResponse)
+// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.feature_extract.CompareResponse)
   size_t total_size = 0;
 
   uint32_t cached_has_bits = 0;
@@ -1538,7 +1539,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CompareResponse::GetClassData(
 void CompareResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
   auto* const _this = static_cast<CompareResponse*>(&to_msg);
   auto& from = static_cast<const CompareResponse&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.face_service.CompareResponse)
+  // @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.feature_extract.CompareResponse)
   GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -1557,7 +1558,7 @@ void CompareResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const 
 }
 
 void CompareResponse::CopyFrom(const CompareResponse& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.face_service.CompareResponse)
+// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.feature_extract.CompareResponse)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -1585,33 +1586,33 @@ void CompareResponse::InternalSwap(CompareResponse* other) {
 }
 
 // @@protoc_insertion_point(namespace_scope)
-}  // namespace face_service
+}  // namespace feature_extract
 }  // namespace sekirocc
 }  // namespace com
 PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::com::sekirocc::face_service::DetectionRequest*
-Arena::CreateMaybeMessage< ::com::sekirocc::face_service::DetectionRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::com::sekirocc::face_service::DetectionRequest >(arena);
+template<> PROTOBUF_NOINLINE ::com::sekirocc::feature_extract::DetectionRequest*
+Arena::CreateMaybeMessage< ::com::sekirocc::feature_extract::DetectionRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::sekirocc::feature_extract::DetectionRequest >(arena);
 }
-template<> PROTOBUF_NOINLINE ::com::sekirocc::face_service::DetectionResponse*
-Arena::CreateMaybeMessage< ::com::sekirocc::face_service::DetectionResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::com::sekirocc::face_service::DetectionResponse >(arena);
+template<> PROTOBUF_NOINLINE ::com::sekirocc::feature_extract::DetectionResponse*
+Arena::CreateMaybeMessage< ::com::sekirocc::feature_extract::DetectionResponse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::sekirocc::feature_extract::DetectionResponse >(arena);
 }
-template<> PROTOBUF_NOINLINE ::com::sekirocc::face_service::ExtractionRequest*
-Arena::CreateMaybeMessage< ::com::sekirocc::face_service::ExtractionRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::com::sekirocc::face_service::ExtractionRequest >(arena);
+template<> PROTOBUF_NOINLINE ::com::sekirocc::feature_extract::ExtractionRequest*
+Arena::CreateMaybeMessage< ::com::sekirocc::feature_extract::ExtractionRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::sekirocc::feature_extract::ExtractionRequest >(arena);
 }
-template<> PROTOBUF_NOINLINE ::com::sekirocc::face_service::ExtractionResponse*
-Arena::CreateMaybeMessage< ::com::sekirocc::face_service::ExtractionResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::com::sekirocc::face_service::ExtractionResponse >(arena);
+template<> PROTOBUF_NOINLINE ::com::sekirocc::feature_extract::ExtractionResponse*
+Arena::CreateMaybeMessage< ::com::sekirocc::feature_extract::ExtractionResponse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::sekirocc::feature_extract::ExtractionResponse >(arena);
 }
-template<> PROTOBUF_NOINLINE ::com::sekirocc::face_service::CompareRequest*
-Arena::CreateMaybeMessage< ::com::sekirocc::face_service::CompareRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::com::sekirocc::face_service::CompareRequest >(arena);
+template<> PROTOBUF_NOINLINE ::com::sekirocc::feature_extract::CompareRequest*
+Arena::CreateMaybeMessage< ::com::sekirocc::feature_extract::CompareRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::sekirocc::feature_extract::CompareRequest >(arena);
 }
-template<> PROTOBUF_NOINLINE ::com::sekirocc::face_service::CompareResponse*
-Arena::CreateMaybeMessage< ::com::sekirocc::face_service::CompareResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::com::sekirocc::face_service::CompareResponse >(arena);
+template<> PROTOBUF_NOINLINE ::com::sekirocc::feature_extract::CompareResponse*
+Arena::CreateMaybeMessage< ::com::sekirocc::feature_extract::CompareResponse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::sekirocc::feature_extract::CompareResponse >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

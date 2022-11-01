@@ -4,7 +4,7 @@
 #include "Poco/Logger.h"
 #include "Poco/Timestamp.h"
 #include "config.h"
-#include "gen/pb-cpp/feature_search.grpc.pb.h"
+#include "gen/pb-cpp/feature_search_inner.grpc.pb.h"
 #include "search/searcher.h"
 
 // #include "spdlog/spdlog.h"
@@ -18,23 +18,23 @@
 
 using namespace std;
 
-using com::sekirocc::face_service::AddFeatureRequest;
-using com::sekirocc::face_service::AddFeatureResponse;
-using com::sekirocc::face_service::DeleteFeatureRequest;
-using com::sekirocc::face_service::DeleteFeatureResponse;
-using com::sekirocc::face_service::FeatureSearch;
-using com::sekirocc::face_service::SearchFeatureRequest;
-using com::sekirocc::face_service::SearchFeatureResponse;
-using com::sekirocc::face_service::TrainIndexRequest;
-using com::sekirocc::face_service::TrainIndexResponse;
+using com::sekirocc::feature_search::inner::AddFeatureRequest;
+using com::sekirocc::feature_search::inner::AddFeatureResponse;
+using com::sekirocc::feature_search::inner::DeleteFeatureRequest;
+using com::sekirocc::feature_search::inner::DeleteFeatureResponse;
+using com::sekirocc::feature_search::inner::FeatureSearch;
+using com::sekirocc::feature_search::inner::SearchFeatureRequest;
+using com::sekirocc::feature_search::inner::SearchFeatureResponse;
+using com::sekirocc::feature_search::inner::TrainIndexRequest;
+using com::sekirocc::feature_search::inner::TrainIndexResponse;
 
 using grpc::ServerContext;
 using grpc::Status;
 
-class FeatureSearchImpl final : public FeatureSearch::Service {
+class FeatureSearchWorkerImpl final : public FeatureSearch::Service {
   public:
-    FeatureSearchImpl(Config& server_config);
-    ~FeatureSearchImpl();
+    FeatureSearchWorkerImpl(Config& server_config);
+    ~FeatureSearchWorkerImpl();
 
     void Start();
     void Stop();

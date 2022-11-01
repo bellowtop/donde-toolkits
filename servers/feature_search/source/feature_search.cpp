@@ -1,10 +1,11 @@
+#include "feature_search.h"
+
 #include "Poco/Format.h"
 #include "Poco/Timestamp.h"
 #include "config.h"
-#include "feature_search.h"
+#include "gen/pb-cpp/common.pb.h"
 #include "gen/pb-cpp/feature_search.grpc.pb.h"
 #include "gen/pb-cpp/feature_search.pb.h"
-#include "gen/pb-cpp/common.pb.h"
 #include "nlohmann/json.hpp"
 #include "search/searcher.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
@@ -31,19 +32,17 @@
 
 using namespace std;
 
-using com::sekirocc::face_service::AddFeatureRequest;
+using com::sekirocc::feature_search::AddFeatureRequest;
 
-using com::sekirocc::face_service::AddFeatureResponse;
-using com::sekirocc::face_service::DeleteFeatureRequest;
-using com::sekirocc::face_service::DeleteFeatureResponse;
-using com::sekirocc::face_service::SearchFeatureRequest;
-using com::sekirocc::face_service::SearchFeatureResponse;
-using com::sekirocc::face_service::TrainIndexRequest;
-using com::sekirocc::face_service::TrainIndexResponse;
+using com::sekirocc::feature_search::AddFeatureResponse;
+using com::sekirocc::feature_search::DeleteFeatureRequest;
+using com::sekirocc::feature_search::DeleteFeatureResponse;
+using com::sekirocc::feature_search::SearchFeatureRequest;
+using com::sekirocc::feature_search::SearchFeatureResponse;
 
-using com::sekirocc::face_service::FaceFeature;
+using com::sekirocc::common::FaceFeature;
 
-using com::sekirocc::face_service::ResultCode;
+using com::sekirocc::common::ResultCode;
 
 using grpc::ServerContext;
 using grpc::Status;
@@ -59,9 +58,23 @@ void FeatureSearchImpl::Start() { searcher->Init(); };
 
 void FeatureSearchImpl::Stop() { searcher->Terminate(); };
 
-Status FeatureSearchImpl::TrainIndex(ServerContext* context, const TrainIndexRequest* request,
-                                     TrainIndexResponse* response) {
-    searcher->TrainIndex();
+Status FeatureSearchImpl::DBNew(ServerContext* context, const DBNewRequest* request,
+                                DBNewResponse* response) {
+    return Status::OK;
+};
+
+Status FeatureSearchImpl::DBList(ServerContext* context, const DBListRequest* request,
+                                 DBListResponse* response) {
+    return Status::OK;
+};
+
+Status FeatureSearchImpl::DBGet(ServerContext* context, const DBGetRequest* request,
+                                DBGetResponse* response) {
+    return Status::OK;
+};
+
+Status FeatureSearchImpl::DBDelete(ServerContext* context, const DBDeleteRequest* request,
+                                   DBDeleteResponse* response) {
     return Status::OK;
 };
 

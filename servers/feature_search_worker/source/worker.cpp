@@ -1,9 +1,9 @@
 #include "Poco/Format.h"
 #include "Poco/Timestamp.h"
 #include "config.h"
-#include "feature_search.h"
-#include "gen/pb-cpp/feature_search.grpc.pb.h"
-#include "gen/pb-cpp/feature_search.pb.h"
+#include "worker.h"
+#include "gen/pb-cpp/feature_search_inner.grpc.pb.h"
+#include "gen/pb-cpp/feature_search_inner.pb.h"
 #include "gen/pb-cpp/common.pb.h"
 #include "nlohmann/json.hpp"
 #include "search/searcher.h"
@@ -31,41 +31,41 @@
 
 using namespace std;
 
-using com::sekirocc::face_service::AddFeatureRequest;
+using com::sekirocc::feature_search::inner::AddFeatureRequest;
 
-using com::sekirocc::face_service::AddFeatureResponse;
-using com::sekirocc::face_service::DeleteFeatureRequest;
-using com::sekirocc::face_service::DeleteFeatureResponse;
-using com::sekirocc::face_service::SearchFeatureRequest;
-using com::sekirocc::face_service::SearchFeatureResponse;
-using com::sekirocc::face_service::TrainIndexRequest;
-using com::sekirocc::face_service::TrainIndexResponse;
+using com::sekirocc::feature_search::inner::AddFeatureResponse;
+using com::sekirocc::feature_search::inner::DeleteFeatureRequest;
+using com::sekirocc::feature_search::inner::DeleteFeatureResponse;
+using com::sekirocc::feature_search::inner::SearchFeatureRequest;
+using com::sekirocc::feature_search::inner::SearchFeatureResponse;
+using com::sekirocc::feature_search::inner::TrainIndexRequest;
+using com::sekirocc::feature_search::inner::TrainIndexResponse;
 
-using com::sekirocc::face_service::FaceFeature;
+using com::sekirocc::common::FaceFeature;
 
-using com::sekirocc::face_service::ResultCode;
+using com::sekirocc::common::ResultCode;
 
 using grpc::ServerContext;
 using grpc::Status;
 
 using json = nlohmann::json;
 
-FeatureSearchImpl::FeatureSearchImpl(Config& server_config)
+FeatureSearchWorkerImpl::FeatureSearchWorkerImpl(Config& server_config)
     : config(server_config), searcher(new search::Searcher(server_config.get_searcher_config())){};
 
-FeatureSearchImpl::~FeatureSearchImpl(){};
+FeatureSearchWorkerImpl::~FeatureSearchWorkerImpl(){};
 
-void FeatureSearchImpl::Start() { searcher->Init(); };
+void FeatureSearchWorkerImpl::Start() { searcher->Init(); };
 
-void FeatureSearchImpl::Stop() { searcher->Terminate(); };
+void FeatureSearchWorkerImpl::Stop() { searcher->Terminate(); };
 
-Status FeatureSearchImpl::TrainIndex(ServerContext* context, const TrainIndexRequest* request,
+Status FeatureSearchWorkerImpl::TrainIndex(ServerContext* context, const TrainIndexRequest* request,
                                      TrainIndexResponse* response) {
     searcher->TrainIndex();
     return Status::OK;
 };
 
-Status FeatureSearchImpl::AddFeature(ServerContext* context, const AddFeatureRequest* request,
+Status FeatureSearchWorkerImpl::AddFeature(ServerContext* context, const AddFeatureRequest* request,
                                      AddFeatureResponse* response) {
     auto item = request->feature_item();
     auto ft = item.feature();
@@ -88,7 +88,7 @@ Status FeatureSearchImpl::AddFeature(ServerContext* context, const AddFeatureReq
     return Status::OK;
 };
 
-Status FeatureSearchImpl::DeleteFeature(ServerContext* context, const DeleteFeatureRequest* request,
+Status FeatureSearchWorkerImpl::DeleteFeature(ServerContext* context, const DeleteFeatureRequest* request,
                                         DeleteFeatureResponse* response) {
 
     std::string feature_id = request->feature_id();
@@ -98,7 +98,7 @@ Status FeatureSearchImpl::DeleteFeature(ServerContext* context, const DeleteFeat
     return Status::OK;
 };
 
-Status FeatureSearchImpl::SearchFeature(ServerContext* context, const SearchFeatureRequest* request,
+Status FeatureSearchWorkerImpl::SearchFeature(ServerContext* context, const SearchFeatureRequest* request,
                                         SearchFeatureResponse* response) {
     auto ft = request->query();
     auto topk = request->topk();

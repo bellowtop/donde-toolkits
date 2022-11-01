@@ -48,7 +48,7 @@ struct TableStruct_feature_5fextract_2eproto {
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_feature_5fextract_2eproto;
 namespace com {
 namespace sekirocc {
-namespace face_service {
+namespace feature_extract {
 class CompareRequest;
 struct CompareRequestDefaultTypeInternal;
 extern CompareRequestDefaultTypeInternal _CompareRequest_default_instance_;
@@ -67,25 +67,25 @@ extern ExtractionRequestDefaultTypeInternal _ExtractionRequest_default_instance_
 class ExtractionResponse;
 struct ExtractionResponseDefaultTypeInternal;
 extern ExtractionResponseDefaultTypeInternal _ExtractionResponse_default_instance_;
-}  // namespace face_service
+}  // namespace feature_extract
 }  // namespace sekirocc
 }  // namespace com
 PROTOBUF_NAMESPACE_OPEN
-template<> ::com::sekirocc::face_service::CompareRequest* Arena::CreateMaybeMessage<::com::sekirocc::face_service::CompareRequest>(Arena*);
-template<> ::com::sekirocc::face_service::CompareResponse* Arena::CreateMaybeMessage<::com::sekirocc::face_service::CompareResponse>(Arena*);
-template<> ::com::sekirocc::face_service::DetectionRequest* Arena::CreateMaybeMessage<::com::sekirocc::face_service::DetectionRequest>(Arena*);
-template<> ::com::sekirocc::face_service::DetectionResponse* Arena::CreateMaybeMessage<::com::sekirocc::face_service::DetectionResponse>(Arena*);
-template<> ::com::sekirocc::face_service::ExtractionRequest* Arena::CreateMaybeMessage<::com::sekirocc::face_service::ExtractionRequest>(Arena*);
-template<> ::com::sekirocc::face_service::ExtractionResponse* Arena::CreateMaybeMessage<::com::sekirocc::face_service::ExtractionResponse>(Arena*);
+template<> ::com::sekirocc::feature_extract::CompareRequest* Arena::CreateMaybeMessage<::com::sekirocc::feature_extract::CompareRequest>(Arena*);
+template<> ::com::sekirocc::feature_extract::CompareResponse* Arena::CreateMaybeMessage<::com::sekirocc::feature_extract::CompareResponse>(Arena*);
+template<> ::com::sekirocc::feature_extract::DetectionRequest* Arena::CreateMaybeMessage<::com::sekirocc::feature_extract::DetectionRequest>(Arena*);
+template<> ::com::sekirocc::feature_extract::DetectionResponse* Arena::CreateMaybeMessage<::com::sekirocc::feature_extract::DetectionResponse>(Arena*);
+template<> ::com::sekirocc::feature_extract::ExtractionRequest* Arena::CreateMaybeMessage<::com::sekirocc::feature_extract::ExtractionRequest>(Arena*);
+template<> ::com::sekirocc::feature_extract::ExtractionResponse* Arena::CreateMaybeMessage<::com::sekirocc::feature_extract::ExtractionResponse>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace com {
 namespace sekirocc {
-namespace face_service {
+namespace feature_extract {
 
 // ===================================================================
 
 class DetectionRequest final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.face_service.DetectionRequest) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_extract.DetectionRequest) */ {
  public:
   inline DetectionRequest() : DetectionRequest(nullptr) {}
   ~DetectionRequest() override;
@@ -188,7 +188,7 @@ class DetectionRequest final :
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "com.sekirocc.face_service.DetectionRequest";
+    return "com.sekirocc.feature_extract.DetectionRequest";
   }
   protected:
   explicit DetectionRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
@@ -225,7 +225,7 @@ class DetectionRequest final :
       ::com::sekirocc::common::Image* image);
   ::com::sekirocc::common::Image* unsafe_arena_release_image();
 
-  // @@protoc_insertion_point(class_scope:com.sekirocc.face_service.DetectionRequest)
+  // @@protoc_insertion_point(class_scope:com.sekirocc.feature_extract.DetectionRequest)
  private:
   class _Internal;
 
@@ -242,7 +242,7 @@ class DetectionRequest final :
 // -------------------------------------------------------------------
 
 class DetectionResponse final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.face_service.DetectionResponse) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_extract.DetectionResponse) */ {
  public:
   inline DetectionResponse() : DetectionResponse(nullptr) {}
   ~DetectionResponse() override;
@@ -345,7 +345,7 @@ class DetectionResponse final :
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "com.sekirocc.face_service.DetectionResponse";
+    return "com.sekirocc.feature_extract.DetectionResponse";
   }
   protected:
   explicit DetectionResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
@@ -392,7 +392,7 @@ class DetectionResponse final :
   void _internal_set_code(::com::sekirocc::common::ResultCode value);
   public:
 
-  // @@protoc_insertion_point(class_scope:com.sekirocc.face_service.DetectionResponse)
+  // @@protoc_insertion_point(class_scope:com.sekirocc.feature_extract.DetectionResponse)
  private:
   class _Internal;
 
@@ -410,7 +410,7 @@ class DetectionResponse final :
 // -------------------------------------------------------------------
 
 class ExtractionRequest final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.face_service.ExtractionRequest) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_extract.ExtractionRequest) */ {
  public:
   inline ExtractionRequest() : ExtractionRequest(nullptr) {}
   ~ExtractionRequest() override;
@@ -513,7 +513,7 @@ class ExtractionRequest final :
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "com.sekirocc.face_service.ExtractionRequest";
+    return "com.sekirocc.feature_extract.ExtractionRequest";
   }
   protected:
   explicit ExtractionRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
@@ -550,7 +550,7 @@ class ExtractionRequest final :
       ::com::sekirocc::common::Image* image);
   ::com::sekirocc::common::Image* unsafe_arena_release_image();
 
-  // @@protoc_insertion_point(class_scope:com.sekirocc.face_service.ExtractionRequest)
+  // @@protoc_insertion_point(class_scope:com.sekirocc.feature_extract.ExtractionRequest)
  private:
   class _Internal;
 
@@ -567,7 +567,7 @@ class ExtractionRequest final :
 // -------------------------------------------------------------------
 
 class ExtractionResponse final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.face_service.ExtractionResponse) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_extract.ExtractionResponse) */ {
  public:
   inline ExtractionResponse() : ExtractionResponse(nullptr) {}
   ~ExtractionResponse() override;
@@ -670,7 +670,7 @@ class ExtractionResponse final :
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "com.sekirocc.face_service.ExtractionResponse";
+    return "com.sekirocc.feature_extract.ExtractionResponse";
   }
   protected:
   explicit ExtractionResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
@@ -736,7 +736,7 @@ class ExtractionResponse final :
   void _internal_set_code(::com::sekirocc::common::ResultCode value);
   public:
 
-  // @@protoc_insertion_point(class_scope:com.sekirocc.face_service.ExtractionResponse)
+  // @@protoc_insertion_point(class_scope:com.sekirocc.feature_extract.ExtractionResponse)
  private:
   class _Internal;
 
@@ -755,7 +755,7 @@ class ExtractionResponse final :
 // -------------------------------------------------------------------
 
 class CompareRequest final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.face_service.CompareRequest) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_extract.CompareRequest) */ {
  public:
   inline CompareRequest() : CompareRequest(nullptr) {}
   ~CompareRequest() override;
@@ -858,7 +858,7 @@ class CompareRequest final :
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "com.sekirocc.face_service.CompareRequest";
+    return "com.sekirocc.feature_extract.CompareRequest";
   }
   protected:
   explicit CompareRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
@@ -914,7 +914,7 @@ class CompareRequest final :
       ::com::sekirocc::common::FaceFeature* two);
   ::com::sekirocc::common::FaceFeature* unsafe_arena_release_two();
 
-  // @@protoc_insertion_point(class_scope:com.sekirocc.face_service.CompareRequest)
+  // @@protoc_insertion_point(class_scope:com.sekirocc.feature_extract.CompareRequest)
  private:
   class _Internal;
 
@@ -932,7 +932,7 @@ class CompareRequest final :
 // -------------------------------------------------------------------
 
 class CompareResponse final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.face_service.CompareResponse) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_extract.CompareResponse) */ {
  public:
   inline CompareResponse() : CompareResponse(nullptr) {}
   ~CompareResponse() override;
@@ -1035,7 +1035,7 @@ class CompareResponse final :
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "com.sekirocc.face_service.CompareResponse";
+    return "com.sekirocc.feature_extract.CompareResponse";
   }
   protected:
   explicit CompareResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
@@ -1073,7 +1073,7 @@ class CompareResponse final :
   void _internal_set_score(float value);
   public:
 
-  // @@protoc_insertion_point(class_scope:com.sekirocc.face_service.CompareResponse)
+  // @@protoc_insertion_point(class_scope:com.sekirocc.feature_extract.CompareResponse)
  private:
   class _Internal;
 
@@ -1112,7 +1112,7 @@ inline const ::com::sekirocc::common::Image& DetectionRequest::_internal_image()
       ::com::sekirocc::common::_Image_default_instance_);
 }
 inline const ::com::sekirocc::common::Image& DetectionRequest::image() const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.DetectionRequest.image)
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_extract.DetectionRequest.image)
   return _internal_image();
 }
 inline void DetectionRequest::unsafe_arena_set_allocated_image(
@@ -1126,7 +1126,7 @@ inline void DetectionRequest::unsafe_arena_set_allocated_image(
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:com.sekirocc.face_service.DetectionRequest.image)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:com.sekirocc.feature_extract.DetectionRequest.image)
 }
 inline ::com::sekirocc::common::Image* DetectionRequest::release_image() {
   
@@ -1144,7 +1144,7 @@ inline ::com::sekirocc::common::Image* DetectionRequest::release_image() {
   return temp;
 }
 inline ::com::sekirocc::common::Image* DetectionRequest::unsafe_arena_release_image() {
-  // @@protoc_insertion_point(field_release:com.sekirocc.face_service.DetectionRequest.image)
+  // @@protoc_insertion_point(field_release:com.sekirocc.feature_extract.DetectionRequest.image)
   
   ::com::sekirocc::common::Image* temp = _impl_.image_;
   _impl_.image_ = nullptr;
@@ -1160,7 +1160,7 @@ inline ::com::sekirocc::common::Image* DetectionRequest::_internal_mutable_image
 }
 inline ::com::sekirocc::common::Image* DetectionRequest::mutable_image() {
   ::com::sekirocc::common::Image* _msg = _internal_mutable_image();
-  // @@protoc_insertion_point(field_mutable:com.sekirocc.face_service.DetectionRequest.image)
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_extract.DetectionRequest.image)
   return _msg;
 }
 inline void DetectionRequest::set_allocated_image(::com::sekirocc::common::Image* image) {
@@ -1181,7 +1181,7 @@ inline void DetectionRequest::set_allocated_image(::com::sekirocc::common::Image
     
   }
   _impl_.image_ = image;
-  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.face_service.DetectionRequest.image)
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.feature_extract.DetectionRequest.image)
 }
 
 // -------------------------------------------------------------------
@@ -1196,7 +1196,7 @@ inline ::com::sekirocc::common::ResultCode DetectionResponse::_internal_code() c
   return static_cast< ::com::sekirocc::common::ResultCode >(_impl_.code_);
 }
 inline ::com::sekirocc::common::ResultCode DetectionResponse::code() const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.DetectionResponse.code)
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_extract.DetectionResponse.code)
   return _internal_code();
 }
 inline void DetectionResponse::_internal_set_code(::com::sekirocc::common::ResultCode value) {
@@ -1205,7 +1205,7 @@ inline void DetectionResponse::_internal_set_code(::com::sekirocc::common::Resul
 }
 inline void DetectionResponse::set_code(::com::sekirocc::common::ResultCode value) {
   _internal_set_code(value);
-  // @@protoc_insertion_point(field_set:com.sekirocc.face_service.DetectionResponse.code)
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_extract.DetectionResponse.code)
 }
 
 // repeated .com.sekirocc.common.FaceRectangle face_rects = 2;
@@ -1216,19 +1216,19 @@ inline int DetectionResponse::face_rects_size() const {
   return _internal_face_rects_size();
 }
 inline ::com::sekirocc::common::FaceRectangle* DetectionResponse::mutable_face_rects(int index) {
-  // @@protoc_insertion_point(field_mutable:com.sekirocc.face_service.DetectionResponse.face_rects)
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_extract.DetectionResponse.face_rects)
   return _impl_.face_rects_.Mutable(index);
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::common::FaceRectangle >*
 DetectionResponse::mutable_face_rects() {
-  // @@protoc_insertion_point(field_mutable_list:com.sekirocc.face_service.DetectionResponse.face_rects)
+  // @@protoc_insertion_point(field_mutable_list:com.sekirocc.feature_extract.DetectionResponse.face_rects)
   return &_impl_.face_rects_;
 }
 inline const ::com::sekirocc::common::FaceRectangle& DetectionResponse::_internal_face_rects(int index) const {
   return _impl_.face_rects_.Get(index);
 }
 inline const ::com::sekirocc::common::FaceRectangle& DetectionResponse::face_rects(int index) const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.DetectionResponse.face_rects)
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_extract.DetectionResponse.face_rects)
   return _internal_face_rects(index);
 }
 inline ::com::sekirocc::common::FaceRectangle* DetectionResponse::_internal_add_face_rects() {
@@ -1236,12 +1236,12 @@ inline ::com::sekirocc::common::FaceRectangle* DetectionResponse::_internal_add_
 }
 inline ::com::sekirocc::common::FaceRectangle* DetectionResponse::add_face_rects() {
   ::com::sekirocc::common::FaceRectangle* _add = _internal_add_face_rects();
-  // @@protoc_insertion_point(field_add:com.sekirocc.face_service.DetectionResponse.face_rects)
+  // @@protoc_insertion_point(field_add:com.sekirocc.feature_extract.DetectionResponse.face_rects)
   return _add;
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::common::FaceRectangle >&
 DetectionResponse::face_rects() const {
-  // @@protoc_insertion_point(field_list:com.sekirocc.face_service.DetectionResponse.face_rects)
+  // @@protoc_insertion_point(field_list:com.sekirocc.feature_extract.DetectionResponse.face_rects)
   return _impl_.face_rects_;
 }
 
@@ -1262,7 +1262,7 @@ inline const ::com::sekirocc::common::Image& ExtractionRequest::_internal_image(
       ::com::sekirocc::common::_Image_default_instance_);
 }
 inline const ::com::sekirocc::common::Image& ExtractionRequest::image() const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.ExtractionRequest.image)
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_extract.ExtractionRequest.image)
   return _internal_image();
 }
 inline void ExtractionRequest::unsafe_arena_set_allocated_image(
@@ -1276,7 +1276,7 @@ inline void ExtractionRequest::unsafe_arena_set_allocated_image(
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:com.sekirocc.face_service.ExtractionRequest.image)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:com.sekirocc.feature_extract.ExtractionRequest.image)
 }
 inline ::com::sekirocc::common::Image* ExtractionRequest::release_image() {
   
@@ -1294,7 +1294,7 @@ inline ::com::sekirocc::common::Image* ExtractionRequest::release_image() {
   return temp;
 }
 inline ::com::sekirocc::common::Image* ExtractionRequest::unsafe_arena_release_image() {
-  // @@protoc_insertion_point(field_release:com.sekirocc.face_service.ExtractionRequest.image)
+  // @@protoc_insertion_point(field_release:com.sekirocc.feature_extract.ExtractionRequest.image)
   
   ::com::sekirocc::common::Image* temp = _impl_.image_;
   _impl_.image_ = nullptr;
@@ -1310,7 +1310,7 @@ inline ::com::sekirocc::common::Image* ExtractionRequest::_internal_mutable_imag
 }
 inline ::com::sekirocc::common::Image* ExtractionRequest::mutable_image() {
   ::com::sekirocc::common::Image* _msg = _internal_mutable_image();
-  // @@protoc_insertion_point(field_mutable:com.sekirocc.face_service.ExtractionRequest.image)
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_extract.ExtractionRequest.image)
   return _msg;
 }
 inline void ExtractionRequest::set_allocated_image(::com::sekirocc::common::Image* image) {
@@ -1331,7 +1331,7 @@ inline void ExtractionRequest::set_allocated_image(::com::sekirocc::common::Imag
     
   }
   _impl_.image_ = image;
-  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.face_service.ExtractionRequest.image)
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.feature_extract.ExtractionRequest.image)
 }
 
 // -------------------------------------------------------------------
@@ -1346,7 +1346,7 @@ inline ::com::sekirocc::common::ResultCode ExtractionResponse::_internal_code() 
   return static_cast< ::com::sekirocc::common::ResultCode >(_impl_.code_);
 }
 inline ::com::sekirocc::common::ResultCode ExtractionResponse::code() const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.ExtractionResponse.code)
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_extract.ExtractionResponse.code)
   return _internal_code();
 }
 inline void ExtractionResponse::_internal_set_code(::com::sekirocc::common::ResultCode value) {
@@ -1355,7 +1355,7 @@ inline void ExtractionResponse::_internal_set_code(::com::sekirocc::common::Resu
 }
 inline void ExtractionResponse::set_code(::com::sekirocc::common::ResultCode value) {
   _internal_set_code(value);
-  // @@protoc_insertion_point(field_set:com.sekirocc.face_service.ExtractionResponse.code)
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_extract.ExtractionResponse.code)
 }
 
 // repeated .com.sekirocc.common.FaceRectangle face_rects = 2;
@@ -1366,19 +1366,19 @@ inline int ExtractionResponse::face_rects_size() const {
   return _internal_face_rects_size();
 }
 inline ::com::sekirocc::common::FaceRectangle* ExtractionResponse::mutable_face_rects(int index) {
-  // @@protoc_insertion_point(field_mutable:com.sekirocc.face_service.ExtractionResponse.face_rects)
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_extract.ExtractionResponse.face_rects)
   return _impl_.face_rects_.Mutable(index);
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::common::FaceRectangle >*
 ExtractionResponse::mutable_face_rects() {
-  // @@protoc_insertion_point(field_mutable_list:com.sekirocc.face_service.ExtractionResponse.face_rects)
+  // @@protoc_insertion_point(field_mutable_list:com.sekirocc.feature_extract.ExtractionResponse.face_rects)
   return &_impl_.face_rects_;
 }
 inline const ::com::sekirocc::common::FaceRectangle& ExtractionResponse::_internal_face_rects(int index) const {
   return _impl_.face_rects_.Get(index);
 }
 inline const ::com::sekirocc::common::FaceRectangle& ExtractionResponse::face_rects(int index) const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.ExtractionResponse.face_rects)
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_extract.ExtractionResponse.face_rects)
   return _internal_face_rects(index);
 }
 inline ::com::sekirocc::common::FaceRectangle* ExtractionResponse::_internal_add_face_rects() {
@@ -1386,12 +1386,12 @@ inline ::com::sekirocc::common::FaceRectangle* ExtractionResponse::_internal_add
 }
 inline ::com::sekirocc::common::FaceRectangle* ExtractionResponse::add_face_rects() {
   ::com::sekirocc::common::FaceRectangle* _add = _internal_add_face_rects();
-  // @@protoc_insertion_point(field_add:com.sekirocc.face_service.ExtractionResponse.face_rects)
+  // @@protoc_insertion_point(field_add:com.sekirocc.feature_extract.ExtractionResponse.face_rects)
   return _add;
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::common::FaceRectangle >&
 ExtractionResponse::face_rects() const {
-  // @@protoc_insertion_point(field_list:com.sekirocc.face_service.ExtractionResponse.face_rects)
+  // @@protoc_insertion_point(field_list:com.sekirocc.feature_extract.ExtractionResponse.face_rects)
   return _impl_.face_rects_;
 }
 
@@ -1403,19 +1403,19 @@ inline int ExtractionResponse::face_features_size() const {
   return _internal_face_features_size();
 }
 inline ::com::sekirocc::common::FaceFeature* ExtractionResponse::mutable_face_features(int index) {
-  // @@protoc_insertion_point(field_mutable:com.sekirocc.face_service.ExtractionResponse.face_features)
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_extract.ExtractionResponse.face_features)
   return _impl_.face_features_.Mutable(index);
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::common::FaceFeature >*
 ExtractionResponse::mutable_face_features() {
-  // @@protoc_insertion_point(field_mutable_list:com.sekirocc.face_service.ExtractionResponse.face_features)
+  // @@protoc_insertion_point(field_mutable_list:com.sekirocc.feature_extract.ExtractionResponse.face_features)
   return &_impl_.face_features_;
 }
 inline const ::com::sekirocc::common::FaceFeature& ExtractionResponse::_internal_face_features(int index) const {
   return _impl_.face_features_.Get(index);
 }
 inline const ::com::sekirocc::common::FaceFeature& ExtractionResponse::face_features(int index) const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.ExtractionResponse.face_features)
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_extract.ExtractionResponse.face_features)
   return _internal_face_features(index);
 }
 inline ::com::sekirocc::common::FaceFeature* ExtractionResponse::_internal_add_face_features() {
@@ -1423,12 +1423,12 @@ inline ::com::sekirocc::common::FaceFeature* ExtractionResponse::_internal_add_f
 }
 inline ::com::sekirocc::common::FaceFeature* ExtractionResponse::add_face_features() {
   ::com::sekirocc::common::FaceFeature* _add = _internal_add_face_features();
-  // @@protoc_insertion_point(field_add:com.sekirocc.face_service.ExtractionResponse.face_features)
+  // @@protoc_insertion_point(field_add:com.sekirocc.feature_extract.ExtractionResponse.face_features)
   return _add;
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::common::FaceFeature >&
 ExtractionResponse::face_features() const {
-  // @@protoc_insertion_point(field_list:com.sekirocc.face_service.ExtractionResponse.face_features)
+  // @@protoc_insertion_point(field_list:com.sekirocc.feature_extract.ExtractionResponse.face_features)
   return _impl_.face_features_;
 }
 
@@ -1449,7 +1449,7 @@ inline const ::com::sekirocc::common::FaceFeature& CompareRequest::_internal_one
       ::com::sekirocc::common::_FaceFeature_default_instance_);
 }
 inline const ::com::sekirocc::common::FaceFeature& CompareRequest::one() const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.CompareRequest.one)
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_extract.CompareRequest.one)
   return _internal_one();
 }
 inline void CompareRequest::unsafe_arena_set_allocated_one(
@@ -1463,7 +1463,7 @@ inline void CompareRequest::unsafe_arena_set_allocated_one(
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:com.sekirocc.face_service.CompareRequest.one)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:com.sekirocc.feature_extract.CompareRequest.one)
 }
 inline ::com::sekirocc::common::FaceFeature* CompareRequest::release_one() {
   
@@ -1481,7 +1481,7 @@ inline ::com::sekirocc::common::FaceFeature* CompareRequest::release_one() {
   return temp;
 }
 inline ::com::sekirocc::common::FaceFeature* CompareRequest::unsafe_arena_release_one() {
-  // @@protoc_insertion_point(field_release:com.sekirocc.face_service.CompareRequest.one)
+  // @@protoc_insertion_point(field_release:com.sekirocc.feature_extract.CompareRequest.one)
   
   ::com::sekirocc::common::FaceFeature* temp = _impl_.one_;
   _impl_.one_ = nullptr;
@@ -1497,7 +1497,7 @@ inline ::com::sekirocc::common::FaceFeature* CompareRequest::_internal_mutable_o
 }
 inline ::com::sekirocc::common::FaceFeature* CompareRequest::mutable_one() {
   ::com::sekirocc::common::FaceFeature* _msg = _internal_mutable_one();
-  // @@protoc_insertion_point(field_mutable:com.sekirocc.face_service.CompareRequest.one)
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_extract.CompareRequest.one)
   return _msg;
 }
 inline void CompareRequest::set_allocated_one(::com::sekirocc::common::FaceFeature* one) {
@@ -1518,7 +1518,7 @@ inline void CompareRequest::set_allocated_one(::com::sekirocc::common::FaceFeatu
     
   }
   _impl_.one_ = one;
-  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.face_service.CompareRequest.one)
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.feature_extract.CompareRequest.one)
 }
 
 // .com.sekirocc.common.FaceFeature two = 2;
@@ -1534,7 +1534,7 @@ inline const ::com::sekirocc::common::FaceFeature& CompareRequest::_internal_two
       ::com::sekirocc::common::_FaceFeature_default_instance_);
 }
 inline const ::com::sekirocc::common::FaceFeature& CompareRequest::two() const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.CompareRequest.two)
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_extract.CompareRequest.two)
   return _internal_two();
 }
 inline void CompareRequest::unsafe_arena_set_allocated_two(
@@ -1548,7 +1548,7 @@ inline void CompareRequest::unsafe_arena_set_allocated_two(
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:com.sekirocc.face_service.CompareRequest.two)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:com.sekirocc.feature_extract.CompareRequest.two)
 }
 inline ::com::sekirocc::common::FaceFeature* CompareRequest::release_two() {
   
@@ -1566,7 +1566,7 @@ inline ::com::sekirocc::common::FaceFeature* CompareRequest::release_two() {
   return temp;
 }
 inline ::com::sekirocc::common::FaceFeature* CompareRequest::unsafe_arena_release_two() {
-  // @@protoc_insertion_point(field_release:com.sekirocc.face_service.CompareRequest.two)
+  // @@protoc_insertion_point(field_release:com.sekirocc.feature_extract.CompareRequest.two)
   
   ::com::sekirocc::common::FaceFeature* temp = _impl_.two_;
   _impl_.two_ = nullptr;
@@ -1582,7 +1582,7 @@ inline ::com::sekirocc::common::FaceFeature* CompareRequest::_internal_mutable_t
 }
 inline ::com::sekirocc::common::FaceFeature* CompareRequest::mutable_two() {
   ::com::sekirocc::common::FaceFeature* _msg = _internal_mutable_two();
-  // @@protoc_insertion_point(field_mutable:com.sekirocc.face_service.CompareRequest.two)
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_extract.CompareRequest.two)
   return _msg;
 }
 inline void CompareRequest::set_allocated_two(::com::sekirocc::common::FaceFeature* two) {
@@ -1603,7 +1603,7 @@ inline void CompareRequest::set_allocated_two(::com::sekirocc::common::FaceFeatu
     
   }
   _impl_.two_ = two;
-  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.face_service.CompareRequest.two)
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.feature_extract.CompareRequest.two)
 }
 
 // -------------------------------------------------------------------
@@ -1618,7 +1618,7 @@ inline ::com::sekirocc::common::ResultCode CompareResponse::_internal_code() con
   return static_cast< ::com::sekirocc::common::ResultCode >(_impl_.code_);
 }
 inline ::com::sekirocc::common::ResultCode CompareResponse::code() const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.CompareResponse.code)
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_extract.CompareResponse.code)
   return _internal_code();
 }
 inline void CompareResponse::_internal_set_code(::com::sekirocc::common::ResultCode value) {
@@ -1627,7 +1627,7 @@ inline void CompareResponse::_internal_set_code(::com::sekirocc::common::ResultC
 }
 inline void CompareResponse::set_code(::com::sekirocc::common::ResultCode value) {
   _internal_set_code(value);
-  // @@protoc_insertion_point(field_set:com.sekirocc.face_service.CompareResponse.code)
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_extract.CompareResponse.code)
 }
 
 // float score = 2;
@@ -1638,7 +1638,7 @@ inline float CompareResponse::_internal_score() const {
   return _impl_.score_;
 }
 inline float CompareResponse::score() const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.CompareResponse.score)
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_extract.CompareResponse.score)
   return _internal_score();
 }
 inline void CompareResponse::_internal_set_score(float value) {
@@ -1647,7 +1647,7 @@ inline void CompareResponse::_internal_set_score(float value) {
 }
 inline void CompareResponse::set_score(float value) {
   _internal_set_score(value);
-  // @@protoc_insertion_point(field_set:com.sekirocc.face_service.CompareResponse.score)
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_extract.CompareResponse.score)
 }
 
 #ifdef __GNUC__
@@ -1666,7 +1666,7 @@ inline void CompareResponse::set_score(float value) {
 
 // @@protoc_insertion_point(namespace_scope)
 
-}  // namespace face_service
+}  // namespace feature_extract
 }  // namespace sekirocc
 }  // namespace com
 

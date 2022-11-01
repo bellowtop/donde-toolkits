@@ -7,6 +7,7 @@
 #include "face_pipeline.h"
 #include "gen/pb-cpp/feature_extract.grpc.pb.h"
 #include "gen/pb-cpp/feature_extract.pb.h"
+#include "gen/pb-cpp/common.pb.h"
 #include "nlohmann/json.hpp"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
@@ -31,22 +32,22 @@
 
 using namespace std;
 
-using com::sekirocc::face_service::DetectionRequest;
-using com::sekirocc::face_service::DetectionResponse;
+using com::sekirocc::feature_extract::DetectionRequest;
+using com::sekirocc::feature_extract::DetectionResponse;
 
-using com::sekirocc::face_service::ExtractionRequest;
-using com::sekirocc::face_service::ExtractionResponse;
+using com::sekirocc::feature_extract::ExtractionRequest;
+using com::sekirocc::feature_extract::ExtractionResponse;
 
-using com::sekirocc::face_service::CompareRequest;
-using com::sekirocc::face_service::CompareResponse;
+using com::sekirocc::feature_extract::CompareRequest;
+using com::sekirocc::feature_extract::CompareResponse;
 
-using com::sekirocc::face_service::FaceService;
+using com::sekirocc::feature_extract::FaceService;
 
-using com::sekirocc::face_service::Rect;
-using com::sekirocc::face_service::ResultCode;
+using com::sekirocc::common::Rect;
+using com::sekirocc::common::ResultCode;
 
-using com::sekirocc::face_service::FaceFeature;
-using com::sekirocc::face_service::FaceRectangle;
+using com::sekirocc::common::FaceFeature;
+using com::sekirocc::common::FaceRectangle;
 
 using grpc::ServerContext;
 using grpc::Status;

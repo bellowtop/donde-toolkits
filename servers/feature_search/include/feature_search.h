@@ -18,15 +18,25 @@
 
 using namespace std;
 
-using com::sekirocc::face_service::AddFeatureRequest;
-using com::sekirocc::face_service::AddFeatureResponse;
-using com::sekirocc::face_service::DeleteFeatureRequest;
-using com::sekirocc::face_service::DeleteFeatureResponse;
-using com::sekirocc::face_service::FeatureSearch;
-using com::sekirocc::face_service::SearchFeatureRequest;
-using com::sekirocc::face_service::SearchFeatureResponse;
-using com::sekirocc::face_service::TrainIndexRequest;
-using com::sekirocc::face_service::TrainIndexResponse;
+using com::sekirocc::feature_search::DBNewRequest;
+using com::sekirocc::feature_search::DBNewResponse;
+
+using com::sekirocc::feature_search::DBListRequest;
+using com::sekirocc::feature_search::DBListResponse;
+
+using com::sekirocc::feature_search::DBDeleteRequest;
+using com::sekirocc::feature_search::DBDeleteResponse;
+
+using com::sekirocc::feature_search::DBGetRequest;
+using com::sekirocc::feature_search::DBGetResponse;
+
+using com::sekirocc::feature_search::AddFeatureRequest;
+using com::sekirocc::feature_search::AddFeatureResponse;
+using com::sekirocc::feature_search::DeleteFeatureRequest;
+using com::sekirocc::feature_search::DeleteFeatureResponse;
+using com::sekirocc::feature_search::FeatureSearch;
+using com::sekirocc::feature_search::SearchFeatureRequest;
+using com::sekirocc::feature_search::SearchFeatureResponse;
 
 using grpc::ServerContext;
 using grpc::Status;
@@ -39,8 +49,17 @@ class FeatureSearchImpl final : public FeatureSearch::Service {
     void Start();
     void Stop();
 
-    Status TrainIndex(ServerContext* context, const TrainIndexRequest* request,
-                      TrainIndexResponse* response) override;
+    Status DBNew(ServerContext* context, const DBNewRequest* request,
+                 DBNewResponse* response) override;
+
+    Status DBList(ServerContext* context, const DBListRequest* request,
+                  DBListResponse* response) override;
+
+    Status DBDelete(ServerContext* context, const DBDeleteRequest* request,
+                    DBDeleteResponse* response) override;
+
+    Status DBGet(ServerContext* context, const DBGetRequest* request,
+                 DBGetResponse* response) override;
 
     Status AddFeature(ServerContext* context, const AddFeatureRequest* request,
                       AddFeatureResponse* response) override;
