@@ -3,10 +3,10 @@ syntax = "proto3";
 import "google/api/annotations.proto";
 import "common.proto";
 
-option go_package = "github.com/sekirocc/face-recognition-service/face_service";
+option go_package = "github.com/sekirocc/face-recognition-service/feature_extract";
 // option java_package = "com.sekirocc.face_recognition_service";
 
-package com.sekirocc.face_service;
+package com.sekirocc.feature_extract;
 
 // Face Service
 message DetectionRequest { com.sekirocc.common.Image image = 1; }
