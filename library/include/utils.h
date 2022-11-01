@@ -1,8 +1,8 @@
 #pragma once
-
 #include "opencv2/opencv.hpp"
 #include "openvino/openvino.hpp"
 #include "types.h"
+#include "uuid/uuid.h"
 
 #include <google/protobuf/map.h>
 #include <iostream>
@@ -72,4 +72,15 @@ inline void drawRectangleInImage(const std::string& image_path, const std::vecto
 
     cv::imshow("Output", img);
     cv::waitKey(0);
+}
+
+inline std::string generate_uuid() {
+    std::string ret;
+    ret.resize(36); // 16 bytes => 32 hex ascii chars represent, then 4 seperators.
+
+    uuid_t uuid;
+    uuid_generate(uuid);
+    uuid_unparse_lower(uuid, ret.data());
+
+    return ret;
 }
