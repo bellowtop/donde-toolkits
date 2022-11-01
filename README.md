@@ -36,11 +36,13 @@ openvino, you need to install(download from openvino website) it first. other de
 ## Project layout
 
 
-* `include` `source` are used to build `FaceRecognition` library, see `CMakelists.txt` for more details.
+* `library` contains the main library for feature services, are used to build `FeatureLibraries` library, see `CMakelists.txt` for more details.
 
-* `server` is used to build the server binary, which use the `FaceRecognition` lib, see `server/CMakelists.txt` for more details.
+* `proto` contains protobuf definitions for common data structures, and a grpc service. servers are built apon these protos.
 
-* `test` contains unit-tests, they also use the `FaceRecognition` lib, and of-cause they test it.
+* `servers` has source codes to build various server binaries. now include `feature_extract` and `feature_search` binaries. servers has dependency to library and proto
+
+* `tests` contains tests, they test the `FeatureLibraries` library. tests has dependency to library.
 
 
 ## Usage

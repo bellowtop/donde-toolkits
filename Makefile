@@ -24,28 +24,29 @@ conan:
 
 
 build-pre: conan
-	cmake -S server -B build/server
-	cmake -S test   -B build/test
-	cmake -S .      -B build
+	cmake -S servers -B build/servers
+	cmake -S tests   -B build/tests
+	cmake -S library -B build/library
+	cmake -S proto   -B build/proto
 
 build-server:
-	cmake --build build/server -- -j 4
+	cmake --build build/servers -- -j 4
 
 build-test:
-	cmake --build build/test
+	cmake --build build/tests
 
 build-lib:
-	cmake --build build
+	cmake --build build/library
 
-build-all: build-pre build-lib build-server build-test
+build-all: build-pre build-lib build-servers build-tests
 
 
 run-server:
-	install_name_tool -add_rpath /usr/local/runtime/lib/arm64/Release/ ./build/server/bin/FaceRecognitionServer || true
-	./build/server/bin/FaceRecognitionServer --config_path ./contrib/server.json
+	install_name_tool -add_rpath /usr/local/runtime/lib/arm64/Release/ ./build/servers/bin/FaceRecognitionServer || true
+	./build/servers/bin/FaceRecognitionServer --config_path ./contrib/server.json
 
 run-test:
-	./build/test/bin/FaceRecognitionTests
+	./build/tests/bin/FaceRecognitionTests
 
 image:
 	docker build $(IMAGE_FLAGS) -f ./Dockerfile -t face-recognition-service:$(VERSION)-$(BUILD) .

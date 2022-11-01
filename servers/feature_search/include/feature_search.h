@@ -4,7 +4,6 @@
 #include "Poco/Logger.h"
 #include "Poco/Timestamp.h"
 #include "config.h"
-#include "face_pipeline.h"
 #include "gen/pb-cpp/server.grpc.pb.h"
 #include "search/searcher.h"
 

@@ -1,10 +1,7 @@
-#include "feature_search.h"
-
 #include "Poco/Format.h"
 #include "Poco/Timestamp.h"
-#include "concurrent_processor.h"
 #include "config.h"
-#include "face_pipeline.h"
+#include "feature_search.h"
 #include "gen/pb-cpp/server.grpc.pb.h"
 #include "gen/pb-cpp/server.pb.h"
 #include "nlohmann/json.hpp"
@@ -34,7 +31,6 @@
 using namespace std;
 
 using com::sekirocc::face_service::AddFeatureRequest;
-using com::sekirocc::face_service::AddFeatureItem;
 
 using com::sekirocc::face_service::AddFeatureResponse;
 using com::sekirocc::face_service::DeleteFeatureRequest;
@@ -79,7 +75,10 @@ Status FeatureSearchImpl::AddFeature(ServerContext* context, const AddFeatureReq
     Feature feature(convertFeatureBlobToFloats(ft.blob()), std::string(ft.model()), ft.version());
     std::map<string, string> meta = convertMetadataToMap(item.meta());
 
-    std::vector<search::FeatureDbItem> fts{ {feature, meta} };
+    std::vector<search::FeatureDbItem> fts{search::FeatureDbItem{
+        .feature = feature,
+        .metadata = meta,
+    }};
     std::vector<std::string> feature_ids = searcher->AddFeatures(fts);
 
     response->set_feature_id(feature_ids[0]);
@@ -104,7 +103,7 @@ Status FeatureSearchImpl::SearchFeature(ServerContext* context, const SearchFeat
     auto topk = request->topk();
     Feature query(convertFeatureBlobToFloats(ft.blob()), std::string(ft.model()), ft.version());
 
-    std::vector<search::FeatureSearchResult> ret = searcher->SearchFeature(query, topk);
+    std::vector<search::FeatureSearchItem> ret = searcher->SearchFeature(query, topk);
 
     response->set_code(ResultCode::OK);
 

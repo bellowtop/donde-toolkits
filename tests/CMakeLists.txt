@@ -4,10 +4,9 @@ set(CMAKE_CXX_STANDARD 17)
 
 
 # use llvm clang, not the apple clang
-# set(CMAKE_C_COMPILER    /usr/local/opt/llvm/bin/clang)
-# set(CMAKE_CXX_COMPILER  /usr/local/opt/llvm/bin/clang++)
 # set(CMAKE_C_COMPILER    /opt/homebrew/opt/llvm@14/bin/clang)
 # set(CMAKE_CXX_COMPILER  /opt/homebrew/opt/llvm@14/bin/clang++ )
+
 
 add_compile_options("-fstandalone-debug")
 add_compile_options("-stdlib=libc++")
@@ -16,13 +15,8 @@ project(FaceRecognitionTests LANGUAGES CXX)
 
 
 include(../cmake/CPM_0.35.1.cmake)
+CPMAddPackage(NAME FeatureLibraries SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/../library)
 
-# ------ FaceRecognition library ----------
-if(TEST_INSTALLED_VERSION)
-  find_package(FaceRecognition REQUIRED)
-else()
-  CPMAddPackage(NAME FaceRecognition SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..)
-endif()
 
 include(../build/conanbuildinfo.cmake)
 conan_basic_setup(TARGETS)
@@ -36,14 +30,10 @@ set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}, "/usr/local/runtime/cmake")
 find_package(OpenVINO REQUIRED COMPONENTS Runtime)
 
 
-
-
 # ---- Create executable ----
-file(GLOB_RECURSE headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/include/*.h)
-file(GLOB_RECURSE sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp)
+file(GLOB_RECURSE headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
+file(GLOB_RECURSE sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 add_executable(${PROJECT_NAME} ${headers} ${sources})
-
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 target_include_directories(${PROJECT_NAME}
   PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/../include>
@@ -64,7 +54,8 @@ target_link_libraries(${PROJECT_NAME}
 	CONAN_PKG::doctest
 	CONAN_PKG::trompeloeil
 	openvino::runtime
-	FaceRecognition
+
+	FeatureLibraries
 	)
 
 # enable compiler warnings

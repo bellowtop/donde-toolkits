@@ -7,7 +7,6 @@
 #include "concurrent_processor.h"
 #include "config.h"
 #include "face_pipeline.h"
-#include "face_service.h"
 #include "openvino/openvino.hpp"
 
 #include "spdlog/sinks/stdout_color_sinks.h"
@@ -77,27 +76,7 @@ auto main(int argc, char** argv) -> int {
         console_log->set_level(spdlog::level::trace);
         spdlog::set_default_logger(console_log);
 
-        FaceServiceImpl service(config);
-        service.Start();
-        spdlog::info("create and started FaceDetectService...");
 
-        std::string server_address("0.0.0.0:9595");
-        grpc::EnableDefaultHealthCheckService(true);
-        ServerBuilder builder;
-        builder.SetSyncServerOption(ServerBuilder::SyncServerOption::MIN_POLLERS, 64);
-        builder.SetSyncServerOption(ServerBuilder::SyncServerOption::MAX_POLLERS, 64);
-        // grpc::ResourceQuota rq;
-        // rq.SetMaxThreads(16);
-        // builder.SetResourceQuota(rq);
-
-        builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
-        builder.RegisterService(&service);
-        spdlog::info("register grpc service");
-
-        std::unique_ptr<Server> server(builder.BuildAndStart());
-        spdlog::info("Server listening on {}", server_address);
-
-        server->Wait();
 
     } catch (Poco::Exception& exc) {
         std::cerr << exc.displayText() << std::endl;

@@ -8,9 +8,9 @@ set(CMAKE_CXX_STANDARD 17)
 # set(CMAKE_C_COMPILER    /opt/homebrew/opt/llvm/bin/clang )
 # set(CMAKE_CXX_COMPILER  /opt/homebrew/opt/llvm/bin/clang++ )
 
-project(FaceRecognition LANGUAGES CXX)
+project(FeatureLibraries LANGUAGES CXX)
 
-include(build/conanbuildinfo.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/../build/conanbuildinfo.cmake)
 conan_basic_setup(TARGETS)
 include_directories(${CONAN_INCLUDE_DIRS})
 

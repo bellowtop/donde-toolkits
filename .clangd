@@ -1,16 +1,32 @@
 If:
-  PathMatch: server/.*
+  PathMatch: servers/.*
 
 CompileFlags:
-  CompilationDatabase: build/server
+  CompilationDatabase: build/servers
 
 ---
 
 If:
-  PathMatch: test/.*
+  PathMatch: proto/.*
 
 CompileFlags:
-  CompilationDatabase: build/test
+  CompilationDatabase: build/proto
+
+---
+
+If:
+  PathMatch: library/.*
+
+CompileFlags:
+  CompilationDatabase: build/library
+
+---
+
+If:
+  PathMatch: tests/.*
+
+CompileFlags:
+  CompilationDatabase: build/tests
 
 
 ---
