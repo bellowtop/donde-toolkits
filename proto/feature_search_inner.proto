@@ -8,7 +8,11 @@ option go_package = "github.com/sekirocc/face-recognition-service/feature_search
 
 package com.sekirocc.feature_search.inner;
 
-// Search Service
+// Worker service
+message AssignDBsRequest { repeated string db_ids = 1; }
+
+message AssignDBsResponse { com.sekirocc.common.ResultCode code = 1; }
+
 message TrainIndexRequest {}
 
 message TrainIndexResponse { com.sekirocc.common.ResultCode code = 1; }
@@ -18,25 +22,33 @@ message AddFeatureItem {
     map<string, string> meta = 2;
 }
 
-message AddFeatureRequest { AddFeatureItem feature_item = 1; }
-
-message AddFeatureResponse {
-    com.sekirocc.common.ResultCode code = 1;
-    string feature_id = 2;
+message BatchAddFeaturesRequest {
+    string db_id = 1;
+    repeated AddFeatureItem feature_items = 2;
 }
 
-message DeleteFeatureRequest { string feature_id = 1; }
+message BatchAddFeaturesResponse {
+    com.sekirocc.common.ResultCode code = 1;
+    repeated string feature_ids = 2;
+}
 
-message DeleteFeatureResponse { com.sekirocc.common.ResultCode code = 1; }
+message BatchDeleteFeaturesRequest {
+    string db_id = 1;
+    repeated string feature_ids = 2;
+}
+
+message BatchDeleteFeaturesResponse { com.sekirocc.common.ResultCode code = 1; }
 
 message SearchFeatureRequest {
-    com.sekirocc.common.FaceFeature query = 1;
-    int32 topk = 2;
+    repeated string db_ids = 1;
+    com.sekirocc.common.FaceFeature query = 2;
+    int32 topk = 3;
 }
 
 message SearchItemScore {
-    com.sekirocc.common.FaceFeature feature = 1;
-    float score = 2;
+    string db_id = 1;
+    com.sekirocc.common.FaceFeature feature = 2;
+    float score = 3;
 }
 message SearchFeatureResponse {
     com.sekirocc.common.ResultCode code = 1;
@@ -46,6 +58,16 @@ message SearchFeatureResponse {
 // feature search service
 service FeatureSearch {
 
+    // assign some dbs to this worker, then it's the worker's duty to manage those databases(add,
+    // search etc.) must be called once.
+    rpc AssignDBs(AssignDBsRequest) returns (AssignDBsResponse) {
+        option (google.api.http) = {
+            post : "/assign_dbs"
+            body : "*"
+        };
+    }
+
+    // trigger train index job, for maintaince
     rpc TrainIndex(TrainIndexRequest) returns (TrainIndexResponse) {
         option (google.api.http) = {
             post : "/train_index"
@@ -53,16 +75,17 @@ service FeatureSearch {
         };
     }
 
-    rpc AddFeature(AddFeatureRequest) returns (AddFeatureResponse) {
+    // add feature to db
+    rpc BatchAddFeatures(BatchAddFeaturesRequest) returns (BatchAddFeaturesResponse) {
         option (google.api.http) = {
-            post : "/add_feature"
+            post : "/batch_add_features"
             body : "*"
         };
     }
 
-    rpc DeleteFeature(DeleteFeatureRequest) returns (DeleteFeatureResponse) {
+    rpc BatchDeleteFeatures(BatchDeleteFeaturesRequest) returns (BatchDeleteFeaturesResponse) {
         option (google.api.http) = {
-            post : "/delete_feature"
+            post : "/batch_delete_features"
             body : "*"
         };
     }

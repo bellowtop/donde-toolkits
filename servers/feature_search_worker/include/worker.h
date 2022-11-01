@@ -18,10 +18,10 @@
 
 using namespace std;
 
-using com::sekirocc::feature_search::inner::AddFeatureRequest;
-using com::sekirocc::feature_search::inner::AddFeatureResponse;
-using com::sekirocc::feature_search::inner::DeleteFeatureRequest;
-using com::sekirocc::feature_search::inner::DeleteFeatureResponse;
+using com::sekirocc::feature_search::inner::BatchAddFeaturesRequest;
+using com::sekirocc::feature_search::inner::BatchAddFeaturesResponse;
+using com::sekirocc::feature_search::inner::BatchDeleteFeaturesRequest;
+using com::sekirocc::feature_search::inner::BatchDeleteFeaturesResponse;
 using com::sekirocc::feature_search::inner::FeatureSearch;
 using com::sekirocc::feature_search::inner::SearchFeatureRequest;
 using com::sekirocc::feature_search::inner::SearchFeatureResponse;
@@ -42,11 +42,11 @@ class FeatureSearchWorkerImpl final : public FeatureSearch::Service {
     Status TrainIndex(ServerContext* context, const TrainIndexRequest* request,
                       TrainIndexResponse* response) override;
 
-    Status AddFeature(ServerContext* context, const AddFeatureRequest* request,
-                      AddFeatureResponse* response) override;
+    Status BatchAddFeatures(ServerContext* context, const BatchAddFeaturesRequest* request,
+                            BatchAddFeaturesResponse* response) override;
 
-    Status DeleteFeature(ServerContext* context, const DeleteFeatureRequest* request,
-                         DeleteFeatureResponse* response) override;
+    Status BatchDeleteFeatures(ServerContext* context, const BatchDeleteFeaturesRequest* request,
+                               BatchDeleteFeaturesResponse* response) override;
 
     Status SearchFeature(ServerContext* context, const SearchFeatureRequest* request,
                          SearchFeatureResponse* response) override;

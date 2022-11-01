@@ -77,6 +77,9 @@ extern DBGetRequestDefaultTypeInternal _DBGetRequest_default_instance_;
 class DBGetResponse;
 struct DBGetResponseDefaultTypeInternal;
 extern DBGetResponseDefaultTypeInternal _DBGetResponse_default_instance_;
+class DBItem;
+struct DBItemDefaultTypeInternal;
+extern DBItemDefaultTypeInternal _DBItem_default_instance_;
 class DBListRequest;
 struct DBListRequestDefaultTypeInternal;
 extern DBListRequestDefaultTypeInternal _DBListRequest_default_instance_;
@@ -122,6 +125,7 @@ template<> ::com::sekirocc::feature_search::DBDeleteRequest* Arena::CreateMaybeM
 template<> ::com::sekirocc::feature_search::DBDeleteResponse* Arena::CreateMaybeMessage<::com::sekirocc::feature_search::DBDeleteResponse>(Arena*);
 template<> ::com::sekirocc::feature_search::DBGetRequest* Arena::CreateMaybeMessage<::com::sekirocc::feature_search::DBGetRequest>(Arena*);
 template<> ::com::sekirocc::feature_search::DBGetResponse* Arena::CreateMaybeMessage<::com::sekirocc::feature_search::DBGetResponse>(Arena*);
+template<> ::com::sekirocc::feature_search::DBItem* Arena::CreateMaybeMessage<::com::sekirocc::feature_search::DBItem>(Arena*);
 template<> ::com::sekirocc::feature_search::DBListRequest* Arena::CreateMaybeMessage<::com::sekirocc::feature_search::DBListRequest>(Arena*);
 template<> ::com::sekirocc::feature_search::DBListResponse* Arena::CreateMaybeMessage<::com::sekirocc::feature_search::DBListResponse>(Arena*);
 template<> ::com::sekirocc::feature_search::DBNewRequest* Arena::CreateMaybeMessage<::com::sekirocc::feature_search::DBNewRequest>(Arena*);
@@ -141,9 +145,10 @@ namespace feature_search {
 // ===================================================================
 
 class DBNewRequest final :
-    public ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_search.DBNewRequest) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_search.DBNewRequest) */ {
  public:
   inline DBNewRequest() : DBNewRequest(nullptr) {}
+  ~DBNewRequest() override;
   explicit PROTOBUF_CONSTEXPR DBNewRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
   DBNewRequest(const DBNewRequest& from);
@@ -216,15 +221,29 @@ class DBNewRequest final :
   DBNewRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
     return CreateMaybeMessage<DBNewRequest>(arena);
   }
-  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const DBNewRequest& from) {
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const DBNewRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const DBNewRequest& from) {
+    DBNewRequest::MergeImpl(*this, from);
   }
-  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const DBNewRequest& from) {
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
   public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(DBNewRequest* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
@@ -245,6 +264,48 @@ class DBNewRequest final :
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kNameFieldNumber = 1,
+    kDescriptionFieldNumber = 3,
+    kCapacityFieldNumber = 2,
+  };
+  // string name = 1;
+  void clear_name();
+  const std::string& name() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_name(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_name();
+  PROTOBUF_NODISCARD std::string* release_name();
+  void set_allocated_name(std::string* name);
+  private:
+  const std::string& _internal_name() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_name(const std::string& value);
+  std::string* _internal_mutable_name();
+  public:
+
+  // string description = 3;
+  void clear_description();
+  const std::string& description() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_description(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_description();
+  PROTOBUF_NODISCARD std::string* release_description();
+  void set_allocated_description(std::string* description);
+  private:
+  const std::string& _internal_description() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_description(const std::string& value);
+  std::string* _internal_mutable_description();
+  public:
+
+  // int64 capacity = 2;
+  void clear_capacity();
+  int64_t capacity() const;
+  void set_capacity(int64_t value);
+  private:
+  int64_t _internal_capacity() const;
+  void _internal_set_capacity(int64_t value);
+  public:
+
   // @@protoc_insertion_point(class_scope:com.sekirocc.feature_search.DBNewRequest)
  private:
   class _Internal;
@@ -253,15 +314,21 @@ class DBNewRequest final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr description_;
+    int64_t capacity_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_feature_5fsearch_2eproto;
 };
 // -------------------------------------------------------------------
 
 class DBNewResponse final :
-    public ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_search.DBNewResponse) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_search.DBNewResponse) */ {
  public:
   inline DBNewResponse() : DBNewResponse(nullptr) {}
+  ~DBNewResponse() override;
   explicit PROTOBUF_CONSTEXPR DBNewResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
   DBNewResponse(const DBNewResponse& from);
@@ -334,15 +401,29 @@ class DBNewResponse final :
   DBNewResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
     return CreateMaybeMessage<DBNewResponse>(arena);
   }
-  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const DBNewResponse& from) {
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const DBNewResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const DBNewResponse& from) {
+    DBNewResponse::MergeImpl(*this, from);
   }
-  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const DBNewResponse& from) {
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
   public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(DBNewResponse* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
@@ -363,6 +444,33 @@ class DBNewResponse final :
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kDbIdFieldNumber = 2,
+    kCodeFieldNumber = 1,
+  };
+  // string db_id = 2;
+  void clear_db_id();
+  const std::string& db_id() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_db_id(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_db_id();
+  PROTOBUF_NODISCARD std::string* release_db_id();
+  void set_allocated_db_id(std::string* db_id);
+  private:
+  const std::string& _internal_db_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_db_id(const std::string& value);
+  std::string* _internal_mutable_db_id();
+  public:
+
+  // .com.sekirocc.common.ResultCode code = 1;
+  void clear_code();
+  ::com::sekirocc::common::ResultCode code() const;
+  void set_code(::com::sekirocc::common::ResultCode value);
+  private:
+  ::com::sekirocc::common::ResultCode _internal_code() const;
+  void _internal_set_code(::com::sekirocc::common::ResultCode value);
+  public:
+
   // @@protoc_insertion_point(class_scope:com.sekirocc.feature_search.DBNewResponse)
  private:
   class _Internal;
@@ -371,7 +479,218 @@ class DBNewResponse final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr db_id_;
+    int code_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_feature_5fsearch_2eproto;
+};
+// -------------------------------------------------------------------
+
+class DBItem final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_search.DBItem) */ {
+ public:
+  inline DBItem() : DBItem(nullptr) {}
+  ~DBItem() override;
+  explicit PROTOBUF_CONSTEXPR DBItem(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  DBItem(const DBItem& from);
+  DBItem(DBItem&& from) noexcept
+    : DBItem() {
+    *this = ::std::move(from);
+  }
+
+  inline DBItem& operator=(const DBItem& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DBItem& operator=(DBItem&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const DBItem& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const DBItem* internal_default_instance() {
+    return reinterpret_cast<const DBItem*>(
+               &_DBItem_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    2;
+
+  friend void swap(DBItem& a, DBItem& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(DBItem* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(DBItem* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  DBItem* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<DBItem>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const DBItem& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const DBItem& from) {
+    DBItem::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(DBItem* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "com.sekirocc.feature_search.DBItem";
+  }
+  protected:
+  explicit DBItem(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kDbIdFieldNumber = 1,
+    kNameFieldNumber = 2,
+    kDescriptionFieldNumber = 5,
+    kCapacityFieldNumber = 3,
+    kUsedFieldNumber = 4,
+  };
+  // string db_id = 1;
+  void clear_db_id();
+  const std::string& db_id() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_db_id(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_db_id();
+  PROTOBUF_NODISCARD std::string* release_db_id();
+  void set_allocated_db_id(std::string* db_id);
+  private:
+  const std::string& _internal_db_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_db_id(const std::string& value);
+  std::string* _internal_mutable_db_id();
+  public:
+
+  // string name = 2;
+  void clear_name();
+  const std::string& name() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_name(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_name();
+  PROTOBUF_NODISCARD std::string* release_name();
+  void set_allocated_name(std::string* name);
+  private:
+  const std::string& _internal_name() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_name(const std::string& value);
+  std::string* _internal_mutable_name();
+  public:
+
+  // string description = 5;
+  void clear_description();
+  const std::string& description() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_description(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_description();
+  PROTOBUF_NODISCARD std::string* release_description();
+  void set_allocated_description(std::string* description);
+  private:
+  const std::string& _internal_description() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_description(const std::string& value);
+  std::string* _internal_mutable_description();
+  public:
+
+  // int64 capacity = 3;
+  void clear_capacity();
+  int64_t capacity() const;
+  void set_capacity(int64_t value);
+  private:
+  int64_t _internal_capacity() const;
+  void _internal_set_capacity(int64_t value);
+  public:
+
+  // int64 used = 4;
+  void clear_used();
+  int64_t used() const;
+  void set_used(int64_t value);
+  private:
+  int64_t _internal_used() const;
+  void _internal_set_used(int64_t value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:com.sekirocc.feature_search.DBItem)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr db_id_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr description_;
+    int64_t capacity_;
+    int64_t used_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_feature_5fsearch_2eproto;
 };
 // -------------------------------------------------------------------
@@ -423,7 +742,7 @@ class DBListRequest final :
                &_DBListRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    3;
 
   friend void swap(DBListRequest& a, DBListRequest& b) {
     a.Swap(&b);
@@ -495,9 +814,10 @@ class DBListRequest final :
 // -------------------------------------------------------------------
 
 class DBListResponse final :
-    public ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_search.DBListResponse) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_search.DBListResponse) */ {
  public:
   inline DBListResponse() : DBListResponse(nullptr) {}
+  ~DBListResponse() override;
   explicit PROTOBUF_CONSTEXPR DBListResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
   DBListResponse(const DBListResponse& from);
@@ -541,7 +861,7 @@ class DBListResponse final :
                &_DBListResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    4;
 
   friend void swap(DBListResponse& a, DBListResponse& b) {
     a.Swap(&b);
@@ -570,15 +890,29 @@ class DBListResponse final :
   DBListResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
     return CreateMaybeMessage<DBListResponse>(arena);
   }
-  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const DBListResponse& from) {
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const DBListResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const DBListResponse& from) {
+    DBListResponse::MergeImpl(*this, from);
   }
-  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const DBListResponse& from) {
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
   public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(DBListResponse* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
@@ -599,6 +933,37 @@ class DBListResponse final :
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kDbsFieldNumber = 2,
+    kCodeFieldNumber = 1,
+  };
+  // repeated .com.sekirocc.feature_search.DBItem dbs = 2;
+  int dbs_size() const;
+  private:
+  int _internal_dbs_size() const;
+  public:
+  void clear_dbs();
+  ::com::sekirocc::feature_search::DBItem* mutable_dbs(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::feature_search::DBItem >*
+      mutable_dbs();
+  private:
+  const ::com::sekirocc::feature_search::DBItem& _internal_dbs(int index) const;
+  ::com::sekirocc::feature_search::DBItem* _internal_add_dbs();
+  public:
+  const ::com::sekirocc::feature_search::DBItem& dbs(int index) const;
+  ::com::sekirocc::feature_search::DBItem* add_dbs();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::feature_search::DBItem >&
+      dbs() const;
+
+  // .com.sekirocc.common.ResultCode code = 1;
+  void clear_code();
+  ::com::sekirocc::common::ResultCode code() const;
+  void set_code(::com::sekirocc::common::ResultCode value);
+  private:
+  ::com::sekirocc::common::ResultCode _internal_code() const;
+  void _internal_set_code(::com::sekirocc::common::ResultCode value);
+  public:
+
   // @@protoc_insertion_point(class_scope:com.sekirocc.feature_search.DBListResponse)
  private:
   class _Internal;
@@ -607,15 +972,20 @@ class DBListResponse final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::feature_search::DBItem > dbs_;
+    int code_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_feature_5fsearch_2eproto;
 };
 // -------------------------------------------------------------------
 
 class DBGetRequest final :
-    public ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_search.DBGetRequest) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_search.DBGetRequest) */ {
  public:
   inline DBGetRequest() : DBGetRequest(nullptr) {}
+  ~DBGetRequest() override;
   explicit PROTOBUF_CONSTEXPR DBGetRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
   DBGetRequest(const DBGetRequest& from);
@@ -659,7 +1029,7 @@ class DBGetRequest final :
                &_DBGetRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    5;
 
   friend void swap(DBGetRequest& a, DBGetRequest& b) {
     a.Swap(&b);
@@ -688,15 +1058,29 @@ class DBGetRequest final :
   DBGetRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
     return CreateMaybeMessage<DBGetRequest>(arena);
   }
-  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const DBGetRequest& from) {
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const DBGetRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const DBGetRequest& from) {
+    DBGetRequest::MergeImpl(*this, from);
   }
-  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const DBGetRequest& from) {
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
   public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(DBGetRequest* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
@@ -717,6 +1101,23 @@ class DBGetRequest final :
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kDbIdFieldNumber = 1,
+  };
+  // string db_id = 1;
+  void clear_db_id();
+  const std::string& db_id() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_db_id(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_db_id();
+  PROTOBUF_NODISCARD std::string* release_db_id();
+  void set_allocated_db_id(std::string* db_id);
+  private:
+  const std::string& _internal_db_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_db_id(const std::string& value);
+  std::string* _internal_mutable_db_id();
+  public:
+
   // @@protoc_insertion_point(class_scope:com.sekirocc.feature_search.DBGetRequest)
  private:
   class _Internal;
@@ -725,15 +1126,19 @@ class DBGetRequest final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr db_id_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_feature_5fsearch_2eproto;
 };
 // -------------------------------------------------------------------
 
 class DBGetResponse final :
-    public ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_search.DBGetResponse) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_search.DBGetResponse) */ {
  public:
   inline DBGetResponse() : DBGetResponse(nullptr) {}
+  ~DBGetResponse() override;
   explicit PROTOBUF_CONSTEXPR DBGetResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
   DBGetResponse(const DBGetResponse& from);
@@ -777,7 +1182,7 @@ class DBGetResponse final :
                &_DBGetResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    6;
 
   friend void swap(DBGetResponse& a, DBGetResponse& b) {
     a.Swap(&b);
@@ -806,15 +1211,29 @@ class DBGetResponse final :
   DBGetResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
     return CreateMaybeMessage<DBGetResponse>(arena);
   }
-  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const DBGetResponse& from) {
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const DBGetResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const DBGetResponse& from) {
+    DBGetResponse::MergeImpl(*this, from);
   }
-  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const DBGetResponse& from) {
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
   public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(DBGetResponse* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
@@ -835,6 +1254,37 @@ class DBGetResponse final :
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kDbFieldNumber = 2,
+    kCodeFieldNumber = 1,
+  };
+  // .com.sekirocc.feature_search.DBItem db = 2;
+  bool has_db() const;
+  private:
+  bool _internal_has_db() const;
+  public:
+  void clear_db();
+  const ::com::sekirocc::feature_search::DBItem& db() const;
+  PROTOBUF_NODISCARD ::com::sekirocc::feature_search::DBItem* release_db();
+  ::com::sekirocc::feature_search::DBItem* mutable_db();
+  void set_allocated_db(::com::sekirocc::feature_search::DBItem* db);
+  private:
+  const ::com::sekirocc::feature_search::DBItem& _internal_db() const;
+  ::com::sekirocc::feature_search::DBItem* _internal_mutable_db();
+  public:
+  void unsafe_arena_set_allocated_db(
+      ::com::sekirocc::feature_search::DBItem* db);
+  ::com::sekirocc::feature_search::DBItem* unsafe_arena_release_db();
+
+  // .com.sekirocc.common.ResultCode code = 1;
+  void clear_code();
+  ::com::sekirocc::common::ResultCode code() const;
+  void set_code(::com::sekirocc::common::ResultCode value);
+  private:
+  ::com::sekirocc::common::ResultCode _internal_code() const;
+  void _internal_set_code(::com::sekirocc::common::ResultCode value);
+  public:
+
   // @@protoc_insertion_point(class_scope:com.sekirocc.feature_search.DBGetResponse)
  private:
   class _Internal;
@@ -843,15 +1293,20 @@ class DBGetResponse final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    ::com::sekirocc::feature_search::DBItem* db_;
+    int code_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_feature_5fsearch_2eproto;
 };
 // -------------------------------------------------------------------
 
 class DBDeleteRequest final :
-    public ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_search.DBDeleteRequest) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_search.DBDeleteRequest) */ {
  public:
   inline DBDeleteRequest() : DBDeleteRequest(nullptr) {}
+  ~DBDeleteRequest() override;
   explicit PROTOBUF_CONSTEXPR DBDeleteRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
   DBDeleteRequest(const DBDeleteRequest& from);
@@ -895,7 +1350,7 @@ class DBDeleteRequest final :
                &_DBDeleteRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    7;
 
   friend void swap(DBDeleteRequest& a, DBDeleteRequest& b) {
     a.Swap(&b);
@@ -924,15 +1379,29 @@ class DBDeleteRequest final :
   DBDeleteRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
     return CreateMaybeMessage<DBDeleteRequest>(arena);
   }
-  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const DBDeleteRequest& from) {
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const DBDeleteRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const DBDeleteRequest& from) {
+    DBDeleteRequest::MergeImpl(*this, from);
   }
-  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const DBDeleteRequest& from) {
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
   public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(DBDeleteRequest* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
@@ -953,6 +1422,23 @@ class DBDeleteRequest final :
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kDbIdFieldNumber = 1,
+  };
+  // string db_id = 1;
+  void clear_db_id();
+  const std::string& db_id() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_db_id(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_db_id();
+  PROTOBUF_NODISCARD std::string* release_db_id();
+  void set_allocated_db_id(std::string* db_id);
+  private:
+  const std::string& _internal_db_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_db_id(const std::string& value);
+  std::string* _internal_mutable_db_id();
+  public:
+
   // @@protoc_insertion_point(class_scope:com.sekirocc.feature_search.DBDeleteRequest)
  private:
   class _Internal;
@@ -961,15 +1447,19 @@ class DBDeleteRequest final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr db_id_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_feature_5fsearch_2eproto;
 };
 // -------------------------------------------------------------------
 
 class DBDeleteResponse final :
-    public ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_search.DBDeleteResponse) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_search.DBDeleteResponse) */ {
  public:
   inline DBDeleteResponse() : DBDeleteResponse(nullptr) {}
+  ~DBDeleteResponse() override;
   explicit PROTOBUF_CONSTEXPR DBDeleteResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
   DBDeleteResponse(const DBDeleteResponse& from);
@@ -1013,7 +1503,7 @@ class DBDeleteResponse final :
                &_DBDeleteResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    8;
 
   friend void swap(DBDeleteResponse& a, DBDeleteResponse& b) {
     a.Swap(&b);
@@ -1042,15 +1532,29 @@ class DBDeleteResponse final :
   DBDeleteResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
     return CreateMaybeMessage<DBDeleteResponse>(arena);
   }
-  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const DBDeleteResponse& from) {
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const DBDeleteResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const DBDeleteResponse& from) {
+    DBDeleteResponse::MergeImpl(*this, from);
   }
-  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const DBDeleteResponse& from) {
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
   public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(DBDeleteResponse* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
@@ -1071,6 +1575,18 @@ class DBDeleteResponse final :
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kCodeFieldNumber = 1,
+  };
+  // .com.sekirocc.common.ResultCode code = 1;
+  void clear_code();
+  ::com::sekirocc::common::ResultCode code() const;
+  void set_code(::com::sekirocc::common::ResultCode value);
+  private:
+  ::com::sekirocc::common::ResultCode _internal_code() const;
+  void _internal_set_code(::com::sekirocc::common::ResultCode value);
+  public:
+
   // @@protoc_insertion_point(class_scope:com.sekirocc.feature_search.DBDeleteResponse)
  private:
   class _Internal;
@@ -1079,15 +1595,19 @@ class DBDeleteResponse final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    int code_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_feature_5fsearch_2eproto;
 };
 // -------------------------------------------------------------------
 
 class TrainIndexRequest final :
-    public ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_search.TrainIndexRequest) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_search.TrainIndexRequest) */ {
  public:
   inline TrainIndexRequest() : TrainIndexRequest(nullptr) {}
+  ~TrainIndexRequest() override;
   explicit PROTOBUF_CONSTEXPR TrainIndexRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
   TrainIndexRequest(const TrainIndexRequest& from);
@@ -1131,7 +1651,7 @@ class TrainIndexRequest final :
                &_TrainIndexRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    9;
 
   friend void swap(TrainIndexRequest& a, TrainIndexRequest& b) {
     a.Swap(&b);
@@ -1160,15 +1680,29 @@ class TrainIndexRequest final :
   TrainIndexRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
     return CreateMaybeMessage<TrainIndexRequest>(arena);
   }
-  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const TrainIndexRequest& from) {
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const TrainIndexRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const TrainIndexRequest& from) {
+    TrainIndexRequest::MergeImpl(*this, from);
   }
-  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const TrainIndexRequest& from) {
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
   public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(TrainIndexRequest* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
@@ -1189,6 +1723,23 @@ class TrainIndexRequest final :
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kDbIdFieldNumber = 1,
+  };
+  // string db_id = 1;
+  void clear_db_id();
+  const std::string& db_id() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_db_id(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_db_id();
+  PROTOBUF_NODISCARD std::string* release_db_id();
+  void set_allocated_db_id(std::string* db_id);
+  private:
+  const std::string& _internal_db_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_db_id(const std::string& value);
+  std::string* _internal_mutable_db_id();
+  public:
+
   // @@protoc_insertion_point(class_scope:com.sekirocc.feature_search.TrainIndexRequest)
  private:
   class _Internal;
@@ -1197,7 +1748,10 @@ class TrainIndexRequest final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr db_id_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_feature_5fsearch_2eproto;
 };
 // -------------------------------------------------------------------
@@ -1250,7 +1804,7 @@ class TrainIndexResponse final :
                &_TrainIndexResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    9;
+    10;
 
   friend void swap(TrainIndexResponse& a, TrainIndexResponse& b) {
     a.Swap(&b);
@@ -1426,7 +1980,7 @@ class AddFeatureItem final :
                &_AddFeatureItem_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    12;
 
   friend void swap(AddFeatureItem& a, AddFeatureItem& b) {
     a.Swap(&b);
@@ -1609,7 +2163,7 @@ class AddFeatureRequest final :
                &_AddFeatureRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    13;
 
   friend void swap(AddFeatureRequest& a, AddFeatureRequest& b) {
     a.Swap(&b);
@@ -1682,9 +2236,24 @@ class AddFeatureRequest final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kFeatureItemFieldNumber = 1,
+    kDbIdFieldNumber = 1,
+    kFeatureItemFieldNumber = 2,
   };
-  // .com.sekirocc.feature_search.AddFeatureItem feature_item = 1;
+  // string db_id = 1;
+  void clear_db_id();
+  const std::string& db_id() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_db_id(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_db_id();
+  PROTOBUF_NODISCARD std::string* release_db_id();
+  void set_allocated_db_id(std::string* db_id);
+  private:
+  const std::string& _internal_db_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_db_id(const std::string& value);
+  std::string* _internal_mutable_db_id();
+  public:
+
+  // .com.sekirocc.feature_search.AddFeatureItem feature_item = 2;
   bool has_feature_item() const;
   private:
   bool _internal_has_feature_item() const;
@@ -1710,6 +2279,7 @@ class AddFeatureRequest final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr db_id_;
     ::com::sekirocc::feature_search::AddFeatureItem* feature_item_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -1766,7 +2336,7 @@ class AddFeatureResponse final :
                &_AddFeatureResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    14;
 
   friend void swap(AddFeatureResponse& a, AddFeatureResponse& b) {
     a.Swap(&b);
@@ -1930,7 +2500,7 @@ class DeleteFeatureRequest final :
                &_DeleteFeatureRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    14;
+    15;
 
   friend void swap(DeleteFeatureRequest& a, DeleteFeatureRequest& b) {
     a.Swap(&b);
@@ -2003,9 +2573,24 @@ class DeleteFeatureRequest final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kFeatureIdFieldNumber = 1,
+    kDbIdFieldNumber = 1,
+    kFeatureIdFieldNumber = 2,
   };
-  // string feature_id = 1;
+  // string db_id = 1;
+  void clear_db_id();
+  const std::string& db_id() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_db_id(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_db_id();
+  PROTOBUF_NODISCARD std::string* release_db_id();
+  void set_allocated_db_id(std::string* db_id);
+  private:
+  const std::string& _internal_db_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_db_id(const std::string& value);
+  std::string* _internal_mutable_db_id();
+  public:
+
+  // string feature_id = 2;
   void clear_feature_id();
   const std::string& feature_id() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -2027,6 +2612,7 @@ class DeleteFeatureRequest final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr db_id_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr feature_id_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -2083,7 +2669,7 @@ class DeleteFeatureResponse final :
                &_DeleteFeatureResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    15;
+    16;
 
   friend void swap(DeleteFeatureResponse& a, DeleteFeatureResponse& b) {
     a.Swap(&b);
@@ -2231,7 +2817,7 @@ class SearchFeatureRequest final :
                &_SearchFeatureRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    16;
+    17;
 
   friend void swap(SearchFeatureRequest& a, SearchFeatureRequest& b) {
     a.Swap(&b);
@@ -2304,10 +2890,35 @@ class SearchFeatureRequest final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kQueryFieldNumber = 1,
-    kTopkFieldNumber = 2,
+    kDbIdFieldNumber = 1,
+    kQueryFieldNumber = 2,
+    kTopkFieldNumber = 3,
   };
-  // .com.sekirocc.common.FaceFeature query = 1;
+  // repeated string db_id = 1;
+  int db_id_size() const;
+  private:
+  int _internal_db_id_size() const;
+  public:
+  void clear_db_id();
+  const std::string& db_id(int index) const;
+  std::string* mutable_db_id(int index);
+  void set_db_id(int index, const std::string& value);
+  void set_db_id(int index, std::string&& value);
+  void set_db_id(int index, const char* value);
+  void set_db_id(int index, const char* value, size_t size);
+  std::string* add_db_id();
+  void add_db_id(const std::string& value);
+  void add_db_id(std::string&& value);
+  void add_db_id(const char* value);
+  void add_db_id(const char* value, size_t size);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>& db_id() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>* mutable_db_id();
+  private:
+  const std::string& _internal_db_id(int index) const;
+  std::string* _internal_add_db_id();
+  public:
+
+  // .com.sekirocc.common.FaceFeature query = 2;
   bool has_query() const;
   private:
   bool _internal_has_query() const;
@@ -2325,7 +2936,7 @@ class SearchFeatureRequest final :
       ::com::sekirocc::common::FaceFeature* query);
   ::com::sekirocc::common::FaceFeature* unsafe_arena_release_query();
 
-  // int32 topk = 2;
+  // int32 topk = 3;
   void clear_topk();
   int32_t topk() const;
   void set_topk(int32_t value);
@@ -2342,6 +2953,7 @@ class SearchFeatureRequest final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> db_id_;
     ::com::sekirocc::common::FaceFeature* query_;
     int32_t topk_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
@@ -2399,7 +3011,7 @@ class SearchItemScore final :
                &_SearchItemScore_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    17;
+    18;
 
   friend void swap(SearchItemScore& a, SearchItemScore& b) {
     a.Swap(&b);
@@ -2472,10 +3084,25 @@ class SearchItemScore final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kFeatureFieldNumber = 1,
-    kScoreFieldNumber = 2,
+    kDbIdFieldNumber = 1,
+    kFeatureFieldNumber = 2,
+    kScoreFieldNumber = 3,
   };
-  // .com.sekirocc.common.FaceFeature feature = 1;
+  // string db_id = 1;
+  void clear_db_id();
+  const std::string& db_id() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_db_id(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_db_id();
+  PROTOBUF_NODISCARD std::string* release_db_id();
+  void set_allocated_db_id(std::string* db_id);
+  private:
+  const std::string& _internal_db_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_db_id(const std::string& value);
+  std::string* _internal_mutable_db_id();
+  public:
+
+  // .com.sekirocc.common.FaceFeature feature = 2;
   bool has_feature() const;
   private:
   bool _internal_has_feature() const;
@@ -2493,7 +3120,7 @@ class SearchItemScore final :
       ::com::sekirocc::common::FaceFeature* feature);
   ::com::sekirocc::common::FaceFeature* unsafe_arena_release_feature();
 
-  // float score = 2;
+  // float score = 3;
   void clear_score();
   float score() const;
   void set_score(float value);
@@ -2510,6 +3137,7 @@ class SearchItemScore final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr db_id_;
     ::com::sekirocc::common::FaceFeature* feature_;
     float score_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
@@ -2567,7 +3195,7 @@ class SearchFeatureResponse final :
                &_SearchFeatureResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    18;
+    19;
 
   friend void swap(SearchFeatureResponse& a, SearchFeatureResponse& b) {
     a.Swap(&b);
@@ -2696,9 +3324,393 @@ class SearchFeatureResponse final :
 #endif  // __GNUC__
 // DBNewRequest
 
+// string name = 1;
+inline void DBNewRequest::clear_name() {
+  _impl_.name_.ClearToEmpty();
+}
+inline const std::string& DBNewRequest::name() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.DBNewRequest.name)
+  return _internal_name();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void DBNewRequest::set_name(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.name_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.DBNewRequest.name)
+}
+inline std::string* DBNewRequest::mutable_name() {
+  std::string* _s = _internal_mutable_name();
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_search.DBNewRequest.name)
+  return _s;
+}
+inline const std::string& DBNewRequest::_internal_name() const {
+  return _impl_.name_.Get();
+}
+inline void DBNewRequest::_internal_set_name(const std::string& value) {
+  
+  _impl_.name_.Set(value, GetArenaForAllocation());
+}
+inline std::string* DBNewRequest::_internal_mutable_name() {
+  
+  return _impl_.name_.Mutable(GetArenaForAllocation());
+}
+inline std::string* DBNewRequest::release_name() {
+  // @@protoc_insertion_point(field_release:com.sekirocc.feature_search.DBNewRequest.name)
+  return _impl_.name_.Release();
+}
+inline void DBNewRequest::set_allocated_name(std::string* name) {
+  if (name != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.name_.SetAllocated(name, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.name_.IsDefault()) {
+    _impl_.name_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.feature_search.DBNewRequest.name)
+}
+
+// int64 capacity = 2;
+inline void DBNewRequest::clear_capacity() {
+  _impl_.capacity_ = int64_t{0};
+}
+inline int64_t DBNewRequest::_internal_capacity() const {
+  return _impl_.capacity_;
+}
+inline int64_t DBNewRequest::capacity() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.DBNewRequest.capacity)
+  return _internal_capacity();
+}
+inline void DBNewRequest::_internal_set_capacity(int64_t value) {
+  
+  _impl_.capacity_ = value;
+}
+inline void DBNewRequest::set_capacity(int64_t value) {
+  _internal_set_capacity(value);
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.DBNewRequest.capacity)
+}
+
+// string description = 3;
+inline void DBNewRequest::clear_description() {
+  _impl_.description_.ClearToEmpty();
+}
+inline const std::string& DBNewRequest::description() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.DBNewRequest.description)
+  return _internal_description();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void DBNewRequest::set_description(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.description_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.DBNewRequest.description)
+}
+inline std::string* DBNewRequest::mutable_description() {
+  std::string* _s = _internal_mutable_description();
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_search.DBNewRequest.description)
+  return _s;
+}
+inline const std::string& DBNewRequest::_internal_description() const {
+  return _impl_.description_.Get();
+}
+inline void DBNewRequest::_internal_set_description(const std::string& value) {
+  
+  _impl_.description_.Set(value, GetArenaForAllocation());
+}
+inline std::string* DBNewRequest::_internal_mutable_description() {
+  
+  return _impl_.description_.Mutable(GetArenaForAllocation());
+}
+inline std::string* DBNewRequest::release_description() {
+  // @@protoc_insertion_point(field_release:com.sekirocc.feature_search.DBNewRequest.description)
+  return _impl_.description_.Release();
+}
+inline void DBNewRequest::set_allocated_description(std::string* description) {
+  if (description != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.description_.SetAllocated(description, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.description_.IsDefault()) {
+    _impl_.description_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.feature_search.DBNewRequest.description)
+}
+
 // -------------------------------------------------------------------
 
 // DBNewResponse
+
+// .com.sekirocc.common.ResultCode code = 1;
+inline void DBNewResponse::clear_code() {
+  _impl_.code_ = 0;
+}
+inline ::com::sekirocc::common::ResultCode DBNewResponse::_internal_code() const {
+  return static_cast< ::com::sekirocc::common::ResultCode >(_impl_.code_);
+}
+inline ::com::sekirocc::common::ResultCode DBNewResponse::code() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.DBNewResponse.code)
+  return _internal_code();
+}
+inline void DBNewResponse::_internal_set_code(::com::sekirocc::common::ResultCode value) {
+  
+  _impl_.code_ = value;
+}
+inline void DBNewResponse::set_code(::com::sekirocc::common::ResultCode value) {
+  _internal_set_code(value);
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.DBNewResponse.code)
+}
+
+// string db_id = 2;
+inline void DBNewResponse::clear_db_id() {
+  _impl_.db_id_.ClearToEmpty();
+}
+inline const std::string& DBNewResponse::db_id() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.DBNewResponse.db_id)
+  return _internal_db_id();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void DBNewResponse::set_db_id(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.db_id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.DBNewResponse.db_id)
+}
+inline std::string* DBNewResponse::mutable_db_id() {
+  std::string* _s = _internal_mutable_db_id();
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_search.DBNewResponse.db_id)
+  return _s;
+}
+inline const std::string& DBNewResponse::_internal_db_id() const {
+  return _impl_.db_id_.Get();
+}
+inline void DBNewResponse::_internal_set_db_id(const std::string& value) {
+  
+  _impl_.db_id_.Set(value, GetArenaForAllocation());
+}
+inline std::string* DBNewResponse::_internal_mutable_db_id() {
+  
+  return _impl_.db_id_.Mutable(GetArenaForAllocation());
+}
+inline std::string* DBNewResponse::release_db_id() {
+  // @@protoc_insertion_point(field_release:com.sekirocc.feature_search.DBNewResponse.db_id)
+  return _impl_.db_id_.Release();
+}
+inline void DBNewResponse::set_allocated_db_id(std::string* db_id) {
+  if (db_id != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.db_id_.SetAllocated(db_id, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.db_id_.IsDefault()) {
+    _impl_.db_id_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.feature_search.DBNewResponse.db_id)
+}
+
+// -------------------------------------------------------------------
+
+// DBItem
+
+// string db_id = 1;
+inline void DBItem::clear_db_id() {
+  _impl_.db_id_.ClearToEmpty();
+}
+inline const std::string& DBItem::db_id() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.DBItem.db_id)
+  return _internal_db_id();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void DBItem::set_db_id(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.db_id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.DBItem.db_id)
+}
+inline std::string* DBItem::mutable_db_id() {
+  std::string* _s = _internal_mutable_db_id();
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_search.DBItem.db_id)
+  return _s;
+}
+inline const std::string& DBItem::_internal_db_id() const {
+  return _impl_.db_id_.Get();
+}
+inline void DBItem::_internal_set_db_id(const std::string& value) {
+  
+  _impl_.db_id_.Set(value, GetArenaForAllocation());
+}
+inline std::string* DBItem::_internal_mutable_db_id() {
+  
+  return _impl_.db_id_.Mutable(GetArenaForAllocation());
+}
+inline std::string* DBItem::release_db_id() {
+  // @@protoc_insertion_point(field_release:com.sekirocc.feature_search.DBItem.db_id)
+  return _impl_.db_id_.Release();
+}
+inline void DBItem::set_allocated_db_id(std::string* db_id) {
+  if (db_id != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.db_id_.SetAllocated(db_id, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.db_id_.IsDefault()) {
+    _impl_.db_id_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.feature_search.DBItem.db_id)
+}
+
+// string name = 2;
+inline void DBItem::clear_name() {
+  _impl_.name_.ClearToEmpty();
+}
+inline const std::string& DBItem::name() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.DBItem.name)
+  return _internal_name();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void DBItem::set_name(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.name_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.DBItem.name)
+}
+inline std::string* DBItem::mutable_name() {
+  std::string* _s = _internal_mutable_name();
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_search.DBItem.name)
+  return _s;
+}
+inline const std::string& DBItem::_internal_name() const {
+  return _impl_.name_.Get();
+}
+inline void DBItem::_internal_set_name(const std::string& value) {
+  
+  _impl_.name_.Set(value, GetArenaForAllocation());
+}
+inline std::string* DBItem::_internal_mutable_name() {
+  
+  return _impl_.name_.Mutable(GetArenaForAllocation());
+}
+inline std::string* DBItem::release_name() {
+  // @@protoc_insertion_point(field_release:com.sekirocc.feature_search.DBItem.name)
+  return _impl_.name_.Release();
+}
+inline void DBItem::set_allocated_name(std::string* name) {
+  if (name != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.name_.SetAllocated(name, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.name_.IsDefault()) {
+    _impl_.name_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.feature_search.DBItem.name)
+}
+
+// int64 capacity = 3;
+inline void DBItem::clear_capacity() {
+  _impl_.capacity_ = int64_t{0};
+}
+inline int64_t DBItem::_internal_capacity() const {
+  return _impl_.capacity_;
+}
+inline int64_t DBItem::capacity() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.DBItem.capacity)
+  return _internal_capacity();
+}
+inline void DBItem::_internal_set_capacity(int64_t value) {
+  
+  _impl_.capacity_ = value;
+}
+inline void DBItem::set_capacity(int64_t value) {
+  _internal_set_capacity(value);
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.DBItem.capacity)
+}
+
+// int64 used = 4;
+inline void DBItem::clear_used() {
+  _impl_.used_ = int64_t{0};
+}
+inline int64_t DBItem::_internal_used() const {
+  return _impl_.used_;
+}
+inline int64_t DBItem::used() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.DBItem.used)
+  return _internal_used();
+}
+inline void DBItem::_internal_set_used(int64_t value) {
+  
+  _impl_.used_ = value;
+}
+inline void DBItem::set_used(int64_t value) {
+  _internal_set_used(value);
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.DBItem.used)
+}
+
+// string description = 5;
+inline void DBItem::clear_description() {
+  _impl_.description_.ClearToEmpty();
+}
+inline const std::string& DBItem::description() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.DBItem.description)
+  return _internal_description();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void DBItem::set_description(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.description_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.DBItem.description)
+}
+inline std::string* DBItem::mutable_description() {
+  std::string* _s = _internal_mutable_description();
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_search.DBItem.description)
+  return _s;
+}
+inline const std::string& DBItem::_internal_description() const {
+  return _impl_.description_.Get();
+}
+inline void DBItem::_internal_set_description(const std::string& value) {
+  
+  _impl_.description_.Set(value, GetArenaForAllocation());
+}
+inline std::string* DBItem::_internal_mutable_description() {
+  
+  return _impl_.description_.Mutable(GetArenaForAllocation());
+}
+inline std::string* DBItem::release_description() {
+  // @@protoc_insertion_point(field_release:com.sekirocc.feature_search.DBItem.description)
+  return _impl_.description_.Release();
+}
+inline void DBItem::set_allocated_description(std::string* description) {
+  if (description != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.description_.SetAllocated(description, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.description_.IsDefault()) {
+    _impl_.description_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.feature_search.DBItem.description)
+}
 
 // -------------------------------------------------------------------
 
@@ -2708,25 +3720,365 @@ class SearchFeatureResponse final :
 
 // DBListResponse
 
+// .com.sekirocc.common.ResultCode code = 1;
+inline void DBListResponse::clear_code() {
+  _impl_.code_ = 0;
+}
+inline ::com::sekirocc::common::ResultCode DBListResponse::_internal_code() const {
+  return static_cast< ::com::sekirocc::common::ResultCode >(_impl_.code_);
+}
+inline ::com::sekirocc::common::ResultCode DBListResponse::code() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.DBListResponse.code)
+  return _internal_code();
+}
+inline void DBListResponse::_internal_set_code(::com::sekirocc::common::ResultCode value) {
+  
+  _impl_.code_ = value;
+}
+inline void DBListResponse::set_code(::com::sekirocc::common::ResultCode value) {
+  _internal_set_code(value);
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.DBListResponse.code)
+}
+
+// repeated .com.sekirocc.feature_search.DBItem dbs = 2;
+inline int DBListResponse::_internal_dbs_size() const {
+  return _impl_.dbs_.size();
+}
+inline int DBListResponse::dbs_size() const {
+  return _internal_dbs_size();
+}
+inline void DBListResponse::clear_dbs() {
+  _impl_.dbs_.Clear();
+}
+inline ::com::sekirocc::feature_search::DBItem* DBListResponse::mutable_dbs(int index) {
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_search.DBListResponse.dbs)
+  return _impl_.dbs_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::feature_search::DBItem >*
+DBListResponse::mutable_dbs() {
+  // @@protoc_insertion_point(field_mutable_list:com.sekirocc.feature_search.DBListResponse.dbs)
+  return &_impl_.dbs_;
+}
+inline const ::com::sekirocc::feature_search::DBItem& DBListResponse::_internal_dbs(int index) const {
+  return _impl_.dbs_.Get(index);
+}
+inline const ::com::sekirocc::feature_search::DBItem& DBListResponse::dbs(int index) const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.DBListResponse.dbs)
+  return _internal_dbs(index);
+}
+inline ::com::sekirocc::feature_search::DBItem* DBListResponse::_internal_add_dbs() {
+  return _impl_.dbs_.Add();
+}
+inline ::com::sekirocc::feature_search::DBItem* DBListResponse::add_dbs() {
+  ::com::sekirocc::feature_search::DBItem* _add = _internal_add_dbs();
+  // @@protoc_insertion_point(field_add:com.sekirocc.feature_search.DBListResponse.dbs)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::feature_search::DBItem >&
+DBListResponse::dbs() const {
+  // @@protoc_insertion_point(field_list:com.sekirocc.feature_search.DBListResponse.dbs)
+  return _impl_.dbs_;
+}
+
 // -------------------------------------------------------------------
 
 // DBGetRequest
+
+// string db_id = 1;
+inline void DBGetRequest::clear_db_id() {
+  _impl_.db_id_.ClearToEmpty();
+}
+inline const std::string& DBGetRequest::db_id() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.DBGetRequest.db_id)
+  return _internal_db_id();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void DBGetRequest::set_db_id(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.db_id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.DBGetRequest.db_id)
+}
+inline std::string* DBGetRequest::mutable_db_id() {
+  std::string* _s = _internal_mutable_db_id();
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_search.DBGetRequest.db_id)
+  return _s;
+}
+inline const std::string& DBGetRequest::_internal_db_id() const {
+  return _impl_.db_id_.Get();
+}
+inline void DBGetRequest::_internal_set_db_id(const std::string& value) {
+  
+  _impl_.db_id_.Set(value, GetArenaForAllocation());
+}
+inline std::string* DBGetRequest::_internal_mutable_db_id() {
+  
+  return _impl_.db_id_.Mutable(GetArenaForAllocation());
+}
+inline std::string* DBGetRequest::release_db_id() {
+  // @@protoc_insertion_point(field_release:com.sekirocc.feature_search.DBGetRequest.db_id)
+  return _impl_.db_id_.Release();
+}
+inline void DBGetRequest::set_allocated_db_id(std::string* db_id) {
+  if (db_id != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.db_id_.SetAllocated(db_id, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.db_id_.IsDefault()) {
+    _impl_.db_id_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.feature_search.DBGetRequest.db_id)
+}
 
 // -------------------------------------------------------------------
 
 // DBGetResponse
 
+// .com.sekirocc.common.ResultCode code = 1;
+inline void DBGetResponse::clear_code() {
+  _impl_.code_ = 0;
+}
+inline ::com::sekirocc::common::ResultCode DBGetResponse::_internal_code() const {
+  return static_cast< ::com::sekirocc::common::ResultCode >(_impl_.code_);
+}
+inline ::com::sekirocc::common::ResultCode DBGetResponse::code() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.DBGetResponse.code)
+  return _internal_code();
+}
+inline void DBGetResponse::_internal_set_code(::com::sekirocc::common::ResultCode value) {
+  
+  _impl_.code_ = value;
+}
+inline void DBGetResponse::set_code(::com::sekirocc::common::ResultCode value) {
+  _internal_set_code(value);
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.DBGetResponse.code)
+}
+
+// .com.sekirocc.feature_search.DBItem db = 2;
+inline bool DBGetResponse::_internal_has_db() const {
+  return this != internal_default_instance() && _impl_.db_ != nullptr;
+}
+inline bool DBGetResponse::has_db() const {
+  return _internal_has_db();
+}
+inline void DBGetResponse::clear_db() {
+  if (GetArenaForAllocation() == nullptr && _impl_.db_ != nullptr) {
+    delete _impl_.db_;
+  }
+  _impl_.db_ = nullptr;
+}
+inline const ::com::sekirocc::feature_search::DBItem& DBGetResponse::_internal_db() const {
+  const ::com::sekirocc::feature_search::DBItem* p = _impl_.db_;
+  return p != nullptr ? *p : reinterpret_cast<const ::com::sekirocc::feature_search::DBItem&>(
+      ::com::sekirocc::feature_search::_DBItem_default_instance_);
+}
+inline const ::com::sekirocc::feature_search::DBItem& DBGetResponse::db() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.DBGetResponse.db)
+  return _internal_db();
+}
+inline void DBGetResponse::unsafe_arena_set_allocated_db(
+    ::com::sekirocc::feature_search::DBItem* db) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.db_);
+  }
+  _impl_.db_ = db;
+  if (db) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:com.sekirocc.feature_search.DBGetResponse.db)
+}
+inline ::com::sekirocc::feature_search::DBItem* DBGetResponse::release_db() {
+  
+  ::com::sekirocc::feature_search::DBItem* temp = _impl_.db_;
+  _impl_.db_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::com::sekirocc::feature_search::DBItem* DBGetResponse::unsafe_arena_release_db() {
+  // @@protoc_insertion_point(field_release:com.sekirocc.feature_search.DBGetResponse.db)
+  
+  ::com::sekirocc::feature_search::DBItem* temp = _impl_.db_;
+  _impl_.db_ = nullptr;
+  return temp;
+}
+inline ::com::sekirocc::feature_search::DBItem* DBGetResponse::_internal_mutable_db() {
+  
+  if (_impl_.db_ == nullptr) {
+    auto* p = CreateMaybeMessage<::com::sekirocc::feature_search::DBItem>(GetArenaForAllocation());
+    _impl_.db_ = p;
+  }
+  return _impl_.db_;
+}
+inline ::com::sekirocc::feature_search::DBItem* DBGetResponse::mutable_db() {
+  ::com::sekirocc::feature_search::DBItem* _msg = _internal_mutable_db();
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_search.DBGetResponse.db)
+  return _msg;
+}
+inline void DBGetResponse::set_allocated_db(::com::sekirocc::feature_search::DBItem* db) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete _impl_.db_;
+  }
+  if (db) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(db);
+    if (message_arena != submessage_arena) {
+      db = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, db, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.db_ = db;
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.feature_search.DBGetResponse.db)
+}
+
 // -------------------------------------------------------------------
 
 // DBDeleteRequest
+
+// string db_id = 1;
+inline void DBDeleteRequest::clear_db_id() {
+  _impl_.db_id_.ClearToEmpty();
+}
+inline const std::string& DBDeleteRequest::db_id() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.DBDeleteRequest.db_id)
+  return _internal_db_id();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void DBDeleteRequest::set_db_id(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.db_id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.DBDeleteRequest.db_id)
+}
+inline std::string* DBDeleteRequest::mutable_db_id() {
+  std::string* _s = _internal_mutable_db_id();
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_search.DBDeleteRequest.db_id)
+  return _s;
+}
+inline const std::string& DBDeleteRequest::_internal_db_id() const {
+  return _impl_.db_id_.Get();
+}
+inline void DBDeleteRequest::_internal_set_db_id(const std::string& value) {
+  
+  _impl_.db_id_.Set(value, GetArenaForAllocation());
+}
+inline std::string* DBDeleteRequest::_internal_mutable_db_id() {
+  
+  return _impl_.db_id_.Mutable(GetArenaForAllocation());
+}
+inline std::string* DBDeleteRequest::release_db_id() {
+  // @@protoc_insertion_point(field_release:com.sekirocc.feature_search.DBDeleteRequest.db_id)
+  return _impl_.db_id_.Release();
+}
+inline void DBDeleteRequest::set_allocated_db_id(std::string* db_id) {
+  if (db_id != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.db_id_.SetAllocated(db_id, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.db_id_.IsDefault()) {
+    _impl_.db_id_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.feature_search.DBDeleteRequest.db_id)
+}
 
 // -------------------------------------------------------------------
 
 // DBDeleteResponse
 
+// .com.sekirocc.common.ResultCode code = 1;
+inline void DBDeleteResponse::clear_code() {
+  _impl_.code_ = 0;
+}
+inline ::com::sekirocc::common::ResultCode DBDeleteResponse::_internal_code() const {
+  return static_cast< ::com::sekirocc::common::ResultCode >(_impl_.code_);
+}
+inline ::com::sekirocc::common::ResultCode DBDeleteResponse::code() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.DBDeleteResponse.code)
+  return _internal_code();
+}
+inline void DBDeleteResponse::_internal_set_code(::com::sekirocc::common::ResultCode value) {
+  
+  _impl_.code_ = value;
+}
+inline void DBDeleteResponse::set_code(::com::sekirocc::common::ResultCode value) {
+  _internal_set_code(value);
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.DBDeleteResponse.code)
+}
+
 // -------------------------------------------------------------------
 
 // TrainIndexRequest
+
+// string db_id = 1;
+inline void TrainIndexRequest::clear_db_id() {
+  _impl_.db_id_.ClearToEmpty();
+}
+inline const std::string& TrainIndexRequest::db_id() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.TrainIndexRequest.db_id)
+  return _internal_db_id();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void TrainIndexRequest::set_db_id(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.db_id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.TrainIndexRequest.db_id)
+}
+inline std::string* TrainIndexRequest::mutable_db_id() {
+  std::string* _s = _internal_mutable_db_id();
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_search.TrainIndexRequest.db_id)
+  return _s;
+}
+inline const std::string& TrainIndexRequest::_internal_db_id() const {
+  return _impl_.db_id_.Get();
+}
+inline void TrainIndexRequest::_internal_set_db_id(const std::string& value) {
+  
+  _impl_.db_id_.Set(value, GetArenaForAllocation());
+}
+inline std::string* TrainIndexRequest::_internal_mutable_db_id() {
+  
+  return _impl_.db_id_.Mutable(GetArenaForAllocation());
+}
+inline std::string* TrainIndexRequest::release_db_id() {
+  // @@protoc_insertion_point(field_release:com.sekirocc.feature_search.TrainIndexRequest.db_id)
+  return _impl_.db_id_.Release();
+}
+inline void TrainIndexRequest::set_allocated_db_id(std::string* db_id) {
+  if (db_id != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.db_id_.SetAllocated(db_id, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.db_id_.IsDefault()) {
+    _impl_.db_id_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.feature_search.TrainIndexRequest.db_id)
+}
 
 // -------------------------------------------------------------------
 
@@ -2876,7 +4228,57 @@ AddFeatureItem::mutable_meta() {
 
 // AddFeatureRequest
 
-// .com.sekirocc.feature_search.AddFeatureItem feature_item = 1;
+// string db_id = 1;
+inline void AddFeatureRequest::clear_db_id() {
+  _impl_.db_id_.ClearToEmpty();
+}
+inline const std::string& AddFeatureRequest::db_id() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.AddFeatureRequest.db_id)
+  return _internal_db_id();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void AddFeatureRequest::set_db_id(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.db_id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.AddFeatureRequest.db_id)
+}
+inline std::string* AddFeatureRequest::mutable_db_id() {
+  std::string* _s = _internal_mutable_db_id();
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_search.AddFeatureRequest.db_id)
+  return _s;
+}
+inline const std::string& AddFeatureRequest::_internal_db_id() const {
+  return _impl_.db_id_.Get();
+}
+inline void AddFeatureRequest::_internal_set_db_id(const std::string& value) {
+  
+  _impl_.db_id_.Set(value, GetArenaForAllocation());
+}
+inline std::string* AddFeatureRequest::_internal_mutable_db_id() {
+  
+  return _impl_.db_id_.Mutable(GetArenaForAllocation());
+}
+inline std::string* AddFeatureRequest::release_db_id() {
+  // @@protoc_insertion_point(field_release:com.sekirocc.feature_search.AddFeatureRequest.db_id)
+  return _impl_.db_id_.Release();
+}
+inline void AddFeatureRequest::set_allocated_db_id(std::string* db_id) {
+  if (db_id != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.db_id_.SetAllocated(db_id, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.db_id_.IsDefault()) {
+    _impl_.db_id_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.feature_search.AddFeatureRequest.db_id)
+}
+
+// .com.sekirocc.feature_search.AddFeatureItem feature_item = 2;
 inline bool AddFeatureRequest::_internal_has_feature_item() const {
   return this != internal_default_instance() && _impl_.feature_item_ != nullptr;
 }
@@ -3044,7 +4446,57 @@ inline void AddFeatureResponse::set_allocated_feature_id(std::string* feature_id
 
 // DeleteFeatureRequest
 
-// string feature_id = 1;
+// string db_id = 1;
+inline void DeleteFeatureRequest::clear_db_id() {
+  _impl_.db_id_.ClearToEmpty();
+}
+inline const std::string& DeleteFeatureRequest::db_id() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.DeleteFeatureRequest.db_id)
+  return _internal_db_id();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void DeleteFeatureRequest::set_db_id(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.db_id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.DeleteFeatureRequest.db_id)
+}
+inline std::string* DeleteFeatureRequest::mutable_db_id() {
+  std::string* _s = _internal_mutable_db_id();
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_search.DeleteFeatureRequest.db_id)
+  return _s;
+}
+inline const std::string& DeleteFeatureRequest::_internal_db_id() const {
+  return _impl_.db_id_.Get();
+}
+inline void DeleteFeatureRequest::_internal_set_db_id(const std::string& value) {
+  
+  _impl_.db_id_.Set(value, GetArenaForAllocation());
+}
+inline std::string* DeleteFeatureRequest::_internal_mutable_db_id() {
+  
+  return _impl_.db_id_.Mutable(GetArenaForAllocation());
+}
+inline std::string* DeleteFeatureRequest::release_db_id() {
+  // @@protoc_insertion_point(field_release:com.sekirocc.feature_search.DeleteFeatureRequest.db_id)
+  return _impl_.db_id_.Release();
+}
+inline void DeleteFeatureRequest::set_allocated_db_id(std::string* db_id) {
+  if (db_id != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.db_id_.SetAllocated(db_id, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.db_id_.IsDefault()) {
+    _impl_.db_id_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.feature_search.DeleteFeatureRequest.db_id)
+}
+
+// string feature_id = 2;
 inline void DeleteFeatureRequest::clear_feature_id() {
   _impl_.feature_id_.ClearToEmpty();
 }
@@ -3122,7 +4574,82 @@ inline void DeleteFeatureResponse::set_code(::com::sekirocc::common::ResultCode 
 
 // SearchFeatureRequest
 
-// .com.sekirocc.common.FaceFeature query = 1;
+// repeated string db_id = 1;
+inline int SearchFeatureRequest::_internal_db_id_size() const {
+  return _impl_.db_id_.size();
+}
+inline int SearchFeatureRequest::db_id_size() const {
+  return _internal_db_id_size();
+}
+inline void SearchFeatureRequest::clear_db_id() {
+  _impl_.db_id_.Clear();
+}
+inline std::string* SearchFeatureRequest::add_db_id() {
+  std::string* _s = _internal_add_db_id();
+  // @@protoc_insertion_point(field_add_mutable:com.sekirocc.feature_search.SearchFeatureRequest.db_id)
+  return _s;
+}
+inline const std::string& SearchFeatureRequest::_internal_db_id(int index) const {
+  return _impl_.db_id_.Get(index);
+}
+inline const std::string& SearchFeatureRequest::db_id(int index) const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.SearchFeatureRequest.db_id)
+  return _internal_db_id(index);
+}
+inline std::string* SearchFeatureRequest::mutable_db_id(int index) {
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_search.SearchFeatureRequest.db_id)
+  return _impl_.db_id_.Mutable(index);
+}
+inline void SearchFeatureRequest::set_db_id(int index, const std::string& value) {
+  _impl_.db_id_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.SearchFeatureRequest.db_id)
+}
+inline void SearchFeatureRequest::set_db_id(int index, std::string&& value) {
+  _impl_.db_id_.Mutable(index)->assign(std::move(value));
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.SearchFeatureRequest.db_id)
+}
+inline void SearchFeatureRequest::set_db_id(int index, const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  _impl_.db_id_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:com.sekirocc.feature_search.SearchFeatureRequest.db_id)
+}
+inline void SearchFeatureRequest::set_db_id(int index, const char* value, size_t size) {
+  _impl_.db_id_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:com.sekirocc.feature_search.SearchFeatureRequest.db_id)
+}
+inline std::string* SearchFeatureRequest::_internal_add_db_id() {
+  return _impl_.db_id_.Add();
+}
+inline void SearchFeatureRequest::add_db_id(const std::string& value) {
+  _impl_.db_id_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:com.sekirocc.feature_search.SearchFeatureRequest.db_id)
+}
+inline void SearchFeatureRequest::add_db_id(std::string&& value) {
+  _impl_.db_id_.Add(std::move(value));
+  // @@protoc_insertion_point(field_add:com.sekirocc.feature_search.SearchFeatureRequest.db_id)
+}
+inline void SearchFeatureRequest::add_db_id(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  _impl_.db_id_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:com.sekirocc.feature_search.SearchFeatureRequest.db_id)
+}
+inline void SearchFeatureRequest::add_db_id(const char* value, size_t size) {
+  _impl_.db_id_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:com.sekirocc.feature_search.SearchFeatureRequest.db_id)
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>&
+SearchFeatureRequest::db_id() const {
+  // @@protoc_insertion_point(field_list:com.sekirocc.feature_search.SearchFeatureRequest.db_id)
+  return _impl_.db_id_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>*
+SearchFeatureRequest::mutable_db_id() {
+  // @@protoc_insertion_point(field_mutable_list:com.sekirocc.feature_search.SearchFeatureRequest.db_id)
+  return &_impl_.db_id_;
+}
+
+// .com.sekirocc.common.FaceFeature query = 2;
 inline bool SearchFeatureRequest::_internal_has_query() const {
   return this != internal_default_instance() && _impl_.query_ != nullptr;
 }
@@ -3207,7 +4734,7 @@ inline void SearchFeatureRequest::set_allocated_query(::com::sekirocc::common::F
   // @@protoc_insertion_point(field_set_allocated:com.sekirocc.feature_search.SearchFeatureRequest.query)
 }
 
-// int32 topk = 2;
+// int32 topk = 3;
 inline void SearchFeatureRequest::clear_topk() {
   _impl_.topk_ = 0;
 }
@@ -3231,7 +4758,57 @@ inline void SearchFeatureRequest::set_topk(int32_t value) {
 
 // SearchItemScore
 
-// .com.sekirocc.common.FaceFeature feature = 1;
+// string db_id = 1;
+inline void SearchItemScore::clear_db_id() {
+  _impl_.db_id_.ClearToEmpty();
+}
+inline const std::string& SearchItemScore::db_id() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.SearchItemScore.db_id)
+  return _internal_db_id();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void SearchItemScore::set_db_id(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.db_id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.SearchItemScore.db_id)
+}
+inline std::string* SearchItemScore::mutable_db_id() {
+  std::string* _s = _internal_mutable_db_id();
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_search.SearchItemScore.db_id)
+  return _s;
+}
+inline const std::string& SearchItemScore::_internal_db_id() const {
+  return _impl_.db_id_.Get();
+}
+inline void SearchItemScore::_internal_set_db_id(const std::string& value) {
+  
+  _impl_.db_id_.Set(value, GetArenaForAllocation());
+}
+inline std::string* SearchItemScore::_internal_mutable_db_id() {
+  
+  return _impl_.db_id_.Mutable(GetArenaForAllocation());
+}
+inline std::string* SearchItemScore::release_db_id() {
+  // @@protoc_insertion_point(field_release:com.sekirocc.feature_search.SearchItemScore.db_id)
+  return _impl_.db_id_.Release();
+}
+inline void SearchItemScore::set_allocated_db_id(std::string* db_id) {
+  if (db_id != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.db_id_.SetAllocated(db_id, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.db_id_.IsDefault()) {
+    _impl_.db_id_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.feature_search.SearchItemScore.db_id)
+}
+
+// .com.sekirocc.common.FaceFeature feature = 2;
 inline bool SearchItemScore::_internal_has_feature() const {
   return this != internal_default_instance() && _impl_.feature_ != nullptr;
 }
@@ -3316,7 +4893,7 @@ inline void SearchItemScore::set_allocated_feature(::com::sekirocc::common::Face
   // @@protoc_insertion_point(field_set_allocated:com.sekirocc.feature_search.SearchItemScore.feature)
 }
 
-// float score = 2;
+// float score = 3;
 inline void SearchItemScore::clear_score() {
   _impl_.score_ = 0;
 }
@@ -3403,6 +4980,8 @@ SearchFeatureResponse::items() const {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

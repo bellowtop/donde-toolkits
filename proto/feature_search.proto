@@ -8,25 +8,46 @@ option go_package = "github.com/sekirocc/face-recognition-service/feature_search
 
 package com.sekirocc.feature_search;
 
-// DB manage
-message DBNewRequest {}
+// DB managment
+message DBNewRequest {
+    string name = 1;
+    int64 capacity = 2;
+    string description = 3;
+}
 
-message DBNewResponse {}
+message DBNewResponse {
+    com.sekirocc.common.ResultCode code = 1;
+    string db_id = 2;
+}
+
+message DBItem {
+    string db_id = 1;
+    string name = 2;
+    int64 capacity = 3;
+    int64 used = 4;
+    string description = 5;
+}
 
 message DBListRequest {}
 
-message DBListResponse {}
+message DBListResponse {
+    com.sekirocc.common.ResultCode code = 1;
+    repeated DBItem dbs = 2;
+}
 
-message DBGetRequest {}
+message DBGetRequest { string db_id = 1; }
 
-message DBGetResponse {}
+message DBGetResponse {
+    com.sekirocc.common.ResultCode code = 1;
+    DBItem db = 2;
+}
 
-message DBDeleteRequest {}
+message DBDeleteRequest { string db_id = 1; }
 
-message DBDeleteResponse {}
+message DBDeleteResponse { com.sekirocc.common.ResultCode code = 1; }
 
 // Search Service
-message TrainIndexRequest {}
+message TrainIndexRequest { string db_id = 1; }
 
 message TrainIndexResponse { com.sekirocc.common.ResultCode code = 1; }
 
@@ -35,25 +56,33 @@ message AddFeatureItem {
     map<string, string> meta = 2;
 }
 
-message AddFeatureRequest { AddFeatureItem feature_item = 1; }
+message AddFeatureRequest {
+    string db_id = 1;
+    AddFeatureItem feature_item = 2;
+}
 
 message AddFeatureResponse {
     com.sekirocc.common.ResultCode code = 1;
     string feature_id = 2;
 }
 
-message DeleteFeatureRequest { string feature_id = 1; }
+message DeleteFeatureRequest {
+    string db_id = 1;
+    string feature_id = 2;
+}
 
 message DeleteFeatureResponse { com.sekirocc.common.ResultCode code = 1; }
 
 message SearchFeatureRequest {
-    com.sekirocc.common.FaceFeature query = 1;
-    int32 topk = 2;
+    repeated string db_id = 1;
+    com.sekirocc.common.FaceFeature query = 2;
+    int32 topk = 3;
 }
 
 message SearchItemScore {
-    com.sekirocc.common.FaceFeature feature = 1;
-    float score = 2;
+    string db_id = 1;
+    com.sekirocc.common.FaceFeature feature = 2;
+    float score = 3;
 }
 
 message SearchFeatureResponse {

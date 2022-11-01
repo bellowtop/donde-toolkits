@@ -3,9 +3,9 @@
 #include "Poco/Notification.h"
 #include "Poco/NotificationQueue.h"
 #include "concurrent_processor.h"
-#include "openvino_worker/workers.h"
 #include "opencv2/opencv.hpp"
 #include "openvino/openvino.hpp"
+#include "openvino_worker/workers.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
 #include "types.h"
@@ -113,8 +113,10 @@ cv::Mat AlignerWorker::align_face(const cv::Mat& face_image,
     cv::Point2f right_eye_center
         = {(landmarks[2].x + landmarks[3].x) * 0.5f, (landmarks[2].y + landmarks[3].y) * 0.5f};
 
-    std::cout << "left eye center x: " << left_eye_center.x << ", y : " << left_eye_center.y << std::endl;
-    std::cout << "right eye center x: " << right_eye_center.x << ", y : " << right_eye_center.y << std::endl;
+    std::cout << "left eye center x: " << left_eye_center.x << ", y : " << left_eye_center.y
+              << std::endl;
+    std::cout << "right eye center x: " << right_eye_center.x << ", y : " << right_eye_center.y
+              << std::endl;
 
     cv::Point2f center = {(left_eye_center.x + right_eye_center.x) * 0.5f,
                           (left_eye_center.y + right_eye_center.y) * 0.5f};

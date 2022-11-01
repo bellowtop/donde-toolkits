@@ -1,10 +1,11 @@
+#include "worker.h"
+
 #include "Poco/Format.h"
 #include "Poco/Timestamp.h"
 #include "config.h"
-#include "worker.h"
+#include "gen/pb-cpp/common.pb.h"
 #include "gen/pb-cpp/feature_search_inner.grpc.pb.h"
 #include "gen/pb-cpp/feature_search_inner.pb.h"
-#include "gen/pb-cpp/common.pb.h"
 #include "nlohmann/json.hpp"
 #include "search/searcher.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
@@ -31,11 +32,11 @@
 
 using namespace std;
 
-using com::sekirocc::feature_search::inner::AddFeatureRequest;
+using com::sekirocc::feature_search::inner::BatchAddFeaturesRequest;
 
-using com::sekirocc::feature_search::inner::AddFeatureResponse;
-using com::sekirocc::feature_search::inner::DeleteFeatureRequest;
-using com::sekirocc::feature_search::inner::DeleteFeatureResponse;
+using com::sekirocc::feature_search::inner::BatchAddFeaturesResponse;
+using com::sekirocc::feature_search::inner::BatchDeleteFeaturesRequest;
+using com::sekirocc::feature_search::inner::BatchDeleteFeaturesResponse;
 using com::sekirocc::feature_search::inner::SearchFeatureRequest;
 using com::sekirocc::feature_search::inner::SearchFeatureResponse;
 using com::sekirocc::feature_search::inner::TrainIndexRequest;
@@ -60,46 +61,58 @@ void FeatureSearchWorkerImpl::Start() { searcher->Init(); };
 void FeatureSearchWorkerImpl::Stop() { searcher->Terminate(); };
 
 Status FeatureSearchWorkerImpl::TrainIndex(ServerContext* context, const TrainIndexRequest* request,
-                                     TrainIndexResponse* response) {
+                                           TrainIndexResponse* response) {
     searcher->TrainIndex();
     return Status::OK;
 };
 
-Status FeatureSearchWorkerImpl::AddFeature(ServerContext* context, const AddFeatureRequest* request,
-                                     AddFeatureResponse* response) {
-    auto item = request->feature_item();
-    auto ft = item.feature();
+Status FeatureSearchWorkerImpl::BatchAddFeatures(ServerContext* context,
+                                                 const BatchAddFeaturesRequest* request,
+                                                 BatchAddFeaturesResponse* response) {
+    auto items = request->feature_items();
 
-    // auto meta = ((AddFeatureRequest*)request)->mutable_meta();
-    // (*meta)["a"] = "b";
+    std::vector<search::FeatureDbItem> fts;
 
-    Feature feature(convertFeatureBlobToFloats(ft.blob()), std::string(ft.model()), ft.version());
-    std::map<string, string> meta = convertMetadataToMap(item.meta());
+    for (auto& item : items) {
+        auto ft = item.feature();
+        // auto meta = ((AddFeatureRequest*)request)->mutable_meta();
+        // (*meta)["a"] = "b";
+        Feature feature(convertFeatureBlobToFloats(ft.blob()), std::string(ft.model()),
+                        ft.version());
+        std::map<string, string> meta = convertMetadataToMap(item.meta());
+        fts.push_back(search::FeatureDbItem{
+            .feature = feature,
+            .metadata = meta,
+        });
+    }
 
-    std::vector<search::FeatureDbItem> fts{search::FeatureDbItem{
-        .feature = feature,
-        .metadata = meta,
-    }};
     std::vector<std::string> feature_ids = searcher->AddFeatures(fts);
 
-    response->set_feature_id(feature_ids[0]);
+    for (auto& id : feature_ids) {
+        response->add_feature_ids(id);
+    }
+    // another approach:
+    // response->mutable_feature_ids()->Add(feature_ids.begin(), feature_ids.end());
     response->set_code(ResultCode::OK);
 
     return Status::OK;
 };
 
-Status FeatureSearchWorkerImpl::DeleteFeature(ServerContext* context, const DeleteFeatureRequest* request,
-                                        DeleteFeatureResponse* response) {
+Status FeatureSearchWorkerImpl::BatchDeleteFeatures(ServerContext* context,
+                                                    const BatchDeleteFeaturesRequest* request,
+                                                    BatchDeleteFeaturesResponse* response) {
 
-    std::string feature_id = request->feature_id();
-    std::vector<std::string> feature_ids{feature_id};
+    auto ids = request->feature_ids();
+    // construct from iterator
+    const std::vector<std::string> feature_ids{ids.begin(), ids.end()};
     searcher->RemoveFeatures(feature_ids);
 
     return Status::OK;
 };
 
-Status FeatureSearchWorkerImpl::SearchFeature(ServerContext* context, const SearchFeatureRequest* request,
-                                        SearchFeatureResponse* response) {
+Status FeatureSearchWorkerImpl::SearchFeature(ServerContext* context,
+                                              const SearchFeatureRequest* request,
+                                              SearchFeatureResponse* response) {
     auto ft = request->query();
     auto topk = request->topk();
     Feature query(convertFeatureBlobToFloats(ft.blob()), std::string(ft.model()), ft.version());

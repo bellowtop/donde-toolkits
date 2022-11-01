@@ -1,5 +1,3 @@
-#include "openvino_worker/workers.h"
-
 #include "Poco/AutoPtr.h"
 #include "Poco/Logger.h"
 #include "Poco/Notification.h"
@@ -7,6 +5,7 @@
 #include "concurrent_processor.h"
 #include "opencv2/opencv.hpp"
 #include "openvino/openvino.hpp"
+#include "openvino_worker/workers.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
 #include "types.h"
