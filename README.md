@@ -1,4 +1,4 @@
-# Face Recognition Service
+#Face Recognition Service
 
 Face feature extraction and searching and clustering service, built with openvino and faiss[todo] [wip].
 
@@ -16,7 +16,7 @@ Currently developed with macOS, llvm-clang
 - Master/Workers architecture, Poco messaging
 - Conan to manage dependencies
 - Protobuf proto & GRPC server
-- GRPC gateway to support http api
+- GRPC gateway to provide http api
 - Fine tests (important!)
 
 ## Dependencies
@@ -36,11 +36,11 @@ openvino, you need to install(download from openvino website) it first. other de
 ## Project layout
 
 
-* `library` contains the main library for feature services, are used to build `FeatureLibraries` library, see `CMakelists.txt` for more details.
+* `library` contains the main library `FeatureLibraries` for other feature related services, such as extract service, search service. this is the main engine.
 
-* `proto` contains protobuf definitions for common data structures, and a grpc service. servers are built apon these protos.
+* `proto` contains protobuf definitions for common api, and grpc services definitions. servers are typically implementations of these grpc services.
 
-* `servers` has source codes to build various server binaries. now include `feature_extract` and `feature_search` binaries. servers has dependency to library and proto
+* `servers` has source codes to build various standalone server binaries. such as `feature_extract` `feature_search` `feature_search_worker`. servers has dependency to library and proto
 
 * `tests` contains tests, they test the `FeatureLibraries` library. tests has dependency to library.
 
@@ -55,7 +55,7 @@ openvino, you need to install(download from openvino website) it first. other de
 https://www.intel.com/content/www/us/en/developer/tools/openvino-toolkit/download.html
 
 ```
-# double check your openvino install location, modify CMakeLists.txt if needed
+#double check your openvino install location, modify CMakeLists.txt if needed
 
 set(OpenVINO_DIR "/opt/intel/openvino_2022/runtime/cmake")
 find_package(OpenVINO REQUIRED COMPONENTS Runtime)
@@ -80,7 +80,7 @@ brew install llvm
 /usr/local/opt/llvm/bin/clang --version
 Homebrew clang version 14.0.6
 
-# explict set CC and CXX, for sure
+#explict set CC and CXX, for sure
 export CC=/usr/local/opt/llvm/bin/clang ; export CXX=/usr/local/opt/llvm/bin/clang++
 ```
 
@@ -99,14 +99,13 @@ cmake -S server -B build/server
 
 cmake --build build/server
 
+#make sure export some openvino runtime variable path before running.
+#source / opt / intel / openvino_2022 / setupvars.sh
 
-# make sure export some openvino runtime variable path before running.
-# source /opt/intel/openvino_2022/setupvars.sh
-
-# run the service
+#run the service
 ./build/server/bin/FaceRecognitionServer
 
-# with config path
+#with config path
 ./build/server/bin/FaceRecognitionServer --config_path server/examples/server.json
 ```
 
@@ -117,19 +116,18 @@ cmake --build build/server
 Makefile wraps `cmake` instructions together.
 
 ```
-# prepare all those build dirs
+#prepare all those build dirs
 make build-pre
 
-# build and run server
+#build and run server
 make build-server
 make run-server
 
-
-# build and run test
+#build and run test
 make build-test
 make run-test
 
-# build lib only
+#build lib only
 make build-lib
 ```
 
@@ -141,10 +139,10 @@ make build-lib
 ```
 cd server/protos
 
-# build protobuf definitions of grpc and service
+#build protobuf definitions of grpc and service
 ./build_proto.sh
 
-# build grpc-gateway, for rest-api [optional]
+#build grpc - gateway, for rest - api[optional]
 ./build_gateway.sh
 
 ```
