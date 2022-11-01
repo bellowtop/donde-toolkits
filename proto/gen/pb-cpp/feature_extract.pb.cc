@@ -183,36 +183,35 @@ static const ::_pb::Message* const file_default_instances[] = {
 const char descriptor_table_protodef_feature_5fextract_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\025feature_extract.proto\022\031com.sekirocc.fa"
   "ce_service\032\034google/api/annotations.proto"
-  "\032\014common.proto\"C\n\020DetectionRequest\022/\n\005im"
-  "age\030\001 \001(\0132 .com.sekirocc.face_service.Im"
-  "age\"\206\001\n\021DetectionResponse\0223\n\004code\030\001 \001(\0162"
-  "%.com.sekirocc.face_service.ResultCode\022<"
-  "\n\nface_rects\030\002 \003(\0132(.com.sekirocc.face_s"
-  "ervice.FaceRectangle\"D\n\021ExtractionReques"
-  "t\022/\n\005image\030\001 \001(\0132 .com.sekirocc.face_ser"
-  "vice.Image\"\306\001\n\022ExtractionResponse\0223\n\004cod"
-  "e\030\001 \001(\0162%.com.sekirocc.face_service.Resu"
-  "ltCode\022<\n\nface_rects\030\002 \003(\0132(.com.sekiroc"
-  "c.face_service.FaceRectangle\022=\n\rface_fea"
-  "tures\030\003 \003(\0132&.com.sekirocc.face_service."
-  "FaceFeature\"z\n\016CompareRequest\0223\n\003one\030\001 \001"
-  "(\0132&.com.sekirocc.face_service.FaceFeatu"
-  "re\0223\n\003two\030\002 \001(\0132&.com.sekirocc.face_serv"
-  "ice.FaceFeature\"U\n\017CompareResponse\0223\n\004co"
-  "de\030\001 \001(\0162%.com.sekirocc.face_service.Res"
-  "ultCode\022\r\n\005score\030\002 \001(\0022\251\003\n\013FaceService\022|"
-  "\n\006Detect\022+.com.sekirocc.face_service.Det"
-  "ectionRequest\032,.com.sekirocc.face_servic"
-  "e.DetectionResponse\"\027\202\323\344\223\002\021\"\014/detect_fac"
-  "e:\001*\022\217\001\n\016ExtractFeature\022,.com.sekirocc.f"
-  "ace_service.ExtractionRequest\032-.com.seki"
-  "rocc.face_service.ExtractionResponse\" \202\323"
-  "\344\223\002\032\"\025/extract_face_feature:\001*\022\211\001\n\016Compa"
-  "reFeature\022).com.sekirocc.face_service.Co"
-  "mpareRequest\032*.com.sekirocc.face_service"
-  ".CompareResponse\" \202\323\344\223\002\032\"\025/compare_face_"
-  "feature:\001*B;Z9github.com/sekirocc/face-r"
-  "ecognition-service/face_serviceb\006proto3"
+  "\032\014common.proto\"=\n\020DetectionRequest\022)\n\005im"
+  "age\030\001 \001(\0132\032.com.sekirocc.common.Image\"z\n"
+  "\021DetectionResponse\022-\n\004code\030\001 \001(\0162\037.com.s"
+  "ekirocc.common.ResultCode\0226\n\nface_rects\030"
+  "\002 \003(\0132\".com.sekirocc.common.FaceRectangl"
+  "e\">\n\021ExtractionRequest\022)\n\005image\030\001 \001(\0132\032."
+  "com.sekirocc.common.Image\"\264\001\n\022Extraction"
+  "Response\022-\n\004code\030\001 \001(\0162\037.com.sekirocc.co"
+  "mmon.ResultCode\0226\n\nface_rects\030\002 \003(\0132\".co"
+  "m.sekirocc.common.FaceRectangle\0227\n\rface_"
+  "features\030\003 \003(\0132 .com.sekirocc.common.Fac"
+  "eFeature\"n\n\016CompareRequest\022-\n\003one\030\001 \001(\0132"
+  " .com.sekirocc.common.FaceFeature\022-\n\003two"
+  "\030\002 \001(\0132 .com.sekirocc.common.FaceFeature"
+  "\"O\n\017CompareResponse\022-\n\004code\030\001 \001(\0162\037.com."
+  "sekirocc.common.ResultCode\022\r\n\005score\030\002 \001("
+  "\0022\251\003\n\013FaceService\022|\n\006Detect\022+.com.sekiro"
+  "cc.face_service.DetectionRequest\032,.com.s"
+  "ekirocc.face_service.DetectionResponse\"\027"
+  "\202\323\344\223\002\021\"\014/detect_face:\001*\022\217\001\n\016ExtractFeatu"
+  "re\022,.com.sekirocc.face_service.Extractio"
+  "nRequest\032-.com.sekirocc.face_service.Ext"
+  "ractionResponse\" \202\323\344\223\002\032\"\025/extract_face_f"
+  "eature:\001*\022\211\001\n\016CompareFeature\022).com.sekir"
+  "occ.face_service.CompareRequest\032*.com.se"
+  "kirocc.face_service.CompareResponse\" \202\323\344"
+  "\223\002\032\"\025/compare_face_feature:\001*B;Z9github."
+  "com/sekirocc/face-recognition-service/fa"
+  "ce_serviceb\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_feature_5fextract_2eproto_deps[2] = {
   &::descriptor_table_common_2eproto,
@@ -220,7 +219,7 @@ static const ::_pbi::DescriptorTable* const descriptor_table_feature_5fextract_2
 };
 static ::_pbi::once_flag descriptor_table_feature_5fextract_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_feature_5fextract_2eproto = {
-    false, false, 1279, descriptor_table_protodef_feature_5fextract_2eproto,
+    false, false, 1218, descriptor_table_protodef_feature_5fextract_2eproto,
     "feature_extract.proto",
     &descriptor_table_feature_5fextract_2eproto_once, descriptor_table_feature_5fextract_2eproto_deps, 2, 6,
     schemas, file_default_instances, TableStruct_feature_5fextract_2eproto::offsets,
@@ -241,10 +240,10 @@ namespace face_service {
 
 class DetectionRequest::_Internal {
  public:
-  static const ::com::sekirocc::face_service::Image& image(const DetectionRequest* msg);
+  static const ::com::sekirocc::common::Image& image(const DetectionRequest* msg);
 };
 
-const ::com::sekirocc::face_service::Image&
+const ::com::sekirocc::common::Image&
 DetectionRequest::_Internal::image(const DetectionRequest* msg) {
   return *msg->_impl_.image_;
 }
@@ -269,7 +268,7 @@ DetectionRequest::DetectionRequest(const DetectionRequest& from)
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_image()) {
-    _this->_impl_.image_ = new ::com::sekirocc::face_service::Image(*from._impl_.image_);
+    _this->_impl_.image_ = new ::com::sekirocc::common::Image(*from._impl_.image_);
   }
   // @@protoc_insertion_point(copy_constructor:com.sekirocc.face_service.DetectionRequest)
 }
@@ -321,7 +320,7 @@ const char* DetectionRequest::_InternalParse(const char* ptr, ::_pbi::ParseConte
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // .com.sekirocc.face_service.Image image = 1;
+      // .com.sekirocc.common.Image image = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_image(), ptr);
@@ -358,7 +357,7 @@ uint8_t* DetectionRequest::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .com.sekirocc.face_service.Image image = 1;
+  // .com.sekirocc.common.Image image = 1;
   if (this->_internal_has_image()) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::image(this),
@@ -381,7 +380,7 @@ size_t DetectionRequest::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // .com.sekirocc.face_service.Image image = 1;
+  // .com.sekirocc.common.Image image = 1;
   if (this->_internal_has_image()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
@@ -407,7 +406,7 @@ void DetectionRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const
   (void) cached_has_bits;
 
   if (from._internal_has_image()) {
-    _this->_internal_mutable_image()->::com::sekirocc::face_service::Image::MergeFrom(
+    _this->_internal_mutable_image()->::com::sekirocc::common::Image::MergeFrom(
         from._internal_image());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
@@ -510,16 +509,16 @@ const char* DetectionResponse::_InternalParse(const char* ptr, ::_pbi::ParseCont
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // .com.sekirocc.face_service.ResultCode code = 1;
+      // .com.sekirocc.common.ResultCode code = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
           uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-          _internal_set_code(static_cast<::com::sekirocc::face_service::ResultCode>(val));
+          _internal_set_code(static_cast<::com::sekirocc::common::ResultCode>(val));
         } else
           goto handle_unusual;
         continue;
-      // repeated .com.sekirocc.face_service.FaceRectangle face_rects = 2;
+      // repeated .com.sekirocc.common.FaceRectangle face_rects = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           ptr -= 1;
@@ -561,14 +560,14 @@ uint8_t* DetectionResponse::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .com.sekirocc.face_service.ResultCode code = 1;
+  // .com.sekirocc.common.ResultCode code = 1;
   if (this->_internal_code() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteEnumToArray(
       1, this->_internal_code(), target);
   }
 
-  // repeated .com.sekirocc.face_service.FaceRectangle face_rects = 2;
+  // repeated .com.sekirocc.common.FaceRectangle face_rects = 2;
   for (unsigned i = 0,
       n = static_cast<unsigned>(this->_internal_face_rects_size()); i < n; i++) {
     const auto& repfield = this->_internal_face_rects(i);
@@ -592,14 +591,14 @@ size_t DetectionResponse::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated .com.sekirocc.face_service.FaceRectangle face_rects = 2;
+  // repeated .com.sekirocc.common.FaceRectangle face_rects = 2;
   total_size += 1UL * this->_internal_face_rects_size();
   for (const auto& msg : this->_impl_.face_rects_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  // .com.sekirocc.face_service.ResultCode code = 1;
+  // .com.sekirocc.common.ResultCode code = 1;
   if (this->_internal_code() != 0) {
     total_size += 1 +
       ::_pbi::WireFormatLite::EnumSize(this->_internal_code());
@@ -658,10 +657,10 @@ void DetectionResponse::InternalSwap(DetectionResponse* other) {
 
 class ExtractionRequest::_Internal {
  public:
-  static const ::com::sekirocc::face_service::Image& image(const ExtractionRequest* msg);
+  static const ::com::sekirocc::common::Image& image(const ExtractionRequest* msg);
 };
 
-const ::com::sekirocc::face_service::Image&
+const ::com::sekirocc::common::Image&
 ExtractionRequest::_Internal::image(const ExtractionRequest* msg) {
   return *msg->_impl_.image_;
 }
@@ -686,7 +685,7 @@ ExtractionRequest::ExtractionRequest(const ExtractionRequest& from)
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_image()) {
-    _this->_impl_.image_ = new ::com::sekirocc::face_service::Image(*from._impl_.image_);
+    _this->_impl_.image_ = new ::com::sekirocc::common::Image(*from._impl_.image_);
   }
   // @@protoc_insertion_point(copy_constructor:com.sekirocc.face_service.ExtractionRequest)
 }
@@ -738,7 +737,7 @@ const char* ExtractionRequest::_InternalParse(const char* ptr, ::_pbi::ParseCont
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // .com.sekirocc.face_service.Image image = 1;
+      // .com.sekirocc.common.Image image = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_image(), ptr);
@@ -775,7 +774,7 @@ uint8_t* ExtractionRequest::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .com.sekirocc.face_service.Image image = 1;
+  // .com.sekirocc.common.Image image = 1;
   if (this->_internal_has_image()) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::image(this),
@@ -798,7 +797,7 @@ size_t ExtractionRequest::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // .com.sekirocc.face_service.Image image = 1;
+  // .com.sekirocc.common.Image image = 1;
   if (this->_internal_has_image()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
@@ -824,7 +823,7 @@ void ExtractionRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, cons
   (void) cached_has_bits;
 
   if (from._internal_has_image()) {
-    _this->_internal_mutable_image()->::com::sekirocc::face_service::Image::MergeFrom(
+    _this->_internal_mutable_image()->::com::sekirocc::common::Image::MergeFrom(
         from._internal_image());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
@@ -934,16 +933,16 @@ const char* ExtractionResponse::_InternalParse(const char* ptr, ::_pbi::ParseCon
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // .com.sekirocc.face_service.ResultCode code = 1;
+      // .com.sekirocc.common.ResultCode code = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
           uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-          _internal_set_code(static_cast<::com::sekirocc::face_service::ResultCode>(val));
+          _internal_set_code(static_cast<::com::sekirocc::common::ResultCode>(val));
         } else
           goto handle_unusual;
         continue;
-      // repeated .com.sekirocc.face_service.FaceRectangle face_rects = 2;
+      // repeated .com.sekirocc.common.FaceRectangle face_rects = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           ptr -= 1;
@@ -956,7 +955,7 @@ const char* ExtractionResponse::_InternalParse(const char* ptr, ::_pbi::ParseCon
         } else
           goto handle_unusual;
         continue;
-      // repeated .com.sekirocc.face_service.FaceFeature face_features = 3;
+      // repeated .com.sekirocc.common.FaceFeature face_features = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
           ptr -= 1;
@@ -998,14 +997,14 @@ uint8_t* ExtractionResponse::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .com.sekirocc.face_service.ResultCode code = 1;
+  // .com.sekirocc.common.ResultCode code = 1;
   if (this->_internal_code() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteEnumToArray(
       1, this->_internal_code(), target);
   }
 
-  // repeated .com.sekirocc.face_service.FaceRectangle face_rects = 2;
+  // repeated .com.sekirocc.common.FaceRectangle face_rects = 2;
   for (unsigned i = 0,
       n = static_cast<unsigned>(this->_internal_face_rects_size()); i < n; i++) {
     const auto& repfield = this->_internal_face_rects(i);
@@ -1013,7 +1012,7 @@ uint8_t* ExtractionResponse::_InternalSerialize(
         InternalWriteMessage(2, repfield, repfield.GetCachedSize(), target, stream);
   }
 
-  // repeated .com.sekirocc.face_service.FaceFeature face_features = 3;
+  // repeated .com.sekirocc.common.FaceFeature face_features = 3;
   for (unsigned i = 0,
       n = static_cast<unsigned>(this->_internal_face_features_size()); i < n; i++) {
     const auto& repfield = this->_internal_face_features(i);
@@ -1037,21 +1036,21 @@ size_t ExtractionResponse::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated .com.sekirocc.face_service.FaceRectangle face_rects = 2;
+  // repeated .com.sekirocc.common.FaceRectangle face_rects = 2;
   total_size += 1UL * this->_internal_face_rects_size();
   for (const auto& msg : this->_impl_.face_rects_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  // repeated .com.sekirocc.face_service.FaceFeature face_features = 3;
+  // repeated .com.sekirocc.common.FaceFeature face_features = 3;
   total_size += 1UL * this->_internal_face_features_size();
   for (const auto& msg : this->_impl_.face_features_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  // .com.sekirocc.face_service.ResultCode code = 1;
+  // .com.sekirocc.common.ResultCode code = 1;
   if (this->_internal_code() != 0) {
     total_size += 1 +
       ::_pbi::WireFormatLite::EnumSize(this->_internal_code());
@@ -1112,15 +1111,15 @@ void ExtractionResponse::InternalSwap(ExtractionResponse* other) {
 
 class CompareRequest::_Internal {
  public:
-  static const ::com::sekirocc::face_service::FaceFeature& one(const CompareRequest* msg);
-  static const ::com::sekirocc::face_service::FaceFeature& two(const CompareRequest* msg);
+  static const ::com::sekirocc::common::FaceFeature& one(const CompareRequest* msg);
+  static const ::com::sekirocc::common::FaceFeature& two(const CompareRequest* msg);
 };
 
-const ::com::sekirocc::face_service::FaceFeature&
+const ::com::sekirocc::common::FaceFeature&
 CompareRequest::_Internal::one(const CompareRequest* msg) {
   return *msg->_impl_.one_;
 }
-const ::com::sekirocc::face_service::FaceFeature&
+const ::com::sekirocc::common::FaceFeature&
 CompareRequest::_Internal::two(const CompareRequest* msg) {
   return *msg->_impl_.two_;
 }
@@ -1152,10 +1151,10 @@ CompareRequest::CompareRequest(const CompareRequest& from)
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_one()) {
-    _this->_impl_.one_ = new ::com::sekirocc::face_service::FaceFeature(*from._impl_.one_);
+    _this->_impl_.one_ = new ::com::sekirocc::common::FaceFeature(*from._impl_.one_);
   }
   if (from._internal_has_two()) {
-    _this->_impl_.two_ = new ::com::sekirocc::face_service::FaceFeature(*from._impl_.two_);
+    _this->_impl_.two_ = new ::com::sekirocc::common::FaceFeature(*from._impl_.two_);
   }
   // @@protoc_insertion_point(copy_constructor:com.sekirocc.face_service.CompareRequest)
 }
@@ -1213,7 +1212,7 @@ const char* CompareRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // .com.sekirocc.face_service.FaceFeature one = 1;
+      // .com.sekirocc.common.FaceFeature one = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_one(), ptr);
@@ -1221,7 +1220,7 @@ const char* CompareRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext
         } else
           goto handle_unusual;
         continue;
-      // .com.sekirocc.face_service.FaceFeature two = 2;
+      // .com.sekirocc.common.FaceFeature two = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           ptr = ctx->ParseMessage(_internal_mutable_two(), ptr);
@@ -1258,14 +1257,14 @@ uint8_t* CompareRequest::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .com.sekirocc.face_service.FaceFeature one = 1;
+  // .com.sekirocc.common.FaceFeature one = 1;
   if (this->_internal_has_one()) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::one(this),
         _Internal::one(this).GetCachedSize(), target, stream);
   }
 
-  // .com.sekirocc.face_service.FaceFeature two = 2;
+  // .com.sekirocc.common.FaceFeature two = 2;
   if (this->_internal_has_two()) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(2, _Internal::two(this),
@@ -1288,14 +1287,14 @@ size_t CompareRequest::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // .com.sekirocc.face_service.FaceFeature one = 1;
+  // .com.sekirocc.common.FaceFeature one = 1;
   if (this->_internal_has_one()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *_impl_.one_);
   }
 
-  // .com.sekirocc.face_service.FaceFeature two = 2;
+  // .com.sekirocc.common.FaceFeature two = 2;
   if (this->_internal_has_two()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
@@ -1321,11 +1320,11 @@ void CompareRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const :
   (void) cached_has_bits;
 
   if (from._internal_has_one()) {
-    _this->_internal_mutable_one()->::com::sekirocc::face_service::FaceFeature::MergeFrom(
+    _this->_internal_mutable_one()->::com::sekirocc::common::FaceFeature::MergeFrom(
         from._internal_one());
   }
   if (from._internal_has_two()) {
-    _this->_internal_mutable_two()->::com::sekirocc::face_service::FaceFeature::MergeFrom(
+    _this->_internal_mutable_two()->::com::sekirocc::common::FaceFeature::MergeFrom(
         from._internal_two());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
@@ -1432,12 +1431,12 @@ const char* CompareResponse::_InternalParse(const char* ptr, ::_pbi::ParseContex
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // .com.sekirocc.face_service.ResultCode code = 1;
+      // .com.sekirocc.common.ResultCode code = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
           uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-          _internal_set_code(static_cast<::com::sekirocc::face_service::ResultCode>(val));
+          _internal_set_code(static_cast<::com::sekirocc::common::ResultCode>(val));
         } else
           goto handle_unusual;
         continue;
@@ -1478,7 +1477,7 @@ uint8_t* CompareResponse::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .com.sekirocc.face_service.ResultCode code = 1;
+  // .com.sekirocc.common.ResultCode code = 1;
   if (this->_internal_code() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteEnumToArray(
@@ -1511,7 +1510,7 @@ size_t CompareResponse::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // .com.sekirocc.face_service.ResultCode code = 1;
+  // .com.sekirocc.common.ResultCode code = 1;
   if (this->_internal_code() != 0) {
     total_size += 1 +
       ::_pbi::WireFormatLite::EnumSize(this->_internal_code());

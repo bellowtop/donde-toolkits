@@ -25,3 +25,9 @@ ${protoc_path} -I${googleapis_path} -I. \
    --grpc_out=./gen/pb-cpp \
    --plugin=protoc-gen-grpc=${grpc_cpp_plugin_path} \
    feature_search.proto
+
+${protoc_path} -I${googleapis_path} -I. \
+   --cpp_out=./gen/pb-cpp \
+   --grpc_out=./gen/pb-cpp \
+   --plugin=protoc-gen-grpc=${grpc_cpp_plugin_path} \
+   feature_search_inner.proto

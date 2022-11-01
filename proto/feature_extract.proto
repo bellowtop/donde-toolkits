@@ -8,30 +8,29 @@ option go_package = "github.com/sekirocc/face-recognition-service/face_service";
 
 package com.sekirocc.face_service;
 
-
 // Face Service
-message DetectionRequest { Image image = 1; }
+message DetectionRequest { com.sekirocc.common.Image image = 1; }
 
 message DetectionResponse {
-    ResultCode code = 1;
-    repeated FaceRectangle face_rects = 2;
+    com.sekirocc.common.ResultCode code = 1;
+    repeated com.sekirocc.common.FaceRectangle face_rects = 2;
 }
 
-message ExtractionRequest { Image image = 1; }
+message ExtractionRequest { com.sekirocc.common.Image image = 1; }
 
 message ExtractionResponse {
-    ResultCode code = 1;
-    repeated FaceRectangle face_rects = 2;
-    repeated FaceFeature face_features = 3;
+    com.sekirocc.common.ResultCode code = 1;
+    repeated com.sekirocc.common.FaceRectangle face_rects = 2;
+    repeated com.sekirocc.common.FaceFeature face_features = 3;
 }
 
 message CompareRequest {
-    FaceFeature one = 1;
-    FaceFeature two = 2;
+    com.sekirocc.common.FaceFeature one = 1;
+    com.sekirocc.common.FaceFeature two = 2;
 }
 
 message CompareResponse {
-    ResultCode code = 1;
+    com.sekirocc.common.ResultCode code = 1;
     float score = 2;
 }
 

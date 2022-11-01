@@ -21,13 +21,16 @@
 #include <grpcpp/impl/codegen/sync_stream.h>
 namespace com {
 namespace sekirocc {
-namespace face_service {
+namespace feature_search {
 
 static const char* FeatureSearch_method_names[] = {
-  "/com.sekirocc.face_service.FeatureSearch/TrainIndex",
-  "/com.sekirocc.face_service.FeatureSearch/AddFeature",
-  "/com.sekirocc.face_service.FeatureSearch/DeleteFeature",
-  "/com.sekirocc.face_service.FeatureSearch/SearchFeature",
+  "/com.sekirocc.feature_search.FeatureSearch/DBNew",
+  "/com.sekirocc.feature_search.FeatureSearch/DBList",
+  "/com.sekirocc.feature_search.FeatureSearch/DBGet",
+  "/com.sekirocc.feature_search.FeatureSearch/DBDelete",
+  "/com.sekirocc.feature_search.FeatureSearch/AddFeature",
+  "/com.sekirocc.feature_search.FeatureSearch/DeleteFeature",
+  "/com.sekirocc.feature_search.FeatureSearch/SearchFeature",
 };
 
 std::unique_ptr< FeatureSearch::Stub> FeatureSearch::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -37,98 +40,170 @@ std::unique_ptr< FeatureSearch::Stub> FeatureSearch::NewStub(const std::shared_p
 }
 
 FeatureSearch::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
-  : channel_(channel), rpcmethod_TrainIndex_(FeatureSearch_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_AddFeature_(FeatureSearch_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_DeleteFeature_(FeatureSearch_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SearchFeature_(FeatureSearch_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  : channel_(channel), rpcmethod_DBNew_(FeatureSearch_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_DBList_(FeatureSearch_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_DBGet_(FeatureSearch_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_DBDelete_(FeatureSearch_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_AddFeature_(FeatureSearch_method_names[4], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_DeleteFeature_(FeatureSearch_method_names[5], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SearchFeature_(FeatureSearch_method_names[6], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
-::grpc::Status FeatureSearch::Stub::TrainIndex(::grpc::ClientContext* context, const ::com::sekirocc::face_service::TrainIndexRequest& request, ::com::sekirocc::face_service::TrainIndexResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::com::sekirocc::face_service::TrainIndexRequest, ::com::sekirocc::face_service::TrainIndexResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_TrainIndex_, context, request, response);
+::grpc::Status FeatureSearch::Stub::DBNew(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBNewRequest& request, ::com::sekirocc::feature_search::DBNewResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::com::sekirocc::feature_search::DBNewRequest, ::com::sekirocc::feature_search::DBNewResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_DBNew_, context, request, response);
 }
 
-void FeatureSearch::Stub::async::TrainIndex(::grpc::ClientContext* context, const ::com::sekirocc::face_service::TrainIndexRequest* request, ::com::sekirocc::face_service::TrainIndexResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::com::sekirocc::face_service::TrainIndexRequest, ::com::sekirocc::face_service::TrainIndexResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_TrainIndex_, context, request, response, std::move(f));
+void FeatureSearch::Stub::async::DBNew(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBNewRequest* request, ::com::sekirocc::feature_search::DBNewResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::com::sekirocc::feature_search::DBNewRequest, ::com::sekirocc::feature_search::DBNewResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_DBNew_, context, request, response, std::move(f));
 }
 
-void FeatureSearch::Stub::async::TrainIndex(::grpc::ClientContext* context, const ::com::sekirocc::face_service::TrainIndexRequest* request, ::com::sekirocc::face_service::TrainIndexResponse* response, ::grpc::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_TrainIndex_, context, request, response, reactor);
+void FeatureSearch::Stub::async::DBNew(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBNewRequest* request, ::com::sekirocc::feature_search::DBNewResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_DBNew_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::TrainIndexResponse>* FeatureSearch::Stub::PrepareAsyncTrainIndexRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::TrainIndexRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::com::sekirocc::face_service::TrainIndexResponse, ::com::sekirocc::face_service::TrainIndexRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_TrainIndex_, context, request);
+::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBNewResponse>* FeatureSearch::Stub::PrepareAsyncDBNewRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBNewRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::com::sekirocc::feature_search::DBNewResponse, ::com::sekirocc::feature_search::DBNewRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_DBNew_, context, request);
 }
 
-::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::TrainIndexResponse>* FeatureSearch::Stub::AsyncTrainIndexRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::TrainIndexRequest& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBNewResponse>* FeatureSearch::Stub::AsyncDBNewRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBNewRequest& request, ::grpc::CompletionQueue* cq) {
   auto* result =
-    this->PrepareAsyncTrainIndexRaw(context, request, cq);
+    this->PrepareAsyncDBNewRaw(context, request, cq);
   result->StartCall();
   return result;
 }
 
-::grpc::Status FeatureSearch::Stub::AddFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::AddFeatureRequest& request, ::com::sekirocc::face_service::AddFeatureResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::com::sekirocc::face_service::AddFeatureRequest, ::com::sekirocc::face_service::AddFeatureResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_AddFeature_, context, request, response);
+::grpc::Status FeatureSearch::Stub::DBList(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBListRequest& request, ::com::sekirocc::feature_search::DBListResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::com::sekirocc::feature_search::DBListRequest, ::com::sekirocc::feature_search::DBListResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_DBList_, context, request, response);
 }
 
-void FeatureSearch::Stub::async::AddFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::AddFeatureRequest* request, ::com::sekirocc::face_service::AddFeatureResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::com::sekirocc::face_service::AddFeatureRequest, ::com::sekirocc::face_service::AddFeatureResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_AddFeature_, context, request, response, std::move(f));
+void FeatureSearch::Stub::async::DBList(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBListRequest* request, ::com::sekirocc::feature_search::DBListResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::com::sekirocc::feature_search::DBListRequest, ::com::sekirocc::feature_search::DBListResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_DBList_, context, request, response, std::move(f));
 }
 
-void FeatureSearch::Stub::async::AddFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::AddFeatureRequest* request, ::com::sekirocc::face_service::AddFeatureResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+void FeatureSearch::Stub::async::DBList(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBListRequest* request, ::com::sekirocc::feature_search::DBListResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_DBList_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBListResponse>* FeatureSearch::Stub::PrepareAsyncDBListRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBListRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::com::sekirocc::feature_search::DBListResponse, ::com::sekirocc::feature_search::DBListRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_DBList_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBListResponse>* FeatureSearch::Stub::AsyncDBListRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBListRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncDBListRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status FeatureSearch::Stub::DBGet(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBGetRequest& request, ::com::sekirocc::feature_search::DBGetResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::com::sekirocc::feature_search::DBGetRequest, ::com::sekirocc::feature_search::DBGetResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_DBGet_, context, request, response);
+}
+
+void FeatureSearch::Stub::async::DBGet(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBGetRequest* request, ::com::sekirocc::feature_search::DBGetResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::com::sekirocc::feature_search::DBGetRequest, ::com::sekirocc::feature_search::DBGetResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_DBGet_, context, request, response, std::move(f));
+}
+
+void FeatureSearch::Stub::async::DBGet(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBGetRequest* request, ::com::sekirocc::feature_search::DBGetResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_DBGet_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBGetResponse>* FeatureSearch::Stub::PrepareAsyncDBGetRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBGetRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::com::sekirocc::feature_search::DBGetResponse, ::com::sekirocc::feature_search::DBGetRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_DBGet_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBGetResponse>* FeatureSearch::Stub::AsyncDBGetRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBGetRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncDBGetRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status FeatureSearch::Stub::DBDelete(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBDeleteRequest& request, ::com::sekirocc::feature_search::DBDeleteResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::com::sekirocc::feature_search::DBDeleteRequest, ::com::sekirocc::feature_search::DBDeleteResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_DBDelete_, context, request, response);
+}
+
+void FeatureSearch::Stub::async::DBDelete(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBDeleteRequest* request, ::com::sekirocc::feature_search::DBDeleteResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::com::sekirocc::feature_search::DBDeleteRequest, ::com::sekirocc::feature_search::DBDeleteResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_DBDelete_, context, request, response, std::move(f));
+}
+
+void FeatureSearch::Stub::async::DBDelete(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBDeleteRequest* request, ::com::sekirocc::feature_search::DBDeleteResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_DBDelete_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBDeleteResponse>* FeatureSearch::Stub::PrepareAsyncDBDeleteRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBDeleteRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::com::sekirocc::feature_search::DBDeleteResponse, ::com::sekirocc::feature_search::DBDeleteRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_DBDelete_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBDeleteResponse>* FeatureSearch::Stub::AsyncDBDeleteRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBDeleteRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncDBDeleteRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status FeatureSearch::Stub::AddFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::AddFeatureRequest& request, ::com::sekirocc::feature_search::AddFeatureResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::com::sekirocc::feature_search::AddFeatureRequest, ::com::sekirocc::feature_search::AddFeatureResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_AddFeature_, context, request, response);
+}
+
+void FeatureSearch::Stub::async::AddFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::AddFeatureRequest* request, ::com::sekirocc::feature_search::AddFeatureResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::com::sekirocc::feature_search::AddFeatureRequest, ::com::sekirocc::feature_search::AddFeatureResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_AddFeature_, context, request, response, std::move(f));
+}
+
+void FeatureSearch::Stub::async::AddFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::AddFeatureRequest* request, ::com::sekirocc::feature_search::AddFeatureResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_AddFeature_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::AddFeatureResponse>* FeatureSearch::Stub::PrepareAsyncAddFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::AddFeatureRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::com::sekirocc::face_service::AddFeatureResponse, ::com::sekirocc::face_service::AddFeatureRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_AddFeature_, context, request);
+::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::AddFeatureResponse>* FeatureSearch::Stub::PrepareAsyncAddFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::AddFeatureRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::com::sekirocc::feature_search::AddFeatureResponse, ::com::sekirocc::feature_search::AddFeatureRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_AddFeature_, context, request);
 }
 
-::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::AddFeatureResponse>* FeatureSearch::Stub::AsyncAddFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::AddFeatureRequest& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::AddFeatureResponse>* FeatureSearch::Stub::AsyncAddFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::AddFeatureRequest& request, ::grpc::CompletionQueue* cq) {
   auto* result =
     this->PrepareAsyncAddFeatureRaw(context, request, cq);
   result->StartCall();
   return result;
 }
 
-::grpc::Status FeatureSearch::Stub::DeleteFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DeleteFeatureRequest& request, ::com::sekirocc::face_service::DeleteFeatureResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::com::sekirocc::face_service::DeleteFeatureRequest, ::com::sekirocc::face_service::DeleteFeatureResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_DeleteFeature_, context, request, response);
+::grpc::Status FeatureSearch::Stub::DeleteFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DeleteFeatureRequest& request, ::com::sekirocc::feature_search::DeleteFeatureResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::com::sekirocc::feature_search::DeleteFeatureRequest, ::com::sekirocc::feature_search::DeleteFeatureResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_DeleteFeature_, context, request, response);
 }
 
-void FeatureSearch::Stub::async::DeleteFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DeleteFeatureRequest* request, ::com::sekirocc::face_service::DeleteFeatureResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::com::sekirocc::face_service::DeleteFeatureRequest, ::com::sekirocc::face_service::DeleteFeatureResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_DeleteFeature_, context, request, response, std::move(f));
+void FeatureSearch::Stub::async::DeleteFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DeleteFeatureRequest* request, ::com::sekirocc::feature_search::DeleteFeatureResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::com::sekirocc::feature_search::DeleteFeatureRequest, ::com::sekirocc::feature_search::DeleteFeatureResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_DeleteFeature_, context, request, response, std::move(f));
 }
 
-void FeatureSearch::Stub::async::DeleteFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DeleteFeatureRequest* request, ::com::sekirocc::face_service::DeleteFeatureResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+void FeatureSearch::Stub::async::DeleteFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DeleteFeatureRequest* request, ::com::sekirocc::feature_search::DeleteFeatureResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_DeleteFeature_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::DeleteFeatureResponse>* FeatureSearch::Stub::PrepareAsyncDeleteFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DeleteFeatureRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::com::sekirocc::face_service::DeleteFeatureResponse, ::com::sekirocc::face_service::DeleteFeatureRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_DeleteFeature_, context, request);
+::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DeleteFeatureResponse>* FeatureSearch::Stub::PrepareAsyncDeleteFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DeleteFeatureRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::com::sekirocc::feature_search::DeleteFeatureResponse, ::com::sekirocc::feature_search::DeleteFeatureRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_DeleteFeature_, context, request);
 }
 
-::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::DeleteFeatureResponse>* FeatureSearch::Stub::AsyncDeleteFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DeleteFeatureRequest& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DeleteFeatureResponse>* FeatureSearch::Stub::AsyncDeleteFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DeleteFeatureRequest& request, ::grpc::CompletionQueue* cq) {
   auto* result =
     this->PrepareAsyncDeleteFeatureRaw(context, request, cq);
   result->StartCall();
   return result;
 }
 
-::grpc::Status FeatureSearch::Stub::SearchFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::SearchFeatureRequest& request, ::com::sekirocc::face_service::SearchFeatureResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::com::sekirocc::face_service::SearchFeatureRequest, ::com::sekirocc::face_service::SearchFeatureResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SearchFeature_, context, request, response);
+::grpc::Status FeatureSearch::Stub::SearchFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::SearchFeatureRequest& request, ::com::sekirocc::feature_search::SearchFeatureResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::com::sekirocc::feature_search::SearchFeatureRequest, ::com::sekirocc::feature_search::SearchFeatureResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SearchFeature_, context, request, response);
 }
 
-void FeatureSearch::Stub::async::SearchFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::SearchFeatureRequest* request, ::com::sekirocc::face_service::SearchFeatureResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::com::sekirocc::face_service::SearchFeatureRequest, ::com::sekirocc::face_service::SearchFeatureResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SearchFeature_, context, request, response, std::move(f));
+void FeatureSearch::Stub::async::SearchFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::SearchFeatureRequest* request, ::com::sekirocc::feature_search::SearchFeatureResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::com::sekirocc::feature_search::SearchFeatureRequest, ::com::sekirocc::feature_search::SearchFeatureResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SearchFeature_, context, request, response, std::move(f));
 }
 
-void FeatureSearch::Stub::async::SearchFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::SearchFeatureRequest* request, ::com::sekirocc::face_service::SearchFeatureResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+void FeatureSearch::Stub::async::SearchFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::SearchFeatureRequest* request, ::com::sekirocc::feature_search::SearchFeatureResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SearchFeature_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::SearchFeatureResponse>* FeatureSearch::Stub::PrepareAsyncSearchFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::SearchFeatureRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::com::sekirocc::face_service::SearchFeatureResponse, ::com::sekirocc::face_service::SearchFeatureRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SearchFeature_, context, request);
+::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::SearchFeatureResponse>* FeatureSearch::Stub::PrepareAsyncSearchFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::SearchFeatureRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::com::sekirocc::feature_search::SearchFeatureResponse, ::com::sekirocc::feature_search::SearchFeatureRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SearchFeature_, context, request);
 }
 
-::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::SearchFeatureResponse>* FeatureSearch::Stub::AsyncSearchFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::SearchFeatureRequest& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::SearchFeatureResponse>* FeatureSearch::Stub::AsyncSearchFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::SearchFeatureRequest& request, ::grpc::CompletionQueue* cq) {
   auto* result =
     this->PrepareAsyncSearchFeatureRaw(context, request, cq);
   result->StartCall();
@@ -139,41 +214,71 @@ FeatureSearch::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       FeatureSearch_method_names[0],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< FeatureSearch::Service, ::com::sekirocc::face_service::TrainIndexRequest, ::com::sekirocc::face_service::TrainIndexResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+      new ::grpc::internal::RpcMethodHandler< FeatureSearch::Service, ::com::sekirocc::feature_search::DBNewRequest, ::com::sekirocc::feature_search::DBNewResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](FeatureSearch::Service* service,
              ::grpc::ServerContext* ctx,
-             const ::com::sekirocc::face_service::TrainIndexRequest* req,
-             ::com::sekirocc::face_service::TrainIndexResponse* resp) {
-               return service->TrainIndex(ctx, req, resp);
+             const ::com::sekirocc::feature_search::DBNewRequest* req,
+             ::com::sekirocc::feature_search::DBNewResponse* resp) {
+               return service->DBNew(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       FeatureSearch_method_names[1],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< FeatureSearch::Service, ::com::sekirocc::face_service::AddFeatureRequest, ::com::sekirocc::face_service::AddFeatureResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+      new ::grpc::internal::RpcMethodHandler< FeatureSearch::Service, ::com::sekirocc::feature_search::DBListRequest, ::com::sekirocc::feature_search::DBListResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](FeatureSearch::Service* service,
              ::grpc::ServerContext* ctx,
-             const ::com::sekirocc::face_service::AddFeatureRequest* req,
-             ::com::sekirocc::face_service::AddFeatureResponse* resp) {
-               return service->AddFeature(ctx, req, resp);
+             const ::com::sekirocc::feature_search::DBListRequest* req,
+             ::com::sekirocc::feature_search::DBListResponse* resp) {
+               return service->DBList(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       FeatureSearch_method_names[2],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< FeatureSearch::Service, ::com::sekirocc::face_service::DeleteFeatureRequest, ::com::sekirocc::face_service::DeleteFeatureResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+      new ::grpc::internal::RpcMethodHandler< FeatureSearch::Service, ::com::sekirocc::feature_search::DBGetRequest, ::com::sekirocc::feature_search::DBGetResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](FeatureSearch::Service* service,
              ::grpc::ServerContext* ctx,
-             const ::com::sekirocc::face_service::DeleteFeatureRequest* req,
-             ::com::sekirocc::face_service::DeleteFeatureResponse* resp) {
-               return service->DeleteFeature(ctx, req, resp);
+             const ::com::sekirocc::feature_search::DBGetRequest* req,
+             ::com::sekirocc::feature_search::DBGetResponse* resp) {
+               return service->DBGet(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       FeatureSearch_method_names[3],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< FeatureSearch::Service, ::com::sekirocc::face_service::SearchFeatureRequest, ::com::sekirocc::face_service::SearchFeatureResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+      new ::grpc::internal::RpcMethodHandler< FeatureSearch::Service, ::com::sekirocc::feature_search::DBDeleteRequest, ::com::sekirocc::feature_search::DBDeleteResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](FeatureSearch::Service* service,
              ::grpc::ServerContext* ctx,
-             const ::com::sekirocc::face_service::SearchFeatureRequest* req,
-             ::com::sekirocc::face_service::SearchFeatureResponse* resp) {
+             const ::com::sekirocc::feature_search::DBDeleteRequest* req,
+             ::com::sekirocc::feature_search::DBDeleteResponse* resp) {
+               return service->DBDelete(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      FeatureSearch_method_names[4],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< FeatureSearch::Service, ::com::sekirocc::feature_search::AddFeatureRequest, ::com::sekirocc::feature_search::AddFeatureResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](FeatureSearch::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::com::sekirocc::feature_search::AddFeatureRequest* req,
+             ::com::sekirocc::feature_search::AddFeatureResponse* resp) {
+               return service->AddFeature(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      FeatureSearch_method_names[5],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< FeatureSearch::Service, ::com::sekirocc::feature_search::DeleteFeatureRequest, ::com::sekirocc::feature_search::DeleteFeatureResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](FeatureSearch::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::com::sekirocc::feature_search::DeleteFeatureRequest* req,
+             ::com::sekirocc::feature_search::DeleteFeatureResponse* resp) {
+               return service->DeleteFeature(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      FeatureSearch_method_names[6],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< FeatureSearch::Service, ::com::sekirocc::feature_search::SearchFeatureRequest, ::com::sekirocc::feature_search::SearchFeatureResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](FeatureSearch::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::com::sekirocc::feature_search::SearchFeatureRequest* req,
+             ::com::sekirocc::feature_search::SearchFeatureResponse* resp) {
                return service->SearchFeature(ctx, req, resp);
              }, this)));
 }
@@ -181,28 +286,49 @@ FeatureSearch::Service::Service() {
 FeatureSearch::Service::~Service() {
 }
 
-::grpc::Status FeatureSearch::Service::TrainIndex(::grpc::ServerContext* context, const ::com::sekirocc::face_service::TrainIndexRequest* request, ::com::sekirocc::face_service::TrainIndexResponse* response) {
+::grpc::Status FeatureSearch::Service::DBNew(::grpc::ServerContext* context, const ::com::sekirocc::feature_search::DBNewRequest* request, ::com::sekirocc::feature_search::DBNewResponse* response) {
   (void) context;
   (void) request;
   (void) response;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status FeatureSearch::Service::AddFeature(::grpc::ServerContext* context, const ::com::sekirocc::face_service::AddFeatureRequest* request, ::com::sekirocc::face_service::AddFeatureResponse* response) {
+::grpc::Status FeatureSearch::Service::DBList(::grpc::ServerContext* context, const ::com::sekirocc::feature_search::DBListRequest* request, ::com::sekirocc::feature_search::DBListResponse* response) {
   (void) context;
   (void) request;
   (void) response;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status FeatureSearch::Service::DeleteFeature(::grpc::ServerContext* context, const ::com::sekirocc::face_service::DeleteFeatureRequest* request, ::com::sekirocc::face_service::DeleteFeatureResponse* response) {
+::grpc::Status FeatureSearch::Service::DBGet(::grpc::ServerContext* context, const ::com::sekirocc::feature_search::DBGetRequest* request, ::com::sekirocc::feature_search::DBGetResponse* response) {
   (void) context;
   (void) request;
   (void) response;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status FeatureSearch::Service::SearchFeature(::grpc::ServerContext* context, const ::com::sekirocc::face_service::SearchFeatureRequest* request, ::com::sekirocc::face_service::SearchFeatureResponse* response) {
+::grpc::Status FeatureSearch::Service::DBDelete(::grpc::ServerContext* context, const ::com::sekirocc::feature_search::DBDeleteRequest* request, ::com::sekirocc::feature_search::DBDeleteResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status FeatureSearch::Service::AddFeature(::grpc::ServerContext* context, const ::com::sekirocc::feature_search::AddFeatureRequest* request, ::com::sekirocc::feature_search::AddFeatureResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status FeatureSearch::Service::DeleteFeature(::grpc::ServerContext* context, const ::com::sekirocc::feature_search::DeleteFeatureRequest* request, ::com::sekirocc::feature_search::DeleteFeatureResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status FeatureSearch::Service::SearchFeature(::grpc::ServerContext* context, const ::com::sekirocc::feature_search::SearchFeatureRequest* request, ::com::sekirocc::feature_search::SearchFeatureResponse* response) {
   (void) context;
   (void) request;
   (void) response;
@@ -212,5 +338,5 @@ FeatureSearch::Service::~Service() {
 
 }  // namespace com
 }  // namespace sekirocc
-}  // namespace face_service
+}  // namespace feature_search
 

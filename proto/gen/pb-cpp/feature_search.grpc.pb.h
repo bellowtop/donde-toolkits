@@ -27,112 +27,172 @@
 
 namespace com {
 namespace sekirocc {
-namespace face_service {
+namespace feature_search {
 
 // feature search service
 class FeatureSearch final {
  public:
   static constexpr char const* service_full_name() {
-    return "com.sekirocc.face_service.FeatureSearch";
+    return "com.sekirocc.feature_search.FeatureSearch";
   }
   class StubInterface {
    public:
     virtual ~StubInterface() {}
-    virtual ::grpc::Status TrainIndex(::grpc::ClientContext* context, const ::com::sekirocc::face_service::TrainIndexRequest& request, ::com::sekirocc::face_service::TrainIndexResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::TrainIndexResponse>> AsyncTrainIndex(::grpc::ClientContext* context, const ::com::sekirocc::face_service::TrainIndexRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::TrainIndexResponse>>(AsyncTrainIndexRaw(context, request, cq));
+    virtual ::grpc::Status DBNew(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBNewRequest& request, ::com::sekirocc::feature_search::DBNewResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DBNewResponse>> AsyncDBNew(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBNewRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DBNewResponse>>(AsyncDBNewRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::TrainIndexResponse>> PrepareAsyncTrainIndex(::grpc::ClientContext* context, const ::com::sekirocc::face_service::TrainIndexRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::TrainIndexResponse>>(PrepareAsyncTrainIndexRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DBNewResponse>> PrepareAsyncDBNew(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBNewRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DBNewResponse>>(PrepareAsyncDBNewRaw(context, request, cq));
     }
-    virtual ::grpc::Status AddFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::AddFeatureRequest& request, ::com::sekirocc::face_service::AddFeatureResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::AddFeatureResponse>> AsyncAddFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::AddFeatureRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::AddFeatureResponse>>(AsyncAddFeatureRaw(context, request, cq));
+    virtual ::grpc::Status DBList(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBListRequest& request, ::com::sekirocc::feature_search::DBListResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DBListResponse>> AsyncDBList(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBListRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DBListResponse>>(AsyncDBListRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::AddFeatureResponse>> PrepareAsyncAddFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::AddFeatureRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::AddFeatureResponse>>(PrepareAsyncAddFeatureRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DBListResponse>> PrepareAsyncDBList(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBListRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DBListResponse>>(PrepareAsyncDBListRaw(context, request, cq));
     }
-    virtual ::grpc::Status DeleteFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DeleteFeatureRequest& request, ::com::sekirocc::face_service::DeleteFeatureResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::DeleteFeatureResponse>> AsyncDeleteFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DeleteFeatureRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::DeleteFeatureResponse>>(AsyncDeleteFeatureRaw(context, request, cq));
+    virtual ::grpc::Status DBGet(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBGetRequest& request, ::com::sekirocc::feature_search::DBGetResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DBGetResponse>> AsyncDBGet(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBGetRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DBGetResponse>>(AsyncDBGetRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::DeleteFeatureResponse>> PrepareAsyncDeleteFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DeleteFeatureRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::DeleteFeatureResponse>>(PrepareAsyncDeleteFeatureRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DBGetResponse>> PrepareAsyncDBGet(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBGetRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DBGetResponse>>(PrepareAsyncDBGetRaw(context, request, cq));
     }
-    virtual ::grpc::Status SearchFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::SearchFeatureRequest& request, ::com::sekirocc::face_service::SearchFeatureResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::SearchFeatureResponse>> AsyncSearchFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::SearchFeatureRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::SearchFeatureResponse>>(AsyncSearchFeatureRaw(context, request, cq));
+    virtual ::grpc::Status DBDelete(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBDeleteRequest& request, ::com::sekirocc::feature_search::DBDeleteResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DBDeleteResponse>> AsyncDBDelete(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBDeleteRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DBDeleteResponse>>(AsyncDBDeleteRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::SearchFeatureResponse>> PrepareAsyncSearchFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::SearchFeatureRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::SearchFeatureResponse>>(PrepareAsyncSearchFeatureRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DBDeleteResponse>> PrepareAsyncDBDelete(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBDeleteRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DBDeleteResponse>>(PrepareAsyncDBDeleteRaw(context, request, cq));
+    }
+    virtual ::grpc::Status AddFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::AddFeatureRequest& request, ::com::sekirocc::feature_search::AddFeatureResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::AddFeatureResponse>> AsyncAddFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::AddFeatureRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::AddFeatureResponse>>(AsyncAddFeatureRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::AddFeatureResponse>> PrepareAsyncAddFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::AddFeatureRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::AddFeatureResponse>>(PrepareAsyncAddFeatureRaw(context, request, cq));
+    }
+    virtual ::grpc::Status DeleteFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DeleteFeatureRequest& request, ::com::sekirocc::feature_search::DeleteFeatureResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DeleteFeatureResponse>> AsyncDeleteFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DeleteFeatureRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DeleteFeatureResponse>>(AsyncDeleteFeatureRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DeleteFeatureResponse>> PrepareAsyncDeleteFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DeleteFeatureRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DeleteFeatureResponse>>(PrepareAsyncDeleteFeatureRaw(context, request, cq));
+    }
+    virtual ::grpc::Status SearchFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::SearchFeatureRequest& request, ::com::sekirocc::feature_search::SearchFeatureResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::SearchFeatureResponse>> AsyncSearchFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::SearchFeatureRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::SearchFeatureResponse>>(AsyncSearchFeatureRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::SearchFeatureResponse>> PrepareAsyncSearchFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::SearchFeatureRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::SearchFeatureResponse>>(PrepareAsyncSearchFeatureRaw(context, request, cq));
     }
     class async_interface {
      public:
       virtual ~async_interface() {}
-      virtual void TrainIndex(::grpc::ClientContext* context, const ::com::sekirocc::face_service::TrainIndexRequest* request, ::com::sekirocc::face_service::TrainIndexResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void TrainIndex(::grpc::ClientContext* context, const ::com::sekirocc::face_service::TrainIndexRequest* request, ::com::sekirocc::face_service::TrainIndexResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      virtual void AddFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::AddFeatureRequest* request, ::com::sekirocc::face_service::AddFeatureResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void AddFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::AddFeatureRequest* request, ::com::sekirocc::face_service::AddFeatureResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      virtual void DeleteFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DeleteFeatureRequest* request, ::com::sekirocc::face_service::DeleteFeatureResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void DeleteFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DeleteFeatureRequest* request, ::com::sekirocc::face_service::DeleteFeatureResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      virtual void SearchFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::SearchFeatureRequest* request, ::com::sekirocc::face_service::SearchFeatureResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void SearchFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::SearchFeatureRequest* request, ::com::sekirocc::face_service::SearchFeatureResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void DBNew(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBNewRequest* request, ::com::sekirocc::feature_search::DBNewResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void DBNew(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBNewRequest* request, ::com::sekirocc::feature_search::DBNewResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void DBList(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBListRequest* request, ::com::sekirocc::feature_search::DBListResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void DBList(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBListRequest* request, ::com::sekirocc::feature_search::DBListResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void DBGet(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBGetRequest* request, ::com::sekirocc::feature_search::DBGetResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void DBGet(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBGetRequest* request, ::com::sekirocc::feature_search::DBGetResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void DBDelete(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBDeleteRequest* request, ::com::sekirocc::feature_search::DBDeleteResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void DBDelete(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBDeleteRequest* request, ::com::sekirocc::feature_search::DBDeleteResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void AddFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::AddFeatureRequest* request, ::com::sekirocc::feature_search::AddFeatureResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void AddFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::AddFeatureRequest* request, ::com::sekirocc::feature_search::AddFeatureResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void DeleteFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DeleteFeatureRequest* request, ::com::sekirocc::feature_search::DeleteFeatureResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void DeleteFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DeleteFeatureRequest* request, ::com::sekirocc::feature_search::DeleteFeatureResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void SearchFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::SearchFeatureRequest* request, ::com::sekirocc::feature_search::SearchFeatureResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void SearchFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::SearchFeatureRequest* request, ::com::sekirocc::feature_search::SearchFeatureResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
    private:
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::TrainIndexResponse>* AsyncTrainIndexRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::TrainIndexRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::TrainIndexResponse>* PrepareAsyncTrainIndexRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::TrainIndexRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::AddFeatureResponse>* AsyncAddFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::AddFeatureRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::AddFeatureResponse>* PrepareAsyncAddFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::AddFeatureRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::DeleteFeatureResponse>* AsyncDeleteFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DeleteFeatureRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::DeleteFeatureResponse>* PrepareAsyncDeleteFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DeleteFeatureRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::SearchFeatureResponse>* AsyncSearchFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::SearchFeatureRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::face_service::SearchFeatureResponse>* PrepareAsyncSearchFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::SearchFeatureRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DBNewResponse>* AsyncDBNewRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBNewRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DBNewResponse>* PrepareAsyncDBNewRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBNewRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DBListResponse>* AsyncDBListRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBListRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DBListResponse>* PrepareAsyncDBListRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBListRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DBGetResponse>* AsyncDBGetRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBGetRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DBGetResponse>* PrepareAsyncDBGetRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBGetRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DBDeleteResponse>* AsyncDBDeleteRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBDeleteRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DBDeleteResponse>* PrepareAsyncDBDeleteRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBDeleteRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::AddFeatureResponse>* AsyncAddFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::AddFeatureRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::AddFeatureResponse>* PrepareAsyncAddFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::AddFeatureRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DeleteFeatureResponse>* AsyncDeleteFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DeleteFeatureRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::DeleteFeatureResponse>* PrepareAsyncDeleteFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DeleteFeatureRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::SearchFeatureResponse>* AsyncSearchFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::SearchFeatureRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::SearchFeatureResponse>* PrepareAsyncSearchFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::SearchFeatureRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
     Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
-    ::grpc::Status TrainIndex(::grpc::ClientContext* context, const ::com::sekirocc::face_service::TrainIndexRequest& request, ::com::sekirocc::face_service::TrainIndexResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::TrainIndexResponse>> AsyncTrainIndex(::grpc::ClientContext* context, const ::com::sekirocc::face_service::TrainIndexRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::TrainIndexResponse>>(AsyncTrainIndexRaw(context, request, cq));
+    ::grpc::Status DBNew(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBNewRequest& request, ::com::sekirocc::feature_search::DBNewResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBNewResponse>> AsyncDBNew(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBNewRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBNewResponse>>(AsyncDBNewRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::TrainIndexResponse>> PrepareAsyncTrainIndex(::grpc::ClientContext* context, const ::com::sekirocc::face_service::TrainIndexRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::TrainIndexResponse>>(PrepareAsyncTrainIndexRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBNewResponse>> PrepareAsyncDBNew(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBNewRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBNewResponse>>(PrepareAsyncDBNewRaw(context, request, cq));
     }
-    ::grpc::Status AddFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::AddFeatureRequest& request, ::com::sekirocc::face_service::AddFeatureResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::AddFeatureResponse>> AsyncAddFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::AddFeatureRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::AddFeatureResponse>>(AsyncAddFeatureRaw(context, request, cq));
+    ::grpc::Status DBList(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBListRequest& request, ::com::sekirocc::feature_search::DBListResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBListResponse>> AsyncDBList(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBListRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBListResponse>>(AsyncDBListRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::AddFeatureResponse>> PrepareAsyncAddFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::AddFeatureRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::AddFeatureResponse>>(PrepareAsyncAddFeatureRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBListResponse>> PrepareAsyncDBList(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBListRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBListResponse>>(PrepareAsyncDBListRaw(context, request, cq));
     }
-    ::grpc::Status DeleteFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DeleteFeatureRequest& request, ::com::sekirocc::face_service::DeleteFeatureResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::DeleteFeatureResponse>> AsyncDeleteFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DeleteFeatureRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::DeleteFeatureResponse>>(AsyncDeleteFeatureRaw(context, request, cq));
+    ::grpc::Status DBGet(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBGetRequest& request, ::com::sekirocc::feature_search::DBGetResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBGetResponse>> AsyncDBGet(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBGetRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBGetResponse>>(AsyncDBGetRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::DeleteFeatureResponse>> PrepareAsyncDeleteFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DeleteFeatureRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::DeleteFeatureResponse>>(PrepareAsyncDeleteFeatureRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBGetResponse>> PrepareAsyncDBGet(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBGetRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBGetResponse>>(PrepareAsyncDBGetRaw(context, request, cq));
     }
-    ::grpc::Status SearchFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::SearchFeatureRequest& request, ::com::sekirocc::face_service::SearchFeatureResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::SearchFeatureResponse>> AsyncSearchFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::SearchFeatureRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::SearchFeatureResponse>>(AsyncSearchFeatureRaw(context, request, cq));
+    ::grpc::Status DBDelete(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBDeleteRequest& request, ::com::sekirocc::feature_search::DBDeleteResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBDeleteResponse>> AsyncDBDelete(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBDeleteRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBDeleteResponse>>(AsyncDBDeleteRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::SearchFeatureResponse>> PrepareAsyncSearchFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::SearchFeatureRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::SearchFeatureResponse>>(PrepareAsyncSearchFeatureRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBDeleteResponse>> PrepareAsyncDBDelete(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBDeleteRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBDeleteResponse>>(PrepareAsyncDBDeleteRaw(context, request, cq));
+    }
+    ::grpc::Status AddFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::AddFeatureRequest& request, ::com::sekirocc::feature_search::AddFeatureResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::AddFeatureResponse>> AsyncAddFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::AddFeatureRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::AddFeatureResponse>>(AsyncAddFeatureRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::AddFeatureResponse>> PrepareAsyncAddFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::AddFeatureRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::AddFeatureResponse>>(PrepareAsyncAddFeatureRaw(context, request, cq));
+    }
+    ::grpc::Status DeleteFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DeleteFeatureRequest& request, ::com::sekirocc::feature_search::DeleteFeatureResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DeleteFeatureResponse>> AsyncDeleteFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DeleteFeatureRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DeleteFeatureResponse>>(AsyncDeleteFeatureRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DeleteFeatureResponse>> PrepareAsyncDeleteFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DeleteFeatureRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DeleteFeatureResponse>>(PrepareAsyncDeleteFeatureRaw(context, request, cq));
+    }
+    ::grpc::Status SearchFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::SearchFeatureRequest& request, ::com::sekirocc::feature_search::SearchFeatureResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::SearchFeatureResponse>> AsyncSearchFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::SearchFeatureRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::SearchFeatureResponse>>(AsyncSearchFeatureRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::SearchFeatureResponse>> PrepareAsyncSearchFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::SearchFeatureRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::SearchFeatureResponse>>(PrepareAsyncSearchFeatureRaw(context, request, cq));
     }
     class async final :
       public StubInterface::async_interface {
      public:
-      void TrainIndex(::grpc::ClientContext* context, const ::com::sekirocc::face_service::TrainIndexRequest* request, ::com::sekirocc::face_service::TrainIndexResponse* response, std::function<void(::grpc::Status)>) override;
-      void TrainIndex(::grpc::ClientContext* context, const ::com::sekirocc::face_service::TrainIndexRequest* request, ::com::sekirocc::face_service::TrainIndexResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void AddFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::AddFeatureRequest* request, ::com::sekirocc::face_service::AddFeatureResponse* response, std::function<void(::grpc::Status)>) override;
-      void AddFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::AddFeatureRequest* request, ::com::sekirocc::face_service::AddFeatureResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void DeleteFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DeleteFeatureRequest* request, ::com::sekirocc::face_service::DeleteFeatureResponse* response, std::function<void(::grpc::Status)>) override;
-      void DeleteFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DeleteFeatureRequest* request, ::com::sekirocc::face_service::DeleteFeatureResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void SearchFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::SearchFeatureRequest* request, ::com::sekirocc::face_service::SearchFeatureResponse* response, std::function<void(::grpc::Status)>) override;
-      void SearchFeature(::grpc::ClientContext* context, const ::com::sekirocc::face_service::SearchFeatureRequest* request, ::com::sekirocc::face_service::SearchFeatureResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void DBNew(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBNewRequest* request, ::com::sekirocc::feature_search::DBNewResponse* response, std::function<void(::grpc::Status)>) override;
+      void DBNew(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBNewRequest* request, ::com::sekirocc::feature_search::DBNewResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void DBList(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBListRequest* request, ::com::sekirocc::feature_search::DBListResponse* response, std::function<void(::grpc::Status)>) override;
+      void DBList(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBListRequest* request, ::com::sekirocc::feature_search::DBListResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void DBGet(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBGetRequest* request, ::com::sekirocc::feature_search::DBGetResponse* response, std::function<void(::grpc::Status)>) override;
+      void DBGet(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBGetRequest* request, ::com::sekirocc::feature_search::DBGetResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void DBDelete(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBDeleteRequest* request, ::com::sekirocc::feature_search::DBDeleteResponse* response, std::function<void(::grpc::Status)>) override;
+      void DBDelete(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBDeleteRequest* request, ::com::sekirocc::feature_search::DBDeleteResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void AddFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::AddFeatureRequest* request, ::com::sekirocc::feature_search::AddFeatureResponse* response, std::function<void(::grpc::Status)>) override;
+      void AddFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::AddFeatureRequest* request, ::com::sekirocc::feature_search::AddFeatureResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void DeleteFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DeleteFeatureRequest* request, ::com::sekirocc::feature_search::DeleteFeatureResponse* response, std::function<void(::grpc::Status)>) override;
+      void DeleteFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DeleteFeatureRequest* request, ::com::sekirocc::feature_search::DeleteFeatureResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void SearchFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::SearchFeatureRequest* request, ::com::sekirocc::feature_search::SearchFeatureResponse* response, std::function<void(::grpc::Status)>) override;
+      void SearchFeature(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::SearchFeatureRequest* request, ::com::sekirocc::feature_search::SearchFeatureResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -144,15 +204,24 @@ class FeatureSearch final {
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
     class async async_stub_{this};
-    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::TrainIndexResponse>* AsyncTrainIndexRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::TrainIndexRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::TrainIndexResponse>* PrepareAsyncTrainIndexRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::TrainIndexRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::AddFeatureResponse>* AsyncAddFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::AddFeatureRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::AddFeatureResponse>* PrepareAsyncAddFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::AddFeatureRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::DeleteFeatureResponse>* AsyncDeleteFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DeleteFeatureRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::DeleteFeatureResponse>* PrepareAsyncDeleteFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::DeleteFeatureRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::SearchFeatureResponse>* AsyncSearchFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::SearchFeatureRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::face_service::SearchFeatureResponse>* PrepareAsyncSearchFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::face_service::SearchFeatureRequest& request, ::grpc::CompletionQueue* cq) override;
-    const ::grpc::internal::RpcMethod rpcmethod_TrainIndex_;
+    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBNewResponse>* AsyncDBNewRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBNewRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBNewResponse>* PrepareAsyncDBNewRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBNewRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBListResponse>* AsyncDBListRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBListRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBListResponse>* PrepareAsyncDBListRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBListRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBGetResponse>* AsyncDBGetRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBGetRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBGetResponse>* PrepareAsyncDBGetRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBGetRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBDeleteResponse>* AsyncDBDeleteRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBDeleteRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DBDeleteResponse>* PrepareAsyncDBDeleteRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DBDeleteRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::AddFeatureResponse>* AsyncAddFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::AddFeatureRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::AddFeatureResponse>* PrepareAsyncAddFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::AddFeatureRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DeleteFeatureResponse>* AsyncDeleteFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DeleteFeatureRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::DeleteFeatureResponse>* PrepareAsyncDeleteFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::DeleteFeatureRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::SearchFeatureResponse>* AsyncSearchFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::SearchFeatureRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::SearchFeatureResponse>* PrepareAsyncSearchFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::SearchFeatureRequest& request, ::grpc::CompletionQueue* cq) override;
+    const ::grpc::internal::RpcMethod rpcmethod_DBNew_;
+    const ::grpc::internal::RpcMethod rpcmethod_DBList_;
+    const ::grpc::internal::RpcMethod rpcmethod_DBGet_;
+    const ::grpc::internal::RpcMethod rpcmethod_DBDelete_;
     const ::grpc::internal::RpcMethod rpcmethod_AddFeature_;
     const ::grpc::internal::RpcMethod rpcmethod_DeleteFeature_;
     const ::grpc::internal::RpcMethod rpcmethod_SearchFeature_;
@@ -163,29 +232,92 @@ class FeatureSearch final {
    public:
     Service();
     virtual ~Service();
-    virtual ::grpc::Status TrainIndex(::grpc::ServerContext* context, const ::com::sekirocc::face_service::TrainIndexRequest* request, ::com::sekirocc::face_service::TrainIndexResponse* response);
-    virtual ::grpc::Status AddFeature(::grpc::ServerContext* context, const ::com::sekirocc::face_service::AddFeatureRequest* request, ::com::sekirocc::face_service::AddFeatureResponse* response);
-    virtual ::grpc::Status DeleteFeature(::grpc::ServerContext* context, const ::com::sekirocc::face_service::DeleteFeatureRequest* request, ::com::sekirocc::face_service::DeleteFeatureResponse* response);
-    virtual ::grpc::Status SearchFeature(::grpc::ServerContext* context, const ::com::sekirocc::face_service::SearchFeatureRequest* request, ::com::sekirocc::face_service::SearchFeatureResponse* response);
+    virtual ::grpc::Status DBNew(::grpc::ServerContext* context, const ::com::sekirocc::feature_search::DBNewRequest* request, ::com::sekirocc::feature_search::DBNewResponse* response);
+    virtual ::grpc::Status DBList(::grpc::ServerContext* context, const ::com::sekirocc::feature_search::DBListRequest* request, ::com::sekirocc::feature_search::DBListResponse* response);
+    virtual ::grpc::Status DBGet(::grpc::ServerContext* context, const ::com::sekirocc::feature_search::DBGetRequest* request, ::com::sekirocc::feature_search::DBGetResponse* response);
+    virtual ::grpc::Status DBDelete(::grpc::ServerContext* context, const ::com::sekirocc::feature_search::DBDeleteRequest* request, ::com::sekirocc::feature_search::DBDeleteResponse* response);
+    virtual ::grpc::Status AddFeature(::grpc::ServerContext* context, const ::com::sekirocc::feature_search::AddFeatureRequest* request, ::com::sekirocc::feature_search::AddFeatureResponse* response);
+    virtual ::grpc::Status DeleteFeature(::grpc::ServerContext* context, const ::com::sekirocc::feature_search::DeleteFeatureRequest* request, ::com::sekirocc::feature_search::DeleteFeatureResponse* response);
+    virtual ::grpc::Status SearchFeature(::grpc::ServerContext* context, const ::com::sekirocc::feature_search::SearchFeatureRequest* request, ::com::sekirocc::feature_search::SearchFeatureResponse* response);
   };
   template <class BaseClass>
-  class WithAsyncMethod_TrainIndex : public BaseClass {
+  class WithAsyncMethod_DBNew : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_TrainIndex() {
+    WithAsyncMethod_DBNew() {
       ::grpc::Service::MarkMethodAsync(0);
     }
-    ~WithAsyncMethod_TrainIndex() override {
+    ~WithAsyncMethod_DBNew() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status TrainIndex(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::TrainIndexRequest* /*request*/, ::com::sekirocc::face_service::TrainIndexResponse* /*response*/) override {
+    ::grpc::Status DBNew(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DBNewRequest* /*request*/, ::com::sekirocc::feature_search::DBNewResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestTrainIndex(::grpc::ServerContext* context, ::com::sekirocc::face_service::TrainIndexRequest* request, ::grpc::ServerAsyncResponseWriter< ::com::sekirocc::face_service::TrainIndexResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestDBNew(::grpc::ServerContext* context, ::com::sekirocc::feature_search::DBNewRequest* request, ::grpc::ServerAsyncResponseWriter< ::com::sekirocc::feature_search::DBNewResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_DBList : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_DBList() {
+      ::grpc::Service::MarkMethodAsync(1);
+    }
+    ~WithAsyncMethod_DBList() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DBList(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DBListRequest* /*request*/, ::com::sekirocc::feature_search::DBListResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestDBList(::grpc::ServerContext* context, ::com::sekirocc::feature_search::DBListRequest* request, ::grpc::ServerAsyncResponseWriter< ::com::sekirocc::feature_search::DBListResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_DBGet : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_DBGet() {
+      ::grpc::Service::MarkMethodAsync(2);
+    }
+    ~WithAsyncMethod_DBGet() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DBGet(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DBGetRequest* /*request*/, ::com::sekirocc::feature_search::DBGetResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestDBGet(::grpc::ServerContext* context, ::com::sekirocc::feature_search::DBGetRequest* request, ::grpc::ServerAsyncResponseWriter< ::com::sekirocc::feature_search::DBGetResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_DBDelete : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_DBDelete() {
+      ::grpc::Service::MarkMethodAsync(3);
+    }
+    ~WithAsyncMethod_DBDelete() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DBDelete(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DBDeleteRequest* /*request*/, ::com::sekirocc::feature_search::DBDeleteResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestDBDelete(::grpc::ServerContext* context, ::com::sekirocc::feature_search::DBDeleteRequest* request, ::grpc::ServerAsyncResponseWriter< ::com::sekirocc::feature_search::DBDeleteResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -194,18 +326,18 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_AddFeature() {
-      ::grpc::Service::MarkMethodAsync(1);
+      ::grpc::Service::MarkMethodAsync(4);
     }
     ~WithAsyncMethod_AddFeature() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status AddFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::AddFeatureRequest* /*request*/, ::com::sekirocc::face_service::AddFeatureResponse* /*response*/) override {
+    ::grpc::Status AddFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::AddFeatureRequest* /*request*/, ::com::sekirocc::feature_search::AddFeatureResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestAddFeature(::grpc::ServerContext* context, ::com::sekirocc::face_service::AddFeatureRequest* request, ::grpc::ServerAsyncResponseWriter< ::com::sekirocc::face_service::AddFeatureResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+    void RequestAddFeature(::grpc::ServerContext* context, ::com::sekirocc::feature_search::AddFeatureRequest* request, ::grpc::ServerAsyncResponseWriter< ::com::sekirocc::feature_search::AddFeatureResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -214,18 +346,18 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_DeleteFeature() {
-      ::grpc::Service::MarkMethodAsync(2);
+      ::grpc::Service::MarkMethodAsync(5);
     }
     ~WithAsyncMethod_DeleteFeature() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status DeleteFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::DeleteFeatureRequest* /*request*/, ::com::sekirocc::face_service::DeleteFeatureResponse* /*response*/) override {
+    ::grpc::Status DeleteFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DeleteFeatureRequest* /*request*/, ::com::sekirocc::feature_search::DeleteFeatureResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestDeleteFeature(::grpc::ServerContext* context, ::com::sekirocc::face_service::DeleteFeatureRequest* request, ::grpc::ServerAsyncResponseWriter< ::com::sekirocc::face_service::DeleteFeatureResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    void RequestDeleteFeature(::grpc::ServerContext* context, ::com::sekirocc::feature_search::DeleteFeatureRequest* request, ::grpc::ServerAsyncResponseWriter< ::com::sekirocc::feature_search::DeleteFeatureResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -234,47 +366,128 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SearchFeature() {
-      ::grpc::Service::MarkMethodAsync(3);
+      ::grpc::Service::MarkMethodAsync(6);
     }
     ~WithAsyncMethod_SearchFeature() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SearchFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::SearchFeatureRequest* /*request*/, ::com::sekirocc::face_service::SearchFeatureResponse* /*response*/) override {
+    ::grpc::Status SearchFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::SearchFeatureRequest* /*request*/, ::com::sekirocc::feature_search::SearchFeatureResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestSearchFeature(::grpc::ServerContext* context, ::com::sekirocc::face_service::SearchFeatureRequest* request, ::grpc::ServerAsyncResponseWriter< ::com::sekirocc::face_service::SearchFeatureResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+    void RequestSearchFeature(::grpc::ServerContext* context, ::com::sekirocc::feature_search::SearchFeatureRequest* request, ::grpc::ServerAsyncResponseWriter< ::com::sekirocc::feature_search::SearchFeatureResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(6, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_TrainIndex<WithAsyncMethod_AddFeature<WithAsyncMethod_DeleteFeature<WithAsyncMethod_SearchFeature<Service > > > > AsyncService;
+  typedef WithAsyncMethod_DBNew<WithAsyncMethod_DBList<WithAsyncMethod_DBGet<WithAsyncMethod_DBDelete<WithAsyncMethod_AddFeature<WithAsyncMethod_DeleteFeature<WithAsyncMethod_SearchFeature<Service > > > > > > > AsyncService;
   template <class BaseClass>
-  class WithCallbackMethod_TrainIndex : public BaseClass {
+  class WithCallbackMethod_DBNew : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_TrainIndex() {
+    WithCallbackMethod_DBNew() {
       ::grpc::Service::MarkMethodCallback(0,
-          new ::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::face_service::TrainIndexRequest, ::com::sekirocc::face_service::TrainIndexResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::DBNewRequest, ::com::sekirocc::feature_search::DBNewResponse>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::com::sekirocc::face_service::TrainIndexRequest* request, ::com::sekirocc::face_service::TrainIndexResponse* response) { return this->TrainIndex(context, request, response); }));}
-    void SetMessageAllocatorFor_TrainIndex(
-        ::grpc::MessageAllocator< ::com::sekirocc::face_service::TrainIndexRequest, ::com::sekirocc::face_service::TrainIndexResponse>* allocator) {
+                   ::grpc::CallbackServerContext* context, const ::com::sekirocc::feature_search::DBNewRequest* request, ::com::sekirocc::feature_search::DBNewResponse* response) { return this->DBNew(context, request, response); }));}
+    void SetMessageAllocatorFor_DBNew(
+        ::grpc::MessageAllocator< ::com::sekirocc::feature_search::DBNewRequest, ::com::sekirocc::feature_search::DBNewResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(0);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::face_service::TrainIndexRequest, ::com::sekirocc::face_service::TrainIndexResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::DBNewRequest, ::com::sekirocc::feature_search::DBNewResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_TrainIndex() override {
+    ~WithCallbackMethod_DBNew() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status TrainIndex(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::TrainIndexRequest* /*request*/, ::com::sekirocc::face_service::TrainIndexResponse* /*response*/) override {
+    ::grpc::Status DBNew(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DBNewRequest* /*request*/, ::com::sekirocc::feature_search::DBNewResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* TrainIndex(
-      ::grpc::CallbackServerContext* /*context*/, const ::com::sekirocc::face_service::TrainIndexRequest* /*request*/, ::com::sekirocc::face_service::TrainIndexResponse* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerUnaryReactor* DBNew(
+      ::grpc::CallbackServerContext* /*context*/, const ::com::sekirocc::feature_search::DBNewRequest* /*request*/, ::com::sekirocc::feature_search::DBNewResponse* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithCallbackMethod_DBList : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_DBList() {
+      ::grpc::Service::MarkMethodCallback(1,
+          new ::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::DBListRequest, ::com::sekirocc::feature_search::DBListResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::com::sekirocc::feature_search::DBListRequest* request, ::com::sekirocc::feature_search::DBListResponse* response) { return this->DBList(context, request, response); }));}
+    void SetMessageAllocatorFor_DBList(
+        ::grpc::MessageAllocator< ::com::sekirocc::feature_search::DBListRequest, ::com::sekirocc::feature_search::DBListResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(1);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::DBListRequest, ::com::sekirocc::feature_search::DBListResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_DBList() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DBList(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DBListRequest* /*request*/, ::com::sekirocc::feature_search::DBListResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* DBList(
+      ::grpc::CallbackServerContext* /*context*/, const ::com::sekirocc::feature_search::DBListRequest* /*request*/, ::com::sekirocc::feature_search::DBListResponse* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithCallbackMethod_DBGet : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_DBGet() {
+      ::grpc::Service::MarkMethodCallback(2,
+          new ::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::DBGetRequest, ::com::sekirocc::feature_search::DBGetResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::com::sekirocc::feature_search::DBGetRequest* request, ::com::sekirocc::feature_search::DBGetResponse* response) { return this->DBGet(context, request, response); }));}
+    void SetMessageAllocatorFor_DBGet(
+        ::grpc::MessageAllocator< ::com::sekirocc::feature_search::DBGetRequest, ::com::sekirocc::feature_search::DBGetResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::DBGetRequest, ::com::sekirocc::feature_search::DBGetResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_DBGet() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DBGet(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DBGetRequest* /*request*/, ::com::sekirocc::feature_search::DBGetResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* DBGet(
+      ::grpc::CallbackServerContext* /*context*/, const ::com::sekirocc::feature_search::DBGetRequest* /*request*/, ::com::sekirocc::feature_search::DBGetResponse* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithCallbackMethod_DBDelete : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_DBDelete() {
+      ::grpc::Service::MarkMethodCallback(3,
+          new ::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::DBDeleteRequest, ::com::sekirocc::feature_search::DBDeleteResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::com::sekirocc::feature_search::DBDeleteRequest* request, ::com::sekirocc::feature_search::DBDeleteResponse* response) { return this->DBDelete(context, request, response); }));}
+    void SetMessageAllocatorFor_DBDelete(
+        ::grpc::MessageAllocator< ::com::sekirocc::feature_search::DBDeleteRequest, ::com::sekirocc::feature_search::DBDeleteResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(3);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::DBDeleteRequest, ::com::sekirocc::feature_search::DBDeleteResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_DBDelete() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DBDelete(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DBDeleteRequest* /*request*/, ::com::sekirocc::feature_search::DBDeleteResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* DBDelete(
+      ::grpc::CallbackServerContext* /*context*/, const ::com::sekirocc::feature_search::DBDeleteRequest* /*request*/, ::com::sekirocc::feature_search::DBDeleteResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithCallbackMethod_AddFeature : public BaseClass {
@@ -282,26 +495,26 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_AddFeature() {
-      ::grpc::Service::MarkMethodCallback(1,
-          new ::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::face_service::AddFeatureRequest, ::com::sekirocc::face_service::AddFeatureResponse>(
+      ::grpc::Service::MarkMethodCallback(4,
+          new ::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::AddFeatureRequest, ::com::sekirocc::feature_search::AddFeatureResponse>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::com::sekirocc::face_service::AddFeatureRequest* request, ::com::sekirocc::face_service::AddFeatureResponse* response) { return this->AddFeature(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::com::sekirocc::feature_search::AddFeatureRequest* request, ::com::sekirocc::feature_search::AddFeatureResponse* response) { return this->AddFeature(context, request, response); }));}
     void SetMessageAllocatorFor_AddFeature(
-        ::grpc::MessageAllocator< ::com::sekirocc::face_service::AddFeatureRequest, ::com::sekirocc::face_service::AddFeatureResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(1);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::face_service::AddFeatureRequest, ::com::sekirocc::face_service::AddFeatureResponse>*>(handler)
+        ::grpc::MessageAllocator< ::com::sekirocc::feature_search::AddFeatureRequest, ::com::sekirocc::feature_search::AddFeatureResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(4);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::AddFeatureRequest, ::com::sekirocc::feature_search::AddFeatureResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~WithCallbackMethod_AddFeature() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status AddFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::AddFeatureRequest* /*request*/, ::com::sekirocc::face_service::AddFeatureResponse* /*response*/) override {
+    ::grpc::Status AddFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::AddFeatureRequest* /*request*/, ::com::sekirocc::feature_search::AddFeatureResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::ServerUnaryReactor* AddFeature(
-      ::grpc::CallbackServerContext* /*context*/, const ::com::sekirocc::face_service::AddFeatureRequest* /*request*/, ::com::sekirocc::face_service::AddFeatureResponse* /*response*/)  { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::com::sekirocc::feature_search::AddFeatureRequest* /*request*/, ::com::sekirocc::feature_search::AddFeatureResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithCallbackMethod_DeleteFeature : public BaseClass {
@@ -309,26 +522,26 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_DeleteFeature() {
-      ::grpc::Service::MarkMethodCallback(2,
-          new ::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::face_service::DeleteFeatureRequest, ::com::sekirocc::face_service::DeleteFeatureResponse>(
+      ::grpc::Service::MarkMethodCallback(5,
+          new ::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::DeleteFeatureRequest, ::com::sekirocc::feature_search::DeleteFeatureResponse>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::com::sekirocc::face_service::DeleteFeatureRequest* request, ::com::sekirocc::face_service::DeleteFeatureResponse* response) { return this->DeleteFeature(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::com::sekirocc::feature_search::DeleteFeatureRequest* request, ::com::sekirocc::feature_search::DeleteFeatureResponse* response) { return this->DeleteFeature(context, request, response); }));}
     void SetMessageAllocatorFor_DeleteFeature(
-        ::grpc::MessageAllocator< ::com::sekirocc::face_service::DeleteFeatureRequest, ::com::sekirocc::face_service::DeleteFeatureResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::face_service::DeleteFeatureRequest, ::com::sekirocc::face_service::DeleteFeatureResponse>*>(handler)
+        ::grpc::MessageAllocator< ::com::sekirocc::feature_search::DeleteFeatureRequest, ::com::sekirocc::feature_search::DeleteFeatureResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(5);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::DeleteFeatureRequest, ::com::sekirocc::feature_search::DeleteFeatureResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~WithCallbackMethod_DeleteFeature() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status DeleteFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::DeleteFeatureRequest* /*request*/, ::com::sekirocc::face_service::DeleteFeatureResponse* /*response*/) override {
+    ::grpc::Status DeleteFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DeleteFeatureRequest* /*request*/, ::com::sekirocc::feature_search::DeleteFeatureResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::ServerUnaryReactor* DeleteFeature(
-      ::grpc::CallbackServerContext* /*context*/, const ::com::sekirocc::face_service::DeleteFeatureRequest* /*request*/, ::com::sekirocc::face_service::DeleteFeatureResponse* /*response*/)  { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::com::sekirocc::feature_search::DeleteFeatureRequest* /*request*/, ::com::sekirocc::feature_search::DeleteFeatureResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithCallbackMethod_SearchFeature : public BaseClass {
@@ -336,42 +549,93 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_SearchFeature() {
-      ::grpc::Service::MarkMethodCallback(3,
-          new ::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::face_service::SearchFeatureRequest, ::com::sekirocc::face_service::SearchFeatureResponse>(
+      ::grpc::Service::MarkMethodCallback(6,
+          new ::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::SearchFeatureRequest, ::com::sekirocc::feature_search::SearchFeatureResponse>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::com::sekirocc::face_service::SearchFeatureRequest* request, ::com::sekirocc::face_service::SearchFeatureResponse* response) { return this->SearchFeature(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::com::sekirocc::feature_search::SearchFeatureRequest* request, ::com::sekirocc::feature_search::SearchFeatureResponse* response) { return this->SearchFeature(context, request, response); }));}
     void SetMessageAllocatorFor_SearchFeature(
-        ::grpc::MessageAllocator< ::com::sekirocc::face_service::SearchFeatureRequest, ::com::sekirocc::face_service::SearchFeatureResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(3);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::face_service::SearchFeatureRequest, ::com::sekirocc::face_service::SearchFeatureResponse>*>(handler)
+        ::grpc::MessageAllocator< ::com::sekirocc::feature_search::SearchFeatureRequest, ::com::sekirocc::feature_search::SearchFeatureResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(6);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::SearchFeatureRequest, ::com::sekirocc::feature_search::SearchFeatureResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~WithCallbackMethod_SearchFeature() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SearchFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::SearchFeatureRequest* /*request*/, ::com::sekirocc::face_service::SearchFeatureResponse* /*response*/) override {
+    ::grpc::Status SearchFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::SearchFeatureRequest* /*request*/, ::com::sekirocc::feature_search::SearchFeatureResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::ServerUnaryReactor* SearchFeature(
-      ::grpc::CallbackServerContext* /*context*/, const ::com::sekirocc::face_service::SearchFeatureRequest* /*request*/, ::com::sekirocc::face_service::SearchFeatureResponse* /*response*/)  { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::com::sekirocc::feature_search::SearchFeatureRequest* /*request*/, ::com::sekirocc::feature_search::SearchFeatureResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_TrainIndex<WithCallbackMethod_AddFeature<WithCallbackMethod_DeleteFeature<WithCallbackMethod_SearchFeature<Service > > > > CallbackService;
+  typedef WithCallbackMethod_DBNew<WithCallbackMethod_DBList<WithCallbackMethod_DBGet<WithCallbackMethod_DBDelete<WithCallbackMethod_AddFeature<WithCallbackMethod_DeleteFeature<WithCallbackMethod_SearchFeature<Service > > > > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
-  class WithGenericMethod_TrainIndex : public BaseClass {
+  class WithGenericMethod_DBNew : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_TrainIndex() {
+    WithGenericMethod_DBNew() {
       ::grpc::Service::MarkMethodGeneric(0);
     }
-    ~WithGenericMethod_TrainIndex() override {
+    ~WithGenericMethod_DBNew() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status TrainIndex(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::TrainIndexRequest* /*request*/, ::com::sekirocc::face_service::TrainIndexResponse* /*response*/) override {
+    ::grpc::Status DBNew(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DBNewRequest* /*request*/, ::com::sekirocc::feature_search::DBNewResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_DBList : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_DBList() {
+      ::grpc::Service::MarkMethodGeneric(1);
+    }
+    ~WithGenericMethod_DBList() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DBList(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DBListRequest* /*request*/, ::com::sekirocc::feature_search::DBListResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_DBGet : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_DBGet() {
+      ::grpc::Service::MarkMethodGeneric(2);
+    }
+    ~WithGenericMethod_DBGet() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DBGet(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DBGetRequest* /*request*/, ::com::sekirocc::feature_search::DBGetResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_DBDelete : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_DBDelete() {
+      ::grpc::Service::MarkMethodGeneric(3);
+    }
+    ~WithGenericMethod_DBDelete() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DBDelete(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DBDeleteRequest* /*request*/, ::com::sekirocc::feature_search::DBDeleteResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -382,13 +646,13 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_AddFeature() {
-      ::grpc::Service::MarkMethodGeneric(1);
+      ::grpc::Service::MarkMethodGeneric(4);
     }
     ~WithGenericMethod_AddFeature() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status AddFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::AddFeatureRequest* /*request*/, ::com::sekirocc::face_service::AddFeatureResponse* /*response*/) override {
+    ::grpc::Status AddFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::AddFeatureRequest* /*request*/, ::com::sekirocc::feature_search::AddFeatureResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -399,13 +663,13 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_DeleteFeature() {
-      ::grpc::Service::MarkMethodGeneric(2);
+      ::grpc::Service::MarkMethodGeneric(5);
     }
     ~WithGenericMethod_DeleteFeature() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status DeleteFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::DeleteFeatureRequest* /*request*/, ::com::sekirocc::face_service::DeleteFeatureResponse* /*response*/) override {
+    ::grpc::Status DeleteFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DeleteFeatureRequest* /*request*/, ::com::sekirocc::feature_search::DeleteFeatureResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -416,35 +680,95 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SearchFeature() {
-      ::grpc::Service::MarkMethodGeneric(3);
+      ::grpc::Service::MarkMethodGeneric(6);
     }
     ~WithGenericMethod_SearchFeature() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SearchFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::SearchFeatureRequest* /*request*/, ::com::sekirocc::face_service::SearchFeatureResponse* /*response*/) override {
+    ::grpc::Status SearchFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::SearchFeatureRequest* /*request*/, ::com::sekirocc::feature_search::SearchFeatureResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithRawMethod_TrainIndex : public BaseClass {
+  class WithRawMethod_DBNew : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_TrainIndex() {
+    WithRawMethod_DBNew() {
       ::grpc::Service::MarkMethodRaw(0);
     }
-    ~WithRawMethod_TrainIndex() override {
+    ~WithRawMethod_DBNew() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status TrainIndex(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::TrainIndexRequest* /*request*/, ::com::sekirocc::face_service::TrainIndexResponse* /*response*/) override {
+    ::grpc::Status DBNew(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DBNewRequest* /*request*/, ::com::sekirocc::feature_search::DBNewResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestTrainIndex(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestDBNew(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_DBList : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_DBList() {
+      ::grpc::Service::MarkMethodRaw(1);
+    }
+    ~WithRawMethod_DBList() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DBList(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DBListRequest* /*request*/, ::com::sekirocc::feature_search::DBListResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestDBList(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_DBGet : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_DBGet() {
+      ::grpc::Service::MarkMethodRaw(2);
+    }
+    ~WithRawMethod_DBGet() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DBGet(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DBGetRequest* /*request*/, ::com::sekirocc::feature_search::DBGetResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestDBGet(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_DBDelete : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_DBDelete() {
+      ::grpc::Service::MarkMethodRaw(3);
+    }
+    ~WithRawMethod_DBDelete() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DBDelete(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DBDeleteRequest* /*request*/, ::com::sekirocc::feature_search::DBDeleteResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestDBDelete(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -453,18 +777,18 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_AddFeature() {
-      ::grpc::Service::MarkMethodRaw(1);
+      ::grpc::Service::MarkMethodRaw(4);
     }
     ~WithRawMethod_AddFeature() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status AddFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::AddFeatureRequest* /*request*/, ::com::sekirocc::face_service::AddFeatureResponse* /*response*/) override {
+    ::grpc::Status AddFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::AddFeatureRequest* /*request*/, ::com::sekirocc::feature_search::AddFeatureResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestAddFeature(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -473,18 +797,18 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_DeleteFeature() {
-      ::grpc::Service::MarkMethodRaw(2);
+      ::grpc::Service::MarkMethodRaw(5);
     }
     ~WithRawMethod_DeleteFeature() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status DeleteFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::DeleteFeatureRequest* /*request*/, ::com::sekirocc::face_service::DeleteFeatureResponse* /*response*/) override {
+    ::grpc::Status DeleteFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DeleteFeatureRequest* /*request*/, ::com::sekirocc::feature_search::DeleteFeatureResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestDeleteFeature(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -493,40 +817,106 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SearchFeature() {
-      ::grpc::Service::MarkMethodRaw(3);
+      ::grpc::Service::MarkMethodRaw(6);
     }
     ~WithRawMethod_SearchFeature() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SearchFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::SearchFeatureRequest* /*request*/, ::com::sekirocc::face_service::SearchFeatureResponse* /*response*/) override {
+    ::grpc::Status SearchFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::SearchFeatureRequest* /*request*/, ::com::sekirocc::feature_search::SearchFeatureResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSearchFeature(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(6, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_TrainIndex : public BaseClass {
+  class WithRawCallbackMethod_DBNew : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_TrainIndex() {
+    WithRawCallbackMethod_DBNew() {
       ::grpc::Service::MarkMethodRawCallback(0,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->TrainIndex(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->DBNew(context, request, response); }));
     }
-    ~WithRawCallbackMethod_TrainIndex() override {
+    ~WithRawCallbackMethod_DBNew() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status TrainIndex(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::TrainIndexRequest* /*request*/, ::com::sekirocc::face_service::TrainIndexResponse* /*response*/) override {
+    ::grpc::Status DBNew(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DBNewRequest* /*request*/, ::com::sekirocc::feature_search::DBNewResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* TrainIndex(
+    virtual ::grpc::ServerUnaryReactor* DBNew(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_DBList : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_DBList() {
+      ::grpc::Service::MarkMethodRawCallback(1,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->DBList(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_DBList() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DBList(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DBListRequest* /*request*/, ::com::sekirocc::feature_search::DBListResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* DBList(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_DBGet : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_DBGet() {
+      ::grpc::Service::MarkMethodRawCallback(2,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->DBGet(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_DBGet() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DBGet(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DBGetRequest* /*request*/, ::com::sekirocc::feature_search::DBGetResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* DBGet(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_DBDelete : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_DBDelete() {
+      ::grpc::Service::MarkMethodRawCallback(3,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->DBDelete(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_DBDelete() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DBDelete(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DBDeleteRequest* /*request*/, ::com::sekirocc::feature_search::DBDeleteResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* DBDelete(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
@@ -535,7 +925,7 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_AddFeature() {
-      ::grpc::Service::MarkMethodRawCallback(1,
+      ::grpc::Service::MarkMethodRawCallback(4,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->AddFeature(context, request, response); }));
@@ -544,7 +934,7 @@ class FeatureSearch final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status AddFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::AddFeatureRequest* /*request*/, ::com::sekirocc::face_service::AddFeatureResponse* /*response*/) override {
+    ::grpc::Status AddFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::AddFeatureRequest* /*request*/, ::com::sekirocc::feature_search::AddFeatureResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -557,7 +947,7 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_DeleteFeature() {
-      ::grpc::Service::MarkMethodRawCallback(2,
+      ::grpc::Service::MarkMethodRawCallback(5,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->DeleteFeature(context, request, response); }));
@@ -566,7 +956,7 @@ class FeatureSearch final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status DeleteFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::DeleteFeatureRequest* /*request*/, ::com::sekirocc::face_service::DeleteFeatureResponse* /*response*/) override {
+    ::grpc::Status DeleteFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DeleteFeatureRequest* /*request*/, ::com::sekirocc::feature_search::DeleteFeatureResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -579,7 +969,7 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_SearchFeature() {
-      ::grpc::Service::MarkMethodRawCallback(3,
+      ::grpc::Service::MarkMethodRawCallback(6,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SearchFeature(context, request, response); }));
@@ -588,7 +978,7 @@ class FeatureSearch final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SearchFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::SearchFeatureRequest* /*request*/, ::com::sekirocc::face_service::SearchFeatureResponse* /*response*/) override {
+    ::grpc::Status SearchFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::SearchFeatureRequest* /*request*/, ::com::sekirocc::feature_search::SearchFeatureResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -596,31 +986,112 @@ class FeatureSearch final {
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_TrainIndex : public BaseClass {
+  class WithStreamedUnaryMethod_DBNew : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_TrainIndex() {
+    WithStreamedUnaryMethod_DBNew() {
       ::grpc::Service::MarkMethodStreamed(0,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::com::sekirocc::face_service::TrainIndexRequest, ::com::sekirocc::face_service::TrainIndexResponse>(
+          ::com::sekirocc::feature_search::DBNewRequest, ::com::sekirocc::feature_search::DBNewResponse>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::com::sekirocc::face_service::TrainIndexRequest, ::com::sekirocc::face_service::TrainIndexResponse>* streamer) {
-                       return this->StreamedTrainIndex(context,
+                     ::com::sekirocc::feature_search::DBNewRequest, ::com::sekirocc::feature_search::DBNewResponse>* streamer) {
+                       return this->StreamedDBNew(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_TrainIndex() override {
+    ~WithStreamedUnaryMethod_DBNew() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status TrainIndex(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::TrainIndexRequest* /*request*/, ::com::sekirocc::face_service::TrainIndexResponse* /*response*/) override {
+    ::grpc::Status DBNew(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DBNewRequest* /*request*/, ::com::sekirocc::feature_search::DBNewResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedTrainIndex(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::com::sekirocc::face_service::TrainIndexRequest,::com::sekirocc::face_service::TrainIndexResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedDBNew(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::com::sekirocc::feature_search::DBNewRequest,::com::sekirocc::feature_search::DBNewResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_DBList : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_DBList() {
+      ::grpc::Service::MarkMethodStreamed(1,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::com::sekirocc::feature_search::DBListRequest, ::com::sekirocc::feature_search::DBListResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::com::sekirocc::feature_search::DBListRequest, ::com::sekirocc::feature_search::DBListResponse>* streamer) {
+                       return this->StreamedDBList(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_DBList() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status DBList(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DBListRequest* /*request*/, ::com::sekirocc::feature_search::DBListResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedDBList(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::com::sekirocc::feature_search::DBListRequest,::com::sekirocc::feature_search::DBListResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_DBGet : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_DBGet() {
+      ::grpc::Service::MarkMethodStreamed(2,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::com::sekirocc::feature_search::DBGetRequest, ::com::sekirocc::feature_search::DBGetResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::com::sekirocc::feature_search::DBGetRequest, ::com::sekirocc::feature_search::DBGetResponse>* streamer) {
+                       return this->StreamedDBGet(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_DBGet() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status DBGet(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DBGetRequest* /*request*/, ::com::sekirocc::feature_search::DBGetResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedDBGet(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::com::sekirocc::feature_search::DBGetRequest,::com::sekirocc::feature_search::DBGetResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_DBDelete : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_DBDelete() {
+      ::grpc::Service::MarkMethodStreamed(3,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::com::sekirocc::feature_search::DBDeleteRequest, ::com::sekirocc::feature_search::DBDeleteResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::com::sekirocc::feature_search::DBDeleteRequest, ::com::sekirocc::feature_search::DBDeleteResponse>* streamer) {
+                       return this->StreamedDBDelete(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_DBDelete() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status DBDelete(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DBDeleteRequest* /*request*/, ::com::sekirocc::feature_search::DBDeleteResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedDBDelete(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::com::sekirocc::feature_search::DBDeleteRequest,::com::sekirocc::feature_search::DBDeleteResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_AddFeature : public BaseClass {
@@ -628,12 +1099,12 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_AddFeature() {
-      ::grpc::Service::MarkMethodStreamed(1,
+      ::grpc::Service::MarkMethodStreamed(4,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::com::sekirocc::face_service::AddFeatureRequest, ::com::sekirocc::face_service::AddFeatureResponse>(
+          ::com::sekirocc::feature_search::AddFeatureRequest, ::com::sekirocc::feature_search::AddFeatureResponse>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::com::sekirocc::face_service::AddFeatureRequest, ::com::sekirocc::face_service::AddFeatureResponse>* streamer) {
+                     ::com::sekirocc::feature_search::AddFeatureRequest, ::com::sekirocc::feature_search::AddFeatureResponse>* streamer) {
                        return this->StreamedAddFeature(context,
                          streamer);
                   }));
@@ -642,12 +1113,12 @@ class FeatureSearch final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status AddFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::AddFeatureRequest* /*request*/, ::com::sekirocc::face_service::AddFeatureResponse* /*response*/) override {
+    ::grpc::Status AddFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::AddFeatureRequest* /*request*/, ::com::sekirocc::feature_search::AddFeatureResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedAddFeature(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::com::sekirocc::face_service::AddFeatureRequest,::com::sekirocc::face_service::AddFeatureResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedAddFeature(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::com::sekirocc::feature_search::AddFeatureRequest,::com::sekirocc::feature_search::AddFeatureResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_DeleteFeature : public BaseClass {
@@ -655,12 +1126,12 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_DeleteFeature() {
-      ::grpc::Service::MarkMethodStreamed(2,
+      ::grpc::Service::MarkMethodStreamed(5,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::com::sekirocc::face_service::DeleteFeatureRequest, ::com::sekirocc::face_service::DeleteFeatureResponse>(
+          ::com::sekirocc::feature_search::DeleteFeatureRequest, ::com::sekirocc::feature_search::DeleteFeatureResponse>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::com::sekirocc::face_service::DeleteFeatureRequest, ::com::sekirocc::face_service::DeleteFeatureResponse>* streamer) {
+                     ::com::sekirocc::feature_search::DeleteFeatureRequest, ::com::sekirocc::feature_search::DeleteFeatureResponse>* streamer) {
                        return this->StreamedDeleteFeature(context,
                          streamer);
                   }));
@@ -669,12 +1140,12 @@ class FeatureSearch final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status DeleteFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::DeleteFeatureRequest* /*request*/, ::com::sekirocc::face_service::DeleteFeatureResponse* /*response*/) override {
+    ::grpc::Status DeleteFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::DeleteFeatureRequest* /*request*/, ::com::sekirocc::feature_search::DeleteFeatureResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedDeleteFeature(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::com::sekirocc::face_service::DeleteFeatureRequest,::com::sekirocc::face_service::DeleteFeatureResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedDeleteFeature(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::com::sekirocc::feature_search::DeleteFeatureRequest,::com::sekirocc::feature_search::DeleteFeatureResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_SearchFeature : public BaseClass {
@@ -682,12 +1153,12 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_SearchFeature() {
-      ::grpc::Service::MarkMethodStreamed(3,
+      ::grpc::Service::MarkMethodStreamed(6,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::com::sekirocc::face_service::SearchFeatureRequest, ::com::sekirocc::face_service::SearchFeatureResponse>(
+          ::com::sekirocc::feature_search::SearchFeatureRequest, ::com::sekirocc::feature_search::SearchFeatureResponse>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::com::sekirocc::face_service::SearchFeatureRequest, ::com::sekirocc::face_service::SearchFeatureResponse>* streamer) {
+                     ::com::sekirocc::feature_search::SearchFeatureRequest, ::com::sekirocc::feature_search::SearchFeatureResponse>* streamer) {
                        return this->StreamedSearchFeature(context,
                          streamer);
                   }));
@@ -696,19 +1167,19 @@ class FeatureSearch final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SearchFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::face_service::SearchFeatureRequest* /*request*/, ::com::sekirocc::face_service::SearchFeatureResponse* /*response*/) override {
+    ::grpc::Status SearchFeature(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::SearchFeatureRequest* /*request*/, ::com::sekirocc::feature_search::SearchFeatureResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedSearchFeature(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::com::sekirocc::face_service::SearchFeatureRequest,::com::sekirocc::face_service::SearchFeatureResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedSearchFeature(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::com::sekirocc::feature_search::SearchFeatureRequest,::com::sekirocc::feature_search::SearchFeatureResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_TrainIndex<WithStreamedUnaryMethod_AddFeature<WithStreamedUnaryMethod_DeleteFeature<WithStreamedUnaryMethod_SearchFeature<Service > > > > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_DBNew<WithStreamedUnaryMethod_DBList<WithStreamedUnaryMethod_DBGet<WithStreamedUnaryMethod_DBDelete<WithStreamedUnaryMethod_AddFeature<WithStreamedUnaryMethod_DeleteFeature<WithStreamedUnaryMethod_SearchFeature<Service > > > > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_TrainIndex<WithStreamedUnaryMethod_AddFeature<WithStreamedUnaryMethod_DeleteFeature<WithStreamedUnaryMethod_SearchFeature<Service > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_DBNew<WithStreamedUnaryMethod_DBList<WithStreamedUnaryMethod_DBGet<WithStreamedUnaryMethod_DBDelete<WithStreamedUnaryMethod_AddFeature<WithStreamedUnaryMethod_DeleteFeature<WithStreamedUnaryMethod_SearchFeature<Service > > > > > > > StreamedService;
 };
 
-}  // namespace face_service
+}  // namespace feature_search
 }  // namespace sekirocc
 }  // namespace com
 

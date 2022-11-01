@@ -3,64 +3,91 @@ syntax = "proto3";
 import "google/api/annotations.proto";
 import "common.proto";
 
-option go_package = "github.com/sekirocc/face-recognition-service/face_service";
+option go_package = "github.com/sekirocc/face-recognition-service/feature_search";
 // option java_package = "com.sekirocc.face_recognition_service";
 
-package com.sekirocc.face_service;
+package com.sekirocc.feature_search;
 
+// DB manage
+message DBNewRequest {}
+
+message DBNewResponse {}
+
+message DBListRequest {}
+
+message DBListResponse {}
+
+message DBGetRequest {}
+
+message DBGetResponse {}
+
+message DBDeleteRequest {}
+
+message DBDeleteResponse {}
 
 // Search Service
-message TrainIndexRequest {
-}
+message TrainIndexRequest {}
 
-message TrainIndexResponse {
-    ResultCode code = 1;
-}
-
+message TrainIndexResponse { com.sekirocc.common.ResultCode code = 1; }
 
 message AddFeatureItem {
-    FaceFeature feature = 1;
-  map<string, string> meta = 2;
+    com.sekirocc.common.FaceFeature feature = 1;
+    map<string, string> meta = 2;
 }
 
-
-message AddFeatureRequest {
-    AddFeatureItem feature_item = 1;
-}
+message AddFeatureRequest { AddFeatureItem feature_item = 1; }
 
 message AddFeatureResponse {
-    ResultCode code = 1;
+    com.sekirocc.common.ResultCode code = 1;
     string feature_id = 2;
 }
 
-message DeleteFeatureRequest {
-  string feature_id = 1;
-}
+message DeleteFeatureRequest { string feature_id = 1; }
 
-message DeleteFeatureResponse {
-    ResultCode code = 1;
-}
+message DeleteFeatureResponse { com.sekirocc.common.ResultCode code = 1; }
 
 message SearchFeatureRequest {
-    FaceFeature query = 1;
-  int32 topk = 2;
+    com.sekirocc.common.FaceFeature query = 1;
+    int32 topk = 2;
 }
 
 message SearchItemScore {
-  FaceFeature feature = 1;
-  float score = 2;
+    com.sekirocc.common.FaceFeature feature = 1;
+    float score = 2;
 }
+
 message SearchFeatureResponse {
-  ResultCode code = 1;
-  repeated SearchItemScore items = 2;
+    com.sekirocc.common.ResultCode code = 1;
+    repeated SearchItemScore items = 2;
 }
 
 // feature search service
 service FeatureSearch {
 
-    rpc TrainIndex(TrainIndexRequest) returns (TrainIndexResponse) {
+    rpc DBNew(DBNewRequest) returns (DBNewResponse) {
         option (google.api.http) = {
-            post : "/train_index"
+            post : "/db_new"
+            body : "*"
+        };
+    }
+
+    rpc DBList(DBListRequest) returns (DBListResponse) {
+        option (google.api.http) = {
+            post : "/db_list"
+            body : "*"
+        };
+    }
+
+    rpc DBGet(DBGetRequest) returns (DBGetResponse) {
+        option (google.api.http) = {
+            post : "/db_get"
+            body : "*"
+        };
+    }
+
+    rpc DBDelete(DBDeleteRequest) returns (DBDeleteResponse) {
+        option (google.api.http) = {
+            post : "/db_delete"
             body : "*"
         };
     }
@@ -85,5 +112,4 @@ service FeatureSearch {
             body : "*"
         };
     }
-
 }

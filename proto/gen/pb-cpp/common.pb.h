@@ -48,7 +48,7 @@ struct TableStruct_common_2eproto {
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_common_2eproto;
 namespace com {
 namespace sekirocc {
-namespace face_service {
+namespace common {
 class FaceFeature;
 struct FaceFeatureDefaultTypeInternal;
 extern FaceFeatureDefaultTypeInternal _FaceFeature_default_instance_;
@@ -67,20 +67,20 @@ extern RectDefaultTypeInternal _Rect_default_instance_;
 class Size;
 struct SizeDefaultTypeInternal;
 extern SizeDefaultTypeInternal _Size_default_instance_;
-}  // namespace face_service
+}  // namespace common
 }  // namespace sekirocc
 }  // namespace com
 PROTOBUF_NAMESPACE_OPEN
-template<> ::com::sekirocc::face_service::FaceFeature* Arena::CreateMaybeMessage<::com::sekirocc::face_service::FaceFeature>(Arena*);
-template<> ::com::sekirocc::face_service::FaceRectangle* Arena::CreateMaybeMessage<::com::sekirocc::face_service::FaceRectangle>(Arena*);
-template<> ::com::sekirocc::face_service::Image* Arena::CreateMaybeMessage<::com::sekirocc::face_service::Image>(Arena*);
-template<> ::com::sekirocc::face_service::Point* Arena::CreateMaybeMessage<::com::sekirocc::face_service::Point>(Arena*);
-template<> ::com::sekirocc::face_service::Rect* Arena::CreateMaybeMessage<::com::sekirocc::face_service::Rect>(Arena*);
-template<> ::com::sekirocc::face_service::Size* Arena::CreateMaybeMessage<::com::sekirocc::face_service::Size>(Arena*);
+template<> ::com::sekirocc::common::FaceFeature* Arena::CreateMaybeMessage<::com::sekirocc::common::FaceFeature>(Arena*);
+template<> ::com::sekirocc::common::FaceRectangle* Arena::CreateMaybeMessage<::com::sekirocc::common::FaceRectangle>(Arena*);
+template<> ::com::sekirocc::common::Image* Arena::CreateMaybeMessage<::com::sekirocc::common::Image>(Arena*);
+template<> ::com::sekirocc::common::Point* Arena::CreateMaybeMessage<::com::sekirocc::common::Point>(Arena*);
+template<> ::com::sekirocc::common::Rect* Arena::CreateMaybeMessage<::com::sekirocc::common::Rect>(Arena*);
+template<> ::com::sekirocc::common::Size* Arena::CreateMaybeMessage<::com::sekirocc::common::Size>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace com {
 namespace sekirocc {
-namespace face_service {
+namespace common {
 
 enum ResultCode : int {
   OK = 0,
@@ -138,7 +138,7 @@ inline bool ImageFormat_Parse(
 // ===================================================================
 
 class Rect final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.face_service.Rect) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.common.Rect) */ {
  public:
   inline Rect() : Rect(nullptr) {}
   ~Rect() override;
@@ -241,7 +241,7 @@ class Rect final :
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "com.sekirocc.face_service.Rect";
+    return "com.sekirocc.common.Rect";
   }
   protected:
   explicit Rect(::PROTOBUF_NAMESPACE_ID::Arena* arena,
@@ -261,43 +261,43 @@ class Rect final :
     kPointFieldNumber = 1,
     kSizeFieldNumber = 2,
   };
-  // .com.sekirocc.face_service.Point point = 1;
+  // .com.sekirocc.common.Point point = 1;
   bool has_point() const;
   private:
   bool _internal_has_point() const;
   public:
   void clear_point();
-  const ::com::sekirocc::face_service::Point& point() const;
-  PROTOBUF_NODISCARD ::com::sekirocc::face_service::Point* release_point();
-  ::com::sekirocc::face_service::Point* mutable_point();
-  void set_allocated_point(::com::sekirocc::face_service::Point* point);
+  const ::com::sekirocc::common::Point& point() const;
+  PROTOBUF_NODISCARD ::com::sekirocc::common::Point* release_point();
+  ::com::sekirocc::common::Point* mutable_point();
+  void set_allocated_point(::com::sekirocc::common::Point* point);
   private:
-  const ::com::sekirocc::face_service::Point& _internal_point() const;
-  ::com::sekirocc::face_service::Point* _internal_mutable_point();
+  const ::com::sekirocc::common::Point& _internal_point() const;
+  ::com::sekirocc::common::Point* _internal_mutable_point();
   public:
   void unsafe_arena_set_allocated_point(
-      ::com::sekirocc::face_service::Point* point);
-  ::com::sekirocc::face_service::Point* unsafe_arena_release_point();
+      ::com::sekirocc::common::Point* point);
+  ::com::sekirocc::common::Point* unsafe_arena_release_point();
 
-  // .com.sekirocc.face_service.Size size = 2;
+  // .com.sekirocc.common.Size size = 2;
   bool has_size() const;
   private:
   bool _internal_has_size() const;
   public:
   void clear_size();
-  const ::com::sekirocc::face_service::Size& size() const;
-  PROTOBUF_NODISCARD ::com::sekirocc::face_service::Size* release_size();
-  ::com::sekirocc::face_service::Size* mutable_size();
-  void set_allocated_size(::com::sekirocc::face_service::Size* size);
+  const ::com::sekirocc::common::Size& size() const;
+  PROTOBUF_NODISCARD ::com::sekirocc::common::Size* release_size();
+  ::com::sekirocc::common::Size* mutable_size();
+  void set_allocated_size(::com::sekirocc::common::Size* size);
   private:
-  const ::com::sekirocc::face_service::Size& _internal_size() const;
-  ::com::sekirocc::face_service::Size* _internal_mutable_size();
+  const ::com::sekirocc::common::Size& _internal_size() const;
+  ::com::sekirocc::common::Size* _internal_mutable_size();
   public:
   void unsafe_arena_set_allocated_size(
-      ::com::sekirocc::face_service::Size* size);
-  ::com::sekirocc::face_service::Size* unsafe_arena_release_size();
+      ::com::sekirocc::common::Size* size);
+  ::com::sekirocc::common::Size* unsafe_arena_release_size();
 
-  // @@protoc_insertion_point(class_scope:com.sekirocc.face_service.Rect)
+  // @@protoc_insertion_point(class_scope:com.sekirocc.common.Rect)
  private:
   class _Internal;
 
@@ -305,8 +305,8 @@ class Rect final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::com::sekirocc::face_service::Point* point_;
-    ::com::sekirocc::face_service::Size* size_;
+    ::com::sekirocc::common::Point* point_;
+    ::com::sekirocc::common::Size* size_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -315,7 +315,7 @@ class Rect final :
 // -------------------------------------------------------------------
 
 class Point final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.face_service.Point) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.common.Point) */ {
  public:
   inline Point() : Point(nullptr) {}
   ~Point() override;
@@ -418,7 +418,7 @@ class Point final :
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "com.sekirocc.face_service.Point";
+    return "com.sekirocc.common.Point";
   }
   protected:
   explicit Point(::PROTOBUF_NAMESPACE_ID::Arena* arena,
@@ -456,7 +456,7 @@ class Point final :
   void _internal_set_y(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:com.sekirocc.face_service.Point)
+  // @@protoc_insertion_point(class_scope:com.sekirocc.common.Point)
  private:
   class _Internal;
 
@@ -474,7 +474,7 @@ class Point final :
 // -------------------------------------------------------------------
 
 class Size final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.face_service.Size) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.common.Size) */ {
  public:
   inline Size() : Size(nullptr) {}
   ~Size() override;
@@ -577,7 +577,7 @@ class Size final :
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "com.sekirocc.face_service.Size";
+    return "com.sekirocc.common.Size";
   }
   protected:
   explicit Size(::PROTOBUF_NAMESPACE_ID::Arena* arena,
@@ -615,7 +615,7 @@ class Size final :
   void _internal_set_height(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:com.sekirocc.face_service.Size)
+  // @@protoc_insertion_point(class_scope:com.sekirocc.common.Size)
  private:
   class _Internal;
 
@@ -633,7 +633,7 @@ class Size final :
 // -------------------------------------------------------------------
 
 class Image final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.face_service.Image) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.common.Image) */ {
  public:
   inline Image() : Image(nullptr) {}
   ~Image() override;
@@ -736,7 +736,7 @@ class Image final :
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "com.sekirocc.face_service.Image";
+    return "com.sekirocc.common.Image";
   }
   protected:
   explicit Image(::PROTOBUF_NAMESPACE_ID::Arena* arena,
@@ -770,16 +770,16 @@ class Image final :
   std::string* _internal_mutable_data();
   public:
 
-  // .com.sekirocc.face_service.ImageFormat format = 1;
+  // .com.sekirocc.common.ImageFormat format = 1;
   void clear_format();
-  ::com::sekirocc::face_service::ImageFormat format() const;
-  void set_format(::com::sekirocc::face_service::ImageFormat value);
+  ::com::sekirocc::common::ImageFormat format() const;
+  void set_format(::com::sekirocc::common::ImageFormat value);
   private:
-  ::com::sekirocc::face_service::ImageFormat _internal_format() const;
-  void _internal_set_format(::com::sekirocc::face_service::ImageFormat value);
+  ::com::sekirocc::common::ImageFormat _internal_format() const;
+  void _internal_set_format(::com::sekirocc::common::ImageFormat value);
   public:
 
-  // @@protoc_insertion_point(class_scope:com.sekirocc.face_service.Image)
+  // @@protoc_insertion_point(class_scope:com.sekirocc.common.Image)
  private:
   class _Internal;
 
@@ -797,7 +797,7 @@ class Image final :
 // -------------------------------------------------------------------
 
 class FaceFeature final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.face_service.FaceFeature) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.common.FaceFeature) */ {
  public:
   inline FaceFeature() : FaceFeature(nullptr) {}
   ~FaceFeature() override;
@@ -900,7 +900,7 @@ class FaceFeature final :
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "com.sekirocc.face_service.FaceFeature";
+    return "com.sekirocc.common.FaceFeature";
   }
   protected:
   explicit FaceFeature(::PROTOBUF_NAMESPACE_ID::Arena* arena,
@@ -958,7 +958,7 @@ class FaceFeature final :
   void _internal_set_version(int32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:com.sekirocc.face_service.FaceFeature)
+  // @@protoc_insertion_point(class_scope:com.sekirocc.common.FaceFeature)
  private:
   class _Internal;
 
@@ -977,7 +977,7 @@ class FaceFeature final :
 // -------------------------------------------------------------------
 
 class FaceRectangle final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.face_service.FaceRectangle) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.common.FaceRectangle) */ {
  public:
   inline FaceRectangle() : FaceRectangle(nullptr) {}
   ~FaceRectangle() override;
@@ -1080,7 +1080,7 @@ class FaceRectangle final :
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "com.sekirocc.face_service.FaceRectangle";
+    return "com.sekirocc.common.FaceRectangle";
   }
   protected:
   explicit FaceRectangle(::PROTOBUF_NAMESPACE_ID::Arena* arena,
@@ -1101,23 +1101,23 @@ class FaceRectangle final :
     kQualityFieldNumber = 3,
     kConfidenceFieldNumber = 4,
   };
-  // .com.sekirocc.face_service.Rect rectangle = 2;
+  // .com.sekirocc.common.Rect rectangle = 2;
   bool has_rectangle() const;
   private:
   bool _internal_has_rectangle() const;
   public:
   void clear_rectangle();
-  const ::com::sekirocc::face_service::Rect& rectangle() const;
-  PROTOBUF_NODISCARD ::com::sekirocc::face_service::Rect* release_rectangle();
-  ::com::sekirocc::face_service::Rect* mutable_rectangle();
-  void set_allocated_rectangle(::com::sekirocc::face_service::Rect* rectangle);
+  const ::com::sekirocc::common::Rect& rectangle() const;
+  PROTOBUF_NODISCARD ::com::sekirocc::common::Rect* release_rectangle();
+  ::com::sekirocc::common::Rect* mutable_rectangle();
+  void set_allocated_rectangle(::com::sekirocc::common::Rect* rectangle);
   private:
-  const ::com::sekirocc::face_service::Rect& _internal_rectangle() const;
-  ::com::sekirocc::face_service::Rect* _internal_mutable_rectangle();
+  const ::com::sekirocc::common::Rect& _internal_rectangle() const;
+  ::com::sekirocc::common::Rect* _internal_mutable_rectangle();
   public:
   void unsafe_arena_set_allocated_rectangle(
-      ::com::sekirocc::face_service::Rect* rectangle);
-  ::com::sekirocc::face_service::Rect* unsafe_arena_release_rectangle();
+      ::com::sekirocc::common::Rect* rectangle);
+  ::com::sekirocc::common::Rect* unsafe_arena_release_rectangle();
 
   // float quality = 3;
   void clear_quality();
@@ -1137,7 +1137,7 @@ class FaceRectangle final :
   void _internal_set_confidence(float value);
   public:
 
-  // @@protoc_insertion_point(class_scope:com.sekirocc.face_service.FaceRectangle)
+  // @@protoc_insertion_point(class_scope:com.sekirocc.common.FaceRectangle)
  private:
   class _Internal;
 
@@ -1145,7 +1145,7 @@ class FaceRectangle final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::com::sekirocc::face_service::Rect* rectangle_;
+    ::com::sekirocc::common::Rect* rectangle_;
     float quality_;
     float confidence_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
@@ -1164,7 +1164,7 @@ class FaceRectangle final :
 #endif  // __GNUC__
 // Rect
 
-// .com.sekirocc.face_service.Point point = 1;
+// .com.sekirocc.common.Point point = 1;
 inline bool Rect::_internal_has_point() const {
   return this != internal_default_instance() && _impl_.point_ != nullptr;
 }
@@ -1177,17 +1177,17 @@ inline void Rect::clear_point() {
   }
   _impl_.point_ = nullptr;
 }
-inline const ::com::sekirocc::face_service::Point& Rect::_internal_point() const {
-  const ::com::sekirocc::face_service::Point* p = _impl_.point_;
-  return p != nullptr ? *p : reinterpret_cast<const ::com::sekirocc::face_service::Point&>(
-      ::com::sekirocc::face_service::_Point_default_instance_);
+inline const ::com::sekirocc::common::Point& Rect::_internal_point() const {
+  const ::com::sekirocc::common::Point* p = _impl_.point_;
+  return p != nullptr ? *p : reinterpret_cast<const ::com::sekirocc::common::Point&>(
+      ::com::sekirocc::common::_Point_default_instance_);
 }
-inline const ::com::sekirocc::face_service::Point& Rect::point() const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.Rect.point)
+inline const ::com::sekirocc::common::Point& Rect::point() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.common.Rect.point)
   return _internal_point();
 }
 inline void Rect::unsafe_arena_set_allocated_point(
-    ::com::sekirocc::face_service::Point* point) {
+    ::com::sekirocc::common::Point* point) {
   if (GetArenaForAllocation() == nullptr) {
     delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.point_);
   }
@@ -1197,11 +1197,11 @@ inline void Rect::unsafe_arena_set_allocated_point(
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:com.sekirocc.face_service.Rect.point)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:com.sekirocc.common.Rect.point)
 }
-inline ::com::sekirocc::face_service::Point* Rect::release_point() {
+inline ::com::sekirocc::common::Point* Rect::release_point() {
   
-  ::com::sekirocc::face_service::Point* temp = _impl_.point_;
+  ::com::sekirocc::common::Point* temp = _impl_.point_;
   _impl_.point_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
@@ -1214,27 +1214,27 @@ inline ::com::sekirocc::face_service::Point* Rect::release_point() {
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::com::sekirocc::face_service::Point* Rect::unsafe_arena_release_point() {
-  // @@protoc_insertion_point(field_release:com.sekirocc.face_service.Rect.point)
+inline ::com::sekirocc::common::Point* Rect::unsafe_arena_release_point() {
+  // @@protoc_insertion_point(field_release:com.sekirocc.common.Rect.point)
   
-  ::com::sekirocc::face_service::Point* temp = _impl_.point_;
+  ::com::sekirocc::common::Point* temp = _impl_.point_;
   _impl_.point_ = nullptr;
   return temp;
 }
-inline ::com::sekirocc::face_service::Point* Rect::_internal_mutable_point() {
+inline ::com::sekirocc::common::Point* Rect::_internal_mutable_point() {
   
   if (_impl_.point_ == nullptr) {
-    auto* p = CreateMaybeMessage<::com::sekirocc::face_service::Point>(GetArenaForAllocation());
+    auto* p = CreateMaybeMessage<::com::sekirocc::common::Point>(GetArenaForAllocation());
     _impl_.point_ = p;
   }
   return _impl_.point_;
 }
-inline ::com::sekirocc::face_service::Point* Rect::mutable_point() {
-  ::com::sekirocc::face_service::Point* _msg = _internal_mutable_point();
-  // @@protoc_insertion_point(field_mutable:com.sekirocc.face_service.Rect.point)
+inline ::com::sekirocc::common::Point* Rect::mutable_point() {
+  ::com::sekirocc::common::Point* _msg = _internal_mutable_point();
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.common.Rect.point)
   return _msg;
 }
-inline void Rect::set_allocated_point(::com::sekirocc::face_service::Point* point) {
+inline void Rect::set_allocated_point(::com::sekirocc::common::Point* point) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
     delete _impl_.point_;
@@ -1251,10 +1251,10 @@ inline void Rect::set_allocated_point(::com::sekirocc::face_service::Point* poin
     
   }
   _impl_.point_ = point;
-  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.face_service.Rect.point)
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.common.Rect.point)
 }
 
-// .com.sekirocc.face_service.Size size = 2;
+// .com.sekirocc.common.Size size = 2;
 inline bool Rect::_internal_has_size() const {
   return this != internal_default_instance() && _impl_.size_ != nullptr;
 }
@@ -1267,17 +1267,17 @@ inline void Rect::clear_size() {
   }
   _impl_.size_ = nullptr;
 }
-inline const ::com::sekirocc::face_service::Size& Rect::_internal_size() const {
-  const ::com::sekirocc::face_service::Size* p = _impl_.size_;
-  return p != nullptr ? *p : reinterpret_cast<const ::com::sekirocc::face_service::Size&>(
-      ::com::sekirocc::face_service::_Size_default_instance_);
+inline const ::com::sekirocc::common::Size& Rect::_internal_size() const {
+  const ::com::sekirocc::common::Size* p = _impl_.size_;
+  return p != nullptr ? *p : reinterpret_cast<const ::com::sekirocc::common::Size&>(
+      ::com::sekirocc::common::_Size_default_instance_);
 }
-inline const ::com::sekirocc::face_service::Size& Rect::size() const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.Rect.size)
+inline const ::com::sekirocc::common::Size& Rect::size() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.common.Rect.size)
   return _internal_size();
 }
 inline void Rect::unsafe_arena_set_allocated_size(
-    ::com::sekirocc::face_service::Size* size) {
+    ::com::sekirocc::common::Size* size) {
   if (GetArenaForAllocation() == nullptr) {
     delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.size_);
   }
@@ -1287,11 +1287,11 @@ inline void Rect::unsafe_arena_set_allocated_size(
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:com.sekirocc.face_service.Rect.size)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:com.sekirocc.common.Rect.size)
 }
-inline ::com::sekirocc::face_service::Size* Rect::release_size() {
+inline ::com::sekirocc::common::Size* Rect::release_size() {
   
-  ::com::sekirocc::face_service::Size* temp = _impl_.size_;
+  ::com::sekirocc::common::Size* temp = _impl_.size_;
   _impl_.size_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
@@ -1304,27 +1304,27 @@ inline ::com::sekirocc::face_service::Size* Rect::release_size() {
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::com::sekirocc::face_service::Size* Rect::unsafe_arena_release_size() {
-  // @@protoc_insertion_point(field_release:com.sekirocc.face_service.Rect.size)
+inline ::com::sekirocc::common::Size* Rect::unsafe_arena_release_size() {
+  // @@protoc_insertion_point(field_release:com.sekirocc.common.Rect.size)
   
-  ::com::sekirocc::face_service::Size* temp = _impl_.size_;
+  ::com::sekirocc::common::Size* temp = _impl_.size_;
   _impl_.size_ = nullptr;
   return temp;
 }
-inline ::com::sekirocc::face_service::Size* Rect::_internal_mutable_size() {
+inline ::com::sekirocc::common::Size* Rect::_internal_mutable_size() {
   
   if (_impl_.size_ == nullptr) {
-    auto* p = CreateMaybeMessage<::com::sekirocc::face_service::Size>(GetArenaForAllocation());
+    auto* p = CreateMaybeMessage<::com::sekirocc::common::Size>(GetArenaForAllocation());
     _impl_.size_ = p;
   }
   return _impl_.size_;
 }
-inline ::com::sekirocc::face_service::Size* Rect::mutable_size() {
-  ::com::sekirocc::face_service::Size* _msg = _internal_mutable_size();
-  // @@protoc_insertion_point(field_mutable:com.sekirocc.face_service.Rect.size)
+inline ::com::sekirocc::common::Size* Rect::mutable_size() {
+  ::com::sekirocc::common::Size* _msg = _internal_mutable_size();
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.common.Rect.size)
   return _msg;
 }
-inline void Rect::set_allocated_size(::com::sekirocc::face_service::Size* size) {
+inline void Rect::set_allocated_size(::com::sekirocc::common::Size* size) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
     delete _impl_.size_;
@@ -1341,7 +1341,7 @@ inline void Rect::set_allocated_size(::com::sekirocc::face_service::Size* size) 
     
   }
   _impl_.size_ = size;
-  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.face_service.Rect.size)
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.common.Rect.size)
 }
 
 // -------------------------------------------------------------------
@@ -1356,7 +1356,7 @@ inline int32_t Point::_internal_x() const {
   return _impl_.x_;
 }
 inline int32_t Point::x() const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.Point.x)
+  // @@protoc_insertion_point(field_get:com.sekirocc.common.Point.x)
   return _internal_x();
 }
 inline void Point::_internal_set_x(int32_t value) {
@@ -1365,7 +1365,7 @@ inline void Point::_internal_set_x(int32_t value) {
 }
 inline void Point::set_x(int32_t value) {
   _internal_set_x(value);
-  // @@protoc_insertion_point(field_set:com.sekirocc.face_service.Point.x)
+  // @@protoc_insertion_point(field_set:com.sekirocc.common.Point.x)
 }
 
 // int32 y = 2;
@@ -1376,7 +1376,7 @@ inline int32_t Point::_internal_y() const {
   return _impl_.y_;
 }
 inline int32_t Point::y() const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.Point.y)
+  // @@protoc_insertion_point(field_get:com.sekirocc.common.Point.y)
   return _internal_y();
 }
 inline void Point::_internal_set_y(int32_t value) {
@@ -1385,7 +1385,7 @@ inline void Point::_internal_set_y(int32_t value) {
 }
 inline void Point::set_y(int32_t value) {
   _internal_set_y(value);
-  // @@protoc_insertion_point(field_set:com.sekirocc.face_service.Point.y)
+  // @@protoc_insertion_point(field_set:com.sekirocc.common.Point.y)
 }
 
 // -------------------------------------------------------------------
@@ -1400,7 +1400,7 @@ inline int32_t Size::_internal_width() const {
   return _impl_.width_;
 }
 inline int32_t Size::width() const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.Size.width)
+  // @@protoc_insertion_point(field_get:com.sekirocc.common.Size.width)
   return _internal_width();
 }
 inline void Size::_internal_set_width(int32_t value) {
@@ -1409,7 +1409,7 @@ inline void Size::_internal_set_width(int32_t value) {
 }
 inline void Size::set_width(int32_t value) {
   _internal_set_width(value);
-  // @@protoc_insertion_point(field_set:com.sekirocc.face_service.Size.width)
+  // @@protoc_insertion_point(field_set:com.sekirocc.common.Size.width)
 }
 
 // int32 height = 2;
@@ -1420,7 +1420,7 @@ inline int32_t Size::_internal_height() const {
   return _impl_.height_;
 }
 inline int32_t Size::height() const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.Size.height)
+  // @@protoc_insertion_point(field_get:com.sekirocc.common.Size.height)
   return _internal_height();
 }
 inline void Size::_internal_set_height(int32_t value) {
@@ -1429,31 +1429,31 @@ inline void Size::_internal_set_height(int32_t value) {
 }
 inline void Size::set_height(int32_t value) {
   _internal_set_height(value);
-  // @@protoc_insertion_point(field_set:com.sekirocc.face_service.Size.height)
+  // @@protoc_insertion_point(field_set:com.sekirocc.common.Size.height)
 }
 
 // -------------------------------------------------------------------
 
 // Image
 
-// .com.sekirocc.face_service.ImageFormat format = 1;
+// .com.sekirocc.common.ImageFormat format = 1;
 inline void Image::clear_format() {
   _impl_.format_ = 0;
 }
-inline ::com::sekirocc::face_service::ImageFormat Image::_internal_format() const {
-  return static_cast< ::com::sekirocc::face_service::ImageFormat >(_impl_.format_);
+inline ::com::sekirocc::common::ImageFormat Image::_internal_format() const {
+  return static_cast< ::com::sekirocc::common::ImageFormat >(_impl_.format_);
 }
-inline ::com::sekirocc::face_service::ImageFormat Image::format() const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.Image.format)
+inline ::com::sekirocc::common::ImageFormat Image::format() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.common.Image.format)
   return _internal_format();
 }
-inline void Image::_internal_set_format(::com::sekirocc::face_service::ImageFormat value) {
+inline void Image::_internal_set_format(::com::sekirocc::common::ImageFormat value) {
   
   _impl_.format_ = value;
 }
-inline void Image::set_format(::com::sekirocc::face_service::ImageFormat value) {
+inline void Image::set_format(::com::sekirocc::common::ImageFormat value) {
   _internal_set_format(value);
-  // @@protoc_insertion_point(field_set:com.sekirocc.face_service.Image.format)
+  // @@protoc_insertion_point(field_set:com.sekirocc.common.Image.format)
 }
 
 // bytes data = 2;
@@ -1461,7 +1461,7 @@ inline void Image::clear_data() {
   _impl_.data_.ClearToEmpty();
 }
 inline const std::string& Image::data() const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.Image.data)
+  // @@protoc_insertion_point(field_get:com.sekirocc.common.Image.data)
   return _internal_data();
 }
 template <typename ArgT0, typename... ArgT>
@@ -1469,11 +1469,11 @@ inline PROTOBUF_ALWAYS_INLINE
 void Image::set_data(ArgT0&& arg0, ArgT... args) {
  
  _impl_.data_.SetBytes(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:com.sekirocc.face_service.Image.data)
+  // @@protoc_insertion_point(field_set:com.sekirocc.common.Image.data)
 }
 inline std::string* Image::mutable_data() {
   std::string* _s = _internal_mutable_data();
-  // @@protoc_insertion_point(field_mutable:com.sekirocc.face_service.Image.data)
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.common.Image.data)
   return _s;
 }
 inline const std::string& Image::_internal_data() const {
@@ -1488,7 +1488,7 @@ inline std::string* Image::_internal_mutable_data() {
   return _impl_.data_.Mutable(GetArenaForAllocation());
 }
 inline std::string* Image::release_data() {
-  // @@protoc_insertion_point(field_release:com.sekirocc.face_service.Image.data)
+  // @@protoc_insertion_point(field_release:com.sekirocc.common.Image.data)
   return _impl_.data_.Release();
 }
 inline void Image::set_allocated_data(std::string* data) {
@@ -1503,7 +1503,7 @@ inline void Image::set_allocated_data(std::string* data) {
     _impl_.data_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.face_service.Image.data)
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.common.Image.data)
 }
 
 // -------------------------------------------------------------------
@@ -1518,7 +1518,7 @@ inline int32_t FaceFeature::_internal_version() const {
   return _impl_.version_;
 }
 inline int32_t FaceFeature::version() const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.FaceFeature.version)
+  // @@protoc_insertion_point(field_get:com.sekirocc.common.FaceFeature.version)
   return _internal_version();
 }
 inline void FaceFeature::_internal_set_version(int32_t value) {
@@ -1527,7 +1527,7 @@ inline void FaceFeature::_internal_set_version(int32_t value) {
 }
 inline void FaceFeature::set_version(int32_t value) {
   _internal_set_version(value);
-  // @@protoc_insertion_point(field_set:com.sekirocc.face_service.FaceFeature.version)
+  // @@protoc_insertion_point(field_set:com.sekirocc.common.FaceFeature.version)
 }
 
 // string model = 2;
@@ -1535,7 +1535,7 @@ inline void FaceFeature::clear_model() {
   _impl_.model_.ClearToEmpty();
 }
 inline const std::string& FaceFeature::model() const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.FaceFeature.model)
+  // @@protoc_insertion_point(field_get:com.sekirocc.common.FaceFeature.model)
   return _internal_model();
 }
 template <typename ArgT0, typename... ArgT>
@@ -1543,11 +1543,11 @@ inline PROTOBUF_ALWAYS_INLINE
 void FaceFeature::set_model(ArgT0&& arg0, ArgT... args) {
  
  _impl_.model_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:com.sekirocc.face_service.FaceFeature.model)
+  // @@protoc_insertion_point(field_set:com.sekirocc.common.FaceFeature.model)
 }
 inline std::string* FaceFeature::mutable_model() {
   std::string* _s = _internal_mutable_model();
-  // @@protoc_insertion_point(field_mutable:com.sekirocc.face_service.FaceFeature.model)
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.common.FaceFeature.model)
   return _s;
 }
 inline const std::string& FaceFeature::_internal_model() const {
@@ -1562,7 +1562,7 @@ inline std::string* FaceFeature::_internal_mutable_model() {
   return _impl_.model_.Mutable(GetArenaForAllocation());
 }
 inline std::string* FaceFeature::release_model() {
-  // @@protoc_insertion_point(field_release:com.sekirocc.face_service.FaceFeature.model)
+  // @@protoc_insertion_point(field_release:com.sekirocc.common.FaceFeature.model)
   return _impl_.model_.Release();
 }
 inline void FaceFeature::set_allocated_model(std::string* model) {
@@ -1577,7 +1577,7 @@ inline void FaceFeature::set_allocated_model(std::string* model) {
     _impl_.model_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.face_service.FaceFeature.model)
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.common.FaceFeature.model)
 }
 
 // bytes blob = 3;
@@ -1585,7 +1585,7 @@ inline void FaceFeature::clear_blob() {
   _impl_.blob_.ClearToEmpty();
 }
 inline const std::string& FaceFeature::blob() const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.FaceFeature.blob)
+  // @@protoc_insertion_point(field_get:com.sekirocc.common.FaceFeature.blob)
   return _internal_blob();
 }
 template <typename ArgT0, typename... ArgT>
@@ -1593,11 +1593,11 @@ inline PROTOBUF_ALWAYS_INLINE
 void FaceFeature::set_blob(ArgT0&& arg0, ArgT... args) {
  
  _impl_.blob_.SetBytes(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:com.sekirocc.face_service.FaceFeature.blob)
+  // @@protoc_insertion_point(field_set:com.sekirocc.common.FaceFeature.blob)
 }
 inline std::string* FaceFeature::mutable_blob() {
   std::string* _s = _internal_mutable_blob();
-  // @@protoc_insertion_point(field_mutable:com.sekirocc.face_service.FaceFeature.blob)
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.common.FaceFeature.blob)
   return _s;
 }
 inline const std::string& FaceFeature::_internal_blob() const {
@@ -1612,7 +1612,7 @@ inline std::string* FaceFeature::_internal_mutable_blob() {
   return _impl_.blob_.Mutable(GetArenaForAllocation());
 }
 inline std::string* FaceFeature::release_blob() {
-  // @@protoc_insertion_point(field_release:com.sekirocc.face_service.FaceFeature.blob)
+  // @@protoc_insertion_point(field_release:com.sekirocc.common.FaceFeature.blob)
   return _impl_.blob_.Release();
 }
 inline void FaceFeature::set_allocated_blob(std::string* blob) {
@@ -1627,14 +1627,14 @@ inline void FaceFeature::set_allocated_blob(std::string* blob) {
     _impl_.blob_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.face_service.FaceFeature.blob)
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.common.FaceFeature.blob)
 }
 
 // -------------------------------------------------------------------
 
 // FaceRectangle
 
-// .com.sekirocc.face_service.Rect rectangle = 2;
+// .com.sekirocc.common.Rect rectangle = 2;
 inline bool FaceRectangle::_internal_has_rectangle() const {
   return this != internal_default_instance() && _impl_.rectangle_ != nullptr;
 }
@@ -1647,17 +1647,17 @@ inline void FaceRectangle::clear_rectangle() {
   }
   _impl_.rectangle_ = nullptr;
 }
-inline const ::com::sekirocc::face_service::Rect& FaceRectangle::_internal_rectangle() const {
-  const ::com::sekirocc::face_service::Rect* p = _impl_.rectangle_;
-  return p != nullptr ? *p : reinterpret_cast<const ::com::sekirocc::face_service::Rect&>(
-      ::com::sekirocc::face_service::_Rect_default_instance_);
+inline const ::com::sekirocc::common::Rect& FaceRectangle::_internal_rectangle() const {
+  const ::com::sekirocc::common::Rect* p = _impl_.rectangle_;
+  return p != nullptr ? *p : reinterpret_cast<const ::com::sekirocc::common::Rect&>(
+      ::com::sekirocc::common::_Rect_default_instance_);
 }
-inline const ::com::sekirocc::face_service::Rect& FaceRectangle::rectangle() const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.FaceRectangle.rectangle)
+inline const ::com::sekirocc::common::Rect& FaceRectangle::rectangle() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.common.FaceRectangle.rectangle)
   return _internal_rectangle();
 }
 inline void FaceRectangle::unsafe_arena_set_allocated_rectangle(
-    ::com::sekirocc::face_service::Rect* rectangle) {
+    ::com::sekirocc::common::Rect* rectangle) {
   if (GetArenaForAllocation() == nullptr) {
     delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.rectangle_);
   }
@@ -1667,11 +1667,11 @@ inline void FaceRectangle::unsafe_arena_set_allocated_rectangle(
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:com.sekirocc.face_service.FaceRectangle.rectangle)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:com.sekirocc.common.FaceRectangle.rectangle)
 }
-inline ::com::sekirocc::face_service::Rect* FaceRectangle::release_rectangle() {
+inline ::com::sekirocc::common::Rect* FaceRectangle::release_rectangle() {
   
-  ::com::sekirocc::face_service::Rect* temp = _impl_.rectangle_;
+  ::com::sekirocc::common::Rect* temp = _impl_.rectangle_;
   _impl_.rectangle_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
@@ -1684,27 +1684,27 @@ inline ::com::sekirocc::face_service::Rect* FaceRectangle::release_rectangle() {
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::com::sekirocc::face_service::Rect* FaceRectangle::unsafe_arena_release_rectangle() {
-  // @@protoc_insertion_point(field_release:com.sekirocc.face_service.FaceRectangle.rectangle)
+inline ::com::sekirocc::common::Rect* FaceRectangle::unsafe_arena_release_rectangle() {
+  // @@protoc_insertion_point(field_release:com.sekirocc.common.FaceRectangle.rectangle)
   
-  ::com::sekirocc::face_service::Rect* temp = _impl_.rectangle_;
+  ::com::sekirocc::common::Rect* temp = _impl_.rectangle_;
   _impl_.rectangle_ = nullptr;
   return temp;
 }
-inline ::com::sekirocc::face_service::Rect* FaceRectangle::_internal_mutable_rectangle() {
+inline ::com::sekirocc::common::Rect* FaceRectangle::_internal_mutable_rectangle() {
   
   if (_impl_.rectangle_ == nullptr) {
-    auto* p = CreateMaybeMessage<::com::sekirocc::face_service::Rect>(GetArenaForAllocation());
+    auto* p = CreateMaybeMessage<::com::sekirocc::common::Rect>(GetArenaForAllocation());
     _impl_.rectangle_ = p;
   }
   return _impl_.rectangle_;
 }
-inline ::com::sekirocc::face_service::Rect* FaceRectangle::mutable_rectangle() {
-  ::com::sekirocc::face_service::Rect* _msg = _internal_mutable_rectangle();
-  // @@protoc_insertion_point(field_mutable:com.sekirocc.face_service.FaceRectangle.rectangle)
+inline ::com::sekirocc::common::Rect* FaceRectangle::mutable_rectangle() {
+  ::com::sekirocc::common::Rect* _msg = _internal_mutable_rectangle();
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.common.FaceRectangle.rectangle)
   return _msg;
 }
-inline void FaceRectangle::set_allocated_rectangle(::com::sekirocc::face_service::Rect* rectangle) {
+inline void FaceRectangle::set_allocated_rectangle(::com::sekirocc::common::Rect* rectangle) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
     delete _impl_.rectangle_;
@@ -1721,7 +1721,7 @@ inline void FaceRectangle::set_allocated_rectangle(::com::sekirocc::face_service
     
   }
   _impl_.rectangle_ = rectangle;
-  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.face_service.FaceRectangle.rectangle)
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.common.FaceRectangle.rectangle)
 }
 
 // float quality = 3;
@@ -1732,7 +1732,7 @@ inline float FaceRectangle::_internal_quality() const {
   return _impl_.quality_;
 }
 inline float FaceRectangle::quality() const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.FaceRectangle.quality)
+  // @@protoc_insertion_point(field_get:com.sekirocc.common.FaceRectangle.quality)
   return _internal_quality();
 }
 inline void FaceRectangle::_internal_set_quality(float value) {
@@ -1741,7 +1741,7 @@ inline void FaceRectangle::_internal_set_quality(float value) {
 }
 inline void FaceRectangle::set_quality(float value) {
   _internal_set_quality(value);
-  // @@protoc_insertion_point(field_set:com.sekirocc.face_service.FaceRectangle.quality)
+  // @@protoc_insertion_point(field_set:com.sekirocc.common.FaceRectangle.quality)
 }
 
 // float confidence = 4;
@@ -1752,7 +1752,7 @@ inline float FaceRectangle::_internal_confidence() const {
   return _impl_.confidence_;
 }
 inline float FaceRectangle::confidence() const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.face_service.FaceRectangle.confidence)
+  // @@protoc_insertion_point(field_get:com.sekirocc.common.FaceRectangle.confidence)
   return _internal_confidence();
 }
 inline void FaceRectangle::_internal_set_confidence(float value) {
@@ -1761,7 +1761,7 @@ inline void FaceRectangle::_internal_set_confidence(float value) {
 }
 inline void FaceRectangle::set_confidence(float value) {
   _internal_set_confidence(value);
-  // @@protoc_insertion_point(field_set:com.sekirocc.face_service.FaceRectangle.confidence)
+  // @@protoc_insertion_point(field_set:com.sekirocc.common.FaceRectangle.confidence)
 }
 
 #ifdef __GNUC__
@@ -1780,21 +1780,21 @@ inline void FaceRectangle::set_confidence(float value) {
 
 // @@protoc_insertion_point(namespace_scope)
 
-}  // namespace face_service
+}  // namespace common
 }  // namespace sekirocc
 }  // namespace com
 
 PROTOBUF_NAMESPACE_OPEN
 
-template <> struct is_proto_enum< ::com::sekirocc::face_service::ResultCode> : ::std::true_type {};
+template <> struct is_proto_enum< ::com::sekirocc::common::ResultCode> : ::std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::com::sekirocc::face_service::ResultCode>() {
-  return ::com::sekirocc::face_service::ResultCode_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::com::sekirocc::common::ResultCode>() {
+  return ::com::sekirocc::common::ResultCode_descriptor();
 }
-template <> struct is_proto_enum< ::com::sekirocc::face_service::ImageFormat> : ::std::true_type {};
+template <> struct is_proto_enum< ::com::sekirocc::common::ImageFormat> : ::std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::com::sekirocc::face_service::ImageFormat>() {
-  return ::com::sekirocc::face_service::ImageFormat_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::com::sekirocc::common::ImageFormat>() {
+  return ::com::sekirocc::common::ImageFormat_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE

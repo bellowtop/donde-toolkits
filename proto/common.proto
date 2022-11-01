@@ -2,10 +2,10 @@ syntax = "proto3";
 
 import "google/api/annotations.proto";
 
-option go_package = "github.com/sekirocc/face-recognition-service/face_service";
+option go_package = "github.com/sekirocc/face-recognition-service/common";
 // option java_package = "com.sekirocc.face_recognition_service";
 
-package com.sekirocc.face_service;
+package com.sekirocc.common;
 
 enum ResultCode {
     OK = 0;

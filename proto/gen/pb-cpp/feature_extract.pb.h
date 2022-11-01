@@ -207,23 +207,23 @@ class DetectionRequest final :
   enum : int {
     kImageFieldNumber = 1,
   };
-  // .com.sekirocc.face_service.Image image = 1;
+  // .com.sekirocc.common.Image image = 1;
   bool has_image() const;
   private:
   bool _internal_has_image() const;
   public:
   void clear_image();
-  const ::com::sekirocc::face_service::Image& image() const;
-  PROTOBUF_NODISCARD ::com::sekirocc::face_service::Image* release_image();
-  ::com::sekirocc::face_service::Image* mutable_image();
-  void set_allocated_image(::com::sekirocc::face_service::Image* image);
+  const ::com::sekirocc::common::Image& image() const;
+  PROTOBUF_NODISCARD ::com::sekirocc::common::Image* release_image();
+  ::com::sekirocc::common::Image* mutable_image();
+  void set_allocated_image(::com::sekirocc::common::Image* image);
   private:
-  const ::com::sekirocc::face_service::Image& _internal_image() const;
-  ::com::sekirocc::face_service::Image* _internal_mutable_image();
+  const ::com::sekirocc::common::Image& _internal_image() const;
+  ::com::sekirocc::common::Image* _internal_mutable_image();
   public:
   void unsafe_arena_set_allocated_image(
-      ::com::sekirocc::face_service::Image* image);
-  ::com::sekirocc::face_service::Image* unsafe_arena_release_image();
+      ::com::sekirocc::common::Image* image);
+  ::com::sekirocc::common::Image* unsafe_arena_release_image();
 
   // @@protoc_insertion_point(class_scope:com.sekirocc.face_service.DetectionRequest)
  private:
@@ -233,7 +233,7 @@ class DetectionRequest final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::com::sekirocc::face_service::Image* image_;
+    ::com::sekirocc::common::Image* image_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -365,31 +365,31 @@ class DetectionResponse final :
     kFaceRectsFieldNumber = 2,
     kCodeFieldNumber = 1,
   };
-  // repeated .com.sekirocc.face_service.FaceRectangle face_rects = 2;
+  // repeated .com.sekirocc.common.FaceRectangle face_rects = 2;
   int face_rects_size() const;
   private:
   int _internal_face_rects_size() const;
   public:
   void clear_face_rects();
-  ::com::sekirocc::face_service::FaceRectangle* mutable_face_rects(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::face_service::FaceRectangle >*
+  ::com::sekirocc::common::FaceRectangle* mutable_face_rects(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::common::FaceRectangle >*
       mutable_face_rects();
   private:
-  const ::com::sekirocc::face_service::FaceRectangle& _internal_face_rects(int index) const;
-  ::com::sekirocc::face_service::FaceRectangle* _internal_add_face_rects();
+  const ::com::sekirocc::common::FaceRectangle& _internal_face_rects(int index) const;
+  ::com::sekirocc::common::FaceRectangle* _internal_add_face_rects();
   public:
-  const ::com::sekirocc::face_service::FaceRectangle& face_rects(int index) const;
-  ::com::sekirocc::face_service::FaceRectangle* add_face_rects();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::face_service::FaceRectangle >&
+  const ::com::sekirocc::common::FaceRectangle& face_rects(int index) const;
+  ::com::sekirocc::common::FaceRectangle* add_face_rects();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::common::FaceRectangle >&
       face_rects() const;
 
-  // .com.sekirocc.face_service.ResultCode code = 1;
+  // .com.sekirocc.common.ResultCode code = 1;
   void clear_code();
-  ::com::sekirocc::face_service::ResultCode code() const;
-  void set_code(::com::sekirocc::face_service::ResultCode value);
+  ::com::sekirocc::common::ResultCode code() const;
+  void set_code(::com::sekirocc::common::ResultCode value);
   private:
-  ::com::sekirocc::face_service::ResultCode _internal_code() const;
-  void _internal_set_code(::com::sekirocc::face_service::ResultCode value);
+  ::com::sekirocc::common::ResultCode _internal_code() const;
+  void _internal_set_code(::com::sekirocc::common::ResultCode value);
   public:
 
   // @@protoc_insertion_point(class_scope:com.sekirocc.face_service.DetectionResponse)
@@ -400,7 +400,7 @@ class DetectionResponse final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::face_service::FaceRectangle > face_rects_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::common::FaceRectangle > face_rects_;
     int code_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -532,23 +532,23 @@ class ExtractionRequest final :
   enum : int {
     kImageFieldNumber = 1,
   };
-  // .com.sekirocc.face_service.Image image = 1;
+  // .com.sekirocc.common.Image image = 1;
   bool has_image() const;
   private:
   bool _internal_has_image() const;
   public:
   void clear_image();
-  const ::com::sekirocc::face_service::Image& image() const;
-  PROTOBUF_NODISCARD ::com::sekirocc::face_service::Image* release_image();
-  ::com::sekirocc::face_service::Image* mutable_image();
-  void set_allocated_image(::com::sekirocc::face_service::Image* image);
+  const ::com::sekirocc::common::Image& image() const;
+  PROTOBUF_NODISCARD ::com::sekirocc::common::Image* release_image();
+  ::com::sekirocc::common::Image* mutable_image();
+  void set_allocated_image(::com::sekirocc::common::Image* image);
   private:
-  const ::com::sekirocc::face_service::Image& _internal_image() const;
-  ::com::sekirocc::face_service::Image* _internal_mutable_image();
+  const ::com::sekirocc::common::Image& _internal_image() const;
+  ::com::sekirocc::common::Image* _internal_mutable_image();
   public:
   void unsafe_arena_set_allocated_image(
-      ::com::sekirocc::face_service::Image* image);
-  ::com::sekirocc::face_service::Image* unsafe_arena_release_image();
+      ::com::sekirocc::common::Image* image);
+  ::com::sekirocc::common::Image* unsafe_arena_release_image();
 
   // @@protoc_insertion_point(class_scope:com.sekirocc.face_service.ExtractionRequest)
  private:
@@ -558,7 +558,7 @@ class ExtractionRequest final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::com::sekirocc::face_service::Image* image_;
+    ::com::sekirocc::common::Image* image_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -691,49 +691,49 @@ class ExtractionResponse final :
     kFaceFeaturesFieldNumber = 3,
     kCodeFieldNumber = 1,
   };
-  // repeated .com.sekirocc.face_service.FaceRectangle face_rects = 2;
+  // repeated .com.sekirocc.common.FaceRectangle face_rects = 2;
   int face_rects_size() const;
   private:
   int _internal_face_rects_size() const;
   public:
   void clear_face_rects();
-  ::com::sekirocc::face_service::FaceRectangle* mutable_face_rects(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::face_service::FaceRectangle >*
+  ::com::sekirocc::common::FaceRectangle* mutable_face_rects(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::common::FaceRectangle >*
       mutable_face_rects();
   private:
-  const ::com::sekirocc::face_service::FaceRectangle& _internal_face_rects(int index) const;
-  ::com::sekirocc::face_service::FaceRectangle* _internal_add_face_rects();
+  const ::com::sekirocc::common::FaceRectangle& _internal_face_rects(int index) const;
+  ::com::sekirocc::common::FaceRectangle* _internal_add_face_rects();
   public:
-  const ::com::sekirocc::face_service::FaceRectangle& face_rects(int index) const;
-  ::com::sekirocc::face_service::FaceRectangle* add_face_rects();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::face_service::FaceRectangle >&
+  const ::com::sekirocc::common::FaceRectangle& face_rects(int index) const;
+  ::com::sekirocc::common::FaceRectangle* add_face_rects();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::common::FaceRectangle >&
       face_rects() const;
 
-  // repeated .com.sekirocc.face_service.FaceFeature face_features = 3;
+  // repeated .com.sekirocc.common.FaceFeature face_features = 3;
   int face_features_size() const;
   private:
   int _internal_face_features_size() const;
   public:
   void clear_face_features();
-  ::com::sekirocc::face_service::FaceFeature* mutable_face_features(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::face_service::FaceFeature >*
+  ::com::sekirocc::common::FaceFeature* mutable_face_features(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::common::FaceFeature >*
       mutable_face_features();
   private:
-  const ::com::sekirocc::face_service::FaceFeature& _internal_face_features(int index) const;
-  ::com::sekirocc::face_service::FaceFeature* _internal_add_face_features();
+  const ::com::sekirocc::common::FaceFeature& _internal_face_features(int index) const;
+  ::com::sekirocc::common::FaceFeature* _internal_add_face_features();
   public:
-  const ::com::sekirocc::face_service::FaceFeature& face_features(int index) const;
-  ::com::sekirocc::face_service::FaceFeature* add_face_features();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::face_service::FaceFeature >&
+  const ::com::sekirocc::common::FaceFeature& face_features(int index) const;
+  ::com::sekirocc::common::FaceFeature* add_face_features();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::common::FaceFeature >&
       face_features() const;
 
-  // .com.sekirocc.face_service.ResultCode code = 1;
+  // .com.sekirocc.common.ResultCode code = 1;
   void clear_code();
-  ::com::sekirocc::face_service::ResultCode code() const;
-  void set_code(::com::sekirocc::face_service::ResultCode value);
+  ::com::sekirocc::common::ResultCode code() const;
+  void set_code(::com::sekirocc::common::ResultCode value);
   private:
-  ::com::sekirocc::face_service::ResultCode _internal_code() const;
-  void _internal_set_code(::com::sekirocc::face_service::ResultCode value);
+  ::com::sekirocc::common::ResultCode _internal_code() const;
+  void _internal_set_code(::com::sekirocc::common::ResultCode value);
   public:
 
   // @@protoc_insertion_point(class_scope:com.sekirocc.face_service.ExtractionResponse)
@@ -744,8 +744,8 @@ class ExtractionResponse final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::face_service::FaceRectangle > face_rects_;
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::face_service::FaceFeature > face_features_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::common::FaceRectangle > face_rects_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::common::FaceFeature > face_features_;
     int code_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -878,41 +878,41 @@ class CompareRequest final :
     kOneFieldNumber = 1,
     kTwoFieldNumber = 2,
   };
-  // .com.sekirocc.face_service.FaceFeature one = 1;
+  // .com.sekirocc.common.FaceFeature one = 1;
   bool has_one() const;
   private:
   bool _internal_has_one() const;
   public:
   void clear_one();
-  const ::com::sekirocc::face_service::FaceFeature& one() const;
-  PROTOBUF_NODISCARD ::com::sekirocc::face_service::FaceFeature* release_one();
-  ::com::sekirocc::face_service::FaceFeature* mutable_one();
-  void set_allocated_one(::com::sekirocc::face_service::FaceFeature* one);
+  const ::com::sekirocc::common::FaceFeature& one() const;
+  PROTOBUF_NODISCARD ::com::sekirocc::common::FaceFeature* release_one();
+  ::com::sekirocc::common::FaceFeature* mutable_one();
+  void set_allocated_one(::com::sekirocc::common::FaceFeature* one);
   private:
-  const ::com::sekirocc::face_service::FaceFeature& _internal_one() const;
-  ::com::sekirocc::face_service::FaceFeature* _internal_mutable_one();
+  const ::com::sekirocc::common::FaceFeature& _internal_one() const;
+  ::com::sekirocc::common::FaceFeature* _internal_mutable_one();
   public:
   void unsafe_arena_set_allocated_one(
-      ::com::sekirocc::face_service::FaceFeature* one);
-  ::com::sekirocc::face_service::FaceFeature* unsafe_arena_release_one();
+      ::com::sekirocc::common::FaceFeature* one);
+  ::com::sekirocc::common::FaceFeature* unsafe_arena_release_one();
 
-  // .com.sekirocc.face_service.FaceFeature two = 2;
+  // .com.sekirocc.common.FaceFeature two = 2;
   bool has_two() const;
   private:
   bool _internal_has_two() const;
   public:
   void clear_two();
-  const ::com::sekirocc::face_service::FaceFeature& two() const;
-  PROTOBUF_NODISCARD ::com::sekirocc::face_service::FaceFeature* release_two();
-  ::com::sekirocc::face_service::FaceFeature* mutable_two();
-  void set_allocated_two(::com::sekirocc::face_service::FaceFeature* two);
+  const ::com::sekirocc::common::FaceFeature& two() const;
+  PROTOBUF_NODISCARD ::com::sekirocc::common::FaceFeature* release_two();
+  ::com::sekirocc::common::FaceFeature* mutable_two();
+  void set_allocated_two(::com::sekirocc::common::FaceFeature* two);
   private:
-  const ::com::sekirocc::face_service::FaceFeature& _internal_two() const;
-  ::com::sekirocc::face_service::FaceFeature* _internal_mutable_two();
+  const ::com::sekirocc::common::FaceFeature& _internal_two() const;
+  ::com::sekirocc::common::FaceFeature* _internal_mutable_two();
   public:
   void unsafe_arena_set_allocated_two(
-      ::com::sekirocc::face_service::FaceFeature* two);
-  ::com::sekirocc::face_service::FaceFeature* unsafe_arena_release_two();
+      ::com::sekirocc::common::FaceFeature* two);
+  ::com::sekirocc::common::FaceFeature* unsafe_arena_release_two();
 
   // @@protoc_insertion_point(class_scope:com.sekirocc.face_service.CompareRequest)
  private:
@@ -922,8 +922,8 @@ class CompareRequest final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::com::sekirocc::face_service::FaceFeature* one_;
-    ::com::sekirocc::face_service::FaceFeature* two_;
+    ::com::sekirocc::common::FaceFeature* one_;
+    ::com::sekirocc::common::FaceFeature* two_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -1055,13 +1055,13 @@ class CompareResponse final :
     kCodeFieldNumber = 1,
     kScoreFieldNumber = 2,
   };
-  // .com.sekirocc.face_service.ResultCode code = 1;
+  // .com.sekirocc.common.ResultCode code = 1;
   void clear_code();
-  ::com::sekirocc::face_service::ResultCode code() const;
-  void set_code(::com::sekirocc::face_service::ResultCode value);
+  ::com::sekirocc::common::ResultCode code() const;
+  void set_code(::com::sekirocc::common::ResultCode value);
   private:
-  ::com::sekirocc::face_service::ResultCode _internal_code() const;
-  void _internal_set_code(::com::sekirocc::face_service::ResultCode value);
+  ::com::sekirocc::common::ResultCode _internal_code() const;
+  void _internal_set_code(::com::sekirocc::common::ResultCode value);
   public:
 
   // float score = 2;
@@ -1099,24 +1099,24 @@ class CompareResponse final :
 #endif  // __GNUC__
 // DetectionRequest
 
-// .com.sekirocc.face_service.Image image = 1;
+// .com.sekirocc.common.Image image = 1;
 inline bool DetectionRequest::_internal_has_image() const {
   return this != internal_default_instance() && _impl_.image_ != nullptr;
 }
 inline bool DetectionRequest::has_image() const {
   return _internal_has_image();
 }
-inline const ::com::sekirocc::face_service::Image& DetectionRequest::_internal_image() const {
-  const ::com::sekirocc::face_service::Image* p = _impl_.image_;
-  return p != nullptr ? *p : reinterpret_cast<const ::com::sekirocc::face_service::Image&>(
-      ::com::sekirocc::face_service::_Image_default_instance_);
+inline const ::com::sekirocc::common::Image& DetectionRequest::_internal_image() const {
+  const ::com::sekirocc::common::Image* p = _impl_.image_;
+  return p != nullptr ? *p : reinterpret_cast<const ::com::sekirocc::common::Image&>(
+      ::com::sekirocc::common::_Image_default_instance_);
 }
-inline const ::com::sekirocc::face_service::Image& DetectionRequest::image() const {
+inline const ::com::sekirocc::common::Image& DetectionRequest::image() const {
   // @@protoc_insertion_point(field_get:com.sekirocc.face_service.DetectionRequest.image)
   return _internal_image();
 }
 inline void DetectionRequest::unsafe_arena_set_allocated_image(
-    ::com::sekirocc::face_service::Image* image) {
+    ::com::sekirocc::common::Image* image) {
   if (GetArenaForAllocation() == nullptr) {
     delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.image_);
   }
@@ -1128,9 +1128,9 @@ inline void DetectionRequest::unsafe_arena_set_allocated_image(
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:com.sekirocc.face_service.DetectionRequest.image)
 }
-inline ::com::sekirocc::face_service::Image* DetectionRequest::release_image() {
+inline ::com::sekirocc::common::Image* DetectionRequest::release_image() {
   
-  ::com::sekirocc::face_service::Image* temp = _impl_.image_;
+  ::com::sekirocc::common::Image* temp = _impl_.image_;
   _impl_.image_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
@@ -1143,27 +1143,27 @@ inline ::com::sekirocc::face_service::Image* DetectionRequest::release_image() {
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::com::sekirocc::face_service::Image* DetectionRequest::unsafe_arena_release_image() {
+inline ::com::sekirocc::common::Image* DetectionRequest::unsafe_arena_release_image() {
   // @@protoc_insertion_point(field_release:com.sekirocc.face_service.DetectionRequest.image)
   
-  ::com::sekirocc::face_service::Image* temp = _impl_.image_;
+  ::com::sekirocc::common::Image* temp = _impl_.image_;
   _impl_.image_ = nullptr;
   return temp;
 }
-inline ::com::sekirocc::face_service::Image* DetectionRequest::_internal_mutable_image() {
+inline ::com::sekirocc::common::Image* DetectionRequest::_internal_mutable_image() {
   
   if (_impl_.image_ == nullptr) {
-    auto* p = CreateMaybeMessage<::com::sekirocc::face_service::Image>(GetArenaForAllocation());
+    auto* p = CreateMaybeMessage<::com::sekirocc::common::Image>(GetArenaForAllocation());
     _impl_.image_ = p;
   }
   return _impl_.image_;
 }
-inline ::com::sekirocc::face_service::Image* DetectionRequest::mutable_image() {
-  ::com::sekirocc::face_service::Image* _msg = _internal_mutable_image();
+inline ::com::sekirocc::common::Image* DetectionRequest::mutable_image() {
+  ::com::sekirocc::common::Image* _msg = _internal_mutable_image();
   // @@protoc_insertion_point(field_mutable:com.sekirocc.face_service.DetectionRequest.image)
   return _msg;
 }
-inline void DetectionRequest::set_allocated_image(::com::sekirocc::face_service::Image* image) {
+inline void DetectionRequest::set_allocated_image(::com::sekirocc::common::Image* image) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
     delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.image_);
@@ -1188,58 +1188,58 @@ inline void DetectionRequest::set_allocated_image(::com::sekirocc::face_service:
 
 // DetectionResponse
 
-// .com.sekirocc.face_service.ResultCode code = 1;
+// .com.sekirocc.common.ResultCode code = 1;
 inline void DetectionResponse::clear_code() {
   _impl_.code_ = 0;
 }
-inline ::com::sekirocc::face_service::ResultCode DetectionResponse::_internal_code() const {
-  return static_cast< ::com::sekirocc::face_service::ResultCode >(_impl_.code_);
+inline ::com::sekirocc::common::ResultCode DetectionResponse::_internal_code() const {
+  return static_cast< ::com::sekirocc::common::ResultCode >(_impl_.code_);
 }
-inline ::com::sekirocc::face_service::ResultCode DetectionResponse::code() const {
+inline ::com::sekirocc::common::ResultCode DetectionResponse::code() const {
   // @@protoc_insertion_point(field_get:com.sekirocc.face_service.DetectionResponse.code)
   return _internal_code();
 }
-inline void DetectionResponse::_internal_set_code(::com::sekirocc::face_service::ResultCode value) {
+inline void DetectionResponse::_internal_set_code(::com::sekirocc::common::ResultCode value) {
   
   _impl_.code_ = value;
 }
-inline void DetectionResponse::set_code(::com::sekirocc::face_service::ResultCode value) {
+inline void DetectionResponse::set_code(::com::sekirocc::common::ResultCode value) {
   _internal_set_code(value);
   // @@protoc_insertion_point(field_set:com.sekirocc.face_service.DetectionResponse.code)
 }
 
-// repeated .com.sekirocc.face_service.FaceRectangle face_rects = 2;
+// repeated .com.sekirocc.common.FaceRectangle face_rects = 2;
 inline int DetectionResponse::_internal_face_rects_size() const {
   return _impl_.face_rects_.size();
 }
 inline int DetectionResponse::face_rects_size() const {
   return _internal_face_rects_size();
 }
-inline ::com::sekirocc::face_service::FaceRectangle* DetectionResponse::mutable_face_rects(int index) {
+inline ::com::sekirocc::common::FaceRectangle* DetectionResponse::mutable_face_rects(int index) {
   // @@protoc_insertion_point(field_mutable:com.sekirocc.face_service.DetectionResponse.face_rects)
   return _impl_.face_rects_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::face_service::FaceRectangle >*
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::common::FaceRectangle >*
 DetectionResponse::mutable_face_rects() {
   // @@protoc_insertion_point(field_mutable_list:com.sekirocc.face_service.DetectionResponse.face_rects)
   return &_impl_.face_rects_;
 }
-inline const ::com::sekirocc::face_service::FaceRectangle& DetectionResponse::_internal_face_rects(int index) const {
+inline const ::com::sekirocc::common::FaceRectangle& DetectionResponse::_internal_face_rects(int index) const {
   return _impl_.face_rects_.Get(index);
 }
-inline const ::com::sekirocc::face_service::FaceRectangle& DetectionResponse::face_rects(int index) const {
+inline const ::com::sekirocc::common::FaceRectangle& DetectionResponse::face_rects(int index) const {
   // @@protoc_insertion_point(field_get:com.sekirocc.face_service.DetectionResponse.face_rects)
   return _internal_face_rects(index);
 }
-inline ::com::sekirocc::face_service::FaceRectangle* DetectionResponse::_internal_add_face_rects() {
+inline ::com::sekirocc::common::FaceRectangle* DetectionResponse::_internal_add_face_rects() {
   return _impl_.face_rects_.Add();
 }
-inline ::com::sekirocc::face_service::FaceRectangle* DetectionResponse::add_face_rects() {
-  ::com::sekirocc::face_service::FaceRectangle* _add = _internal_add_face_rects();
+inline ::com::sekirocc::common::FaceRectangle* DetectionResponse::add_face_rects() {
+  ::com::sekirocc::common::FaceRectangle* _add = _internal_add_face_rects();
   // @@protoc_insertion_point(field_add:com.sekirocc.face_service.DetectionResponse.face_rects)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::face_service::FaceRectangle >&
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::common::FaceRectangle >&
 DetectionResponse::face_rects() const {
   // @@protoc_insertion_point(field_list:com.sekirocc.face_service.DetectionResponse.face_rects)
   return _impl_.face_rects_;
@@ -1249,24 +1249,24 @@ DetectionResponse::face_rects() const {
 
 // ExtractionRequest
 
-// .com.sekirocc.face_service.Image image = 1;
+// .com.sekirocc.common.Image image = 1;
 inline bool ExtractionRequest::_internal_has_image() const {
   return this != internal_default_instance() && _impl_.image_ != nullptr;
 }
 inline bool ExtractionRequest::has_image() const {
   return _internal_has_image();
 }
-inline const ::com::sekirocc::face_service::Image& ExtractionRequest::_internal_image() const {
-  const ::com::sekirocc::face_service::Image* p = _impl_.image_;
-  return p != nullptr ? *p : reinterpret_cast<const ::com::sekirocc::face_service::Image&>(
-      ::com::sekirocc::face_service::_Image_default_instance_);
+inline const ::com::sekirocc::common::Image& ExtractionRequest::_internal_image() const {
+  const ::com::sekirocc::common::Image* p = _impl_.image_;
+  return p != nullptr ? *p : reinterpret_cast<const ::com::sekirocc::common::Image&>(
+      ::com::sekirocc::common::_Image_default_instance_);
 }
-inline const ::com::sekirocc::face_service::Image& ExtractionRequest::image() const {
+inline const ::com::sekirocc::common::Image& ExtractionRequest::image() const {
   // @@protoc_insertion_point(field_get:com.sekirocc.face_service.ExtractionRequest.image)
   return _internal_image();
 }
 inline void ExtractionRequest::unsafe_arena_set_allocated_image(
-    ::com::sekirocc::face_service::Image* image) {
+    ::com::sekirocc::common::Image* image) {
   if (GetArenaForAllocation() == nullptr) {
     delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.image_);
   }
@@ -1278,9 +1278,9 @@ inline void ExtractionRequest::unsafe_arena_set_allocated_image(
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:com.sekirocc.face_service.ExtractionRequest.image)
 }
-inline ::com::sekirocc::face_service::Image* ExtractionRequest::release_image() {
+inline ::com::sekirocc::common::Image* ExtractionRequest::release_image() {
   
-  ::com::sekirocc::face_service::Image* temp = _impl_.image_;
+  ::com::sekirocc::common::Image* temp = _impl_.image_;
   _impl_.image_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
@@ -1293,27 +1293,27 @@ inline ::com::sekirocc::face_service::Image* ExtractionRequest::release_image() 
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::com::sekirocc::face_service::Image* ExtractionRequest::unsafe_arena_release_image() {
+inline ::com::sekirocc::common::Image* ExtractionRequest::unsafe_arena_release_image() {
   // @@protoc_insertion_point(field_release:com.sekirocc.face_service.ExtractionRequest.image)
   
-  ::com::sekirocc::face_service::Image* temp = _impl_.image_;
+  ::com::sekirocc::common::Image* temp = _impl_.image_;
   _impl_.image_ = nullptr;
   return temp;
 }
-inline ::com::sekirocc::face_service::Image* ExtractionRequest::_internal_mutable_image() {
+inline ::com::sekirocc::common::Image* ExtractionRequest::_internal_mutable_image() {
   
   if (_impl_.image_ == nullptr) {
-    auto* p = CreateMaybeMessage<::com::sekirocc::face_service::Image>(GetArenaForAllocation());
+    auto* p = CreateMaybeMessage<::com::sekirocc::common::Image>(GetArenaForAllocation());
     _impl_.image_ = p;
   }
   return _impl_.image_;
 }
-inline ::com::sekirocc::face_service::Image* ExtractionRequest::mutable_image() {
-  ::com::sekirocc::face_service::Image* _msg = _internal_mutable_image();
+inline ::com::sekirocc::common::Image* ExtractionRequest::mutable_image() {
+  ::com::sekirocc::common::Image* _msg = _internal_mutable_image();
   // @@protoc_insertion_point(field_mutable:com.sekirocc.face_service.ExtractionRequest.image)
   return _msg;
 }
-inline void ExtractionRequest::set_allocated_image(::com::sekirocc::face_service::Image* image) {
+inline void ExtractionRequest::set_allocated_image(::com::sekirocc::common::Image* image) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
     delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.image_);
@@ -1338,95 +1338,95 @@ inline void ExtractionRequest::set_allocated_image(::com::sekirocc::face_service
 
 // ExtractionResponse
 
-// .com.sekirocc.face_service.ResultCode code = 1;
+// .com.sekirocc.common.ResultCode code = 1;
 inline void ExtractionResponse::clear_code() {
   _impl_.code_ = 0;
 }
-inline ::com::sekirocc::face_service::ResultCode ExtractionResponse::_internal_code() const {
-  return static_cast< ::com::sekirocc::face_service::ResultCode >(_impl_.code_);
+inline ::com::sekirocc::common::ResultCode ExtractionResponse::_internal_code() const {
+  return static_cast< ::com::sekirocc::common::ResultCode >(_impl_.code_);
 }
-inline ::com::sekirocc::face_service::ResultCode ExtractionResponse::code() const {
+inline ::com::sekirocc::common::ResultCode ExtractionResponse::code() const {
   // @@protoc_insertion_point(field_get:com.sekirocc.face_service.ExtractionResponse.code)
   return _internal_code();
 }
-inline void ExtractionResponse::_internal_set_code(::com::sekirocc::face_service::ResultCode value) {
+inline void ExtractionResponse::_internal_set_code(::com::sekirocc::common::ResultCode value) {
   
   _impl_.code_ = value;
 }
-inline void ExtractionResponse::set_code(::com::sekirocc::face_service::ResultCode value) {
+inline void ExtractionResponse::set_code(::com::sekirocc::common::ResultCode value) {
   _internal_set_code(value);
   // @@protoc_insertion_point(field_set:com.sekirocc.face_service.ExtractionResponse.code)
 }
 
-// repeated .com.sekirocc.face_service.FaceRectangle face_rects = 2;
+// repeated .com.sekirocc.common.FaceRectangle face_rects = 2;
 inline int ExtractionResponse::_internal_face_rects_size() const {
   return _impl_.face_rects_.size();
 }
 inline int ExtractionResponse::face_rects_size() const {
   return _internal_face_rects_size();
 }
-inline ::com::sekirocc::face_service::FaceRectangle* ExtractionResponse::mutable_face_rects(int index) {
+inline ::com::sekirocc::common::FaceRectangle* ExtractionResponse::mutable_face_rects(int index) {
   // @@protoc_insertion_point(field_mutable:com.sekirocc.face_service.ExtractionResponse.face_rects)
   return _impl_.face_rects_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::face_service::FaceRectangle >*
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::common::FaceRectangle >*
 ExtractionResponse::mutable_face_rects() {
   // @@protoc_insertion_point(field_mutable_list:com.sekirocc.face_service.ExtractionResponse.face_rects)
   return &_impl_.face_rects_;
 }
-inline const ::com::sekirocc::face_service::FaceRectangle& ExtractionResponse::_internal_face_rects(int index) const {
+inline const ::com::sekirocc::common::FaceRectangle& ExtractionResponse::_internal_face_rects(int index) const {
   return _impl_.face_rects_.Get(index);
 }
-inline const ::com::sekirocc::face_service::FaceRectangle& ExtractionResponse::face_rects(int index) const {
+inline const ::com::sekirocc::common::FaceRectangle& ExtractionResponse::face_rects(int index) const {
   // @@protoc_insertion_point(field_get:com.sekirocc.face_service.ExtractionResponse.face_rects)
   return _internal_face_rects(index);
 }
-inline ::com::sekirocc::face_service::FaceRectangle* ExtractionResponse::_internal_add_face_rects() {
+inline ::com::sekirocc::common::FaceRectangle* ExtractionResponse::_internal_add_face_rects() {
   return _impl_.face_rects_.Add();
 }
-inline ::com::sekirocc::face_service::FaceRectangle* ExtractionResponse::add_face_rects() {
-  ::com::sekirocc::face_service::FaceRectangle* _add = _internal_add_face_rects();
+inline ::com::sekirocc::common::FaceRectangle* ExtractionResponse::add_face_rects() {
+  ::com::sekirocc::common::FaceRectangle* _add = _internal_add_face_rects();
   // @@protoc_insertion_point(field_add:com.sekirocc.face_service.ExtractionResponse.face_rects)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::face_service::FaceRectangle >&
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::common::FaceRectangle >&
 ExtractionResponse::face_rects() const {
   // @@protoc_insertion_point(field_list:com.sekirocc.face_service.ExtractionResponse.face_rects)
   return _impl_.face_rects_;
 }
 
-// repeated .com.sekirocc.face_service.FaceFeature face_features = 3;
+// repeated .com.sekirocc.common.FaceFeature face_features = 3;
 inline int ExtractionResponse::_internal_face_features_size() const {
   return _impl_.face_features_.size();
 }
 inline int ExtractionResponse::face_features_size() const {
   return _internal_face_features_size();
 }
-inline ::com::sekirocc::face_service::FaceFeature* ExtractionResponse::mutable_face_features(int index) {
+inline ::com::sekirocc::common::FaceFeature* ExtractionResponse::mutable_face_features(int index) {
   // @@protoc_insertion_point(field_mutable:com.sekirocc.face_service.ExtractionResponse.face_features)
   return _impl_.face_features_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::face_service::FaceFeature >*
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::common::FaceFeature >*
 ExtractionResponse::mutable_face_features() {
   // @@protoc_insertion_point(field_mutable_list:com.sekirocc.face_service.ExtractionResponse.face_features)
   return &_impl_.face_features_;
 }
-inline const ::com::sekirocc::face_service::FaceFeature& ExtractionResponse::_internal_face_features(int index) const {
+inline const ::com::sekirocc::common::FaceFeature& ExtractionResponse::_internal_face_features(int index) const {
   return _impl_.face_features_.Get(index);
 }
-inline const ::com::sekirocc::face_service::FaceFeature& ExtractionResponse::face_features(int index) const {
+inline const ::com::sekirocc::common::FaceFeature& ExtractionResponse::face_features(int index) const {
   // @@protoc_insertion_point(field_get:com.sekirocc.face_service.ExtractionResponse.face_features)
   return _internal_face_features(index);
 }
-inline ::com::sekirocc::face_service::FaceFeature* ExtractionResponse::_internal_add_face_features() {
+inline ::com::sekirocc::common::FaceFeature* ExtractionResponse::_internal_add_face_features() {
   return _impl_.face_features_.Add();
 }
-inline ::com::sekirocc::face_service::FaceFeature* ExtractionResponse::add_face_features() {
-  ::com::sekirocc::face_service::FaceFeature* _add = _internal_add_face_features();
+inline ::com::sekirocc::common::FaceFeature* ExtractionResponse::add_face_features() {
+  ::com::sekirocc::common::FaceFeature* _add = _internal_add_face_features();
   // @@protoc_insertion_point(field_add:com.sekirocc.face_service.ExtractionResponse.face_features)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::face_service::FaceFeature >&
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::common::FaceFeature >&
 ExtractionResponse::face_features() const {
   // @@protoc_insertion_point(field_list:com.sekirocc.face_service.ExtractionResponse.face_features)
   return _impl_.face_features_;
@@ -1436,24 +1436,24 @@ ExtractionResponse::face_features() const {
 
 // CompareRequest
 
-// .com.sekirocc.face_service.FaceFeature one = 1;
+// .com.sekirocc.common.FaceFeature one = 1;
 inline bool CompareRequest::_internal_has_one() const {
   return this != internal_default_instance() && _impl_.one_ != nullptr;
 }
 inline bool CompareRequest::has_one() const {
   return _internal_has_one();
 }
-inline const ::com::sekirocc::face_service::FaceFeature& CompareRequest::_internal_one() const {
-  const ::com::sekirocc::face_service::FaceFeature* p = _impl_.one_;
-  return p != nullptr ? *p : reinterpret_cast<const ::com::sekirocc::face_service::FaceFeature&>(
-      ::com::sekirocc::face_service::_FaceFeature_default_instance_);
+inline const ::com::sekirocc::common::FaceFeature& CompareRequest::_internal_one() const {
+  const ::com::sekirocc::common::FaceFeature* p = _impl_.one_;
+  return p != nullptr ? *p : reinterpret_cast<const ::com::sekirocc::common::FaceFeature&>(
+      ::com::sekirocc::common::_FaceFeature_default_instance_);
 }
-inline const ::com::sekirocc::face_service::FaceFeature& CompareRequest::one() const {
+inline const ::com::sekirocc::common::FaceFeature& CompareRequest::one() const {
   // @@protoc_insertion_point(field_get:com.sekirocc.face_service.CompareRequest.one)
   return _internal_one();
 }
 inline void CompareRequest::unsafe_arena_set_allocated_one(
-    ::com::sekirocc::face_service::FaceFeature* one) {
+    ::com::sekirocc::common::FaceFeature* one) {
   if (GetArenaForAllocation() == nullptr) {
     delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.one_);
   }
@@ -1465,9 +1465,9 @@ inline void CompareRequest::unsafe_arena_set_allocated_one(
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:com.sekirocc.face_service.CompareRequest.one)
 }
-inline ::com::sekirocc::face_service::FaceFeature* CompareRequest::release_one() {
+inline ::com::sekirocc::common::FaceFeature* CompareRequest::release_one() {
   
-  ::com::sekirocc::face_service::FaceFeature* temp = _impl_.one_;
+  ::com::sekirocc::common::FaceFeature* temp = _impl_.one_;
   _impl_.one_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
@@ -1480,27 +1480,27 @@ inline ::com::sekirocc::face_service::FaceFeature* CompareRequest::release_one()
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::com::sekirocc::face_service::FaceFeature* CompareRequest::unsafe_arena_release_one() {
+inline ::com::sekirocc::common::FaceFeature* CompareRequest::unsafe_arena_release_one() {
   // @@protoc_insertion_point(field_release:com.sekirocc.face_service.CompareRequest.one)
   
-  ::com::sekirocc::face_service::FaceFeature* temp = _impl_.one_;
+  ::com::sekirocc::common::FaceFeature* temp = _impl_.one_;
   _impl_.one_ = nullptr;
   return temp;
 }
-inline ::com::sekirocc::face_service::FaceFeature* CompareRequest::_internal_mutable_one() {
+inline ::com::sekirocc::common::FaceFeature* CompareRequest::_internal_mutable_one() {
   
   if (_impl_.one_ == nullptr) {
-    auto* p = CreateMaybeMessage<::com::sekirocc::face_service::FaceFeature>(GetArenaForAllocation());
+    auto* p = CreateMaybeMessage<::com::sekirocc::common::FaceFeature>(GetArenaForAllocation());
     _impl_.one_ = p;
   }
   return _impl_.one_;
 }
-inline ::com::sekirocc::face_service::FaceFeature* CompareRequest::mutable_one() {
-  ::com::sekirocc::face_service::FaceFeature* _msg = _internal_mutable_one();
+inline ::com::sekirocc::common::FaceFeature* CompareRequest::mutable_one() {
+  ::com::sekirocc::common::FaceFeature* _msg = _internal_mutable_one();
   // @@protoc_insertion_point(field_mutable:com.sekirocc.face_service.CompareRequest.one)
   return _msg;
 }
-inline void CompareRequest::set_allocated_one(::com::sekirocc::face_service::FaceFeature* one) {
+inline void CompareRequest::set_allocated_one(::com::sekirocc::common::FaceFeature* one) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
     delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.one_);
@@ -1521,24 +1521,24 @@ inline void CompareRequest::set_allocated_one(::com::sekirocc::face_service::Fac
   // @@protoc_insertion_point(field_set_allocated:com.sekirocc.face_service.CompareRequest.one)
 }
 
-// .com.sekirocc.face_service.FaceFeature two = 2;
+// .com.sekirocc.common.FaceFeature two = 2;
 inline bool CompareRequest::_internal_has_two() const {
   return this != internal_default_instance() && _impl_.two_ != nullptr;
 }
 inline bool CompareRequest::has_two() const {
   return _internal_has_two();
 }
-inline const ::com::sekirocc::face_service::FaceFeature& CompareRequest::_internal_two() const {
-  const ::com::sekirocc::face_service::FaceFeature* p = _impl_.two_;
-  return p != nullptr ? *p : reinterpret_cast<const ::com::sekirocc::face_service::FaceFeature&>(
-      ::com::sekirocc::face_service::_FaceFeature_default_instance_);
+inline const ::com::sekirocc::common::FaceFeature& CompareRequest::_internal_two() const {
+  const ::com::sekirocc::common::FaceFeature* p = _impl_.two_;
+  return p != nullptr ? *p : reinterpret_cast<const ::com::sekirocc::common::FaceFeature&>(
+      ::com::sekirocc::common::_FaceFeature_default_instance_);
 }
-inline const ::com::sekirocc::face_service::FaceFeature& CompareRequest::two() const {
+inline const ::com::sekirocc::common::FaceFeature& CompareRequest::two() const {
   // @@protoc_insertion_point(field_get:com.sekirocc.face_service.CompareRequest.two)
   return _internal_two();
 }
 inline void CompareRequest::unsafe_arena_set_allocated_two(
-    ::com::sekirocc::face_service::FaceFeature* two) {
+    ::com::sekirocc::common::FaceFeature* two) {
   if (GetArenaForAllocation() == nullptr) {
     delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.two_);
   }
@@ -1550,9 +1550,9 @@ inline void CompareRequest::unsafe_arena_set_allocated_two(
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:com.sekirocc.face_service.CompareRequest.two)
 }
-inline ::com::sekirocc::face_service::FaceFeature* CompareRequest::release_two() {
+inline ::com::sekirocc::common::FaceFeature* CompareRequest::release_two() {
   
-  ::com::sekirocc::face_service::FaceFeature* temp = _impl_.two_;
+  ::com::sekirocc::common::FaceFeature* temp = _impl_.two_;
   _impl_.two_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
@@ -1565,27 +1565,27 @@ inline ::com::sekirocc::face_service::FaceFeature* CompareRequest::release_two()
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::com::sekirocc::face_service::FaceFeature* CompareRequest::unsafe_arena_release_two() {
+inline ::com::sekirocc::common::FaceFeature* CompareRequest::unsafe_arena_release_two() {
   // @@protoc_insertion_point(field_release:com.sekirocc.face_service.CompareRequest.two)
   
-  ::com::sekirocc::face_service::FaceFeature* temp = _impl_.two_;
+  ::com::sekirocc::common::FaceFeature* temp = _impl_.two_;
   _impl_.two_ = nullptr;
   return temp;
 }
-inline ::com::sekirocc::face_service::FaceFeature* CompareRequest::_internal_mutable_two() {
+inline ::com::sekirocc::common::FaceFeature* CompareRequest::_internal_mutable_two() {
   
   if (_impl_.two_ == nullptr) {
-    auto* p = CreateMaybeMessage<::com::sekirocc::face_service::FaceFeature>(GetArenaForAllocation());
+    auto* p = CreateMaybeMessage<::com::sekirocc::common::FaceFeature>(GetArenaForAllocation());
     _impl_.two_ = p;
   }
   return _impl_.two_;
 }
-inline ::com::sekirocc::face_service::FaceFeature* CompareRequest::mutable_two() {
-  ::com::sekirocc::face_service::FaceFeature* _msg = _internal_mutable_two();
+inline ::com::sekirocc::common::FaceFeature* CompareRequest::mutable_two() {
+  ::com::sekirocc::common::FaceFeature* _msg = _internal_mutable_two();
   // @@protoc_insertion_point(field_mutable:com.sekirocc.face_service.CompareRequest.two)
   return _msg;
 }
-inline void CompareRequest::set_allocated_two(::com::sekirocc::face_service::FaceFeature* two) {
+inline void CompareRequest::set_allocated_two(::com::sekirocc::common::FaceFeature* two) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
     delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.two_);
@@ -1610,22 +1610,22 @@ inline void CompareRequest::set_allocated_two(::com::sekirocc::face_service::Fac
 
 // CompareResponse
 
-// .com.sekirocc.face_service.ResultCode code = 1;
+// .com.sekirocc.common.ResultCode code = 1;
 inline void CompareResponse::clear_code() {
   _impl_.code_ = 0;
 }
-inline ::com::sekirocc::face_service::ResultCode CompareResponse::_internal_code() const {
-  return static_cast< ::com::sekirocc::face_service::ResultCode >(_impl_.code_);
+inline ::com::sekirocc::common::ResultCode CompareResponse::_internal_code() const {
+  return static_cast< ::com::sekirocc::common::ResultCode >(_impl_.code_);
 }
-inline ::com::sekirocc::face_service::ResultCode CompareResponse::code() const {
+inline ::com::sekirocc::common::ResultCode CompareResponse::code() const {
   // @@protoc_insertion_point(field_get:com.sekirocc.face_service.CompareResponse.code)
   return _internal_code();
 }
-inline void CompareResponse::_internal_set_code(::com::sekirocc::face_service::ResultCode value) {
+inline void CompareResponse::_internal_set_code(::com::sekirocc::common::ResultCode value) {
   
   _impl_.code_ = value;
 }
-inline void CompareResponse::set_code(::com::sekirocc::face_service::ResultCode value) {
+inline void CompareResponse::set_code(::com::sekirocc::common::ResultCode value) {
   _internal_set_code(value);
   // @@protoc_insertion_point(field_set:com.sekirocc.face_service.CompareResponse.code)
 }

@@ -4,6 +4,7 @@
 #include "feature_search.h"
 #include "gen/pb-cpp/feature_search.grpc.pb.h"
 #include "gen/pb-cpp/feature_search.pb.h"
+#include "gen/pb-cpp/common.pb.h"
 #include "nlohmann/json.hpp"
 #include "search/searcher.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
