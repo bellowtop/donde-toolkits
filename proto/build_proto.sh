@@ -12,8 +12,6 @@ mkdir -p ./gen/pb-cpp/
 
 ${protoc_path} -I${googleapis_path} -I. \
    --cpp_out=./gen/pb-cpp \
-   --grpc_out=./gen/pb-cpp \
-   --plugin=protoc-gen-grpc=${grpc_cpp_plugin_path} \
    common.proto
 
 ${protoc_path} -I${googleapis_path} -I. \
