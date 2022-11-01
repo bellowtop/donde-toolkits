@@ -35,7 +35,7 @@ namespace search {
         return _engine->RemoveFeatures(feature_ids);
     };
 
-    std::vector<FeatureSearchResult> Searcher::SearchFeature(const Feature& query, size_t topk) {
+    std::vector<FeatureSearchItem> Searcher::SearchFeature(const Feature& query, size_t topk) {
         return _engine->Search(query, topk);
     }
 

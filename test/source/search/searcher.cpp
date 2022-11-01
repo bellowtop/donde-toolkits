@@ -54,7 +54,7 @@ TEST_CASE("Searcher can add and features.") {
         if (feature_ids.size() == feature_count) {
             Feature query{fts[0].feature};
             int topk = 10;
-            std::vector<search::FeatureSearchResult> search_result
+            std::vector<search::FeatureSearchItem> search_result
                 = searcher.SearchFeature(query, topk);
 
             for (const auto& r : search_result) {

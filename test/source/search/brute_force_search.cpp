@@ -48,7 +48,7 @@ TEST_CASE("Search topk features.") {
 
         Feature query{fts[0].feature};
         int topk = 10;
-        std::vector<search::FeatureSearchResult> search_result = search.Search(query, topk);
+        std::vector<search::FeatureSearchItem> search_result = search.Search(query, topk);
 
         for (const auto& r : search_result) {
             std::cout << "score: " << r.score << std::endl;

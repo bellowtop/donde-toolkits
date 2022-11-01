@@ -42,7 +42,7 @@ namespace search {
     const std::string STORAGE_BACKEND_FILE_SYSTEM = "file_system";
     const std::string STORAGE_BACKEND_CASSANDRA = "cassandra";
 
-    struct FeatureSearchResult {
+    struct FeatureSearchItem {
         Feature target;
         float score;
     };
@@ -88,7 +88,7 @@ namespace search {
 
         virtual RetCode TrainIndex() = 0;
 
-        virtual std::vector<FeatureSearchResult> Search(const Feature& query, size_t topk) = 0;
+        virtual std::vector<FeatureSearchItem> Search(const Feature& query, size_t topk) = 0;
 
         virtual std::vector<std::string> AddFeatures(const std::vector<FeatureDbItem>& features) = 0;
 
@@ -116,7 +116,7 @@ namespace search {
 
         RetCode RemoveFeatures(const std::vector<std::string>& feature_ids);
 
-        std::vector<FeatureSearchResult> SearchFeature(const Feature& query, size_t topk);
+        std::vector<FeatureSearchItem> SearchFeature(const Feature& query, size_t topk);
 
       private:
         json _config;

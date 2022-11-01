@@ -30,7 +30,7 @@ namespace search {
         return RetCode::RET_OK;
     };
 
-    std::vector<FeatureSearchResult> BruteForceSearch::Search(const Feature& query,
+    std::vector<FeatureSearchItem> BruteForceSearch::Search(const Feature& query,
                                                                       size_t topk) {
 
         struct FeatureScore {
@@ -45,7 +45,7 @@ namespace search {
             };
         };
 
-        std::vector<FeatureSearchResult> ret;
+        std::vector<FeatureSearchItem> ret;
 
         uint page = 0;
         uint perPage = 10;
@@ -80,7 +80,7 @@ namespace search {
             const FeatureScore& score = min_heap.top();
             min_heap.pop();
 
-            ret.push_back(FeatureSearchResult{score.target, score.score});
+            ret.push_back(FeatureSearchItem{score.target, score.score});
         }
 
         std::reverse(ret.begin(), ret.end());
