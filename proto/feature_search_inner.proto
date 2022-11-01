@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+import "common.proto";
+
+option go_package = "github.com/sekirocc/face-recognition-service/feature_search/inner";
+// option java_package = "com.sekirocc.face_recognition_service";
+
+package com.sekirocc.feature_search.inner;
+
+// Search Service
+message TrainIndexRequest {}
+
+message TrainIndexResponse { com.sekirocc.common.ResultCode code = 1; }
+
+message AddFeatureItem {
+    com.sekirocc.common.FaceFeature feature = 1;
+    map<string, string> meta = 2;
+}
+
+message AddFeatureRequest { AddFeatureItem feature_item = 1; }
+
+message AddFeatureResponse {
+    com.sekirocc.common.ResultCode code = 1;
+    string feature_id = 2;
+}
+
+message DeleteFeatureRequest { string feature_id = 1; }
+
+message DeleteFeatureResponse { com.sekirocc.common.ResultCode code = 1; }
+
+message SearchFeatureRequest {
+    com.sekirocc.common.FaceFeature query = 1;
+    int32 topk = 2;
+}
+
+message SearchItemScore {
+    com.sekirocc.common.FaceFeature feature = 1;
+    float score = 2;
+}
+message SearchFeatureResponse {
+    com.sekirocc.common.ResultCode code = 1;
+    repeated SearchItemScore items = 2;
+}
+
+// feature search service
+service FeatureSearch {
+
+    rpc TrainIndex(TrainIndexRequest) returns (TrainIndexResponse) {
+        option (google.api.http) = {
+            post : "/train_index"
+            body : "*"
+        };
+    }
+
+    rpc AddFeature(AddFeatureRequest) returns (AddFeatureResponse) {
+        option (google.api.http) = {
+            post : "/add_feature"
+            body : "*"
+        };
+    }
+
+    rpc DeleteFeature(DeleteFeatureRequest) returns (DeleteFeatureResponse) {
+        option (google.api.http) = {
+            post : "/delete_feature"
+            body : "*"
+        };
+    }
+
+    rpc SearchFeature(SearchFeatureRequest) returns (SearchFeatureResponse) {
+        option (google.api.http) = {
+            post : "/search_feature"
+            body : "*"
+        };
+    }
+}
