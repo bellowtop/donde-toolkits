@@ -4,7 +4,9 @@
 #include "SQLiteCpp/SQLiteCpp.h"
 #include "nlohmann/json.hpp"
 #include "search/db_searcher.h"
+#include "search/definitions.h"
 #include "search/driver.h"
+#include "types.h"
 #include "utils.h"
 
 #include <SQLiteCpp/Database.h>
@@ -71,7 +73,7 @@ namespace search {
 
         PageData<FeatureDbItemList> ListFeatures(const std::string& db_id, uint page,
                                                  uint perPage) {
-            uint64 count = count_features_in_meta_db(db_id);
+            uint64 count = count_features_in_db(db_id);
             if (count <= 0) {
                 spdlog::warn("FileSystemStorage::ListFeatures, count is {}", count);
                 return {};
@@ -181,7 +183,7 @@ namespace search {
                 std::filesystem::remove(filepath);
             }
 
-            return delete_features_from_meta_db(db_id, feature_ids);
+            return delete_features_from_db(db_id, feature_ids);
         };
 
       private:
@@ -191,11 +193,107 @@ namespace search {
 
         std::unique_ptr<SQLite::Database> db;
 
-        //
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
         // SQLite3 operations.
-        //
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
       private:
-        RetCode init_features_meta_db(const std::string& db_id) {
+        ///
+        /// DB management
+        ///
+        RetCode init_db_table() {
+            std::string sql = "create table if not exists dbs("
+                              "id integer primary key autoincrement, "
+                              "db_id char(64), "
+                              "name char(64), "
+                              "capacity integer, "
+                              "description text"
+                              ");";
+            try {
+                db->exec(sql);
+            } catch (std::exception& exc) {
+                spdlog::error("cannot create table dbs, exc: {}", exc.what());
+                return RetCode::RET_ERR;
+            }
+
+            return RetCode::RET_OK;
+        };
+
+        RetCode insert_into_db(const std::string& db_id, const std::string& name, uint64 capacity,
+                               const std::string& desc) {
+            try {
+                std::string sql(
+                    "insert into dbs(db_id, name, capacity, description) values (?, ?, ?, ?);");
+
+                SQLite::Statement query(*db, sql);
+                query.bind(1, db_id);
+                query.bind(2, name);
+                query.bind(3, capacity);
+                query.bind(4, desc);
+
+                query.exec();
+            } catch (std::exception& exc) {
+                spdlog::error("cannot insert into dbs table, exc: {}", exc.what());
+                return RetCode::RET_ERR;
+            }
+
+            return RetCode::RET_OK;
+        };
+
+        std::vector<DBItem> list_db_items() {
+            std::vector<DBItem> dbs;
+
+            try {
+                std::string sql("select db_id, name, capacity, description from dbs;");
+
+                SQLite::Statement query(*db, sql);
+                while (query.executeStep()) {
+                    std::string db_id = query.getColumn(0).getString();
+                    std::string name = query.getColumn(1).getText();
+                    // type convert, int64 => uint64, because we are sure that capacity will not
+                    // exceed int64, so that's fine
+                    uint64 capacity = query.getColumn(2).getInt64();
+                    std::string desc = query.getColumn(3).getText();
+
+                    dbs.push_back(DBItem{
+                        .db_id = db_id,
+                        .name = name,
+                        .capacity = capacity,
+                        .description = description,
+                    });
+                }
+            } catch (std::exception& exc) {
+                spdlog::error("cannot select from dbs table: {}", exc.what());
+                return dbs;
+            }
+
+            return dbs;
+        };
+
+        RetCode update_db_item(const DBItem& new_item) {
+            try {
+                std::string sql(
+                    "update dbs set name=?, capacity=?, description=? where db_id = ?;");
+
+                SQLite::Statement query(*db, sql);
+                query.bind(1, new_item.name);
+                query.bind(2, new_item.capacity);
+                query.bind(3, new_item.description);
+
+                query.exec();
+
+            } catch (std::exception& exc) {
+                spdlog::error("cannot update dbs table, exc: {}", exc.what());
+                return RetCode::RET_ERR;
+            }
+
+            return RetCode::RET_OK;
+        };
+
+        ///
+        /// Features management
+        ///
+
+        RetCode init_features_table_for_db(const std::string& db_id) {
             std::string sql = "create table if not exists features_db_%s("
                               "id integer primary key autoincrement, "
                               "feature_id char(64), "
@@ -206,15 +304,15 @@ namespace search {
             try {
                 db->exec(sql);
             } catch (std::exception& exc) {
-                spdlog::error("cannot create table: {}", exc.what());
+                spdlog::error("cannot create table features_db_{}, exc: {}", db_id, exc.what());
                 return RetCode::RET_ERR;
             }
 
             return RetCode::RET_OK;
         };
 
-        RetCode delete_features_from_meta_db(const std::string& db_id,
-                                             const std::vector<std::string>& feature_ids) {
+        RetCode delete_features_from_db(const std::string& db_id,
+                                        const std::vector<std::string>& feature_ids) {
             try {
                 std::string sql = "delete from features_db_%s where feature_id in (? ";
                 sql = format(sql, db_id);
@@ -239,12 +337,14 @@ namespace search {
             return RetCode::RET_OK;
         }
 
-        std::vector<FeatureDbItem> list_features_from_meta_db(const std::string& db_id, int start,
-                                                              int limit) {
+        std::vector<FeatureDbItem> list_features_from_db(const std::string& db_id, int start,
+                                                         int limit) {
             std::vector<FeatureDbItem> feature_ids;
 
             try {
-                std::string sql("select feature_id, metadata from features limit ? offset ?");
+                std::string sql("select feature_id, metadata from features_db_%s limit ? offset ?");
+                sql = format(sql, db_id);
+
                 SQLite::Statement query(*db, sql);
                 query.bind(1, limit);
                 query.bind(2, start);
@@ -273,14 +373,16 @@ namespace search {
             return feature_ids;
         };
 
-        RetCode insert_features_to_meta_db(const std::string& db_id,
-                                           const std::vector<std::string>& feature_ids,
-                                           const std::vector<std::string>& metadatas) {
+        RetCode insert_features_into_db(const std::string& db_id,
+                                        const std::vector<std::string>& feature_ids,
+                                        const std::vector<std::string>& metadatas) {
             // TODO: batch control
             try {
                 int version = 10000; // FIXME
                 std::string sql(
-                    "insert into features(feature_id, metadata, version) values (?, ?, ?)");
+                    "insert into features_db_%s(feature_id, metadata, version) values (?, ?, ?)");
+                sql = format(sql, db_id);
+
                 for (size_t i = 1; i < feature_ids.size(); i++) {
                     sql += ", (?, ?, ?)";
                 }
@@ -305,11 +407,13 @@ namespace search {
             return RetCode::RET_OK;
         };
 
-        uint64 count_features_in_meta_db(const std::string& db_id) {
+        uint64 count_features_in_db(const std::string& db_id) {
             int count;
 
             try {
-                std::string sql("select count(*) from features;");
+                std::string sql("select count(*) from features_db_%s;");
+                sql = format(sql, db_id);
+
                 SQLite::Statement query(*db, sql);
 
                 query.executeStep();
