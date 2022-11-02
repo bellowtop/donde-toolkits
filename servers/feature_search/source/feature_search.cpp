@@ -7,7 +7,7 @@
 #include "gen/pb-cpp/feature_search.grpc.pb.h"
 #include "gen/pb-cpp/feature_search.pb.h"
 #include "nlohmann/json.hpp"
-#include "search/searcher.h"
+#include "search/db_searcher.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
 #include "types.h"
@@ -49,8 +49,7 @@ using grpc::Status;
 
 using json = nlohmann::json;
 
-FeatureSearchImpl::FeatureSearchImpl(Config& server_config)
-    : config(server_config), searcher(new search::Searcher(server_config.get_searcher_config())){};
+FeatureSearchImpl::FeatureSearchImpl(Config& server_config) : config(server_config){};
 
 FeatureSearchImpl::~FeatureSearchImpl(){};
 
@@ -80,6 +79,8 @@ Status FeatureSearchImpl::DBDelete(ServerContext* context, const DBDeleteRequest
 
 Status FeatureSearchImpl::AddFeature(ServerContext* context, const AddFeatureRequest* request,
                                      AddFeatureResponse* response) {
+    auto db_id = request->db_id();
+
     auto item = request->feature_item();
     auto ft = item.feature();
 
@@ -93,7 +94,7 @@ Status FeatureSearchImpl::AddFeature(ServerContext* context, const AddFeatureReq
         .feature = feature,
         .metadata = meta,
     }};
-    std::vector<std::string> feature_ids = searcher->AddFeatures(fts);
+    std::vector<std::string> feature_ids = searcher->AddFeatures(db_id, fts);
 
     response->set_feature_id(feature_ids[0]);
     response->set_code(ResultCode::OK);
@@ -104,20 +105,24 @@ Status FeatureSearchImpl::AddFeature(ServerContext* context, const AddFeatureReq
 Status FeatureSearchImpl::DeleteFeature(ServerContext* context, const DeleteFeatureRequest* request,
                                         DeleteFeatureResponse* response) {
 
+    auto db_id = request->db_id();
     std::string feature_id = request->feature_id();
     std::vector<std::string> feature_ids{feature_id};
-    searcher->RemoveFeatures(feature_ids);
+    searcher->RemoveFeatures(db_id, feature_ids);
 
     return Status::OK;
 };
 
 Status FeatureSearchImpl::SearchFeature(ServerContext* context, const SearchFeatureRequest* request,
                                         SearchFeatureResponse* response) {
+    auto db_id = request->db_id();
+
     auto ft = request->query();
     auto topk = request->topk();
     Feature query(convertFeatureBlobToFloats(ft.blob()), std::string(ft.model()), ft.version());
 
-    std::vector<search::FeatureSearchItem> ret = searcher->SearchFeature(query, topk);
+    // FIXME: only search first db for now !!!
+    std::vector<search::FeatureSearchItem> ret = searcher->SearchFeature(db_id.Get(0), query, topk);
 
     response->set_code(ResultCode::OK);
 

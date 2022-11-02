@@ -5,7 +5,7 @@
 #include "Poco/Timestamp.h"
 #include "config.h"
 #include "gen/pb-cpp/feature_search_inner.grpc.pb.h"
-#include "search/searcher.h"
+#include "search/db_searcher.h"
 
 // #include "spdlog/spdlog.h"
 
@@ -54,5 +54,6 @@ class FeatureSearchWorkerImpl final : public FeatureSearch::Service {
   private:
     Config& config;
     std::shared_ptr<search::Searcher> searcher;
+    std::shared_ptr<search::Driver> driver;
     // spdlog::Logger& logger;
 };

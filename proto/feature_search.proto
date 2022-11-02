@@ -74,7 +74,7 @@ message DeleteFeatureRequest {
 message DeleteFeatureResponse { com.sekirocc.common.ResultCode code = 1; }
 
 message SearchFeatureRequest {
-    repeated string db_id = 1;
+    repeated string db_ids = 1;
     com.sekirocc.common.FaceFeature query = 2;
     int32 topk = 3;
 }

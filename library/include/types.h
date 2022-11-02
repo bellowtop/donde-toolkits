@@ -9,11 +9,10 @@
 #include <iterator>
 #include <map>
 #include <memory>
+#include <msgpack.hpp>
 #include <msgpack/adaptor/define_decl.hpp>
 #include <opencv2/core/mat.hpp>
 #include <opencv2/core/types.hpp>
-
-#include <msgpack.hpp>
 #include <ostream>
 #include <sstream>
 #include <string>
@@ -55,7 +54,8 @@ struct Feature {
     int dimension;
 
     Feature(std::vector<float>&& data) : raw{data}, dimension(data.size()){};
-    Feature(std::vector<float>&& data, std::string&& model, int version) : raw{data}, model{model}, version{version}, dimension(data.size()){};
+    Feature(std::vector<float>&& data, std::string&& model, int version)
+        : raw{data}, model{model}, version{version}, dimension(data.size()){};
 
     Feature() = default;
     Feature(const Feature& lhs) = default;
@@ -66,7 +66,8 @@ struct Feature {
 
     void debugPrint() const {
         std::stringstream ss;
-        ss << "ft:" << " dim:" << raw.size() << " model:" << model << " version:" << version << std::endl;
+        ss << "ft:"
+           << " dim:" << raw.size() << " model:" << model << " version:" << version << std::endl;
         for (float f : raw) {
             ss << f << " ";
         }
@@ -88,7 +89,7 @@ struct Feature {
         return norm;
     };
 
-    float compare(const Feature& other) const{
+    float compare(const Feature& other) const {
         float score = 0.f;
 
         auto norm1 = normalize(raw);
@@ -107,8 +108,6 @@ struct Feature {
     MSGPACK_DEFINE(model, version, dimension, raw);
 };
 
-
-
 template <int size>
 Feature gen_feature_dim() {
     std::vector<float> raw(size);
@@ -118,7 +117,6 @@ Feature gen_feature_dim() {
     }
     return Feature(std::move(raw), "test-model-face", size);
 }
-
 
 struct FeatureResult {
     std::vector<Feature> face_features;

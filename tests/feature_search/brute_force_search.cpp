@@ -27,7 +27,7 @@ TEST_CASE("Search topk features.") {
 
     const int feature_count = 100;
     const int dim = 512;
-    search::BruteForceSearch search(conf);
+    search::BruteForceSearcher search(conf);
 
     std::vector<search::FeatureDbItem> fts;
     for (int i = 0; i < feature_count; i++) {
@@ -67,7 +67,6 @@ TEST_CASE("Search topk features.") {
                 CHECK(t.target.raw[i] == fts[0].feature.raw[i]);
             }
         }
-
     }
 
     // cleanup db file

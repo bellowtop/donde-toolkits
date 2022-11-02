@@ -7,7 +7,9 @@
 #include "gen/pb-cpp/feature_search_inner.grpc.pb.h"
 #include "gen/pb-cpp/feature_search_inner.pb.h"
 #include "nlohmann/json.hpp"
-#include "search/searcher.h"
+#include "search/db_searcher.h"
+#include "search/impl/brute_force_searcher.h"
+#include "search/impl/simple_driver.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
 #include "types.h"
@@ -51,8 +53,12 @@ using grpc::Status;
 
 using json = nlohmann::json;
 
-FeatureSearchWorkerImpl::FeatureSearchWorkerImpl(Config& server_config)
-    : config(server_config), searcher(new search::Searcher(server_config.get_searcher_config())){};
+FeatureSearchWorkerImpl::FeatureSearchWorkerImpl(Config& server_config) : config(server_config) {
+    driver
+        = std::make_shared<search::SimpleDriver>(server_config.get_searcher_config()["filepath"]);
+    searcher = std::make_shared<search::BruteForceSearcher>(server_config.get_searcher_config(),
+                                                            *driver);
+};
 
 FeatureSearchWorkerImpl::~FeatureSearchWorkerImpl(){};
 
@@ -70,6 +76,7 @@ Status FeatureSearchWorkerImpl::BatchAddFeatures(ServerContext* context,
                                                  const BatchAddFeaturesRequest* request,
                                                  BatchAddFeaturesResponse* response) {
     auto items = request->feature_items();
+    auto db_id = request->db_id();
 
     std::vector<search::FeatureDbItem> fts;
 
@@ -86,7 +93,7 @@ Status FeatureSearchWorkerImpl::BatchAddFeatures(ServerContext* context,
         });
     }
 
-    std::vector<std::string> feature_ids = searcher->AddFeatures(fts);
+    std::vector<std::string> feature_ids = searcher->AddFeatures(db_id, fts);
 
     for (auto& id : feature_ids) {
         response->add_feature_ids(id);
@@ -103,9 +110,10 @@ Status FeatureSearchWorkerImpl::BatchDeleteFeatures(ServerContext* context,
                                                     BatchDeleteFeaturesResponse* response) {
 
     auto ids = request->feature_ids();
+    auto db_id = request->db_id();
     // construct from iterator
     const std::vector<std::string> feature_ids{ids.begin(), ids.end()};
-    searcher->RemoveFeatures(feature_ids);
+    searcher->RemoveFeatures(db_id, feature_ids);
 
     return Status::OK;
 };
@@ -113,13 +121,15 @@ Status FeatureSearchWorkerImpl::BatchDeleteFeatures(ServerContext* context,
 Status FeatureSearchWorkerImpl::SearchFeature(ServerContext* context,
                                               const SearchFeatureRequest* request,
                                               SearchFeatureResponse* response) {
+    auto db_ids = request->db_ids();
+
     auto ft = request->query();
     auto topk = request->topk();
     Feature query(convertFeatureBlobToFloats(ft.blob()), std::string(ft.model()), ft.version());
 
-    std::vector<search::FeatureSearchItem> ret = searcher->SearchFeature(query, topk);
-
-    response->set_code(ResultCode::OK);
+    // FIXME: only search first db now!!!
+    std::vector<search::FeatureSearchItem> ret
+        = searcher->SearchFeature(db_ids.Get(0), query, topk);
 
     for (const auto& feature_search_result : ret) {
         auto item = response->add_items();
@@ -140,6 +150,8 @@ Status FeatureSearchWorkerImpl::SearchFeature(ServerContext* context,
         face_feat->set_version(ft.version);
         face_feat->set_model(ft.model);
     }
+
+    response->set_code(ResultCode::OK);
 
     return Status::OK;
 };
