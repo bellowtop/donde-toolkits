@@ -1,0 +1,12 @@
+{
+    "loglevel": "debug",
+    "server": {
+        "name": "FeatureSearchWorker",
+        "addr": "0.0.0.0:9999"
+    },
+    "search_worker": {
+        "driver": {
+            "type": "simple"
+        }
+    }
+}

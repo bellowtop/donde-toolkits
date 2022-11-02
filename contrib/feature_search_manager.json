@@ -1,0 +1,17 @@
+{
+    "loglevel": "debug",
+    "server": {
+        "name": "FeatureSearchManager",
+        "addr": "0.0.0.0:8888"
+    },
+    "search_manager": {
+        "workers": [
+            "localhost:9999",
+            "localhost:9998",
+            "localhost:9997"
+        ],
+        "driver": {
+            "type": "simple"
+        }
+    }
+}
