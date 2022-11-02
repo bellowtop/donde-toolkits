@@ -28,6 +28,7 @@ namespace search {
 
     struct DBItem {
         std::string db_id;
+        std::string name;
         uint64 capacity;
         uint64 used;
         std::string description;

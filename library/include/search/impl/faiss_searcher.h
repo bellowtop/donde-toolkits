@@ -45,7 +45,4 @@ namespace search {
         Driver& _driver;
     };
 
-    FaissSearcher::FaissSearcher(const json& config, Driver& driver)
-        : _config(config), _driver(driver){};
-
 } // namespace search

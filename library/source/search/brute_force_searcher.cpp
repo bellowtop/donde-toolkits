@@ -22,28 +22,40 @@ namespace search {
 
         ~BruteForceSearcher() = default;
 
-        RetCode TrainIndex() override;
+        RetCode Init() override {
+            spdlog::warn("Init is not implemented by BruteForceSearch");
+            return RetCode::RET_OK;
+        };
 
-        std::vector<FeatureSearchItem> Search(const Feature& query, size_t topK) override;
+        RetCode Terminate() override {
+            spdlog::warn("Iterminate is not implemented by BruteForceSearch");
+            return RetCode::RET_OK;
+        };
 
-        std::vector<std::string> AddFeatures(const std::vector<FeatureDbItem>& features) override;
+        RetCode TrainIndex() override {
+            spdlog::warn("TrainIndex is not implemented by BruteForceSearch");
+            return RetCode::RET_OK;
+        };
 
-        RetCode RemoveFeatures(const std::vector<std::string>& feature_ids) override;
+        std::vector<FeatureSearchItem> SearchFeature(const std::string& db_id, const Feature& query,
+                                                     size_t topk) override;
+
+        std::vector<std::string> AddFeatures(const std::string& db_id,
+                                             const std::vector<FeatureDbItem>& features) override;
+
+        RetCode RemoveFeatures(const std::string& db_id,
+                               const std::vector<std::string>& feature_ids) override;
 
       private:
         json _config;
-        Driver& _storage;
+        Driver& _driver;
     };
 
     BruteForceSearcher::BruteForceSearcher(const json& config, Driver& driver)
-        : _config(config), _storage(driver){};
+        : _config(config), _driver(driver){};
 
-    RetCode BruteForceSearcher::TrainIndex() {
-        spdlog::warn("TrainIndex is not implemented by BruteForceSearch");
-        return RetCode::RET_OK;
-    };
-
-    std::vector<FeatureSearchItem> BruteForceSearcher::Search(const Feature& query, size_t topk) {
+    std::vector<FeatureSearchItem>
+    BruteForceSearcher::SearchFeature(const std::string& db_id, const Feature& query, size_t topk) {
 
         struct featureScore {
             float score;
@@ -61,7 +73,7 @@ namespace search {
 
         uint page = 0;
         uint perPage = 10;
-        auto pageData = _storage.ListFeatures(page, perPage);
+        auto pageData = _driver.ListFeatures(db_id, page, perPage);
 
         std::priority_queue<featureScore, std::vector<featureScore>, featureScoreComparator>
             min_heap;
@@ -69,10 +81,10 @@ namespace search {
         while (pageData.data.size() != 0) {
             // feed in min-heap
             std::vector<std::string> feature_ids = search::convert_to_feature_ids(pageData.data);
-            std::vector<Feature> fts = _storage.LoadFeatures(feature_ids);
+            std::vector<Feature> fts = _driver.LoadFeatures(db_id, feature_ids);
             for (auto& ft : fts) {
                 float score = ft.compare(query);
-                FeatureScore target{score, query, ft};
+                featureScore target{score, query, ft};
 
                 if (min_heap.size() < topk) {
                     min_heap.push(target);
@@ -85,7 +97,7 @@ namespace search {
             }
 
             // read next page, caution: copy assignment here!
-            pageData = _storage.ListFeatures(++page, perPage);
+            pageData = _driver.ListFeatures(db_id, ++page, perPage);
         }
 
         while (!min_heap.empty()) {
@@ -102,13 +114,15 @@ namespace search {
     };
 
     std::vector<std::string>
-    BruteForceSearcher::AddFeatures(const std::vector<FeatureDbItem>& features) {
-        std::vector<std::string> feature_ids = _storage.AddFeatures(features);
+    BruteForceSearcher::AddFeatures(const std::string& db_id,
+                                    const std::vector<FeatureDbItem>& features) {
+        std::vector<std::string> feature_ids = _driver.AddFeatures(db_id, features);
         return feature_ids;
     };
 
-    RetCode BruteForceSearcher::RemoveFeatures(const std::vector<std::string>& feature_ids) {
-        _storage.RemoveFeatures(feature_ids);
+    RetCode BruteForceSearcher::RemoveFeatures(const std::string& db_id,
+                                               const std::vector<std::string>& feature_ids) {
+        _driver.RemoveFeatures(db_id, feature_ids);
         return RetCode::RET_OK;
     };
 

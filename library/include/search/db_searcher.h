@@ -21,17 +21,23 @@ namespace search {
       public:
         ~Searcher() = default;
 
-        RetCode Init();
+        virtual RetCode Init() = 0;
 
-        RetCode Terminate();
+        virtual RetCode Terminate() = 0;
 
-        RetCode TrainIndex();
+        virtual RetCode TrainIndex() = 0;
 
-        std::vector<std::string> AddFeatures(const std::vector<FeatureDbItem>& features);
+        virtual std::vector<std::string> AddFeatures(const std::string& db_id,
+                                                     const std::vector<FeatureDbItem>& features)
+            = 0;
 
-        RetCode RemoveFeatures(const std::vector<std::string>& feature_ids);
+        virtual RetCode RemoveFeatures(const std::string& db_id,
+                                       const std::vector<std::string>& feature_ids)
+            = 0;
 
-        std::vector<FeatureSearchItem> SearchFeature(const Feature& query, size_t topk);
+        virtual std::vector<FeatureSearchItem> SearchFeature(const std::string& db_id,
+                                                             const Feature& query, size_t topk)
+            = 0;
     };
 
 } // namespace search

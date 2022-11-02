@@ -1,7 +1,7 @@
-#pragma once
+#include "search/impl/simple_driver.h"
 
-#include "Poco/Format.h"
 #include "SQLiteCpp/SQLiteCpp.h"
+#include "fmt/format.h"
 #include "nlohmann/json.hpp"
 #include "search/db_searcher.h"
 #include "search/definitions.h"
@@ -30,7 +30,7 @@ using namespace std;
 
 using json = nlohmann::json;
 
-using Poco::format;
+using fmt::format;
 
 namespace search {
 
@@ -40,391 +40,378 @@ namespace search {
     //
     //////////////////////////////////////////////////////////////////////////////////////////////////
 
-    class SimpleDriver : public Driver {
+    SimpleDriver::SimpleDriver(std::string db_dirpath)
+        : _db_dir(db_dirpath), _data_dir(_db_dir / "data"), _meta_dir(_db_dir / "meta") {
 
-      public:
-        SimpleDriver(std::string db_dirpath)
-            : _db_dir(db_dirpath), _data_dir(_db_dir / "data"), _meta_dir(_db_dir / "meta") {
+        std::filesystem::create_directories(_data_dir);
+        std::filesystem::create_directories(_meta_dir);
 
-            std::filesystem::create_directories(_data_dir);
-            std::filesystem::create_directories(_meta_dir);
+        std::string db_filepath = _meta_dir / "sqlite3.db";
 
-            std::string db_filepath = _meta_dir / "sqlite3.db";
+        try {
+            db = std::make_unique<SQLite::Database>(db_filepath,
+                                                    SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+        } catch (std::exception& exc) {
+            spdlog::error("cannot open database: ", exc.what());
+            std::abort();
+        }
+    };
 
+    std::string SimpleDriver::CreateDB(DBItem& info) { return {}; };
+
+    DBItem SimpleDriver::FindDB(const std::string& db_id) { return {}; };
+
+    std::vector<DBItem> SimpleDriver::ListDBs() { return {}; };
+
+    RetCode SimpleDriver::DeleteDB(std::string db_id) { return RetCode::RET_OK; };
+
+    PageData<FeatureDbItemList> SimpleDriver::ListFeatures(const std::string& db_id, uint page,
+                                                           uint perPage) {
+        uint64 count = count_features_in_db(db_id);
+        if (count <= 0) {
+            spdlog::warn("FileSystemStorage::ListFeatures, count is {}", count);
+            return {};
+        }
+
+        uint64 totalPage = (count + perPage - 1) / perPage;
+
+        std::vector<FeatureDbItem> feature_ids
+            = list_features_from_db(db_id, page * perPage, perPage);
+        spdlog::debug("feature_ids size: ", feature_ids.size());
+
+        PageData<FeatureDbItemList> ret{uint64(page), uint64(perPage), totalPage, feature_ids};
+        return ret;
+    };
+
+    RetCode SimpleDriver::Init(const std::vector<std::string>& initial_db_ids) {
+        // init tables.
+        for (const auto& id : initial_db_ids) {
+            init_features_table_for_db(id);
+        }
+        return RetCode::RET_OK;
+    };
+
+    std::vector<std::string> SimpleDriver::AddFeatures(const std::string& db_id,
+                                                       const std::vector<FeatureDbItem>& features) {
+        int count = features.size();
+        std::vector<std::string> feature_ids;
+        std::vector<std::string> metadatas;
+
+        for (auto& item : features) {
+            auto ft = item.feature;
+
+            std::string feature_id = generate_uuid();
+            // std::cout << "generated feature_id: " << feature_id << std::endl;
+
+            auto filepath = _data_dir / (feature_id + ".ft");
             try {
-                db = std::make_unique<SQLite::Database>(db_filepath, SQLite::OPEN_READWRITE
-                                                                         | SQLite::OPEN_CREATE);
-            } catch (std::exception& exc) {
-                spdlog::error("cannot open database: ", exc.what());
-                std::abort();
+                std::ofstream file(filepath, std::ios::binary | std::ios::out);
+                std::stringstream ss;
+                msgpack::pack(ss, ft);
+
+                // write to file
+                std::string data(ss.str());
+                file << data;
+
+                json j(item.metadata); // must use (), while not {}
+                std::string meta_str{j.dump()};
+                metadatas.push_back(meta_str);
+
+                // std::cout << "write data.size" << data.size() << std::endl;
+                feature_ids.push_back(feature_id);
+
+            } catch (const std::exception& exc) {
+                spdlog::error("cannot save feature to : {}, exc: {}", filepath.string(),
+                              exc.what());
+                feature_ids.push_back("");
+                metadatas.push_back("{}");
             }
-        };
+        }
 
-        // the sqlite3 db ptr will auto release when destruct.
-        ~SimpleDriver() = default;
+        // insert feature to meta db.
+        insert_features_into_db(db_id, feature_ids, metadatas);
 
-        std::string CreateDB(DBItem& info) { return {}; };
+        return feature_ids;
+    };
 
-        DBItem FindDB(const std::string& db_id) { return {}; };
+    std::vector<Feature> SimpleDriver::LoadFeatures(const std::string& db_id,
+                                                    const std::vector<std::string>& feature_ids) {
+        int count = feature_ids.size();
+        std::vector<Feature> features;
 
-        std::vector<DBItem> ListDBs() { return {}; };
+        for (auto& feature_id : feature_ids) {
+            spdlog::debug("load feature_id: {}", feature_id);
 
-        RetCode DeleteDB(std::string db_id) { return RetCode::RET_OK; };
-
-        PageData<FeatureDbItemList> ListFeatures(const std::string& db_id, uint page,
-                                                 uint perPage) {
-            uint64 count = count_features_in_db(db_id);
-            if (count <= 0) {
-                spdlog::warn("FileSystemStorage::ListFeatures, count is {}", count);
-                return {};
-            }
-
-            uint64 totalPage = (count + perPage - 1) / perPage;
-
-            std::vector<FeatureDbItem> feature_ids
-                = list_features_from_meta_db(db_id, page * perPage, perPage);
-            spdlog::debug("feature_ids size: ", feature_ids.size());
-
-            PageData<FeatureDbItemList> ret{uint64(page), uint64(perPage), totalPage, feature_ids};
-            return ret;
-        };
-
-        RetCode Init(const std::vector<std::string>& initial_db_ids) {
-            // init tables.
-            for (const auto& id : initial_db_ids) {
-                init_features_meta_db(id);
-            }
-            return RetCode::RET_OK;
-        };
-
-        std::vector<std::string> AddFeatures(const std::string& db_id,
-                                             const std::vector<FeatureDbItem>& features) {
-            int count = features.size();
-            std::vector<std::string> feature_ids;
-            std::vector<std::string> metadatas;
-
-            for (auto& item : features) {
-                auto ft = item.feature;
-
-                std::string feature_id = generate_uuid();
-                // std::cout << "generated feature_id: " << feature_id << std::endl;
-
-                auto filepath = _data_dir / (feature_id + ".ft");
-                try {
-                    std::ofstream file(filepath, std::ios::binary | std::ios::out);
-                    std::stringstream ss;
-                    msgpack::pack(ss, ft);
-
-                    // write to file
-                    std::string data(ss.str());
-                    file << data;
-
-                    json j(item.metadata); // must use (), while not {}
-                    std::string meta_str{j.dump()};
-                    metadatas.push_back(meta_str);
-
-                    // std::cout << "write data.size" << data.size() << std::endl;
-                    feature_ids.push_back(feature_id);
-
-                } catch (const std::exception& exc) {
-                    spdlog::error("cannot save feature to : {}, exc: {}", filepath.string(),
-                                  exc.what());
-                    feature_ids.push_back("");
-                    metadatas.push_back("{}");
-                }
-            }
-
-            // insert feature to meta db.
-            insert_features_to_meta_db(db_id, feature_ids, metadatas);
-
-            return feature_ids;
-        };
-
-        std::vector<Feature> LoadFeatures(const std::string& db_id,
-                                          const std::vector<std::string>& feature_ids) {
-            int count = feature_ids.size();
-            std::vector<Feature> features;
-
-            for (auto& feature_id : feature_ids) {
-                spdlog::debug("load feature_id: {}", feature_id);
-
-                auto filepath = _data_dir / (feature_id + ".ft");
-                try {
-                    // read to string
-                    std::ifstream file(filepath, std::ios::binary | std::ios::in);
-                    std::string data = std::string(std::istreambuf_iterator<char>(file),
-                                                   std::istreambuf_iterator<char>());
-
-                    // std::cout << "filepath: " << filepath << std::endl;
-                    // std::cout << "data.size(): " << data.size() << std::endl;
-                    auto oh = msgpack::unpack(data.data(), data.size());
-                    Feature ft = oh.get().as<Feature>();
-                    // ft.debugPrint();
-
-                    features.push_back(ft);
-                } catch (const std::exception& exc) {
-                    spdlog::error("cannot load feature, feature_path: {}, exc: {}",
-                                  filepath.string(), exc.what());
-                    features.push_back({});
-                }
-            }
-
-            return features;
-        };
-
-        RetCode RemoveFeatures(const std::string& db_id,
-                               const std::vector<std::string>& feature_ids) {
-            if (feature_ids.size() == 0) {
-                return RetCode::RET_OK;
-            }
-
-            for (auto& feature_id : feature_ids) {
-                auto filepath = _data_dir / (feature_id + ".ft");
-                std::filesystem::remove(filepath);
-            }
-
-            return delete_features_from_db(db_id, feature_ids);
-        };
-
-      private:
-        std::filesystem::path _db_dir;
-        std::filesystem::path _data_dir;
-        std::filesystem::path _meta_dir;
-
-        std::unique_ptr<SQLite::Database> db;
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // SQLite3 operations.
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////
-      private:
-        ///
-        /// DB management
-        ///
-        RetCode init_db_table() {
-            std::string sql = "create table if not exists dbs("
-                              "id integer primary key autoincrement, "
-                              "db_id char(64), "
-                              "name char(64), "
-                              "capacity integer, "
-                              "description text"
-                              ");";
+            auto filepath = _data_dir / (feature_id + ".ft");
             try {
-                db->exec(sql);
-            } catch (std::exception& exc) {
-                spdlog::error("cannot create table dbs, exc: {}", exc.what());
-                return RetCode::RET_ERR;
+                // read to string
+                std::ifstream file(filepath, std::ios::binary | std::ios::in);
+                std::string data = std::string(std::istreambuf_iterator<char>(file),
+                                               std::istreambuf_iterator<char>());
+
+                // std::cout << "filepath: " << filepath << std::endl;
+                // std::cout << "data.size(): " << data.size() << std::endl;
+                auto oh = msgpack::unpack(data.data(), data.size());
+                Feature ft = oh.get().as<Feature>();
+                // ft.debugPrint();
+
+                features.push_back(ft);
+            } catch (const std::exception& exc) {
+                spdlog::error("cannot load feature, feature_path: {}, exc: {}", filepath.string(),
+                              exc.what());
+                features.push_back({});
             }
+        }
 
-            return RetCode::RET_OK;
-        };
+        return features;
+    };
 
-        RetCode insert_into_db(const std::string& db_id, const std::string& name, uint64 capacity,
-                               const std::string& desc) {
-            try {
-                std::string sql(
-                    "insert into dbs(db_id, name, capacity, description) values (?, ?, ?, ?);");
-
-                SQLite::Statement query(*db, sql);
-                query.bind(1, db_id);
-                query.bind(2, name);
-                query.bind(3, capacity);
-                query.bind(4, desc);
-
-                query.exec();
-            } catch (std::exception& exc) {
-                spdlog::error("cannot insert into dbs table, exc: {}", exc.what());
-                return RetCode::RET_ERR;
-            }
-
-            return RetCode::RET_OK;
-        };
-
-        std::vector<DBItem> list_db_items() {
-            std::vector<DBItem> dbs;
-
-            try {
-                std::string sql("select db_id, name, capacity, description from dbs;");
-
-                SQLite::Statement query(*db, sql);
-                while (query.executeStep()) {
-                    std::string db_id = query.getColumn(0).getString();
-                    std::string name = query.getColumn(1).getText();
-                    // type convert, int64 => uint64, because we are sure that capacity will not
-                    // exceed int64, so that's fine
-                    uint64 capacity = query.getColumn(2).getInt64();
-                    std::string desc = query.getColumn(3).getText();
-
-                    dbs.push_back(DBItem{
-                        .db_id = db_id,
-                        .name = name,
-                        .capacity = capacity,
-                        .description = description,
-                    });
-                }
-            } catch (std::exception& exc) {
-                spdlog::error("cannot select from dbs table: {}", exc.what());
-                return dbs;
-            }
-
-            return dbs;
-        };
-
-        RetCode update_db_item(const DBItem& new_item) {
-            try {
-                std::string sql(
-                    "update dbs set name=?, capacity=?, description=? where db_id = ?;");
-
-                SQLite::Statement query(*db, sql);
-                query.bind(1, new_item.name);
-                query.bind(2, new_item.capacity);
-                query.bind(3, new_item.description);
-
-                query.exec();
-
-            } catch (std::exception& exc) {
-                spdlog::error("cannot update dbs table, exc: {}", exc.what());
-                return RetCode::RET_ERR;
-            }
-
-            return RetCode::RET_OK;
-        };
-
-        ///
-        /// Features management
-        ///
-
-        RetCode init_features_table_for_db(const std::string& db_id) {
-            std::string sql = "create table if not exists features_db_%s("
-                              "id integer primary key autoincrement, "
-                              "feature_id char(64), "
-                              "metadata text, "
-                              "version int "
-                              ");";
-            sql = format(sql, db_id);
-            try {
-                db->exec(sql);
-            } catch (std::exception& exc) {
-                spdlog::error("cannot create table features_db_{}, exc: {}", db_id, exc.what());
-                return RetCode::RET_ERR;
-            }
-
-            return RetCode::RET_OK;
-        };
-
-        RetCode delete_features_from_db(const std::string& db_id,
-                                        const std::vector<std::string>& feature_ids) {
-            try {
-                std::string sql = "delete from features_db_%s where feature_id in (? ";
-                sql = format(sql, db_id);
-
-                for (size_t i = 1; i < feature_ids.size(); i++) {
-                    sql += ",? ";
-                }
-                sql += ")";
-
-                SQLite::Statement query(*db, sql);
-
-                for (size_t i = 0; i < feature_ids.size(); i++) {
-                    query.bind(i + 1, feature_ids[i]);
-                }
-
-                query.exec();
-            } catch (std::exception& exc) {
-                spdlog::error("cannot delete from features table: {}", exc.what());
-                return RetCode::RET_ERR;
-            }
-
+    RetCode SimpleDriver::RemoveFeatures(const std::string& db_id,
+                                         const std::vector<std::string>& feature_ids) {
+        if (feature_ids.size() == 0) {
             return RetCode::RET_OK;
         }
 
-        std::vector<FeatureDbItem> list_features_from_db(const std::string& db_id, int start,
-                                                         int limit) {
-            std::vector<FeatureDbItem> feature_ids;
+        for (auto& feature_id : feature_ids) {
+            auto filepath = _data_dir / (feature_id + ".ft");
+            std::filesystem::remove(filepath);
+        }
 
-            try {
-                std::string sql("select feature_id, metadata from features_db_%s limit ? offset ?");
-                sql = format(sql, db_id);
+        return delete_features_from_db(db_id, feature_ids);
+    };
 
-                SQLite::Statement query(*db, sql);
-                query.bind(1, limit);
-                query.bind(2, start);
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // SQLite3 operations.
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///
+    /// DB management
+    ///
+    RetCode SimpleDriver::init_db_table() {
+        std::string sql = "create table if not exists dbs("
+                          "id integer primary key autoincrement, "
+                          "db_id char(64), "
+                          "name char(64), "
+                          "capacity integer, "
+                          "description text"
+                          ");";
+        try {
+            db->exec(sql);
+        } catch (std::exception& exc) {
+            spdlog::error("cannot create table dbs, exc: {}", exc.what());
+            return RetCode::RET_ERR;
+        }
 
-                while (query.executeStep()) {
-                    // int id = query.getColumn(0);
-                    std::string feature_id = query.getColumn(0).getString();
-                    std::string meta_str = query.getColumn(1).getText();
-                    // std::cout << "feature_id: " << feature_id << std::endl;
-                    // std::cout << "meta_str: " << meta_str << std::endl;
+        return RetCode::RET_OK;
+    };
 
-                    json j(json::parse(meta_str));
+    RetCode SimpleDriver::insert_into_db(const std::string& db_id, const std::string& name,
+                                         uint64 capacity, const std::string& desc) {
+        try {
+            std::string sql(
+                "insert into dbs(db_id, name, capacity, description) values (?, ?, ?, ?);");
 
-                    std::map<string, string> meta_map = j;
+            SQLite::Statement query(*db, sql);
+            query.bind(1, db_id);
+            query.bind(2, name);
+            query.bind(3, int64(capacity));
+            query.bind(4, desc);
 
-                    feature_ids.push_back(FeatureDbItem{
-                        .feature_id = feature_id,
-                        .metadata = meta_map,
-                    });
-                }
-            } catch (std::exception& exc) {
-                spdlog::error("cannot select from features table: {}", exc.what());
-                return feature_ids;
+            query.exec();
+        } catch (std::exception& exc) {
+            spdlog::error("cannot insert into dbs table, exc: {}", exc.what());
+            return RetCode::RET_ERR;
+        }
+
+        return RetCode::RET_OK;
+    };
+
+    std::vector<DBItem> SimpleDriver::list_db_items() {
+        std::vector<DBItem> dbs;
+
+        try {
+            std::string sql("select db_id, name, capacity, description from dbs;");
+
+            SQLite::Statement query(*db, sql);
+            while (query.executeStep()) {
+                std::string db_id = query.getColumn(0).getString();
+                std::string name = query.getColumn(1).getText();
+                // type convert, int64 => uint64, because we are sure that capacity will not
+                // exceed int64, so that's fine
+                uint64 capacity = query.getColumn(2).getInt64();
+                std::string description = query.getColumn(3).getText();
+
+                dbs.push_back(DBItem{
+                    .db_id = db_id,
+                    .name = name,
+                    .capacity = capacity,
+                    .description = description,
+                });
+            }
+        } catch (std::exception& exc) {
+            spdlog::error("cannot select from dbs table: {}", exc.what());
+            return dbs;
+        }
+
+        return dbs;
+    };
+
+    RetCode SimpleDriver::update_db_item(const DBItem& new_item) {
+        try {
+            std::string sql(
+                "update dbs set name=?, capacity=?, used=?, description=? where db_id = ?;");
+
+            SQLite::Statement query(*db, sql);
+            query.bind(1, new_item.name);
+            query.bind(2, int64(new_item.capacity));
+            query.bind(3, int64(new_item.used));
+            query.bind(4, new_item.description);
+
+            query.exec();
+
+        } catch (std::exception& exc) {
+            spdlog::error("cannot update dbs table, exc: {}", exc.what());
+            return RetCode::RET_ERR;
+        }
+
+        return RetCode::RET_OK;
+    };
+
+    ///
+    /// Features management
+    ///
+
+    RetCode SimpleDriver::init_features_table_for_db(const std::string& db_id) {
+        std::string sql = "create table if not exists features_db_{}("
+                          "id integer primary key autoincrement, "
+                          "feature_id char(64), "
+                          "metadata text, "
+                          "version int "
+                          ");";
+        sql = format(sql, db_id);
+
+        try {
+            db->exec(sql);
+        } catch (std::exception& exc) {
+            spdlog::error("cannot create table features_db_{}, exc: {}", db_id, exc.what());
+            return RetCode::RET_ERR;
+        }
+
+        return RetCode::RET_OK;
+    };
+
+    RetCode SimpleDriver::delete_features_from_db(const std::string& db_id,
+                                                  const std::vector<std::string>& feature_ids) {
+        try {
+            std::string sql = "delete from features_db_{} where feature_id in (? ";
+            sql = format(sql, db_id);
+
+            for (size_t i = 1; i < feature_ids.size(); i++) {
+                sql += ",? ";
+            }
+            sql += ")";
+
+            SQLite::Statement query(*db, sql);
+
+            for (size_t i = 0; i < feature_ids.size(); i++) {
+                query.bind(i + 1, feature_ids[i]);
             }
 
+            query.exec();
+        } catch (std::exception& exc) {
+            spdlog::error("cannot delete from features table: {}", exc.what());
+            return RetCode::RET_ERR;
+        }
+
+        return RetCode::RET_OK;
+    }
+
+    std::vector<FeatureDbItem> SimpleDriver::list_features_from_db(const std::string& db_id,
+                                                                   int start, int limit) {
+        std::vector<FeatureDbItem> feature_ids;
+
+        try {
+            std::string sql("select feature_id, metadata from features_db_{} limit ? offset ?");
+            sql = format(sql, db_id);
+
+            SQLite::Statement query(*db, sql);
+            query.bind(1, limit);
+            query.bind(2, start);
+
+            while (query.executeStep()) {
+                // int id = query.getColumn(0);
+                std::string feature_id = query.getColumn(0).getString();
+                std::string meta_str = query.getColumn(1).getText();
+                // std::cout << "feature_id: " << feature_id << std::endl;
+                // std::cout << "meta_str: " << meta_str << std::endl;
+
+                json j(json::parse(meta_str));
+
+                std::map<string, string> meta_map = j;
+
+                feature_ids.push_back(FeatureDbItem{
+                    .feature_id = feature_id,
+                    .metadata = meta_map,
+                });
+            }
+        } catch (std::exception& exc) {
+            spdlog::error("cannot select from features table: {}", exc.what());
             return feature_ids;
-        };
+        }
 
-        RetCode insert_features_into_db(const std::string& db_id,
-                                        const std::vector<std::string>& feature_ids,
-                                        const std::vector<std::string>& metadatas) {
-            // TODO: batch control
-            try {
-                int version = 10000; // FIXME
-                std::string sql(
-                    "insert into features_db_%s(feature_id, metadata, version) values (?, ?, ?)");
-                sql = format(sql, db_id);
+        return feature_ids;
+    };
 
-                for (size_t i = 1; i < feature_ids.size(); i++) {
-                    sql += ", (?, ?, ?)";
-                }
-                sql += ";";
+    RetCode SimpleDriver::insert_features_into_db(const std::string& db_id,
+                                                  const std::vector<std::string>& feature_ids,
+                                                  const std::vector<std::string>& metadatas) {
+        // TODO: batch control
+        try {
+            int version = 10000; // FIXME
+            std::string sql(
+                "insert into features_db_{}(feature_id, metadata, version) values (?, ?, ?)");
+            sql = format(sql, db_id);
 
-                SQLite::Statement query(*db, sql);
-                for (size_t i = 0; i < feature_ids.size(); i++) {
-                    auto feature_id = feature_ids[i];
-                    auto metadata = metadatas[i];
+            for (size_t i = 1; i < feature_ids.size(); i++) {
+                sql += ", (?, ?, ?)";
+            }
+            sql += ";";
 
-                    query.bind(3 * i + 1, feature_id);
-                    query.bind(3 * i + 2, metadata);
-                    query.bind(3 * i + 3, version);
-                }
+            SQLite::Statement query(*db, sql);
+            for (size_t i = 0; i < feature_ids.size(); i++) {
+                auto feature_id = feature_ids[i];
+                auto metadata = metadatas[i];
 
-                query.exec();
-            } catch (std::exception& exc) {
-                spdlog::error("cannot insert into features table: {}", exc.what());
-                return RetCode::RET_ERR;
+                query.bind(3 * i + 1, feature_id);
+                query.bind(3 * i + 2, metadata);
+                query.bind(3 * i + 3, version);
             }
 
-            return RetCode::RET_OK;
-        };
+            query.exec();
+        } catch (std::exception& exc) {
+            spdlog::error("cannot insert into features table: {}", exc.what());
+            return RetCode::RET_ERR;
+        }
 
-        uint64 count_features_in_db(const std::string& db_id) {
-            int count;
+        return RetCode::RET_OK;
+    };
 
-            try {
-                std::string sql("select count(*) from features_db_%s;");
-                sql = format(sql, db_id);
+    uint64 SimpleDriver::count_features_in_db(const std::string& db_id) {
+        int count;
 
-                SQLite::Statement query(*db, sql);
+        try {
+            std::string sql("select count(*) from features_db_{};");
+            sql = format(sql, db_id);
 
-                query.executeStep();
-                count = query.getColumn(0);
-            } catch (std::exception& exc) {
-                spdlog::error("cannot count from features table: {}", exc.what());
-                return -1;
-            }
+            SQLite::Statement query(*db, sql);
 
-            return count;
-        };
+            query.executeStep();
+            count = query.getColumn(0);
+        } catch (std::exception& exc) {
+            spdlog::error("cannot count from features table: {}", exc.what());
+            return -1;
+        }
+
+        return count;
     };
 
 } // namespace search

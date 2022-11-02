@@ -3,18 +3,24 @@
 #include "search/driver.h"
 #include "types.h"
 
+#include <algorithm>
+#include <functional>
 #include <map>
+#include <memory>
+#include <queue>
 
 using namespace std;
 
 using json = nlohmann::json;
 
 namespace search {
-    class FaissSearcher : public Searcher {
+
+    class BruteForceSearcher : public Searcher {
 
       public:
-        FaissSearcher(const json& config, Driver& driver);
-        ~FaissSearcher() = default;
+        BruteForceSearcher(const json& config, Driver& driver);
+
+        ~BruteForceSearcher() = default;
 
         RetCode Init() override {
             spdlog::warn("Init is not implemented by BruteForceSearch");
@@ -44,8 +50,5 @@ namespace search {
         json _config;
         Driver& _driver;
     };
-
-    FaissSearcher::FaissSearcher(const json& config, Driver& driver)
-        : _config(config), _driver(driver){};
 
 } // namespace search

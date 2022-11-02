@@ -20,7 +20,7 @@ namespace search {
       public:
         virtual ~Driver() = default;
 
-        virtual RetCode Init() = 0;
+        virtual RetCode Init(const std::vector<std::string>& initial_db_ids) = 0;
 
         // DB management
         virtual std::string CreateDB(DBItem& info) = 0;
