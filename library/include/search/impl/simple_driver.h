@@ -87,7 +87,7 @@ namespace search {
         RetCode insert_into_user_dbs(const std::string& db_id, const std::string& name,
                                      uint64 capacity, const std::string& desc);
 
-        std::vector<DBItem> list_user_db_items();
+        std::vector<DBItem> list_user_db_items(bool include_deleted = false);
 
         RetCode update_db_item(const DBItem& new_item);
 

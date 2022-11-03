@@ -95,6 +95,8 @@ namespace search {
         // expire cache.
         _cached_db_items = {};
 
+        delete_user_db(db_id);
+
         return RetCode::RET_OK;
     };
 
@@ -229,7 +231,7 @@ namespace search {
                           "is_deleted boolean, "
                           "created_at datetime, "
                           "updated_at datetime, "
-                          "deleted_at datetime, "
+                          "deleted_at datetime "
                           ");";
         try {
             db->exec(sql);
@@ -268,11 +270,15 @@ namespace search {
         return RetCode::RET_OK;
     };
 
-    std::vector<DBItem> SimpleDriver::list_user_db_items() {
+    std::vector<DBItem> SimpleDriver::list_user_db_items(bool include_deleted) {
         std::vector<DBItem> dbs;
 
         try {
-            std::string sql("select db_id, name, capacity, description from dbs;");
+            std::string sql("select db_id, name, capacity, description from dbs ");
+            if (!include_deleted) {
+                sql += "where is_deleted = false";
+            }
+            sql += ";";
 
             SQLite::Statement query(*db, sql);
             while (query.executeStep()) {
@@ -321,7 +327,7 @@ namespace search {
 
     RetCode SimpleDriver::delete_user_db(const std::string& db_id) {
         try {
-            std::string sql("update dbs set deleted=?, deleted_at=? where db_id = ?;");
+            std::string sql("update dbs set is_deleted=?, deleted_at=? where db_id = ?;");
 
             SQLite::Statement query(*db, sql);
 
@@ -351,7 +357,7 @@ namespace search {
                           "metadata text, "
                           "version int "
                           ");";
-        sql = format(sql, db_id);
+        sql = format(sql, replace_underscore_for_uuid(db_id));
 
         try {
             db->exec(sql);
@@ -367,7 +373,7 @@ namespace search {
                                                   const std::vector<std::string>& feature_ids) {
         try {
             std::string sql = "delete from features_db_{} where feature_id in (? ";
-            sql = format(sql, db_id);
+            sql = format(sql, replace_underscore_for_uuid(db_id));
 
             for (size_t i = 1; i < feature_ids.size(); i++) {
                 sql += ",? ";
@@ -395,7 +401,7 @@ namespace search {
 
         try {
             std::string sql("select feature_id, metadata from features_db_{} limit ? offset ?");
-            sql = format(sql, db_id);
+            sql = format(sql, replace_underscore_for_uuid(db_id));
 
             SQLite::Statement query(*db, sql);
             query.bind(1, limit);
@@ -433,7 +439,7 @@ namespace search {
             int version = 10000; // FIXME
             std::string sql(
                 "insert into features_db_{}(feature_id, metadata, version) values (?, ?, ?)");
-            sql = format(sql, db_id);
+            sql = format(sql, replace_underscore_for_uuid(db_id));
 
             for (size_t i = 1; i < feature_ids.size(); i++) {
                 sql += ", (?, ?, ?)";
@@ -464,7 +470,9 @@ namespace search {
 
         try {
             std::string sql("select count(*) from features_db_{};");
-            sql = format(sql, db_id);
+            sql = format(sql, replace_underscore_for_uuid(db_id));
+
+            spdlog::debug("sql: {}", sql);
 
             SQLite::Statement query(*db, sql);
 

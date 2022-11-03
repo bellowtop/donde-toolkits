@@ -84,3 +84,9 @@ inline std::string generate_uuid() {
 
     return ret;
 }
+
+inline std::string replace_underscore_for_uuid(const std::string& u) {
+    std::string ret(u);
+    std::replace(ret.begin(), ret.end(), '-', '_');
+    return ret;
+}

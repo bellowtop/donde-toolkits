@@ -109,7 +109,7 @@ TEST_CASE("SimpleDriver: can manage DB.") {
         store.DeleteDB(db_id3);
 
         std::vector<search::DBItem> got2 = store.ListDBs();
-        CHECK(got.size() == 0);
+        CHECK(got2.size() == 0);
 
         // teardown
         std::filesystem::remove_all("/tmp/test_store/");
@@ -188,6 +188,19 @@ TEST_CASE("SimpleDriver: can manage features.") {
     }
 
     SUBCASE("Features meta db support page listing.") {
+        const int feature_count = 105;
+        const int dim = 512;
+
+        std::vector<search::FeatureDbItem> fts;
+        for (int i = 0; i < feature_count; i++) {
+            auto ft = gen_feature_dim<dim>();
+            std::map<string, string> meta;
+            fts.push_back({
+                .feature = ft,
+                .metadata = meta,
+            });
+        }
+
         // setup
         search::SimpleDriver store("/tmp/test_store");
 
@@ -219,7 +232,7 @@ TEST_CASE("SimpleDriver: can manage features.") {
             CHECK(listed.perPage == perPage);
             CHECK(listed.totalPage == (feature_count + perPage - 1) / perPage);
 
-            // large page
+            // large page, // total 105 fts, page 10(the last page) only get 5
             page = 10;
 
             listed = store.ListFeatures(db_id1, page, perPage);
