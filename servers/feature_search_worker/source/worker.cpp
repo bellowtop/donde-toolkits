@@ -56,8 +56,7 @@ using json = nlohmann::json;
 FeatureSearchWorkerImpl::FeatureSearchWorkerImpl(Config& server_config) : config(server_config) {
     driver
         = std::make_shared<search::SimpleDriver>(server_config.get_searcher_config()["filepath"]);
-    searcher = std::make_shared<search::BruteForceSearcher>(server_config.get_searcher_config(),
-                                                            *driver);
+    searcher = std::make_shared<search::BruteForceSearcher>(*driver);
 };
 
 FeatureSearchWorkerImpl::~FeatureSearchWorkerImpl(){};
