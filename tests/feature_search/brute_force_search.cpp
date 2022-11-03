@@ -1,6 +1,5 @@
-#include "search/engine.h"
-#include "search/searcher.h"
-#include "search/storage.h"
+#include "search/impl/brute_force_searcher.h"
+#include "search/impl/simple_driver.h"
 #include "types.h"
 #include "utils.h"
 
@@ -16,18 +15,10 @@ using namespace std;
 
 using nlohmann::json;
 
-TEST_CASE("Search topk features.") {
-
-    json conf = R"(
-{
-        "storage": {
-		    "path": "/tmp/test_store/"
-        }
-})"_json;
+TEST_CASE("BruteForceSearch. ") {
 
     const int feature_count = 100;
     const int dim = 512;
-    search::BruteForceSearcher search(conf);
 
     std::vector<search::FeatureDbItem> fts;
     for (int i = 0; i < feature_count; i++) {
@@ -39,22 +30,37 @@ TEST_CASE("Search topk features.") {
         });
     }
 
-    std::cout << "in brute_force_search.cpp[test] feature count: " << feature_count << std::endl;
+    // setup
+    search::SimpleDriver store("/tmp/test_store");
 
-    SUBCASE("") {
+    search::DBItem db1{
+        .name = "test-db1",
+        .description = "this is a test db",
+        .capacity = 1024,
+    };
 
-        std::vector<std::string> feature_ids = search.AddFeatures(fts);
-        CHECK(feature_ids.size() == feature_count);
+    std::string db_id = store.CreateDB(db1);
 
+    search::BruteForceSearcher search(store);
+
+    // preapre features in db.
+    std::vector<std::string> feature_ids = search.AddFeatures(db_id, fts);
+    CHECK(feature_ids.size() == feature_count);
+
+    SUBCASE("Search topk features.") {
+        // query is the first one. so that we definitely can find matched fts.
         Feature query{fts[0].feature};
+
         int topk = 10;
-        std::vector<search::FeatureSearchItem> search_result = search.Search(query, topk);
+        std::vector<search::FeatureSearchItem> search_result
+            = search.SearchFeature(db_id, query, topk);
 
         for (const auto& r : search_result) {
             std::cout << "score: " << r.score << std::endl;
         }
 
         CHECK(search_result.size() == topk);
+
         if (int(search_result.size()) == topk) {
             // the most near ft.
             auto t = search_result[0];

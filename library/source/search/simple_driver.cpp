@@ -11,6 +11,7 @@
 
 #include <SQLiteCpp/Database.h>
 #include <SQLiteCpp/Statement.h>
+#include <chrono>
 #include <exception>
 #include <filesystem>
 #include <fstream>
@@ -25,6 +26,7 @@
 #include <sqlite3.h>
 #include <sstream>
 #include <stdexcept>
+#include <typeinfo>
 
 using namespace std;
 
@@ -51,19 +53,50 @@ namespace search {
         try {
             db = std::make_unique<SQLite::Database>(db_filepath,
                                                     SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+
+            init_user_db_table();
         } catch (std::exception& exc) {
             spdlog::error("cannot open database: ", exc.what());
             std::abort();
         }
     };
 
-    std::string SimpleDriver::CreateDB(DBItem& info) { return {}; };
+    std::string SimpleDriver::CreateDB(DBItem& info) {
+        // expire cache.
+        _cached_db_items = {};
 
-    DBItem SimpleDriver::FindDB(const std::string& db_id) { return {}; };
+        std::string db_id = generate_uuid();
+        insert_into_user_dbs(db_id, info.name, info.capacity, info.description);
+        init_features_table_for_db(db_id);
 
-    std::vector<DBItem> SimpleDriver::ListDBs() { return {}; };
+        return db_id;
+    };
 
-    RetCode SimpleDriver::DeleteDB(std::string db_id) { return RetCode::RET_OK; };
+    DBItem SimpleDriver::FindDB(const std::string& db_id) {
+        if (_cached_db_items.size() == 0) {
+            _cached_db_items = list_user_db_items();
+        }
+        for (auto& v : _cached_db_items) {
+            if (v.db_id == db_id) {
+                return v;
+            }
+        }
+        return {};
+    };
+
+    std::vector<DBItem> SimpleDriver::ListDBs() {
+        if (_cached_db_items.size() == 0) {
+            _cached_db_items = list_user_db_items();
+        }
+        return _cached_db_items;
+    };
+
+    RetCode SimpleDriver::DeleteDB(std::string db_id) {
+        // expire cache.
+        _cached_db_items = {};
+
+        return RetCode::RET_OK;
+    };
 
     PageData<FeatureDbItemList> SimpleDriver::ListFeatures(const std::string& db_id, uint page,
                                                            uint perPage) {
@@ -186,13 +219,17 @@ namespace search {
     ///
     /// DB management
     ///
-    RetCode SimpleDriver::init_db_table() {
+    RetCode SimpleDriver::init_user_db_table() {
         std::string sql = "create table if not exists dbs("
                           "id integer primary key autoincrement, "
                           "db_id char(64), "
                           "name char(64), "
                           "capacity integer, "
-                          "description text"
+                          "description text, "
+                          "is_deleted boolean, "
+                          "created_at datetime, "
+                          "updated_at datetime, "
+                          "deleted_at datetime, "
                           ");";
         try {
             db->exec(sql);
@@ -204,17 +241,23 @@ namespace search {
         return RetCode::RET_OK;
     };
 
-    RetCode SimpleDriver::insert_into_db(const std::string& db_id, const std::string& name,
-                                         uint64 capacity, const std::string& desc) {
+    RetCode SimpleDriver::insert_into_user_dbs(const std::string& db_id, const std::string& name,
+                                               uint64 capacity, const std::string& desc) {
         try {
-            std::string sql(
-                "insert into dbs(db_id, name, capacity, description) values (?, ?, ?, ?);");
+            std::string sql("insert into dbs(db_id, name, capacity, description, is_deleted, "
+                            "created_at) values (?, ?, ?, ?, ?, ?);");
+
+            time_t now = time(nullptr);
 
             SQLite::Statement query(*db, sql);
+
             query.bind(1, db_id);
             query.bind(2, name);
             query.bind(3, int64(capacity));
             query.bind(4, desc);
+
+            query.bind(5, false);
+            query.bind(6, int64(now));
 
             query.exec();
         } catch (std::exception& exc) {
@@ -225,7 +268,7 @@ namespace search {
         return RetCode::RET_OK;
     };
 
-    std::vector<DBItem> SimpleDriver::list_db_items() {
+    std::vector<DBItem> SimpleDriver::list_user_db_items() {
         std::vector<DBItem> dbs;
 
         try {
@@ -265,6 +308,27 @@ namespace search {
             query.bind(2, int64(new_item.capacity));
             query.bind(3, int64(new_item.used));
             query.bind(4, new_item.description);
+
+            query.exec();
+
+        } catch (std::exception& exc) {
+            spdlog::error("cannot update dbs table, exc: {}", exc.what());
+            return RetCode::RET_ERR;
+        }
+
+        return RetCode::RET_OK;
+    };
+
+    RetCode SimpleDriver::delete_user_db(const std::string& db_id) {
+        try {
+            std::string sql("update dbs set deleted=?, deleted_at=? where db_id = ?;");
+
+            SQLite::Statement query(*db, sql);
+
+            time_t now = time(nullptr); // seconds since 1970
+            query.bind(1, true);
+            query.bind(2, int64(now));
+            query.bind(3, db_id);
 
             query.exec();
 

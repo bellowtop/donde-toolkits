@@ -18,7 +18,7 @@ namespace search {
     class BruteForceSearcher : public Searcher {
 
       public:
-        BruteForceSearcher(const json& config, Driver& driver);
+        BruteForceSearcher(Driver& driver);
 
         ~BruteForceSearcher() = default;
 

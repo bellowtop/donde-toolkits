@@ -18,7 +18,7 @@ namespace search {
     class BruteForceSearcher : public Searcher {
 
       public:
-        BruteForceSearcher(const json& config, Driver& driver);
+        BruteForceSearcher(Driver& driver);
 
         ~BruteForceSearcher() = default;
 
@@ -47,12 +47,10 @@ namespace search {
                                const std::vector<std::string>& feature_ids) override;
 
       private:
-        json _config;
         Driver& _driver;
     };
 
-    BruteForceSearcher::BruteForceSearcher(const json& config, Driver& driver)
-        : _config(config), _driver(driver){};
+    BruteForceSearcher::BruteForceSearcher(Driver& driver) : _driver(driver){};
 
     std::vector<FeatureSearchItem>
     BruteForceSearcher::SearchFeature(const std::string& db_id, const Feature& query, size_t topk) {
