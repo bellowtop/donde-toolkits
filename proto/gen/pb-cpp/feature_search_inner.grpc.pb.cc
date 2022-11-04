@@ -25,6 +25,7 @@ namespace feature_search {
 namespace inner {
 
 static const char* FeatureSearch_method_names[] = {
+  "/com.sekirocc.feature_search.inner.FeatureSearch/GetSystemInfo",
   "/com.sekirocc.feature_search.inner.FeatureSearch/AssignDBs",
   "/com.sekirocc.feature_search.inner.FeatureSearch/TrainIndex",
   "/com.sekirocc.feature_search.inner.FeatureSearch/BatchAddFeatures",
@@ -39,12 +40,36 @@ std::unique_ptr< FeatureSearch::Stub> FeatureSearch::NewStub(const std::shared_p
 }
 
 FeatureSearch::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
-  : channel_(channel), rpcmethod_AssignDBs_(FeatureSearch_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_TrainIndex_(FeatureSearch_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_BatchAddFeatures_(FeatureSearch_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_BatchDeleteFeatures_(FeatureSearch_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SearchFeature_(FeatureSearch_method_names[4], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  : channel_(channel), rpcmethod_GetSystemInfo_(FeatureSearch_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_AssignDBs_(FeatureSearch_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_TrainIndex_(FeatureSearch_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_BatchAddFeatures_(FeatureSearch_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_BatchDeleteFeatures_(FeatureSearch_method_names[4], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SearchFeature_(FeatureSearch_method_names[5], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
+
+::grpc::Status FeatureSearch::Stub::GetSystemInfo(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest& request, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::com::sekirocc::feature_search::inner::GetSystemInfoRequest, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_GetSystemInfo_, context, request, response);
+}
+
+void FeatureSearch::Stub::async::GetSystemInfo(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest* request, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::com::sekirocc::feature_search::inner::GetSystemInfoRequest, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetSystemInfo_, context, request, response, std::move(f));
+}
+
+void FeatureSearch::Stub::async::GetSystemInfo(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest* request, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetSystemInfo_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::GetSystemInfoResponse>* FeatureSearch::Stub::PrepareAsyncGetSystemInfoRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::com::sekirocc::feature_search::inner::GetSystemInfoResponse, ::com::sekirocc::feature_search::inner::GetSystemInfoRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_GetSystemInfo_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::GetSystemInfoResponse>* FeatureSearch::Stub::AsyncGetSystemInfoRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncGetSystemInfoRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
 
 ::grpc::Status FeatureSearch::Stub::AssignDBs(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest& request, ::com::sekirocc::feature_search::inner::AssignDBsResponse* response) {
   return ::grpc::internal::BlockingUnaryCall< ::com::sekirocc::feature_search::inner::AssignDBsRequest, ::com::sekirocc::feature_search::inner::AssignDBsResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_AssignDBs_, context, request, response);
@@ -165,6 +190,16 @@ FeatureSearch::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       FeatureSearch_method_names[0],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< FeatureSearch::Service, ::com::sekirocc::feature_search::inner::GetSystemInfoRequest, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](FeatureSearch::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest* req,
+             ::com::sekirocc::feature_search::inner::GetSystemInfoResponse* resp) {
+               return service->GetSystemInfo(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      FeatureSearch_method_names[1],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< FeatureSearch::Service, ::com::sekirocc::feature_search::inner::AssignDBsRequest, ::com::sekirocc::feature_search::inner::AssignDBsResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](FeatureSearch::Service* service,
              ::grpc::ServerContext* ctx,
@@ -173,7 +208,7 @@ FeatureSearch::Service::Service() {
                return service->AssignDBs(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      FeatureSearch_method_names[1],
+      FeatureSearch_method_names[2],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< FeatureSearch::Service, ::com::sekirocc::feature_search::inner::TrainIndexRequest, ::com::sekirocc::feature_search::inner::TrainIndexResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](FeatureSearch::Service* service,
@@ -183,7 +218,7 @@ FeatureSearch::Service::Service() {
                return service->TrainIndex(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      FeatureSearch_method_names[2],
+      FeatureSearch_method_names[3],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< FeatureSearch::Service, ::com::sekirocc::feature_search::inner::BatchAddFeaturesRequest, ::com::sekirocc::feature_search::inner::BatchAddFeaturesResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](FeatureSearch::Service* service,
@@ -193,7 +228,7 @@ FeatureSearch::Service::Service() {
                return service->BatchAddFeatures(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      FeatureSearch_method_names[3],
+      FeatureSearch_method_names[4],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< FeatureSearch::Service, ::com::sekirocc::feature_search::inner::BatchDeleteFeaturesRequest, ::com::sekirocc::feature_search::inner::BatchDeleteFeaturesResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](FeatureSearch::Service* service,
@@ -203,7 +238,7 @@ FeatureSearch::Service::Service() {
                return service->BatchDeleteFeatures(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      FeatureSearch_method_names[4],
+      FeatureSearch_method_names[5],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< FeatureSearch::Service, ::com::sekirocc::feature_search::inner::SearchFeatureRequest, ::com::sekirocc::feature_search::inner::SearchFeatureResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](FeatureSearch::Service* service,
@@ -215,6 +250,13 @@ FeatureSearch::Service::Service() {
 }
 
 FeatureSearch::Service::~Service() {
+}
+
+::grpc::Status FeatureSearch::Service::GetSystemInfo(::grpc::ServerContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest* request, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
 ::grpc::Status FeatureSearch::Service::AssignDBs(::grpc::ServerContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest* request, ::com::sekirocc::feature_search::inner::AssignDBsResponse* response) {

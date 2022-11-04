@@ -109,10 +109,27 @@ struct FaceRectangleDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FaceRectangleDefaultTypeInternal _FaceRectangle_default_instance_;
+PROTOBUF_CONSTEXPR DBItem::DBItem(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.db_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.name_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.description_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.capacity_)*/int64_t{0}
+  , /*decltype(_impl_.used_)*/int64_t{0}
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct DBItemDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR DBItemDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~DBItemDefaultTypeInternal() {}
+  union {
+    DBItem _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DBItemDefaultTypeInternal _DBItem_default_instance_;
 }  // namespace common
 }  // namespace sekirocc
 }  // namespace com
-static ::_pb::Metadata file_level_metadata_common_2eproto[6];
+static ::_pb::Metadata file_level_metadata_common_2eproto[7];
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_common_2eproto[2];
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_common_2eproto = nullptr;
 
@@ -167,6 +184,17 @@ const uint32_t TableStruct_common_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(p
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::common::FaceRectangle, _impl_.rectangle_),
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::common::FaceRectangle, _impl_.quality_),
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::common::FaceRectangle, _impl_.confidence_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::common::DBItem, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::common::DBItem, _impl_.db_id_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::common::DBItem, _impl_.name_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::common::DBItem, _impl_.description_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::common::DBItem, _impl_.capacity_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::common::DBItem, _impl_.used_),
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::com::sekirocc::common::Rect)},
@@ -175,6 +203,7 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 24, -1, -1, sizeof(::com::sekirocc::common::Image)},
   { 32, -1, -1, sizeof(::com::sekirocc::common::FaceFeature)},
   { 41, -1, -1, sizeof(::com::sekirocc::common::FaceRectangle)},
+  { 50, -1, -1, sizeof(::com::sekirocc::common::DBItem)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -184,6 +213,7 @@ static const ::_pb::Message* const file_default_instances[] = {
   &::com::sekirocc::common::_Image_default_instance_._instance,
   &::com::sekirocc::common::_FaceFeature_default_instance_._instance,
   &::com::sekirocc::common::_FaceRectangle_default_instance_._instance,
+  &::com::sekirocc::common::_DBItem_default_instance_._instance,
 };
 
 const char descriptor_table_protodef_common_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
@@ -198,22 +228,24 @@ const char descriptor_table_protodef_common_2eproto[] PROTOBUF_SECTION_VARIABLE(
   "ersion\030\001 \001(\005\022\r\n\005model\030\002 \001(\t\022\014\n\004blob\030\003 \001("
   "\014\"b\n\rFaceRectangle\022,\n\trectangle\030\002 \001(\0132\031."
   "com.sekirocc.common.Rect\022\017\n\007quality\030\003 \001("
-  "\002\022\022\n\nconfidence\030\004 \001(\002*f\n\nResultCode\022\006\n\002O"
-  "K\020\000\022\021\n\014SERVER_ERROR\020\221N\022\021\n\014CLIENT_ERROR\020\365"
-  "N\022\023\n\016FACE_NOT_FOUND\020\366N\"\005\010\001\020\220N\"\006\010\222N\020\364N\"\006\010"
-  "\367N\020\330O*\?\n\013ImageFormat\022\021\n\rIMAGE_UNKNOWN\020\000\022"
-  "\016\n\nIMAGE_JPEG\020\001\022\r\n\tIMAGE_PNG\020\002B5Z3github"
-  ".com/sekirocc/face-recognition-service/c"
-  "ommonb\006proto3"
+  "\002\022\022\n\nconfidence\030\004 \001(\002\"Z\n\006DBItem\022\r\n\005db_id"
+  "\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\023\n\013description\030\003 \001("
+  "\t\022\020\n\010capacity\030\004 \001(\003\022\014\n\004used\030\005 \001(\003*f\n\nRes"
+  "ultCode\022\006\n\002OK\020\000\022\021\n\014SERVER_ERROR\020\221N\022\021\n\014CL"
+  "IENT_ERROR\020\365N\022\023\n\016FACE_NOT_FOUND\020\366N\"\005\010\001\020\220"
+  "N\"\006\010\222N\020\364N\"\006\010\367N\020\330O*\?\n\013ImageFormat\022\021\n\rIMAG"
+  "E_UNKNOWN\020\000\022\016\n\nIMAGE_JPEG\020\001\022\r\n\tIMAGE_PNG"
+  "\020\002B5Z3github.com/sekirocc/face-recogniti"
+  "on-service/commonb\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_common_2eproto_deps[1] = {
   &::descriptor_table_google_2fapi_2fannotations_2eproto,
 };
 static ::_pbi::once_flag descriptor_table_common_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_common_2eproto = {
-    false, false, 693, descriptor_table_protodef_common_2eproto,
+    false, false, 785, descriptor_table_protodef_common_2eproto,
     "common.proto",
-    &descriptor_table_common_2eproto_once, descriptor_table_common_2eproto_deps, 1, 6,
+    &descriptor_table_common_2eproto_once, descriptor_table_common_2eproto_deps, 1, 7,
     schemas, file_default_instances, TableStruct_common_2eproto::offsets,
     file_level_metadata_common_2eproto, file_level_enum_descriptors_common_2eproto,
     file_level_service_descriptors_common_2eproto,
@@ -1699,6 +1731,369 @@ void FaceRectangle::InternalSwap(FaceRectangle* other) {
       file_level_metadata_common_2eproto[5]);
 }
 
+// ===================================================================
+
+class DBItem::_Internal {
+ public:
+};
+
+DBItem::DBItem(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:com.sekirocc.common.DBItem)
+}
+DBItem::DBItem(const DBItem& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  DBItem* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.db_id_){}
+    , decltype(_impl_.name_){}
+    , decltype(_impl_.description_){}
+    , decltype(_impl_.capacity_){}
+    , decltype(_impl_.used_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _impl_.db_id_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.db_id_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_db_id().empty()) {
+    _this->_impl_.db_id_.Set(from._internal_db_id(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.name_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.name_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_name().empty()) {
+    _this->_impl_.name_.Set(from._internal_name(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.description_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.description_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_description().empty()) {
+    _this->_impl_.description_.Set(from._internal_description(), 
+      _this->GetArenaForAllocation());
+  }
+  ::memcpy(&_impl_.capacity_, &from._impl_.capacity_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.used_) -
+    reinterpret_cast<char*>(&_impl_.capacity_)) + sizeof(_impl_.used_));
+  // @@protoc_insertion_point(copy_constructor:com.sekirocc.common.DBItem)
+}
+
+inline void DBItem::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.db_id_){}
+    , decltype(_impl_.name_){}
+    , decltype(_impl_.description_){}
+    , decltype(_impl_.capacity_){int64_t{0}}
+    , decltype(_impl_.used_){int64_t{0}}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.db_id_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.db_id_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.name_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.name_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.description_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.description_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+}
+
+DBItem::~DBItem() {
+  // @@protoc_insertion_point(destructor:com.sekirocc.common.DBItem)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void DBItem::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.db_id_.Destroy();
+  _impl_.name_.Destroy();
+  _impl_.description_.Destroy();
+}
+
+void DBItem::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void DBItem::Clear() {
+// @@protoc_insertion_point(message_clear_start:com.sekirocc.common.DBItem)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.db_id_.ClearToEmpty();
+  _impl_.name_.ClearToEmpty();
+  _impl_.description_.ClearToEmpty();
+  ::memset(&_impl_.capacity_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.used_) -
+      reinterpret_cast<char*>(&_impl_.capacity_)) + sizeof(_impl_.used_));
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* DBItem::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // string db_id = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_db_id();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "com.sekirocc.common.DBItem.db_id"));
+        } else
+          goto handle_unusual;
+        continue;
+      // string name = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          auto str = _internal_mutable_name();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "com.sekirocc.common.DBItem.name"));
+        } else
+          goto handle_unusual;
+        continue;
+      // string description = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
+          auto str = _internal_mutable_description();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "com.sekirocc.common.DBItem.description"));
+        } else
+          goto handle_unusual;
+        continue;
+      // int64 capacity = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
+          _impl_.capacity_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // int64 used = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
+          _impl_.used_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* DBItem::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.common.DBItem)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string db_id = 1;
+  if (!this->_internal_db_id().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_db_id().data(), static_cast<int>(this->_internal_db_id().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "com.sekirocc.common.DBItem.db_id");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_db_id(), target);
+  }
+
+  // string name = 2;
+  if (!this->_internal_name().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "com.sekirocc.common.DBItem.name");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_name(), target);
+  }
+
+  // string description = 3;
+  if (!this->_internal_description().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_description().data(), static_cast<int>(this->_internal_description().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "com.sekirocc.common.DBItem.description");
+    target = stream->WriteStringMaybeAliased(
+        3, this->_internal_description(), target);
+  }
+
+  // int64 capacity = 4;
+  if (this->_internal_capacity() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt64ToArray(4, this->_internal_capacity(), target);
+  }
+
+  // int64 used = 5;
+  if (this->_internal_used() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt64ToArray(5, this->_internal_used(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.common.DBItem)
+  return target;
+}
+
+size_t DBItem::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.common.DBItem)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string db_id = 1;
+  if (!this->_internal_db_id().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_db_id());
+  }
+
+  // string name = 2;
+  if (!this->_internal_name().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_name());
+  }
+
+  // string description = 3;
+  if (!this->_internal_description().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_description());
+  }
+
+  // int64 capacity = 4;
+  if (this->_internal_capacity() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_capacity());
+  }
+
+  // int64 used = 5;
+  if (this->_internal_used() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_used());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData DBItem::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    DBItem::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*DBItem::GetClassData() const { return &_class_data_; }
+
+
+void DBItem::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<DBItem*>(&to_msg);
+  auto& from = static_cast<const DBItem&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.common.DBItem)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_db_id().empty()) {
+    _this->_internal_set_db_id(from._internal_db_id());
+  }
+  if (!from._internal_name().empty()) {
+    _this->_internal_set_name(from._internal_name());
+  }
+  if (!from._internal_description().empty()) {
+    _this->_internal_set_description(from._internal_description());
+  }
+  if (from._internal_capacity() != 0) {
+    _this->_internal_set_capacity(from._internal_capacity());
+  }
+  if (from._internal_used() != 0) {
+    _this->_internal_set_used(from._internal_used());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void DBItem::CopyFrom(const DBItem& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.common.DBItem)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool DBItem::IsInitialized() const {
+  return true;
+}
+
+void DBItem::InternalSwap(DBItem* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.db_id_, lhs_arena,
+      &other->_impl_.db_id_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.name_, lhs_arena,
+      &other->_impl_.name_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.description_, lhs_arena,
+      &other->_impl_.description_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(DBItem, _impl_.used_)
+      + sizeof(DBItem::_impl_.used_)
+      - PROTOBUF_FIELD_OFFSET(DBItem, _impl_.capacity_)>(
+          reinterpret_cast<char*>(&_impl_.capacity_),
+          reinterpret_cast<char*>(&other->_impl_.capacity_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata DBItem::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_common_2eproto_getter, &descriptor_table_common_2eproto_once,
+      file_level_metadata_common_2eproto[6]);
+}
+
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace common
 }  // namespace sekirocc
@@ -1727,6 +2122,10 @@ Arena::CreateMaybeMessage< ::com::sekirocc::common::FaceFeature >(Arena* arena) 
 template<> PROTOBUF_NOINLINE ::com::sekirocc::common::FaceRectangle*
 Arena::CreateMaybeMessage< ::com::sekirocc::common::FaceRectangle >(Arena* arena) {
   return Arena::CreateMessageInternal< ::com::sekirocc::common::FaceRectangle >(arena);
+}
+template<> PROTOBUF_NOINLINE ::com::sekirocc::common::DBItem*
+Arena::CreateMaybeMessage< ::com::sekirocc::common::DBItem >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::sekirocc::common::DBItem >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

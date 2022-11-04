@@ -5,7 +5,9 @@
 #include "Poco/Timestamp.h"
 #include "config.h"
 #include "gen/pb-cpp/feature_search.grpc.pb.h"
+#include "remote_worker.h"
 #include "search/db_searcher.h"
+#include "shard_manager.h"
 
 // #include "spdlog/spdlog.h"
 
@@ -15,6 +17,7 @@
 #include <grpcpp/server_builder.h>
 #include <grpcpp/server_context.h>
 #include <iostream>
+#include <unordered_map>
 
 using namespace std;
 
@@ -72,6 +75,15 @@ class FeatureSearchImpl final : public FeatureSearch::Service {
 
   private:
     Config& config;
-    std::shared_ptr<search::Searcher> searcher;
     // spdlog::Logger& logger;
+
+    std::shared_ptr<search::Searcher> searcher;
+
+    std::vector<std::string> db_ids;
+
+    // worker_id => worker
+    std::unordered_map<std::string, RemoteWorker*> workers;
+
+    // worker_id => db_ids
+    std::unordered_map<std::string, std::vector<std::string>> worker_dbs;
 };

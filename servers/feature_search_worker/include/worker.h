@@ -18,11 +18,15 @@
 
 using namespace std;
 
+using com::sekirocc::feature_search::inner::AssignDBsRequest;
+using com::sekirocc::feature_search::inner::AssignDBsResponse;
 using com::sekirocc::feature_search::inner::BatchAddFeaturesRequest;
 using com::sekirocc::feature_search::inner::BatchAddFeaturesResponse;
 using com::sekirocc::feature_search::inner::BatchDeleteFeaturesRequest;
 using com::sekirocc::feature_search::inner::BatchDeleteFeaturesResponse;
 using com::sekirocc::feature_search::inner::FeatureSearch;
+using com::sekirocc::feature_search::inner::GetSystemInfoRequest;
+using com::sekirocc::feature_search::inner::GetSystemInfoResponse;
 using com::sekirocc::feature_search::inner::SearchFeatureRequest;
 using com::sekirocc::feature_search::inner::SearchFeatureResponse;
 using com::sekirocc::feature_search::inner::TrainIndexRequest;
@@ -39,6 +43,12 @@ class FeatureSearchWorkerImpl final : public FeatureSearch::Service {
     void Start();
     void Stop();
 
+    Status AssignDBs(ServerContext* context, const AssignDBsRequest* request,
+                     AssignDBsResponse* response) override;
+
+    Status GetSystemInfo(ServerContext* context, const GetSystemInfoRequest* request,
+                         GetSystemInfoResponse* response) override;
+
     Status TrainIndex(ServerContext* context, const TrainIndexRequest* request,
                       TrainIndexResponse* response) override;
 
@@ -52,6 +62,8 @@ class FeatureSearchWorkerImpl final : public FeatureSearch::Service {
                          SearchFeatureResponse* response) override;
 
   private:
+    std::vector<std::string> managed_dbs;
+
     Config& config;
     std::shared_ptr<search::Searcher> searcher;
     std::shared_ptr<search::Driver> driver;

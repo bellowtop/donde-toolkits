@@ -49,6 +49,9 @@ extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table
 namespace com {
 namespace sekirocc {
 namespace common {
+class DBItem;
+struct DBItemDefaultTypeInternal;
+extern DBItemDefaultTypeInternal _DBItem_default_instance_;
 class FaceFeature;
 struct FaceFeatureDefaultTypeInternal;
 extern FaceFeatureDefaultTypeInternal _FaceFeature_default_instance_;
@@ -71,6 +74,7 @@ extern SizeDefaultTypeInternal _Size_default_instance_;
 }  // namespace sekirocc
 }  // namespace com
 PROTOBUF_NAMESPACE_OPEN
+template<> ::com::sekirocc::common::DBItem* Arena::CreateMaybeMessage<::com::sekirocc::common::DBItem>(Arena*);
 template<> ::com::sekirocc::common::FaceFeature* Arena::CreateMaybeMessage<::com::sekirocc::common::FaceFeature>(Arena*);
 template<> ::com::sekirocc::common::FaceRectangle* Arena::CreateMaybeMessage<::com::sekirocc::common::FaceRectangle>(Arena*);
 template<> ::com::sekirocc::common::Image* Arena::CreateMaybeMessage<::com::sekirocc::common::Image>(Arena*);
@@ -1153,6 +1157,213 @@ class FaceRectangle final :
   union { Impl_ _impl_; };
   friend struct ::TableStruct_common_2eproto;
 };
+// -------------------------------------------------------------------
+
+class DBItem final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.common.DBItem) */ {
+ public:
+  inline DBItem() : DBItem(nullptr) {}
+  ~DBItem() override;
+  explicit PROTOBUF_CONSTEXPR DBItem(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  DBItem(const DBItem& from);
+  DBItem(DBItem&& from) noexcept
+    : DBItem() {
+    *this = ::std::move(from);
+  }
+
+  inline DBItem& operator=(const DBItem& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DBItem& operator=(DBItem&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const DBItem& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const DBItem* internal_default_instance() {
+    return reinterpret_cast<const DBItem*>(
+               &_DBItem_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    6;
+
+  friend void swap(DBItem& a, DBItem& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(DBItem* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(DBItem* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  DBItem* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<DBItem>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const DBItem& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const DBItem& from) {
+    DBItem::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(DBItem* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "com.sekirocc.common.DBItem";
+  }
+  protected:
+  explicit DBItem(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kDbIdFieldNumber = 1,
+    kNameFieldNumber = 2,
+    kDescriptionFieldNumber = 3,
+    kCapacityFieldNumber = 4,
+    kUsedFieldNumber = 5,
+  };
+  // string db_id = 1;
+  void clear_db_id();
+  const std::string& db_id() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_db_id(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_db_id();
+  PROTOBUF_NODISCARD std::string* release_db_id();
+  void set_allocated_db_id(std::string* db_id);
+  private:
+  const std::string& _internal_db_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_db_id(const std::string& value);
+  std::string* _internal_mutable_db_id();
+  public:
+
+  // string name = 2;
+  void clear_name();
+  const std::string& name() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_name(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_name();
+  PROTOBUF_NODISCARD std::string* release_name();
+  void set_allocated_name(std::string* name);
+  private:
+  const std::string& _internal_name() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_name(const std::string& value);
+  std::string* _internal_mutable_name();
+  public:
+
+  // string description = 3;
+  void clear_description();
+  const std::string& description() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_description(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_description();
+  PROTOBUF_NODISCARD std::string* release_description();
+  void set_allocated_description(std::string* description);
+  private:
+  const std::string& _internal_description() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_description(const std::string& value);
+  std::string* _internal_mutable_description();
+  public:
+
+  // int64 capacity = 4;
+  void clear_capacity();
+  int64_t capacity() const;
+  void set_capacity(int64_t value);
+  private:
+  int64_t _internal_capacity() const;
+  void _internal_set_capacity(int64_t value);
+  public:
+
+  // int64 used = 5;
+  void clear_used();
+  int64_t used() const;
+  void set_used(int64_t value);
+  private:
+  int64_t _internal_used() const;
+  void _internal_set_used(int64_t value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:com.sekirocc.common.DBItem)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr db_id_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr description_;
+    int64_t capacity_;
+    int64_t used_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_common_2eproto;
+};
 // ===================================================================
 
 
@@ -1764,9 +1975,205 @@ inline void FaceRectangle::set_confidence(float value) {
   // @@protoc_insertion_point(field_set:com.sekirocc.common.FaceRectangle.confidence)
 }
 
+// -------------------------------------------------------------------
+
+// DBItem
+
+// string db_id = 1;
+inline void DBItem::clear_db_id() {
+  _impl_.db_id_.ClearToEmpty();
+}
+inline const std::string& DBItem::db_id() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.common.DBItem.db_id)
+  return _internal_db_id();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void DBItem::set_db_id(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.db_id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:com.sekirocc.common.DBItem.db_id)
+}
+inline std::string* DBItem::mutable_db_id() {
+  std::string* _s = _internal_mutable_db_id();
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.common.DBItem.db_id)
+  return _s;
+}
+inline const std::string& DBItem::_internal_db_id() const {
+  return _impl_.db_id_.Get();
+}
+inline void DBItem::_internal_set_db_id(const std::string& value) {
+  
+  _impl_.db_id_.Set(value, GetArenaForAllocation());
+}
+inline std::string* DBItem::_internal_mutable_db_id() {
+  
+  return _impl_.db_id_.Mutable(GetArenaForAllocation());
+}
+inline std::string* DBItem::release_db_id() {
+  // @@protoc_insertion_point(field_release:com.sekirocc.common.DBItem.db_id)
+  return _impl_.db_id_.Release();
+}
+inline void DBItem::set_allocated_db_id(std::string* db_id) {
+  if (db_id != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.db_id_.SetAllocated(db_id, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.db_id_.IsDefault()) {
+    _impl_.db_id_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.common.DBItem.db_id)
+}
+
+// string name = 2;
+inline void DBItem::clear_name() {
+  _impl_.name_.ClearToEmpty();
+}
+inline const std::string& DBItem::name() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.common.DBItem.name)
+  return _internal_name();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void DBItem::set_name(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.name_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:com.sekirocc.common.DBItem.name)
+}
+inline std::string* DBItem::mutable_name() {
+  std::string* _s = _internal_mutable_name();
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.common.DBItem.name)
+  return _s;
+}
+inline const std::string& DBItem::_internal_name() const {
+  return _impl_.name_.Get();
+}
+inline void DBItem::_internal_set_name(const std::string& value) {
+  
+  _impl_.name_.Set(value, GetArenaForAllocation());
+}
+inline std::string* DBItem::_internal_mutable_name() {
+  
+  return _impl_.name_.Mutable(GetArenaForAllocation());
+}
+inline std::string* DBItem::release_name() {
+  // @@protoc_insertion_point(field_release:com.sekirocc.common.DBItem.name)
+  return _impl_.name_.Release();
+}
+inline void DBItem::set_allocated_name(std::string* name) {
+  if (name != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.name_.SetAllocated(name, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.name_.IsDefault()) {
+    _impl_.name_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.common.DBItem.name)
+}
+
+// string description = 3;
+inline void DBItem::clear_description() {
+  _impl_.description_.ClearToEmpty();
+}
+inline const std::string& DBItem::description() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.common.DBItem.description)
+  return _internal_description();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void DBItem::set_description(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.description_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:com.sekirocc.common.DBItem.description)
+}
+inline std::string* DBItem::mutable_description() {
+  std::string* _s = _internal_mutable_description();
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.common.DBItem.description)
+  return _s;
+}
+inline const std::string& DBItem::_internal_description() const {
+  return _impl_.description_.Get();
+}
+inline void DBItem::_internal_set_description(const std::string& value) {
+  
+  _impl_.description_.Set(value, GetArenaForAllocation());
+}
+inline std::string* DBItem::_internal_mutable_description() {
+  
+  return _impl_.description_.Mutable(GetArenaForAllocation());
+}
+inline std::string* DBItem::release_description() {
+  // @@protoc_insertion_point(field_release:com.sekirocc.common.DBItem.description)
+  return _impl_.description_.Release();
+}
+inline void DBItem::set_allocated_description(std::string* description) {
+  if (description != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.description_.SetAllocated(description, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.description_.IsDefault()) {
+    _impl_.description_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.common.DBItem.description)
+}
+
+// int64 capacity = 4;
+inline void DBItem::clear_capacity() {
+  _impl_.capacity_ = int64_t{0};
+}
+inline int64_t DBItem::_internal_capacity() const {
+  return _impl_.capacity_;
+}
+inline int64_t DBItem::capacity() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.common.DBItem.capacity)
+  return _internal_capacity();
+}
+inline void DBItem::_internal_set_capacity(int64_t value) {
+  
+  _impl_.capacity_ = value;
+}
+inline void DBItem::set_capacity(int64_t value) {
+  _internal_set_capacity(value);
+  // @@protoc_insertion_point(field_set:com.sekirocc.common.DBItem.capacity)
+}
+
+// int64 used = 5;
+inline void DBItem::clear_used() {
+  _impl_.used_ = int64_t{0};
+}
+inline int64_t DBItem::_internal_used() const {
+  return _impl_.used_;
+}
+inline int64_t DBItem::used() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.common.DBItem.used)
+  return _internal_used();
+}
+inline void DBItem::_internal_set_used(int64_t value) {
+  
+  _impl_.used_ = value;
+}
+inline void DBItem::set_used(int64_t value) {
+  _internal_set_used(value);
+  // @@protoc_insertion_point(field_set:com.sekirocc.common.DBItem.used)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

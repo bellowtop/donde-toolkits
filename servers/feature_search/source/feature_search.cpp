@@ -115,14 +115,15 @@ Status FeatureSearchImpl::DeleteFeature(ServerContext* context, const DeleteFeat
 
 Status FeatureSearchImpl::SearchFeature(ServerContext* context, const SearchFeatureRequest* request,
                                         SearchFeatureResponse* response) {
-    auto db_id = request->db_id();
+    auto db_ids = request->db_ids();
 
     auto ft = request->query();
     auto topk = request->topk();
     Feature query(convertFeatureBlobToFloats(ft.blob()), std::string(ft.model()), ft.version());
 
     // FIXME: only search first db for now !!!
-    std::vector<search::FeatureSearchItem> ret = searcher->SearchFeature(db_id.Get(0), query, topk);
+    std::vector<search::FeatureSearchItem> ret
+        = searcher->SearchFeature(db_ids.Get(0), query, topk);
 
     response->set_code(ResultCode::OK);
 

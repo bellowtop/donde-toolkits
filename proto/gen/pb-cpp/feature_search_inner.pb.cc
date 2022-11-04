@@ -50,6 +50,43 @@ struct AssignDBsResponseDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AssignDBsResponseDefaultTypeInternal _AssignDBsResponse_default_instance_;
+PROTOBUF_CONSTEXPR GetSystemInfoRequest::GetSystemInfoRequest(
+    ::_pbi::ConstantInitialized) {}
+struct GetSystemInfoRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR GetSystemInfoRequestDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~GetSystemInfoRequestDefaultTypeInternal() {}
+  union {
+    GetSystemInfoRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetSystemInfoRequestDefaultTypeInternal _GetSystemInfoRequest_default_instance_;
+PROTOBUF_CONSTEXPR WorkerMetrics::WorkerMetrics(
+    ::_pbi::ConstantInitialized) {}
+struct WorkerMetricsDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR WorkerMetricsDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~WorkerMetricsDefaultTypeInternal() {}
+  union {
+    WorkerMetrics _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 WorkerMetricsDefaultTypeInternal _WorkerMetrics_default_instance_;
+PROTOBUF_CONSTEXPR GetSystemInfoResponse::GetSystemInfoResponse(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.dbs_)*/{}
+  , /*decltype(_impl_.metrics_)*/nullptr
+  , /*decltype(_impl_.code_)*/0
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct GetSystemInfoResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR GetSystemInfoResponseDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~GetSystemInfoResponseDefaultTypeInternal() {}
+  union {
+    GetSystemInfoResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetSystemInfoResponseDefaultTypeInternal _GetSystemInfoResponse_default_instance_;
 PROTOBUF_CONSTEXPR TrainIndexRequest::TrainIndexRequest(
     ::_pbi::ConstantInitialized) {}
 struct TrainIndexRequestDefaultTypeInternal {
@@ -202,7 +239,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORIT
 }  // namespace feature_search
 }  // namespace sekirocc
 }  // namespace com
-static ::_pb::Metadata file_level_metadata_feature_5fsearch_5finner_2eproto[13];
+static ::_pb::Metadata file_level_metadata_feature_5fsearch_5finner_2eproto[16];
 static constexpr ::_pb::EnumDescriptor const** file_level_enum_descriptors_feature_5fsearch_5finner_2eproto = nullptr;
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_feature_5fsearch_5finner_2eproto = nullptr;
 
@@ -221,6 +258,27 @@ const uint32_t TableStruct_feature_5fsearch_5finner_2eproto::offsets[] PROTOBUF_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::AssignDBsResponse, _impl_.code_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::GetSystemInfoRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::WorkerMetrics, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::GetSystemInfoResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::GetSystemInfoResponse, _impl_.code_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::GetSystemInfoResponse, _impl_.dbs_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::GetSystemInfoResponse, _impl_.metrics_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::TrainIndexRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -313,22 +371,28 @@ const uint32_t TableStruct_feature_5fsearch_5finner_2eproto::offsets[] PROTOBUF_
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::com::sekirocc::feature_search::inner::AssignDBsRequest)},
   { 7, -1, -1, sizeof(::com::sekirocc::feature_search::inner::AssignDBsResponse)},
-  { 14, -1, -1, sizeof(::com::sekirocc::feature_search::inner::TrainIndexRequest)},
-  { 20, -1, -1, sizeof(::com::sekirocc::feature_search::inner::TrainIndexResponse)},
-  { 27, 35, -1, sizeof(::com::sekirocc::feature_search::inner::AddFeatureItem_MetaEntry_DoNotUse)},
-  { 37, -1, -1, sizeof(::com::sekirocc::feature_search::inner::AddFeatureItem)},
-  { 45, -1, -1, sizeof(::com::sekirocc::feature_search::inner::BatchAddFeaturesRequest)},
-  { 53, -1, -1, sizeof(::com::sekirocc::feature_search::inner::BatchAddFeaturesResponse)},
-  { 61, -1, -1, sizeof(::com::sekirocc::feature_search::inner::BatchDeleteFeaturesRequest)},
-  { 69, -1, -1, sizeof(::com::sekirocc::feature_search::inner::BatchDeleteFeaturesResponse)},
-  { 76, -1, -1, sizeof(::com::sekirocc::feature_search::inner::SearchFeatureRequest)},
-  { 85, -1, -1, sizeof(::com::sekirocc::feature_search::inner::SearchItemScore)},
-  { 94, -1, -1, sizeof(::com::sekirocc::feature_search::inner::SearchFeatureResponse)},
+  { 14, -1, -1, sizeof(::com::sekirocc::feature_search::inner::GetSystemInfoRequest)},
+  { 20, -1, -1, sizeof(::com::sekirocc::feature_search::inner::WorkerMetrics)},
+  { 26, -1, -1, sizeof(::com::sekirocc::feature_search::inner::GetSystemInfoResponse)},
+  { 35, -1, -1, sizeof(::com::sekirocc::feature_search::inner::TrainIndexRequest)},
+  { 41, -1, -1, sizeof(::com::sekirocc::feature_search::inner::TrainIndexResponse)},
+  { 48, 56, -1, sizeof(::com::sekirocc::feature_search::inner::AddFeatureItem_MetaEntry_DoNotUse)},
+  { 58, -1, -1, sizeof(::com::sekirocc::feature_search::inner::AddFeatureItem)},
+  { 66, -1, -1, sizeof(::com::sekirocc::feature_search::inner::BatchAddFeaturesRequest)},
+  { 74, -1, -1, sizeof(::com::sekirocc::feature_search::inner::BatchAddFeaturesResponse)},
+  { 82, -1, -1, sizeof(::com::sekirocc::feature_search::inner::BatchDeleteFeaturesRequest)},
+  { 90, -1, -1, sizeof(::com::sekirocc::feature_search::inner::BatchDeleteFeaturesResponse)},
+  { 97, -1, -1, sizeof(::com::sekirocc::feature_search::inner::SearchFeatureRequest)},
+  { 106, -1, -1, sizeof(::com::sekirocc::feature_search::inner::SearchItemScore)},
+  { 115, -1, -1, sizeof(::com::sekirocc::feature_search::inner::SearchFeatureResponse)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
   &::com::sekirocc::feature_search::inner::_AssignDBsRequest_default_instance_._instance,
   &::com::sekirocc::feature_search::inner::_AssignDBsResponse_default_instance_._instance,
+  &::com::sekirocc::feature_search::inner::_GetSystemInfoRequest_default_instance_._instance,
+  &::com::sekirocc::feature_search::inner::_WorkerMetrics_default_instance_._instance,
+  &::com::sekirocc::feature_search::inner::_GetSystemInfoResponse_default_instance_._instance,
   &::com::sekirocc::feature_search::inner::_TrainIndexRequest_default_instance_._instance,
   &::com::sekirocc::feature_search::inner::_TrainIndexResponse_default_instance_._instance,
   &::com::sekirocc::feature_search::inner::_AddFeatureItem_MetaEntry_DoNotUse_default_instance_._instance,
@@ -348,54 +412,64 @@ const char descriptor_table_protodef_feature_5fsearch_5finner_2eproto[] PROTOBUF
   "tations.proto\032\014common.proto\"\"\n\020AssignDBs"
   "Request\022\016\n\006db_ids\030\001 \003(\t\"B\n\021AssignDBsResp"
   "onse\022-\n\004code\030\001 \001(\0162\037.com.sekirocc.common"
-  ".ResultCode\"\023\n\021TrainIndexRequest\"C\n\022Trai"
-  "nIndexResponse\022-\n\004code\030\001 \001(\0162\037.com.sekir"
-  "occ.common.ResultCode\"\273\001\n\016AddFeatureItem"
-  "\0221\n\007feature\030\001 \001(\0132 .com.sekirocc.common."
-  "FaceFeature\022I\n\004meta\030\002 \003(\0132;.com.sekirocc"
-  ".feature_search.inner.AddFeatureItem.Met"
-  "aEntry\032+\n\tMetaEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005valu"
-  "e\030\002 \001(\t:\0028\001\"r\n\027BatchAddFeaturesRequest\022\r"
-  "\n\005db_id\030\001 \001(\t\022H\n\rfeature_items\030\002 \003(\01321.c"
-  "om.sekirocc.feature_search.inner.AddFeat"
-  "ureItem\"^\n\030BatchAddFeaturesResponse\022-\n\004c"
-  "ode\030\001 \001(\0162\037.com.sekirocc.common.ResultCo"
-  "de\022\023\n\013feature_ids\030\002 \003(\t\"@\n\032BatchDeleteFe"
-  "aturesRequest\022\r\n\005db_id\030\001 \001(\t\022\023\n\013feature_"
-  "ids\030\002 \003(\t\"L\n\033BatchDeleteFeaturesResponse"
-  "\022-\n\004code\030\001 \001(\0162\037.com.sekirocc.common.Res"
-  "ultCode\"e\n\024SearchFeatureRequest\022\016\n\006db_id"
-  "s\030\001 \003(\t\022/\n\005query\030\002 \001(\0132 .com.sekirocc.co"
-  "mmon.FaceFeature\022\014\n\004topk\030\003 \001(\005\"b\n\017Search"
-  "ItemScore\022\r\n\005db_id\030\001 \001(\t\0221\n\007feature\030\002 \001("
-  "\0132 .com.sekirocc.common.FaceFeature\022\r\n\005s"
-  "core\030\003 \001(\002\"\211\001\n\025SearchFeatureResponse\022-\n\004"
-  "code\030\001 \001(\0162\037.com.sekirocc.common.ResultC"
-  "ode\022A\n\005items\030\002 \003(\01322.com.sekirocc.featur"
-  "e_search.inner.SearchItemScore2\276\006\n\rFeatu"
-  "reSearch\022\216\001\n\tAssignDBs\0223.com.sekirocc.fe"
-  "ature_search.inner.AssignDBsRequest\0324.co"
-  "m.sekirocc.feature_search.inner.AssignDB"
-  "sResponse\"\026\202\323\344\223\002\020\"\013/assign_dbs:\001*\022\222\001\n\nTr"
-  "ainIndex\0224.com.sekirocc.feature_search.i"
-  "nner.TrainIndexRequest\0325.com.sekirocc.fe"
-  "ature_search.inner.TrainIndexResponse\"\027\202"
-  "\323\344\223\002\021\"\014/train_index:\001*\022\253\001\n\020BatchAddFeatu"
-  "res\022:.com.sekirocc.feature_search.inner."
-  "BatchAddFeaturesRequest\032;.com.sekirocc.f"
-  "eature_search.inner.BatchAddFeaturesResp"
-  "onse\"\036\202\323\344\223\002\030\"\023/batch_add_features:\001*\022\267\001\n"
-  "\023BatchDeleteFeatures\022=.com.sekirocc.feat"
-  "ure_search.inner.BatchDeleteFeaturesRequ"
-  "est\032>.com.sekirocc.feature_search.inner."
-  "BatchDeleteFeaturesResponse\"!\202\323\344\223\002\033\"\026/ba"
-  "tch_delete_features:\001*\022\236\001\n\rSearchFeature"
-  "\0227.com.sekirocc.feature_search.inner.Sea"
-  "rchFeatureRequest\0328.com.sekirocc.feature"
-  "_search.inner.SearchFeatureResponse\"\032\202\323\344"
-  "\223\002\024\"\017/search_feature:\001*BCZAgithub.com/se"
-  "kirocc/face-recognition-service/feature_"
-  "search/innerb\006proto3"
+  ".ResultCode\"\026\n\024GetSystemInfoRequest\"\017\n\rW"
+  "orkerMetrics\"\263\001\n\025GetSystemInfoResponse\022-"
+  "\n\004code\030\001 \001(\0162\037.com.sekirocc.common.Resul"
+  "tCode\022(\n\003dbs\030\002 \003(\0132\033.com.sekirocc.common"
+  ".DBItem\022A\n\007metrics\030\003 \001(\01320.com.sekirocc."
+  "feature_search.inner.WorkerMetrics\"\023\n\021Tr"
+  "ainIndexRequest\"C\n\022TrainIndexResponse\022-\n"
+  "\004code\030\001 \001(\0162\037.com.sekirocc.common.Result"
+  "Code\"\273\001\n\016AddFeatureItem\0221\n\007feature\030\001 \001(\013"
+  "2 .com.sekirocc.common.FaceFeature\022I\n\004me"
+  "ta\030\002 \003(\0132;.com.sekirocc.feature_search.i"
+  "nner.AddFeatureItem.MetaEntry\032+\n\tMetaEnt"
+  "ry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"r\n\027Ba"
+  "tchAddFeaturesRequest\022\r\n\005db_id\030\001 \001(\t\022H\n\r"
+  "feature_items\030\002 \003(\01321.com.sekirocc.featu"
+  "re_search.inner.AddFeatureItem\"^\n\030BatchA"
+  "ddFeaturesResponse\022-\n\004code\030\001 \001(\0162\037.com.s"
+  "ekirocc.common.ResultCode\022\023\n\013feature_ids"
+  "\030\002 \003(\t\"@\n\032BatchDeleteFeaturesRequest\022\r\n\005"
+  "db_id\030\001 \001(\t\022\023\n\013feature_ids\030\002 \003(\t\"L\n\033Batc"
+  "hDeleteFeaturesResponse\022-\n\004code\030\001 \001(\0162\037."
+  "com.sekirocc.common.ResultCode\"e\n\024Search"
+  "FeatureRequest\022\016\n\006db_ids\030\001 \003(\t\022/\n\005query\030"
+  "\002 \001(\0132 .com.sekirocc.common.FaceFeature\022"
+  "\014\n\004topk\030\003 \001(\005\"b\n\017SearchItemScore\022\r\n\005db_i"
+  "d\030\001 \001(\t\0221\n\007feature\030\002 \001(\0132 .com.sekirocc."
+  "common.FaceFeature\022\r\n\005score\030\003 \001(\002\"\211\001\n\025Se"
+  "archFeatureResponse\022-\n\004code\030\001 \001(\0162\037.com."
+  "sekirocc.common.ResultCode\022A\n\005items\030\002 \003("
+  "\01322.com.sekirocc.feature_search.inner.Se"
+  "archItemScore2\340\007\n\rFeatureSearch\022\237\001\n\rGetS"
+  "ystemInfo\0227.com.sekirocc.feature_search."
+  "inner.GetSystemInfoRequest\0328.com.sekiroc"
+  "c.feature_search.inner.GetSystemInfoResp"
+  "onse\"\033\202\323\344\223\002\025\"\020/get_system_info:\001*\022\216\001\n\tAs"
+  "signDBs\0223.com.sekirocc.feature_search.in"
+  "ner.AssignDBsRequest\0324.com.sekirocc.feat"
+  "ure_search.inner.AssignDBsResponse\"\026\202\323\344\223"
+  "\002\020\"\013/assign_dbs:\001*\022\222\001\n\nTrainIndex\0224.com."
+  "sekirocc.feature_search.inner.TrainIndex"
+  "Request\0325.com.sekirocc.feature_search.in"
+  "ner.TrainIndexResponse\"\027\202\323\344\223\002\021\"\014/train_i"
+  "ndex:\001*\022\253\001\n\020BatchAddFeatures\022:.com.sekir"
+  "occ.feature_search.inner.BatchAddFeature"
+  "sRequest\032;.com.sekirocc.feature_search.i"
+  "nner.BatchAddFeaturesResponse\"\036\202\323\344\223\002\030\"\023/"
+  "batch_add_features:\001*\022\267\001\n\023BatchDeleteFea"
+  "tures\022=.com.sekirocc.feature_search.inne"
+  "r.BatchDeleteFeaturesRequest\032>.com.sekir"
+  "occ.feature_search.inner.BatchDeleteFeat"
+  "uresResponse\"!\202\323\344\223\002\033\"\026/batch_delete_feat"
+  "ures:\001*\022\236\001\n\rSearchFeature\0227.com.sekirocc"
+  ".feature_search.inner.SearchFeatureReque"
+  "st\0328.com.sekirocc.feature_search.inner.S"
+  "earchFeatureResponse\"\032\202\323\344\223\002\024\"\017/search_fe"
+  "ature:\001*BCZAgithub.com/sekirocc/face-rec"
+  "ognition-service/feature_search/innerb\006p"
+  "roto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_feature_5fsearch_5finner_2eproto_deps[2] = {
   &::descriptor_table_common_2eproto,
@@ -403,9 +477,9 @@ static const ::_pbi::DescriptorTable* const descriptor_table_feature_5fsearch_5f
 };
 static ::_pbi::once_flag descriptor_table_feature_5fsearch_5finner_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_feature_5fsearch_5finner_2eproto = {
-    false, false, 2100, descriptor_table_protodef_feature_5fsearch_5finner_2eproto,
+    false, false, 2485, descriptor_table_protodef_feature_5fsearch_5finner_2eproto,
     "feature_search_inner.proto",
-    &descriptor_table_feature_5fsearch_5finner_2eproto_once, descriptor_table_feature_5fsearch_5finner_2eproto_deps, 2, 13,
+    &descriptor_table_feature_5fsearch_5finner_2eproto_once, descriptor_table_feature_5fsearch_5finner_2eproto_deps, 2, 16,
     schemas, file_default_instances, TableStruct_feature_5fsearch_5finner_2eproto::offsets,
     file_level_metadata_feature_5fsearch_5finner_2eproto, file_level_enum_descriptors_feature_5fsearch_5finner_2eproto,
     file_level_service_descriptors_feature_5fsearch_5finner_2eproto,
@@ -794,6 +868,350 @@ void AssignDBsResponse::InternalSwap(AssignDBsResponse* other) {
 
 // ===================================================================
 
+class GetSystemInfoRequest::_Internal {
+ public:
+};
+
+GetSystemInfoRequest::GetSystemInfoRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena, is_message_owned) {
+  // @@protoc_insertion_point(arena_constructor:com.sekirocc.feature_search.inner.GetSystemInfoRequest)
+}
+GetSystemInfoRequest::GetSystemInfoRequest(const GetSystemInfoRequest& from)
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase() {
+  GetSystemInfoRequest* const _this = this; (void)_this;
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:com.sekirocc.feature_search.inner.GetSystemInfoRequest)
+}
+
+
+
+
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData GetSystemInfoRequest::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl,
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl,
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetSystemInfoRequest::GetClassData() const { return &_class_data_; }
+
+
+
+
+
+
+
+::PROTOBUF_NAMESPACE_ID::Metadata GetSystemInfoRequest::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
+      file_level_metadata_feature_5fsearch_5finner_2eproto[2]);
+}
+
+// ===================================================================
+
+class WorkerMetrics::_Internal {
+ public:
+};
+
+WorkerMetrics::WorkerMetrics(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena, is_message_owned) {
+  // @@protoc_insertion_point(arena_constructor:com.sekirocc.feature_search.inner.WorkerMetrics)
+}
+WorkerMetrics::WorkerMetrics(const WorkerMetrics& from)
+  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase() {
+  WorkerMetrics* const _this = this; (void)_this;
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:com.sekirocc.feature_search.inner.WorkerMetrics)
+}
+
+
+
+
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData WorkerMetrics::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl,
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl,
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*WorkerMetrics::GetClassData() const { return &_class_data_; }
+
+
+
+
+
+
+
+::PROTOBUF_NAMESPACE_ID::Metadata WorkerMetrics::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
+      file_level_metadata_feature_5fsearch_5finner_2eproto[3]);
+}
+
+// ===================================================================
+
+class GetSystemInfoResponse::_Internal {
+ public:
+  static const ::com::sekirocc::feature_search::inner::WorkerMetrics& metrics(const GetSystemInfoResponse* msg);
+};
+
+const ::com::sekirocc::feature_search::inner::WorkerMetrics&
+GetSystemInfoResponse::_Internal::metrics(const GetSystemInfoResponse* msg) {
+  return *msg->_impl_.metrics_;
+}
+void GetSystemInfoResponse::clear_dbs() {
+  _impl_.dbs_.Clear();
+}
+GetSystemInfoResponse::GetSystemInfoResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:com.sekirocc.feature_search.inner.GetSystemInfoResponse)
+}
+GetSystemInfoResponse::GetSystemInfoResponse(const GetSystemInfoResponse& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  GetSystemInfoResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.dbs_){from._impl_.dbs_}
+    , decltype(_impl_.metrics_){nullptr}
+    , decltype(_impl_.code_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_metrics()) {
+    _this->_impl_.metrics_ = new ::com::sekirocc::feature_search::inner::WorkerMetrics(*from._impl_.metrics_);
+  }
+  _this->_impl_.code_ = from._impl_.code_;
+  // @@protoc_insertion_point(copy_constructor:com.sekirocc.feature_search.inner.GetSystemInfoResponse)
+}
+
+inline void GetSystemInfoResponse::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.dbs_){arena}
+    , decltype(_impl_.metrics_){nullptr}
+    , decltype(_impl_.code_){0}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+}
+
+GetSystemInfoResponse::~GetSystemInfoResponse() {
+  // @@protoc_insertion_point(destructor:com.sekirocc.feature_search.inner.GetSystemInfoResponse)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void GetSystemInfoResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.dbs_.~RepeatedPtrField();
+  if (this != internal_default_instance()) delete _impl_.metrics_;
+}
+
+void GetSystemInfoResponse::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void GetSystemInfoResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:com.sekirocc.feature_search.inner.GetSystemInfoResponse)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.dbs_.Clear();
+  if (GetArenaForAllocation() == nullptr && _impl_.metrics_ != nullptr) {
+    delete _impl_.metrics_;
+  }
+  _impl_.metrics_ = nullptr;
+  _impl_.code_ = 0;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* GetSystemInfoResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // .com.sekirocc.common.ResultCode code = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+          _internal_set_code(static_cast<::com::sekirocc::common::ResultCode>(val));
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated .com.sekirocc.common.DBItem dbs = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_dbs(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      // .com.sekirocc.feature_search.inner.WorkerMetrics metrics = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
+          ptr = ctx->ParseMessage(_internal_mutable_metrics(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* GetSystemInfoResponse::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.feature_search.inner.GetSystemInfoResponse)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .com.sekirocc.common.ResultCode code = 1;
+  if (this->_internal_code() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+      1, this->_internal_code(), target);
+  }
+
+  // repeated .com.sekirocc.common.DBItem dbs = 2;
+  for (unsigned i = 0,
+      n = static_cast<unsigned>(this->_internal_dbs_size()); i < n; i++) {
+    const auto& repfield = this->_internal_dbs(i);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+        InternalWriteMessage(2, repfield, repfield.GetCachedSize(), target, stream);
+  }
+
+  // .com.sekirocc.feature_search.inner.WorkerMetrics metrics = 3;
+  if (this->_internal_has_metrics()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(3, _Internal::metrics(this),
+        _Internal::metrics(this).GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.feature_search.inner.GetSystemInfoResponse)
+  return target;
+}
+
+size_t GetSystemInfoResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.feature_search.inner.GetSystemInfoResponse)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated .com.sekirocc.common.DBItem dbs = 2;
+  total_size += 1UL * this->_internal_dbs_size();
+  for (const auto& msg : this->_impl_.dbs_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  // .com.sekirocc.feature_search.inner.WorkerMetrics metrics = 3;
+  if (this->_internal_has_metrics()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.metrics_);
+  }
+
+  // .com.sekirocc.common.ResultCode code = 1;
+  if (this->_internal_code() != 0) {
+    total_size += 1 +
+      ::_pbi::WireFormatLite::EnumSize(this->_internal_code());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData GetSystemInfoResponse::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    GetSystemInfoResponse::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetSystemInfoResponse::GetClassData() const { return &_class_data_; }
+
+
+void GetSystemInfoResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<GetSystemInfoResponse*>(&to_msg);
+  auto& from = static_cast<const GetSystemInfoResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.feature_search.inner.GetSystemInfoResponse)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  _this->_impl_.dbs_.MergeFrom(from._impl_.dbs_);
+  if (from._internal_has_metrics()) {
+    _this->_internal_mutable_metrics()->::com::sekirocc::feature_search::inner::WorkerMetrics::MergeFrom(
+        from._internal_metrics());
+  }
+  if (from._internal_code() != 0) {
+    _this->_internal_set_code(from._internal_code());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void GetSystemInfoResponse::CopyFrom(const GetSystemInfoResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.feature_search.inner.GetSystemInfoResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool GetSystemInfoResponse::IsInitialized() const {
+  return true;
+}
+
+void GetSystemInfoResponse::InternalSwap(GetSystemInfoResponse* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  _impl_.dbs_.InternalSwap(&other->_impl_.dbs_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(GetSystemInfoResponse, _impl_.code_)
+      + sizeof(GetSystemInfoResponse::_impl_.code_)
+      - PROTOBUF_FIELD_OFFSET(GetSystemInfoResponse, _impl_.metrics_)>(
+          reinterpret_cast<char*>(&_impl_.metrics_),
+          reinterpret_cast<char*>(&other->_impl_.metrics_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata GetSystemInfoResponse::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
+      file_level_metadata_feature_5fsearch_5finner_2eproto[4]);
+}
+
+// ===================================================================
+
 class TrainIndexRequest::_Internal {
  public:
 };
@@ -829,7 +1247,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*TrainIndexRequest::GetClassDat
 ::PROTOBUF_NAMESPACE_ID::Metadata TrainIndexRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
-      file_level_metadata_feature_5fsearch_5finner_2eproto[2]);
+      file_level_metadata_feature_5fsearch_5finner_2eproto[5]);
 }
 
 // ===================================================================
@@ -1010,7 +1428,7 @@ void TrainIndexResponse::InternalSwap(TrainIndexResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata TrainIndexResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
-      file_level_metadata_feature_5fsearch_5finner_2eproto[3]);
+      file_level_metadata_feature_5fsearch_5finner_2eproto[6]);
 }
 
 // ===================================================================
@@ -1024,7 +1442,7 @@ void AddFeatureItem_MetaEntry_DoNotUse::MergeFrom(const AddFeatureItem_MetaEntry
 ::PROTOBUF_NAMESPACE_ID::Metadata AddFeatureItem_MetaEntry_DoNotUse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
-      file_level_metadata_feature_5fsearch_5finner_2eproto[4]);
+      file_level_metadata_feature_5fsearch_5finner_2eproto[7]);
 }
 
 // ===================================================================
@@ -1291,7 +1709,7 @@ void AddFeatureItem::InternalSwap(AddFeatureItem* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata AddFeatureItem::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
-      file_level_metadata_feature_5fsearch_5finner_2eproto[5]);
+      file_level_metadata_feature_5fsearch_5finner_2eproto[8]);
 }
 
 // ===================================================================
@@ -1528,7 +1946,7 @@ void BatchAddFeaturesRequest::InternalSwap(BatchAddFeaturesRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata BatchAddFeaturesRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
-      file_level_metadata_feature_5fsearch_5finner_2eproto[6]);
+      file_level_metadata_feature_5fsearch_5finner_2eproto[9]);
 }
 
 // ===================================================================
@@ -1748,7 +2166,7 @@ void BatchAddFeaturesResponse::InternalSwap(BatchAddFeaturesResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata BatchAddFeaturesResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
-      file_level_metadata_feature_5fsearch_5finner_2eproto[7]);
+      file_level_metadata_feature_5fsearch_5finner_2eproto[10]);
 }
 
 // ===================================================================
@@ -1990,7 +2408,7 @@ void BatchDeleteFeaturesRequest::InternalSwap(BatchDeleteFeaturesRequest* other)
 ::PROTOBUF_NAMESPACE_ID::Metadata BatchDeleteFeaturesRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
-      file_level_metadata_feature_5fsearch_5finner_2eproto[8]);
+      file_level_metadata_feature_5fsearch_5finner_2eproto[11]);
 }
 
 // ===================================================================
@@ -2171,7 +2589,7 @@ void BatchDeleteFeaturesResponse::InternalSwap(BatchDeleteFeaturesResponse* othe
 ::PROTOBUF_NAMESPACE_ID::Metadata BatchDeleteFeaturesResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
-      file_level_metadata_feature_5fsearch_5finner_2eproto[9]);
+      file_level_metadata_feature_5fsearch_5finner_2eproto[12]);
 }
 
 // ===================================================================
@@ -2440,7 +2858,7 @@ void SearchFeatureRequest::InternalSwap(SearchFeatureRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SearchFeatureRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
-      file_level_metadata_feature_5fsearch_5finner_2eproto[10]);
+      file_level_metadata_feature_5fsearch_5finner_2eproto[13]);
 }
 
 // ===================================================================
@@ -2734,7 +3152,7 @@ void SearchItemScore::InternalSwap(SearchItemScore* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SearchItemScore::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
-      file_level_metadata_feature_5fsearch_5finner_2eproto[11]);
+      file_level_metadata_feature_5fsearch_5finner_2eproto[14]);
 }
 
 // ===================================================================
@@ -2949,7 +3367,7 @@ void SearchFeatureResponse::InternalSwap(SearchFeatureResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SearchFeatureResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
-      file_level_metadata_feature_5fsearch_5finner_2eproto[12]);
+      file_level_metadata_feature_5fsearch_5finner_2eproto[15]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
@@ -2965,6 +3383,18 @@ Arena::CreateMaybeMessage< ::com::sekirocc::feature_search::inner::AssignDBsRequ
 template<> PROTOBUF_NOINLINE ::com::sekirocc::feature_search::inner::AssignDBsResponse*
 Arena::CreateMaybeMessage< ::com::sekirocc::feature_search::inner::AssignDBsResponse >(Arena* arena) {
   return Arena::CreateMessageInternal< ::com::sekirocc::feature_search::inner::AssignDBsResponse >(arena);
+}
+template<> PROTOBUF_NOINLINE ::com::sekirocc::feature_search::inner::GetSystemInfoRequest*
+Arena::CreateMaybeMessage< ::com::sekirocc::feature_search::inner::GetSystemInfoRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::sekirocc::feature_search::inner::GetSystemInfoRequest >(arena);
+}
+template<> PROTOBUF_NOINLINE ::com::sekirocc::feature_search::inner::WorkerMetrics*
+Arena::CreateMaybeMessage< ::com::sekirocc::feature_search::inner::WorkerMetrics >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::sekirocc::feature_search::inner::WorkerMetrics >(arena);
+}
+template<> PROTOBUF_NOINLINE ::com::sekirocc::feature_search::inner::GetSystemInfoResponse*
+Arena::CreateMaybeMessage< ::com::sekirocc::feature_search::inner::GetSystemInfoResponse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::sekirocc::feature_search::inner::GetSystemInfoResponse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::com::sekirocc::feature_search::inner::TrainIndexRequest*
 Arena::CreateMaybeMessage< ::com::sekirocc::feature_search::inner::TrainIndexRequest >(Arena* arena) {

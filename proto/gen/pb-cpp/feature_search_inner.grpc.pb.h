@@ -39,6 +39,13 @@ class FeatureSearch final {
   class StubInterface {
    public:
     virtual ~StubInterface() {}
+    virtual ::grpc::Status GetSystemInfo(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest& request, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::inner::GetSystemInfoResponse>> AsyncGetSystemInfo(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::inner::GetSystemInfoResponse>>(AsyncGetSystemInfoRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::inner::GetSystemInfoResponse>> PrepareAsyncGetSystemInfo(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::inner::GetSystemInfoResponse>>(PrepareAsyncGetSystemInfoRaw(context, request, cq));
+    }
     // assign some dbs to this worker, then it's the worker's duty to manage those databases(add,
     // search etc.) must be called once.
     virtual ::grpc::Status AssignDBs(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest& request, ::com::sekirocc::feature_search::inner::AssignDBsResponse* response) = 0;
@@ -81,6 +88,8 @@ class FeatureSearch final {
     class async_interface {
      public:
       virtual ~async_interface() {}
+      virtual void GetSystemInfo(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest* request, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void GetSystemInfo(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest* request, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       // assign some dbs to this worker, then it's the worker's duty to manage those databases(add,
       // search etc.) must be called once.
       virtual void AssignDBs(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest* request, ::com::sekirocc::feature_search::inner::AssignDBsResponse* response, std::function<void(::grpc::Status)>) = 0;
@@ -100,6 +109,8 @@ class FeatureSearch final {
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
    private:
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::inner::GetSystemInfoResponse>* AsyncGetSystemInfoRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::inner::GetSystemInfoResponse>* PrepareAsyncGetSystemInfoRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::inner::AssignDBsResponse>* AsyncAssignDBsRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::inner::AssignDBsResponse>* PrepareAsyncAssignDBsRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::inner::TrainIndexResponse>* AsyncTrainIndexRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::TrainIndexRequest& request, ::grpc::CompletionQueue* cq) = 0;
@@ -114,6 +125,13 @@ class FeatureSearch final {
   class Stub final : public StubInterface {
    public:
     Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
+    ::grpc::Status GetSystemInfo(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest& request, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::GetSystemInfoResponse>> AsyncGetSystemInfo(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::GetSystemInfoResponse>>(AsyncGetSystemInfoRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::GetSystemInfoResponse>> PrepareAsyncGetSystemInfo(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::GetSystemInfoResponse>>(PrepareAsyncGetSystemInfoRaw(context, request, cq));
+    }
     ::grpc::Status AssignDBs(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest& request, ::com::sekirocc::feature_search::inner::AssignDBsResponse* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::AssignDBsResponse>> AsyncAssignDBs(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::AssignDBsResponse>>(AsyncAssignDBsRaw(context, request, cq));
@@ -152,6 +170,8 @@ class FeatureSearch final {
     class async final :
       public StubInterface::async_interface {
      public:
+      void GetSystemInfo(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest* request, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse* response, std::function<void(::grpc::Status)>) override;
+      void GetSystemInfo(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest* request, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void AssignDBs(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest* request, ::com::sekirocc::feature_search::inner::AssignDBsResponse* response, std::function<void(::grpc::Status)>) override;
       void AssignDBs(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest* request, ::com::sekirocc::feature_search::inner::AssignDBsResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void TrainIndex(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::TrainIndexRequest* request, ::com::sekirocc::feature_search::inner::TrainIndexResponse* response, std::function<void(::grpc::Status)>) override;
@@ -173,6 +193,8 @@ class FeatureSearch final {
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
     class async async_stub_{this};
+    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::GetSystemInfoResponse>* AsyncGetSystemInfoRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::GetSystemInfoResponse>* PrepareAsyncGetSystemInfoRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::AssignDBsResponse>* AsyncAssignDBsRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::AssignDBsResponse>* PrepareAsyncAssignDBsRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::TrainIndexResponse>* AsyncTrainIndexRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::TrainIndexRequest& request, ::grpc::CompletionQueue* cq) override;
@@ -183,6 +205,7 @@ class FeatureSearch final {
     ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::BatchDeleteFeaturesResponse>* PrepareAsyncBatchDeleteFeaturesRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::BatchDeleteFeaturesRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::SearchFeatureResponse>* AsyncSearchFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::SearchFeatureRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::SearchFeatureResponse>* PrepareAsyncSearchFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::SearchFeatureRequest& request, ::grpc::CompletionQueue* cq) override;
+    const ::grpc::internal::RpcMethod rpcmethod_GetSystemInfo_;
     const ::grpc::internal::RpcMethod rpcmethod_AssignDBs_;
     const ::grpc::internal::RpcMethod rpcmethod_TrainIndex_;
     const ::grpc::internal::RpcMethod rpcmethod_BatchAddFeatures_;
@@ -195,6 +218,7 @@ class FeatureSearch final {
    public:
     Service();
     virtual ~Service();
+    virtual ::grpc::Status GetSystemInfo(::grpc::ServerContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest* request, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse* response);
     // assign some dbs to this worker, then it's the worker's duty to manage those databases(add,
     // search etc.) must be called once.
     virtual ::grpc::Status AssignDBs(::grpc::ServerContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest* request, ::com::sekirocc::feature_search::inner::AssignDBsResponse* response);
@@ -206,12 +230,32 @@ class FeatureSearch final {
     virtual ::grpc::Status SearchFeature(::grpc::ServerContext* context, const ::com::sekirocc::feature_search::inner::SearchFeatureRequest* request, ::com::sekirocc::feature_search::inner::SearchFeatureResponse* response);
   };
   template <class BaseClass>
+  class WithAsyncMethod_GetSystemInfo : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_GetSystemInfo() {
+      ::grpc::Service::MarkMethodAsync(0);
+    }
+    ~WithAsyncMethod_GetSystemInfo() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetSystemInfo(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest* /*request*/, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetSystemInfo(::grpc::ServerContext* context, ::com::sekirocc::feature_search::inner::GetSystemInfoRequest* request, ::grpc::ServerAsyncResponseWriter< ::com::sekirocc::feature_search::inner::GetSystemInfoResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithAsyncMethod_AssignDBs : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_AssignDBs() {
-      ::grpc::Service::MarkMethodAsync(0);
+      ::grpc::Service::MarkMethodAsync(1);
     }
     ~WithAsyncMethod_AssignDBs() override {
       BaseClassMustBeDerivedFromService(this);
@@ -222,7 +266,7 @@ class FeatureSearch final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestAssignDBs(::grpc::ServerContext* context, ::com::sekirocc::feature_search::inner::AssignDBsRequest* request, ::grpc::ServerAsyncResponseWriter< ::com::sekirocc::feature_search::inner::AssignDBsResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -231,7 +275,7 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_TrainIndex() {
-      ::grpc::Service::MarkMethodAsync(1);
+      ::grpc::Service::MarkMethodAsync(2);
     }
     ~WithAsyncMethod_TrainIndex() override {
       BaseClassMustBeDerivedFromService(this);
@@ -242,7 +286,7 @@ class FeatureSearch final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestTrainIndex(::grpc::ServerContext* context, ::com::sekirocc::feature_search::inner::TrainIndexRequest* request, ::grpc::ServerAsyncResponseWriter< ::com::sekirocc::feature_search::inner::TrainIndexResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -251,7 +295,7 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_BatchAddFeatures() {
-      ::grpc::Service::MarkMethodAsync(2);
+      ::grpc::Service::MarkMethodAsync(3);
     }
     ~WithAsyncMethod_BatchAddFeatures() override {
       BaseClassMustBeDerivedFromService(this);
@@ -262,7 +306,7 @@ class FeatureSearch final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestBatchAddFeatures(::grpc::ServerContext* context, ::com::sekirocc::feature_search::inner::BatchAddFeaturesRequest* request, ::grpc::ServerAsyncResponseWriter< ::com::sekirocc::feature_search::inner::BatchAddFeaturesResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -271,7 +315,7 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_BatchDeleteFeatures() {
-      ::grpc::Service::MarkMethodAsync(3);
+      ::grpc::Service::MarkMethodAsync(4);
     }
     ~WithAsyncMethod_BatchDeleteFeatures() override {
       BaseClassMustBeDerivedFromService(this);
@@ -282,7 +326,7 @@ class FeatureSearch final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestBatchDeleteFeatures(::grpc::ServerContext* context, ::com::sekirocc::feature_search::inner::BatchDeleteFeaturesRequest* request, ::grpc::ServerAsyncResponseWriter< ::com::sekirocc::feature_search::inner::BatchDeleteFeaturesResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -291,7 +335,7 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SearchFeature() {
-      ::grpc::Service::MarkMethodAsync(4);
+      ::grpc::Service::MarkMethodAsync(5);
     }
     ~WithAsyncMethod_SearchFeature() override {
       BaseClassMustBeDerivedFromService(this);
@@ -302,23 +346,50 @@ class FeatureSearch final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSearchFeature(::grpc::ServerContext* context, ::com::sekirocc::feature_search::inner::SearchFeatureRequest* request, ::grpc::ServerAsyncResponseWriter< ::com::sekirocc::feature_search::inner::SearchFeatureResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_AssignDBs<WithAsyncMethod_TrainIndex<WithAsyncMethod_BatchAddFeatures<WithAsyncMethod_BatchDeleteFeatures<WithAsyncMethod_SearchFeature<Service > > > > > AsyncService;
+  typedef WithAsyncMethod_GetSystemInfo<WithAsyncMethod_AssignDBs<WithAsyncMethod_TrainIndex<WithAsyncMethod_BatchAddFeatures<WithAsyncMethod_BatchDeleteFeatures<WithAsyncMethod_SearchFeature<Service > > > > > > AsyncService;
+  template <class BaseClass>
+  class WithCallbackMethod_GetSystemInfo : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_GetSystemInfo() {
+      ::grpc::Service::MarkMethodCallback(0,
+          new ::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::inner::GetSystemInfoRequest, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest* request, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse* response) { return this->GetSystemInfo(context, request, response); }));}
+    void SetMessageAllocatorFor_GetSystemInfo(
+        ::grpc::MessageAllocator< ::com::sekirocc::feature_search::inner::GetSystemInfoRequest, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(0);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::inner::GetSystemInfoRequest, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_GetSystemInfo() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetSystemInfo(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest* /*request*/, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* GetSystemInfo(
+      ::grpc::CallbackServerContext* /*context*/, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest* /*request*/, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse* /*response*/)  { return nullptr; }
+  };
   template <class BaseClass>
   class WithCallbackMethod_AssignDBs : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_AssignDBs() {
-      ::grpc::Service::MarkMethodCallback(0,
+      ::grpc::Service::MarkMethodCallback(1,
           new ::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::inner::AssignDBsRequest, ::com::sekirocc::feature_search::inner::AssignDBsResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest* request, ::com::sekirocc::feature_search::inner::AssignDBsResponse* response) { return this->AssignDBs(context, request, response); }));}
     void SetMessageAllocatorFor_AssignDBs(
         ::grpc::MessageAllocator< ::com::sekirocc::feature_search::inner::AssignDBsRequest, ::com::sekirocc::feature_search::inner::AssignDBsResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(0);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(1);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::inner::AssignDBsRequest, ::com::sekirocc::feature_search::inner::AssignDBsResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -339,13 +410,13 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_TrainIndex() {
-      ::grpc::Service::MarkMethodCallback(1,
+      ::grpc::Service::MarkMethodCallback(2,
           new ::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::inner::TrainIndexRequest, ::com::sekirocc::feature_search::inner::TrainIndexResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::com::sekirocc::feature_search::inner::TrainIndexRequest* request, ::com::sekirocc::feature_search::inner::TrainIndexResponse* response) { return this->TrainIndex(context, request, response); }));}
     void SetMessageAllocatorFor_TrainIndex(
         ::grpc::MessageAllocator< ::com::sekirocc::feature_search::inner::TrainIndexRequest, ::com::sekirocc::feature_search::inner::TrainIndexResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(1);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::inner::TrainIndexRequest, ::com::sekirocc::feature_search::inner::TrainIndexResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -366,13 +437,13 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_BatchAddFeatures() {
-      ::grpc::Service::MarkMethodCallback(2,
+      ::grpc::Service::MarkMethodCallback(3,
           new ::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::inner::BatchAddFeaturesRequest, ::com::sekirocc::feature_search::inner::BatchAddFeaturesResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::com::sekirocc::feature_search::inner::BatchAddFeaturesRequest* request, ::com::sekirocc::feature_search::inner::BatchAddFeaturesResponse* response) { return this->BatchAddFeatures(context, request, response); }));}
     void SetMessageAllocatorFor_BatchAddFeatures(
         ::grpc::MessageAllocator< ::com::sekirocc::feature_search::inner::BatchAddFeaturesRequest, ::com::sekirocc::feature_search::inner::BatchAddFeaturesResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(3);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::inner::BatchAddFeaturesRequest, ::com::sekirocc::feature_search::inner::BatchAddFeaturesResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -393,13 +464,13 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_BatchDeleteFeatures() {
-      ::grpc::Service::MarkMethodCallback(3,
+      ::grpc::Service::MarkMethodCallback(4,
           new ::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::inner::BatchDeleteFeaturesRequest, ::com::sekirocc::feature_search::inner::BatchDeleteFeaturesResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::com::sekirocc::feature_search::inner::BatchDeleteFeaturesRequest* request, ::com::sekirocc::feature_search::inner::BatchDeleteFeaturesResponse* response) { return this->BatchDeleteFeatures(context, request, response); }));}
     void SetMessageAllocatorFor_BatchDeleteFeatures(
         ::grpc::MessageAllocator< ::com::sekirocc::feature_search::inner::BatchDeleteFeaturesRequest, ::com::sekirocc::feature_search::inner::BatchDeleteFeaturesResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(3);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(4);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::inner::BatchDeleteFeaturesRequest, ::com::sekirocc::feature_search::inner::BatchDeleteFeaturesResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -420,13 +491,13 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_SearchFeature() {
-      ::grpc::Service::MarkMethodCallback(4,
+      ::grpc::Service::MarkMethodCallback(5,
           new ::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::inner::SearchFeatureRequest, ::com::sekirocc::feature_search::inner::SearchFeatureResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::com::sekirocc::feature_search::inner::SearchFeatureRequest* request, ::com::sekirocc::feature_search::inner::SearchFeatureResponse* response) { return this->SearchFeature(context, request, response); }));}
     void SetMessageAllocatorFor_SearchFeature(
         ::grpc::MessageAllocator< ::com::sekirocc::feature_search::inner::SearchFeatureRequest, ::com::sekirocc::feature_search::inner::SearchFeatureResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(4);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(5);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::inner::SearchFeatureRequest, ::com::sekirocc::feature_search::inner::SearchFeatureResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -441,15 +512,32 @@ class FeatureSearch final {
     virtual ::grpc::ServerUnaryReactor* SearchFeature(
       ::grpc::CallbackServerContext* /*context*/, const ::com::sekirocc::feature_search::inner::SearchFeatureRequest* /*request*/, ::com::sekirocc::feature_search::inner::SearchFeatureResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_AssignDBs<WithCallbackMethod_TrainIndex<WithCallbackMethod_BatchAddFeatures<WithCallbackMethod_BatchDeleteFeatures<WithCallbackMethod_SearchFeature<Service > > > > > CallbackService;
+  typedef WithCallbackMethod_GetSystemInfo<WithCallbackMethod_AssignDBs<WithCallbackMethod_TrainIndex<WithCallbackMethod_BatchAddFeatures<WithCallbackMethod_BatchDeleteFeatures<WithCallbackMethod_SearchFeature<Service > > > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
+  template <class BaseClass>
+  class WithGenericMethod_GetSystemInfo : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_GetSystemInfo() {
+      ::grpc::Service::MarkMethodGeneric(0);
+    }
+    ~WithGenericMethod_GetSystemInfo() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetSystemInfo(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest* /*request*/, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
   template <class BaseClass>
   class WithGenericMethod_AssignDBs : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_AssignDBs() {
-      ::grpc::Service::MarkMethodGeneric(0);
+      ::grpc::Service::MarkMethodGeneric(1);
     }
     ~WithGenericMethod_AssignDBs() override {
       BaseClassMustBeDerivedFromService(this);
@@ -466,7 +554,7 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_TrainIndex() {
-      ::grpc::Service::MarkMethodGeneric(1);
+      ::grpc::Service::MarkMethodGeneric(2);
     }
     ~WithGenericMethod_TrainIndex() override {
       BaseClassMustBeDerivedFromService(this);
@@ -483,7 +571,7 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_BatchAddFeatures() {
-      ::grpc::Service::MarkMethodGeneric(2);
+      ::grpc::Service::MarkMethodGeneric(3);
     }
     ~WithGenericMethod_BatchAddFeatures() override {
       BaseClassMustBeDerivedFromService(this);
@@ -500,7 +588,7 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_BatchDeleteFeatures() {
-      ::grpc::Service::MarkMethodGeneric(3);
+      ::grpc::Service::MarkMethodGeneric(4);
     }
     ~WithGenericMethod_BatchDeleteFeatures() override {
       BaseClassMustBeDerivedFromService(this);
@@ -517,7 +605,7 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SearchFeature() {
-      ::grpc::Service::MarkMethodGeneric(4);
+      ::grpc::Service::MarkMethodGeneric(5);
     }
     ~WithGenericMethod_SearchFeature() override {
       BaseClassMustBeDerivedFromService(this);
@@ -529,12 +617,32 @@ class FeatureSearch final {
     }
   };
   template <class BaseClass>
+  class WithRawMethod_GetSystemInfo : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_GetSystemInfo() {
+      ::grpc::Service::MarkMethodRaw(0);
+    }
+    ~WithRawMethod_GetSystemInfo() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetSystemInfo(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest* /*request*/, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetSystemInfo(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithRawMethod_AssignDBs : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_AssignDBs() {
-      ::grpc::Service::MarkMethodRaw(0);
+      ::grpc::Service::MarkMethodRaw(1);
     }
     ~WithRawMethod_AssignDBs() override {
       BaseClassMustBeDerivedFromService(this);
@@ -545,7 +653,7 @@ class FeatureSearch final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestAssignDBs(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -554,7 +662,7 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_TrainIndex() {
-      ::grpc::Service::MarkMethodRaw(1);
+      ::grpc::Service::MarkMethodRaw(2);
     }
     ~WithRawMethod_TrainIndex() override {
       BaseClassMustBeDerivedFromService(this);
@@ -565,7 +673,7 @@ class FeatureSearch final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestTrainIndex(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -574,7 +682,7 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_BatchAddFeatures() {
-      ::grpc::Service::MarkMethodRaw(2);
+      ::grpc::Service::MarkMethodRaw(3);
     }
     ~WithRawMethod_BatchAddFeatures() override {
       BaseClassMustBeDerivedFromService(this);
@@ -585,7 +693,7 @@ class FeatureSearch final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestBatchAddFeatures(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -594,7 +702,7 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_BatchDeleteFeatures() {
-      ::grpc::Service::MarkMethodRaw(3);
+      ::grpc::Service::MarkMethodRaw(4);
     }
     ~WithRawMethod_BatchDeleteFeatures() override {
       BaseClassMustBeDerivedFromService(this);
@@ -605,7 +713,7 @@ class FeatureSearch final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestBatchDeleteFeatures(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -614,7 +722,7 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SearchFeature() {
-      ::grpc::Service::MarkMethodRaw(4);
+      ::grpc::Service::MarkMethodRaw(5);
     }
     ~WithRawMethod_SearchFeature() override {
       BaseClassMustBeDerivedFromService(this);
@@ -625,8 +733,30 @@ class FeatureSearch final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSearchFeature(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
     }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_GetSystemInfo : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_GetSystemInfo() {
+      ::grpc::Service::MarkMethodRawCallback(0,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetSystemInfo(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_GetSystemInfo() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetSystemInfo(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest* /*request*/, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* GetSystemInfo(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithRawCallbackMethod_AssignDBs : public BaseClass {
@@ -634,7 +764,7 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_AssignDBs() {
-      ::grpc::Service::MarkMethodRawCallback(0,
+      ::grpc::Service::MarkMethodRawCallback(1,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->AssignDBs(context, request, response); }));
@@ -656,7 +786,7 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_TrainIndex() {
-      ::grpc::Service::MarkMethodRawCallback(1,
+      ::grpc::Service::MarkMethodRawCallback(2,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->TrainIndex(context, request, response); }));
@@ -678,7 +808,7 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_BatchAddFeatures() {
-      ::grpc::Service::MarkMethodRawCallback(2,
+      ::grpc::Service::MarkMethodRawCallback(3,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->BatchAddFeatures(context, request, response); }));
@@ -700,7 +830,7 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_BatchDeleteFeatures() {
-      ::grpc::Service::MarkMethodRawCallback(3,
+      ::grpc::Service::MarkMethodRawCallback(4,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->BatchDeleteFeatures(context, request, response); }));
@@ -722,7 +852,7 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_SearchFeature() {
-      ::grpc::Service::MarkMethodRawCallback(4,
+      ::grpc::Service::MarkMethodRawCallback(5,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SearchFeature(context, request, response); }));
@@ -739,12 +869,39 @@ class FeatureSearch final {
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
+  class WithStreamedUnaryMethod_GetSystemInfo : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_GetSystemInfo() {
+      ::grpc::Service::MarkMethodStreamed(0,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::com::sekirocc::feature_search::inner::GetSystemInfoRequest, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::com::sekirocc::feature_search::inner::GetSystemInfoRequest, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse>* streamer) {
+                       return this->StreamedGetSystemInfo(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_GetSystemInfo() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status GetSystemInfo(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest* /*request*/, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedGetSystemInfo(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::com::sekirocc::feature_search::inner::GetSystemInfoRequest,::com::sekirocc::feature_search::inner::GetSystemInfoResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_AssignDBs : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_AssignDBs() {
-      ::grpc::Service::MarkMethodStreamed(0,
+      ::grpc::Service::MarkMethodStreamed(1,
         new ::grpc::internal::StreamedUnaryHandler<
           ::com::sekirocc::feature_search::inner::AssignDBsRequest, ::com::sekirocc::feature_search::inner::AssignDBsResponse>(
             [this](::grpc::ServerContext* context,
@@ -771,7 +928,7 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_TrainIndex() {
-      ::grpc::Service::MarkMethodStreamed(1,
+      ::grpc::Service::MarkMethodStreamed(2,
         new ::grpc::internal::StreamedUnaryHandler<
           ::com::sekirocc::feature_search::inner::TrainIndexRequest, ::com::sekirocc::feature_search::inner::TrainIndexResponse>(
             [this](::grpc::ServerContext* context,
@@ -798,7 +955,7 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_BatchAddFeatures() {
-      ::grpc::Service::MarkMethodStreamed(2,
+      ::grpc::Service::MarkMethodStreamed(3,
         new ::grpc::internal::StreamedUnaryHandler<
           ::com::sekirocc::feature_search::inner::BatchAddFeaturesRequest, ::com::sekirocc::feature_search::inner::BatchAddFeaturesResponse>(
             [this](::grpc::ServerContext* context,
@@ -825,7 +982,7 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_BatchDeleteFeatures() {
-      ::grpc::Service::MarkMethodStreamed(3,
+      ::grpc::Service::MarkMethodStreamed(4,
         new ::grpc::internal::StreamedUnaryHandler<
           ::com::sekirocc::feature_search::inner::BatchDeleteFeaturesRequest, ::com::sekirocc::feature_search::inner::BatchDeleteFeaturesResponse>(
             [this](::grpc::ServerContext* context,
@@ -852,7 +1009,7 @@ class FeatureSearch final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_SearchFeature() {
-      ::grpc::Service::MarkMethodStreamed(4,
+      ::grpc::Service::MarkMethodStreamed(5,
         new ::grpc::internal::StreamedUnaryHandler<
           ::com::sekirocc::feature_search::inner::SearchFeatureRequest, ::com::sekirocc::feature_search::inner::SearchFeatureResponse>(
             [this](::grpc::ServerContext* context,
@@ -873,9 +1030,9 @@ class FeatureSearch final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedSearchFeature(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::com::sekirocc::feature_search::inner::SearchFeatureRequest,::com::sekirocc::feature_search::inner::SearchFeatureResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_AssignDBs<WithStreamedUnaryMethod_TrainIndex<WithStreamedUnaryMethod_BatchAddFeatures<WithStreamedUnaryMethod_BatchDeleteFeatures<WithStreamedUnaryMethod_SearchFeature<Service > > > > > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_GetSystemInfo<WithStreamedUnaryMethod_AssignDBs<WithStreamedUnaryMethod_TrainIndex<WithStreamedUnaryMethod_BatchAddFeatures<WithStreamedUnaryMethod_BatchDeleteFeatures<WithStreamedUnaryMethod_SearchFeature<Service > > > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_AssignDBs<WithStreamedUnaryMethod_TrainIndex<WithStreamedUnaryMethod_BatchAddFeatures<WithStreamedUnaryMethod_BatchDeleteFeatures<WithStreamedUnaryMethod_SearchFeature<Service > > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_GetSystemInfo<WithStreamedUnaryMethod_AssignDBs<WithStreamedUnaryMethod_TrainIndex<WithStreamedUnaryMethod_BatchAddFeatures<WithStreamedUnaryMethod_BatchDeleteFeatures<WithStreamedUnaryMethod_SearchFeature<Service > > > > > > StreamedService;
 };
 
 }  // namespace inner

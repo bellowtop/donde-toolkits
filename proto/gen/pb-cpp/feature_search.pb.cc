@@ -255,7 +255,7 @@ struct DeleteFeatureResponseDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DeleteFeatureResponseDefaultTypeInternal _DeleteFeatureResponse_default_instance_;
 PROTOBUF_CONSTEXPR SearchFeatureRequest::SearchFeatureRequest(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.db_id_)*/{}
+    /*decltype(_impl_.db_ids_)*/{}
   , /*decltype(_impl_.query_)*/nullptr
   , /*decltype(_impl_.topk_)*/0
   , /*decltype(_impl_._cached_size_)*/{}} {}
@@ -445,7 +445,7 @@ const uint32_t TableStruct_feature_5fsearch_2eproto::offsets[] PROTOBUF_SECTION_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::SearchFeatureRequest, _impl_.db_id_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::SearchFeatureRequest, _impl_.db_ids_),
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::SearchFeatureRequest, _impl_.query_),
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::SearchFeatureRequest, _impl_.topk_),
   ~0u,  // no _has_bits_
@@ -546,40 +546,40 @@ const char descriptor_table_protodef_feature_5fsearch_2eproto[] PROTOBUF_SECTION
   "eteFeatureRequest\022\r\n\005db_id\030\001 \001(\t\022\022\n\nfeat"
   "ure_id\030\002 \001(\t\"F\n\025DeleteFeatureResponse\022-\n"
   "\004code\030\001 \001(\0162\037.com.sekirocc.common.Result"
-  "Code\"d\n\024SearchFeatureRequest\022\r\n\005db_id\030\001 "
-  "\003(\t\022/\n\005query\030\002 \001(\0132 .com.sekirocc.common"
-  ".FaceFeature\022\014\n\004topk\030\003 \001(\005\"b\n\017SearchItem"
-  "Score\022\r\n\005db_id\030\001 \001(\t\0221\n\007feature\030\002 \001(\0132 ."
-  "com.sekirocc.common.FaceFeature\022\r\n\005score"
-  "\030\003 \001(\002\"\203\001\n\025SearchFeatureResponse\022-\n\004code"
-  "\030\001 \001(\0162\037.com.sekirocc.common.ResultCode\022"
-  ";\n\005items\030\002 \003(\0132,.com.sekirocc.feature_se"
-  "arch.SearchItemScore2\242\007\n\rFeatureSearch\022r"
-  "\n\005DBNew\022).com.sekirocc.feature_search.DB"
-  "NewRequest\032*.com.sekirocc.feature_search"
-  ".DBNewResponse\"\022\202\323\344\223\002\014\"\007/db_new:\001*\022v\n\006DB"
-  "List\022*.com.sekirocc.feature_search.DBLis"
-  "tRequest\032+.com.sekirocc.feature_search.D"
-  "BListResponse\"\023\202\323\344\223\002\r\"\010/db_list:\001*\022r\n\005DB"
-  "Get\022).com.sekirocc.feature_search.DBGetR"
-  "equest\032*.com.sekirocc.feature_search.DBG"
-  "etResponse\"\022\202\323\344\223\002\014\"\007/db_get:\001*\022~\n\010DBDele"
-  "te\022,.com.sekirocc.feature_search.DBDelet"
-  "eRequest\032-.com.sekirocc.feature_search.D"
-  "BDeleteResponse\"\025\202\323\344\223\002\017\"\n/db_delete:\001*\022\206"
-  "\001\n\nAddFeature\022..com.sekirocc.feature_sea"
-  "rch.AddFeatureRequest\032/.com.sekirocc.fea"
-  "ture_search.AddFeatureResponse\"\027\202\323\344\223\002\021\"\014"
-  "/add_feature:\001*\022\222\001\n\rDeleteFeature\0221.com."
-  "sekirocc.feature_search.DeleteFeatureReq"
-  "uest\0322.com.sekirocc.feature_search.Delet"
-  "eFeatureResponse\"\032\202\323\344\223\002\024\"\017/delete_featur"
-  "e:\001*\022\222\001\n\rSearchFeature\0221.com.sekirocc.fe"
-  "ature_search.SearchFeatureRequest\0322.com."
-  "sekirocc.feature_search.SearchFeatureRes"
-  "ponse\"\032\202\323\344\223\002\024\"\017/search_feature:\001*B=Z;git"
-  "hub.com/sekirocc/face-recognition-servic"
-  "e/feature_searchb\006proto3"
+  "Code\"e\n\024SearchFeatureRequest\022\016\n\006db_ids\030\001"
+  " \003(\t\022/\n\005query\030\002 \001(\0132 .com.sekirocc.commo"
+  "n.FaceFeature\022\014\n\004topk\030\003 \001(\005\"b\n\017SearchIte"
+  "mScore\022\r\n\005db_id\030\001 \001(\t\0221\n\007feature\030\002 \001(\0132 "
+  ".com.sekirocc.common.FaceFeature\022\r\n\005scor"
+  "e\030\003 \001(\002\"\203\001\n\025SearchFeatureResponse\022-\n\004cod"
+  "e\030\001 \001(\0162\037.com.sekirocc.common.ResultCode"
+  "\022;\n\005items\030\002 \003(\0132,.com.sekirocc.feature_s"
+  "earch.SearchItemScore2\242\007\n\rFeatureSearch\022"
+  "r\n\005DBNew\022).com.sekirocc.feature_search.D"
+  "BNewRequest\032*.com.sekirocc.feature_searc"
+  "h.DBNewResponse\"\022\202\323\344\223\002\014\"\007/db_new:\001*\022v\n\006D"
+  "BList\022*.com.sekirocc.feature_search.DBLi"
+  "stRequest\032+.com.sekirocc.feature_search."
+  "DBListResponse\"\023\202\323\344\223\002\r\"\010/db_list:\001*\022r\n\005D"
+  "BGet\022).com.sekirocc.feature_search.DBGet"
+  "Request\032*.com.sekirocc.feature_search.DB"
+  "GetResponse\"\022\202\323\344\223\002\014\"\007/db_get:\001*\022~\n\010DBDel"
+  "ete\022,.com.sekirocc.feature_search.DBDele"
+  "teRequest\032-.com.sekirocc.feature_search."
+  "DBDeleteResponse\"\025\202\323\344\223\002\017\"\n/db_delete:\001*\022"
+  "\206\001\n\nAddFeature\022..com.sekirocc.feature_se"
+  "arch.AddFeatureRequest\032/.com.sekirocc.fe"
+  "ature_search.AddFeatureResponse\"\027\202\323\344\223\002\021\""
+  "\014/add_feature:\001*\022\222\001\n\rDeleteFeature\0221.com"
+  ".sekirocc.feature_search.DeleteFeatureRe"
+  "quest\0322.com.sekirocc.feature_search.Dele"
+  "teFeatureResponse\"\032\202\323\344\223\002\024\"\017/delete_featu"
+  "re:\001*\022\222\001\n\rSearchFeature\0221.com.sekirocc.f"
+  "eature_search.SearchFeatureRequest\0322.com"
+  ".sekirocc.feature_search.SearchFeatureRe"
+  "sponse\"\032\202\323\344\223\002\024\"\017/search_feature:\001*B=Z;gi"
+  "thub.com/sekirocc/face-recognition-servi"
+  "ce/feature_searchb\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_feature_5fsearch_2eproto_deps[2] = {
   &::descriptor_table_common_2eproto,
@@ -587,7 +587,7 @@ static const ::_pbi::DescriptorTable* const descriptor_table_feature_5fsearch_2e
 };
 static ::_pbi::once_flag descriptor_table_feature_5fsearch_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_feature_5fsearch_2eproto = {
-    false, false, 2664, descriptor_table_protodef_feature_5fsearch_2eproto,
+    false, false, 2665, descriptor_table_protodef_feature_5fsearch_2eproto,
     "feature_search.proto",
     &descriptor_table_feature_5fsearch_2eproto_once, descriptor_table_feature_5fsearch_2eproto_deps, 2, 20,
     schemas, file_default_instances, TableStruct_feature_5fsearch_2eproto::offsets,
@@ -4153,7 +4153,7 @@ SearchFeatureRequest::SearchFeatureRequest(const SearchFeatureRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   SearchFeatureRequest* const _this = this; (void)_this;
   new (&_impl_) Impl_{
-      decltype(_impl_.db_id_){from._impl_.db_id_}
+      decltype(_impl_.db_ids_){from._impl_.db_ids_}
     , decltype(_impl_.query_){nullptr}
     , decltype(_impl_.topk_){}
     , /*decltype(_impl_._cached_size_)*/{}};
@@ -4171,7 +4171,7 @@ inline void SearchFeatureRequest::SharedCtor(
   (void)arena;
   (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.db_id_){arena}
+      decltype(_impl_.db_ids_){arena}
     , decltype(_impl_.query_){nullptr}
     , decltype(_impl_.topk_){0}
     , /*decltype(_impl_._cached_size_)*/{}
@@ -4189,7 +4189,7 @@ SearchFeatureRequest::~SearchFeatureRequest() {
 
 inline void SearchFeatureRequest::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  _impl_.db_id_.~RepeatedPtrField();
+  _impl_.db_ids_.~RepeatedPtrField();
   if (this != internal_default_instance()) delete _impl_.query_;
 }
 
@@ -4203,7 +4203,7 @@ void SearchFeatureRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.db_id_.Clear();
+  _impl_.db_ids_.Clear();
   if (GetArenaForAllocation() == nullptr && _impl_.query_ != nullptr) {
     delete _impl_.query_;
   }
@@ -4218,16 +4218,16 @@ const char* SearchFeatureRequest::_InternalParse(const char* ptr, ::_pbi::ParseC
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // repeated string db_id = 1;
+      // repeated string db_ids = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr -= 1;
           do {
             ptr += 1;
-            auto str = _internal_add_db_id();
+            auto str = _internal_add_db_ids();
             ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
             CHK_(ptr);
-            CHK_(::_pbi::VerifyUTF8(str, "com.sekirocc.feature_search.SearchFeatureRequest.db_id"));
+            CHK_(::_pbi::VerifyUTF8(str, "com.sekirocc.feature_search.SearchFeatureRequest.db_ids"));
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
         } else
@@ -4278,13 +4278,13 @@ uint8_t* SearchFeatureRequest::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated string db_id = 1;
-  for (int i = 0, n = this->_internal_db_id_size(); i < n; i++) {
-    const auto& s = this->_internal_db_id(i);
+  // repeated string db_ids = 1;
+  for (int i = 0, n = this->_internal_db_ids_size(); i < n; i++) {
+    const auto& s = this->_internal_db_ids(i);
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       s.data(), static_cast<int>(s.length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "com.sekirocc.feature_search.SearchFeatureRequest.db_id");
+      "com.sekirocc.feature_search.SearchFeatureRequest.db_ids");
     target = stream->WriteString(1, s, target);
   }
 
@@ -4317,12 +4317,12 @@ size_t SearchFeatureRequest::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated string db_id = 1;
+  // repeated string db_ids = 1;
   total_size += 1 *
-      ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(_impl_.db_id_.size());
-  for (int i = 0, n = _impl_.db_id_.size(); i < n; i++) {
+      ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(_impl_.db_ids_.size());
+  for (int i = 0, n = _impl_.db_ids_.size(); i < n; i++) {
     total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-      _impl_.db_id_.Get(i));
+      _impl_.db_ids_.Get(i));
   }
 
   // .com.sekirocc.common.FaceFeature query = 2;
@@ -4355,7 +4355,7 @@ void SearchFeatureRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, c
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  _this->_impl_.db_id_.MergeFrom(from._impl_.db_id_);
+  _this->_impl_.db_ids_.MergeFrom(from._impl_.db_ids_);
   if (from._internal_has_query()) {
     _this->_internal_mutable_query()->::com::sekirocc::common::FaceFeature::MergeFrom(
         from._internal_query());
@@ -4380,7 +4380,7 @@ bool SearchFeatureRequest::IsInitialized() const {
 void SearchFeatureRequest::InternalSwap(SearchFeatureRequest* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  _impl_.db_id_.InternalSwap(&other->_impl_.db_id_);
+  _impl_.db_ids_.InternalSwap(&other->_impl_.db_ids_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(SearchFeatureRequest, _impl_.topk_)
       + sizeof(SearchFeatureRequest::_impl_.topk_)

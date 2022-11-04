@@ -65,6 +65,17 @@ void FeatureSearchWorkerImpl::Start() { searcher->Init(); };
 
 void FeatureSearchWorkerImpl::Stop() { searcher->Terminate(); };
 
+Status FeatureSearchWorkerImpl::AssignDBs(ServerContext* context, const AssignDBsRequest* request,
+                                          AssignDBsResponse* response) {
+    return Status::OK;
+};
+
+Status FeatureSearchWorkerImpl::GetSystemInfo(ServerContext* context,
+                                              const GetSystemInfoRequest* request,
+                                              GetSystemInfoResponse* response) {
+    return Status::OK;
+};
+
 Status FeatureSearchWorkerImpl::TrainIndex(ServerContext* context, const TrainIndexRequest* request,
                                            TrainIndexResponse* response) {
     searcher->TrainIndex();

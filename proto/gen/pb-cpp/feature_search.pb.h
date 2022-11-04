@@ -2890,32 +2890,32 @@ class SearchFeatureRequest final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kDbIdFieldNumber = 1,
+    kDbIdsFieldNumber = 1,
     kQueryFieldNumber = 2,
     kTopkFieldNumber = 3,
   };
-  // repeated string db_id = 1;
-  int db_id_size() const;
+  // repeated string db_ids = 1;
+  int db_ids_size() const;
   private:
-  int _internal_db_id_size() const;
+  int _internal_db_ids_size() const;
   public:
-  void clear_db_id();
-  const std::string& db_id(int index) const;
-  std::string* mutable_db_id(int index);
-  void set_db_id(int index, const std::string& value);
-  void set_db_id(int index, std::string&& value);
-  void set_db_id(int index, const char* value);
-  void set_db_id(int index, const char* value, size_t size);
-  std::string* add_db_id();
-  void add_db_id(const std::string& value);
-  void add_db_id(std::string&& value);
-  void add_db_id(const char* value);
-  void add_db_id(const char* value, size_t size);
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>& db_id() const;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>* mutable_db_id();
+  void clear_db_ids();
+  const std::string& db_ids(int index) const;
+  std::string* mutable_db_ids(int index);
+  void set_db_ids(int index, const std::string& value);
+  void set_db_ids(int index, std::string&& value);
+  void set_db_ids(int index, const char* value);
+  void set_db_ids(int index, const char* value, size_t size);
+  std::string* add_db_ids();
+  void add_db_ids(const std::string& value);
+  void add_db_ids(std::string&& value);
+  void add_db_ids(const char* value);
+  void add_db_ids(const char* value, size_t size);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>& db_ids() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>* mutable_db_ids();
   private:
-  const std::string& _internal_db_id(int index) const;
-  std::string* _internal_add_db_id();
+  const std::string& _internal_db_ids(int index) const;
+  std::string* _internal_add_db_ids();
   public:
 
   // .com.sekirocc.common.FaceFeature query = 2;
@@ -2953,7 +2953,7 @@ class SearchFeatureRequest final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> db_id_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> db_ids_;
     ::com::sekirocc::common::FaceFeature* query_;
     int32_t topk_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
@@ -4574,79 +4574,79 @@ inline void DeleteFeatureResponse::set_code(::com::sekirocc::common::ResultCode 
 
 // SearchFeatureRequest
 
-// repeated string db_id = 1;
-inline int SearchFeatureRequest::_internal_db_id_size() const {
-  return _impl_.db_id_.size();
+// repeated string db_ids = 1;
+inline int SearchFeatureRequest::_internal_db_ids_size() const {
+  return _impl_.db_ids_.size();
 }
-inline int SearchFeatureRequest::db_id_size() const {
-  return _internal_db_id_size();
+inline int SearchFeatureRequest::db_ids_size() const {
+  return _internal_db_ids_size();
 }
-inline void SearchFeatureRequest::clear_db_id() {
-  _impl_.db_id_.Clear();
+inline void SearchFeatureRequest::clear_db_ids() {
+  _impl_.db_ids_.Clear();
 }
-inline std::string* SearchFeatureRequest::add_db_id() {
-  std::string* _s = _internal_add_db_id();
-  // @@protoc_insertion_point(field_add_mutable:com.sekirocc.feature_search.SearchFeatureRequest.db_id)
+inline std::string* SearchFeatureRequest::add_db_ids() {
+  std::string* _s = _internal_add_db_ids();
+  // @@protoc_insertion_point(field_add_mutable:com.sekirocc.feature_search.SearchFeatureRequest.db_ids)
   return _s;
 }
-inline const std::string& SearchFeatureRequest::_internal_db_id(int index) const {
-  return _impl_.db_id_.Get(index);
+inline const std::string& SearchFeatureRequest::_internal_db_ids(int index) const {
+  return _impl_.db_ids_.Get(index);
 }
-inline const std::string& SearchFeatureRequest::db_id(int index) const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.SearchFeatureRequest.db_id)
-  return _internal_db_id(index);
+inline const std::string& SearchFeatureRequest::db_ids(int index) const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.SearchFeatureRequest.db_ids)
+  return _internal_db_ids(index);
 }
-inline std::string* SearchFeatureRequest::mutable_db_id(int index) {
-  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_search.SearchFeatureRequest.db_id)
-  return _impl_.db_id_.Mutable(index);
+inline std::string* SearchFeatureRequest::mutable_db_ids(int index) {
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_search.SearchFeatureRequest.db_ids)
+  return _impl_.db_ids_.Mutable(index);
 }
-inline void SearchFeatureRequest::set_db_id(int index, const std::string& value) {
-  _impl_.db_id_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.SearchFeatureRequest.db_id)
+inline void SearchFeatureRequest::set_db_ids(int index, const std::string& value) {
+  _impl_.db_ids_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.SearchFeatureRequest.db_ids)
 }
-inline void SearchFeatureRequest::set_db_id(int index, std::string&& value) {
-  _impl_.db_id_.Mutable(index)->assign(std::move(value));
-  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.SearchFeatureRequest.db_id)
+inline void SearchFeatureRequest::set_db_ids(int index, std::string&& value) {
+  _impl_.db_ids_.Mutable(index)->assign(std::move(value));
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.SearchFeatureRequest.db_ids)
 }
-inline void SearchFeatureRequest::set_db_id(int index, const char* value) {
+inline void SearchFeatureRequest::set_db_ids(int index, const char* value) {
   GOOGLE_DCHECK(value != nullptr);
-  _impl_.db_id_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set_char:com.sekirocc.feature_search.SearchFeatureRequest.db_id)
+  _impl_.db_ids_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:com.sekirocc.feature_search.SearchFeatureRequest.db_ids)
 }
-inline void SearchFeatureRequest::set_db_id(int index, const char* value, size_t size) {
-  _impl_.db_id_.Mutable(index)->assign(
+inline void SearchFeatureRequest::set_db_ids(int index, const char* value, size_t size) {
+  _impl_.db_ids_.Mutable(index)->assign(
     reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:com.sekirocc.feature_search.SearchFeatureRequest.db_id)
+  // @@protoc_insertion_point(field_set_pointer:com.sekirocc.feature_search.SearchFeatureRequest.db_ids)
 }
-inline std::string* SearchFeatureRequest::_internal_add_db_id() {
-  return _impl_.db_id_.Add();
+inline std::string* SearchFeatureRequest::_internal_add_db_ids() {
+  return _impl_.db_ids_.Add();
 }
-inline void SearchFeatureRequest::add_db_id(const std::string& value) {
-  _impl_.db_id_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add:com.sekirocc.feature_search.SearchFeatureRequest.db_id)
+inline void SearchFeatureRequest::add_db_ids(const std::string& value) {
+  _impl_.db_ids_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:com.sekirocc.feature_search.SearchFeatureRequest.db_ids)
 }
-inline void SearchFeatureRequest::add_db_id(std::string&& value) {
-  _impl_.db_id_.Add(std::move(value));
-  // @@protoc_insertion_point(field_add:com.sekirocc.feature_search.SearchFeatureRequest.db_id)
+inline void SearchFeatureRequest::add_db_ids(std::string&& value) {
+  _impl_.db_ids_.Add(std::move(value));
+  // @@protoc_insertion_point(field_add:com.sekirocc.feature_search.SearchFeatureRequest.db_ids)
 }
-inline void SearchFeatureRequest::add_db_id(const char* value) {
+inline void SearchFeatureRequest::add_db_ids(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
-  _impl_.db_id_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add_char:com.sekirocc.feature_search.SearchFeatureRequest.db_id)
+  _impl_.db_ids_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:com.sekirocc.feature_search.SearchFeatureRequest.db_ids)
 }
-inline void SearchFeatureRequest::add_db_id(const char* value, size_t size) {
-  _impl_.db_id_.Add()->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_add_pointer:com.sekirocc.feature_search.SearchFeatureRequest.db_id)
+inline void SearchFeatureRequest::add_db_ids(const char* value, size_t size) {
+  _impl_.db_ids_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:com.sekirocc.feature_search.SearchFeatureRequest.db_ids)
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>&
-SearchFeatureRequest::db_id() const {
-  // @@protoc_insertion_point(field_list:com.sekirocc.feature_search.SearchFeatureRequest.db_id)
-  return _impl_.db_id_;
+SearchFeatureRequest::db_ids() const {
+  // @@protoc_insertion_point(field_list:com.sekirocc.feature_search.SearchFeatureRequest.db_ids)
+  return _impl_.db_ids_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>*
-SearchFeatureRequest::mutable_db_id() {
-  // @@protoc_insertion_point(field_mutable_list:com.sekirocc.feature_search.SearchFeatureRequest.db_id)
-  return &_impl_.db_id_;
+SearchFeatureRequest::mutable_db_ids() {
+  // @@protoc_insertion_point(field_mutable_list:com.sekirocc.feature_search.SearchFeatureRequest.db_ids)
+  return &_impl_.db_ids_;
 }
 
 // .com.sekirocc.common.FaceFeature query = 2;

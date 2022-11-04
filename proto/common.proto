@@ -56,3 +56,12 @@ message FaceRectangle {
     float quality = 3;
     float confidence = 4;
 }
+
+
+message DBItem {
+  string db_id = 1;
+  string name = 2;
+  string description = 3;
+  int64 capacity = 4;
+  int64 used = 5;
+}

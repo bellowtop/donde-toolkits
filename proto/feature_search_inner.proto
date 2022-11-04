@@ -13,6 +13,19 @@ message AssignDBsRequest { repeated string db_ids = 1; }
 
 message AssignDBsResponse { com.sekirocc.common.ResultCode code = 1; }
 
+// Worker service
+message GetSystemInfoRequest {}
+
+message WorkerMetrics {
+    // TODO
+}
+
+message GetSystemInfoResponse {
+    com.sekirocc.common.ResultCode code = 1;
+    repeated com.sekirocc.common.DBItem dbs = 2;
+    WorkerMetrics metrics = 3;
+}
+
 message TrainIndexRequest {}
 
 message TrainIndexResponse { com.sekirocc.common.ResultCode code = 1; }
@@ -57,6 +70,13 @@ message SearchFeatureResponse {
 
 // feature search service
 service FeatureSearch {
+
+    rpc GetSystemInfo(GetSystemInfoRequest) returns (GetSystemInfoResponse) {
+        option (google.api.http) = {
+            post : "/get_system_info"
+            body : "*"
+        };
+    }
 
     // assign some dbs to this worker, then it's the worker's duty to manage those databases(add,
     // search etc.) must be called once.
