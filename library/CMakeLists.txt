@@ -54,6 +54,7 @@ target_link_libraries(${PROJECT_NAME}
 	CONAN_PKG::sqlitecpp
 	CONAN_PKG::libuuid
 	CONAN_PKG::nlohmann_json
+	CONAN_PKG::cassandra-cpp-driver
 	openvino::runtime
 	faiss
 	)

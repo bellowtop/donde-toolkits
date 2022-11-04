@@ -41,6 +41,7 @@ set(CONAN_LIBs
   CONAN_PKG::sqlitecpp
   CONAN_PKG::spdlog
   CONAN_PKG::nlohmann_json
+  CONAN_PKG::cassandra-cpp-driver
   CONAN_PKG::toml11)
 
 

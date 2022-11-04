@@ -50,6 +50,7 @@ target_link_libraries(${PROJECT_NAME}
 	CONAN_PKG::msgpack
 	CONAN_PKG::sqlitecpp
 	CONAN_PKG::nlohmann_json
+	CONAN_PKG::cassandra-cpp-driver
 	CONAN_PKG::toml11
 	CONAN_PKG::doctest
 	CONAN_PKG::trompeloeil
