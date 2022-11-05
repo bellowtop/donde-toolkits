@@ -2,23 +2,22 @@
 
 #include "types.h"
 #include "utils.h"
+#include "worker_api.h"
 
 #include <string>
 #include <vector>
 
-class WorkerClient {
+class WorkerClient : public Worker {
   public:
     WorkerClient(const std::string& addr) : _worker_id(generate_uuid()), _addr(addr){};
 
     // Connect to remote addr, and regularly check liveness.
     RetCode Connect();
 
-    // AddFeatures to db_id/shard_id.
+    // WorkerAPI implement
     RetCode AddFeatures(const std::string& db_id, const std::string& shard_id,
                         const std::vector<Feature>& fts);
 
-    // Search feature in the worker. worker can have multiple dbs, multiple shards.
-    // only search in the requested db.
     std::vector<Feature> SearchFeature(const std::string& db_id, const Feature& query, int topk);
 
   public:

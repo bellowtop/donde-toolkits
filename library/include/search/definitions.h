@@ -34,8 +34,13 @@ namespace search {
         std::string description;
     };
 
+    struct DBShard {
+        std::string db_id;
+        std::string shard_id;
+    };
+
     const std::string SEARCH_ENGINE_BRUTE_FORCE = "brute_force";
-    const std::string SEARCH_ENGINE_FAISS = "brute_force";
+    const std::string SEARCH_ENGINE_FAISS = "faiss";
 
     const std::string STORAGE_BACKEND_FILE_SYSTEM = "file_system";
     const std::string STORAGE_BACKEND_CASSANDRA = "cassandra";
