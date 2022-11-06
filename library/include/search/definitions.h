@@ -39,11 +39,13 @@ namespace search {
         std::string shard_id;
     };
 
+    using DBItemPtr = shared_ptr<DBItem>;
+
     const std::string SEARCH_ENGINE_BRUTE_FORCE = "brute_force";
     const std::string SEARCH_ENGINE_FAISS = "faiss";
 
-    const std::string STORAGE_BACKEND_FILE_SYSTEM = "file_system";
-    const std::string STORAGE_BACKEND_CASSANDRA = "cassandra";
+    const std::string SEARCH_DRIVER_SIMPLE = "simple";
+    const std::string SEARCH_DRIVER_CASSANDRA = "cassandra";
 
     struct FeatureSearchItem {
         Feature target;

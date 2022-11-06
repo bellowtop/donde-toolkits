@@ -62,19 +62,19 @@ target_link_libraries(feature_extract
 
 
 ######################################################
-# ---- Create feature_search executable ----
+# ---- Create feature_search_manager executable ----
 ######################################################
 
-file(GLOB_RECURSE feature_search_headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/feature_search/include/*.h)
-file(GLOB_RECURSE feature_search_sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/feature_search/source/*.cpp)
-add_executable(feature_search ${feature_search_headers} ${feature_search_sources})
-target_include_directories(feature_search
+file(GLOB_RECURSE feature_search_manager_headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/feature_search_manager/include/*.h)
+file(GLOB_RECURSE feature_search_manager_sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/feature_search_manager/source/*.cpp)
+add_executable(feature_search_manager ${feature_search_manager_headers} ${feature_search_manager_sources})
+target_include_directories(feature_search_manager
   PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/../include>
-  ${CMAKE_CURRENT_SOURCE_DIR}/feature_search/include
+  ${CMAKE_CURRENT_SOURCE_DIR}/feature_search_manager/include
   # $<INSTALL_INTERFACE:../include/${PROJECT_NAME}-${PROJECT_VERSION}>
 )
 
-target_link_libraries(feature_search
+target_link_libraries(feature_search_manager
 	${CONAN_LIBs} openvino::runtime FeatureProtos FeatureLibraries)
 
 ######################################################

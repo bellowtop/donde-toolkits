@@ -166,7 +166,7 @@ bool ConcurrentProcessor<T, typename std::enable_if_t<std::is_base_of_v<Worker, 
 template <typename T>
 RetCode ConcurrentProcessor<T, typename std::enable_if_t<std::is_base_of_v<Worker, T>>>::Process(
     const Value& input, Value& output) {
-    spdlog::info("input.valueType : {}, valuePtr: {}", format(input.valueType),
+    spdlog::info("input.valueType : {}, valuePtr: {}", format_value_type(input.valueType),
                  input.valuePtr.get());
 
     WorkMessage::Ptr msg = WorkMessage::Ptr(new WorkMessage(input, false));
@@ -177,7 +177,7 @@ RetCode ConcurrentProcessor<T, typename std::enable_if_t<std::is_base_of_v<Worke
     Value resp = msg->getResponse();
     output = resp;
 
-    spdlog::info("output.valueType : {}, valuePtr: {}", format(output.valueType),
+    spdlog::info("output.valueType : {}, valuePtr: {}", format_value_type(output.valueType),
                  output.valuePtr.get());
 
     return RET_OK;

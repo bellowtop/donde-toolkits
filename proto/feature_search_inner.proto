@@ -9,9 +9,12 @@ option go_package = "github.com/sekirocc/face-recognition-service/feature_search
 package com.sekirocc.feature_search.inner;
 
 // Worker service
-message AssignDBsRequest { repeated string db_ids = 1; }
+message AssignDBShardsRequest {
+  string db_id = 1;
+  repeated string shard_ids = 2;
+}
 
-message AssignDBsResponse { com.sekirocc.common.ResultCode code = 1; }
+message AssignDBShardsResponse { com.sekirocc.common.ResultCode code = 1; }
 
 // Worker service
 message GetSystemInfoRequest {}
@@ -69,7 +72,7 @@ message SearchFeatureResponse {
 }
 
 // feature search service
-service FeatureSearch {
+service FeatureSearchWorker {
 
     rpc GetSystemInfo(GetSystemInfoRequest) returns (GetSystemInfoResponse) {
         option (google.api.http) = {
@@ -80,9 +83,9 @@ service FeatureSearch {
 
     // assign some dbs to this worker, then it's the worker's duty to manage those databases(add,
     // search etc.) must be called once.
-    rpc AssignDBs(AssignDBsRequest) returns (AssignDBsResponse) {
+    rpc AssignDBShards(AssignDBShardsRequest) returns (AssignDBShardsResponse) {
         option (google.api.http) = {
-            post : "/assign_dbs"
+            post : "/assign_db_shards"
             body : "*"
         };
     }

@@ -32,14 +32,15 @@ namespace search {
 
     //////////////////////////////////////////////////////////////////////////////////////////////////
     //
-    // SimpleDriver, use filesystem to store feature files, use sqlite3 to store feature ids,
+    // CassandraDriver, use cassandra keyspace to store feature blob.
+    // ids,
     //
     //////////////////////////////////////////////////////////////////////////////////////////////////
 
     class CassandraDriver : public Driver {
 
       public:
-        CassandraDriver(std::string db_dirpath);
+        CassandraDriver(std::string addr);
 
         // the sqlite3 db ptr will auto release when destruct.
         ~CassandraDriver() = default;

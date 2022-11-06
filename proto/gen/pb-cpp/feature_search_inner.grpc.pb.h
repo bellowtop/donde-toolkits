@@ -31,10 +31,10 @@ namespace feature_search {
 namespace inner {
 
 // feature search service
-class FeatureSearch final {
+class FeatureSearchWorker final {
  public:
   static constexpr char const* service_full_name() {
-    return "com.sekirocc.feature_search.inner.FeatureSearch";
+    return "com.sekirocc.feature_search.inner.FeatureSearchWorker";
   }
   class StubInterface {
    public:
@@ -48,12 +48,12 @@ class FeatureSearch final {
     }
     // assign some dbs to this worker, then it's the worker's duty to manage those databases(add,
     // search etc.) must be called once.
-    virtual ::grpc::Status AssignDBs(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest& request, ::com::sekirocc::feature_search::inner::AssignDBsResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::inner::AssignDBsResponse>> AsyncAssignDBs(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::inner::AssignDBsResponse>>(AsyncAssignDBsRaw(context, request, cq));
+    virtual ::grpc::Status AssignDBShards(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest& request, ::com::sekirocc::feature_search::inner::AssignDBShardsResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::inner::AssignDBShardsResponse>> AsyncAssignDBShards(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::inner::AssignDBShardsResponse>>(AsyncAssignDBShardsRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::inner::AssignDBsResponse>> PrepareAsyncAssignDBs(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::inner::AssignDBsResponse>>(PrepareAsyncAssignDBsRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::inner::AssignDBShardsResponse>> PrepareAsyncAssignDBShards(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::inner::AssignDBShardsResponse>>(PrepareAsyncAssignDBShardsRaw(context, request, cq));
     }
     // trigger train index job, for maintaince
     virtual ::grpc::Status TrainIndex(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::TrainIndexRequest& request, ::com::sekirocc::feature_search::inner::TrainIndexResponse* response) = 0;
@@ -92,8 +92,8 @@ class FeatureSearch final {
       virtual void GetSystemInfo(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest* request, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       // assign some dbs to this worker, then it's the worker's duty to manage those databases(add,
       // search etc.) must be called once.
-      virtual void AssignDBs(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest* request, ::com::sekirocc::feature_search::inner::AssignDBsResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void AssignDBs(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest* request, ::com::sekirocc::feature_search::inner::AssignDBsResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void AssignDBShards(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest* request, ::com::sekirocc::feature_search::inner::AssignDBShardsResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void AssignDBShards(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest* request, ::com::sekirocc::feature_search::inner::AssignDBShardsResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       // trigger train index job, for maintaince
       virtual void TrainIndex(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::TrainIndexRequest* request, ::com::sekirocc::feature_search::inner::TrainIndexResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void TrainIndex(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::TrainIndexRequest* request, ::com::sekirocc::feature_search::inner::TrainIndexResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
@@ -111,8 +111,8 @@ class FeatureSearch final {
    private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::inner::GetSystemInfoResponse>* AsyncGetSystemInfoRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::inner::GetSystemInfoResponse>* PrepareAsyncGetSystemInfoRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::inner::AssignDBsResponse>* AsyncAssignDBsRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::inner::AssignDBsResponse>* PrepareAsyncAssignDBsRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::inner::AssignDBShardsResponse>* AsyncAssignDBShardsRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::inner::AssignDBShardsResponse>* PrepareAsyncAssignDBShardsRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::inner::TrainIndexResponse>* AsyncTrainIndexRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::TrainIndexRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::inner::TrainIndexResponse>* PrepareAsyncTrainIndexRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::TrainIndexRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::com::sekirocc::feature_search::inner::BatchAddFeaturesResponse>* AsyncBatchAddFeaturesRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::BatchAddFeaturesRequest& request, ::grpc::CompletionQueue* cq) = 0;
@@ -132,12 +132,12 @@ class FeatureSearch final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::GetSystemInfoResponse>> PrepareAsyncGetSystemInfo(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::GetSystemInfoResponse>>(PrepareAsyncGetSystemInfoRaw(context, request, cq));
     }
-    ::grpc::Status AssignDBs(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest& request, ::com::sekirocc::feature_search::inner::AssignDBsResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::AssignDBsResponse>> AsyncAssignDBs(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::AssignDBsResponse>>(AsyncAssignDBsRaw(context, request, cq));
+    ::grpc::Status AssignDBShards(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest& request, ::com::sekirocc::feature_search::inner::AssignDBShardsResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::AssignDBShardsResponse>> AsyncAssignDBShards(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::AssignDBShardsResponse>>(AsyncAssignDBShardsRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::AssignDBsResponse>> PrepareAsyncAssignDBs(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::AssignDBsResponse>>(PrepareAsyncAssignDBsRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::AssignDBShardsResponse>> PrepareAsyncAssignDBShards(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::AssignDBShardsResponse>>(PrepareAsyncAssignDBShardsRaw(context, request, cq));
     }
     ::grpc::Status TrainIndex(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::TrainIndexRequest& request, ::com::sekirocc::feature_search::inner::TrainIndexResponse* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::TrainIndexResponse>> AsyncTrainIndex(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::TrainIndexRequest& request, ::grpc::CompletionQueue* cq) {
@@ -172,8 +172,8 @@ class FeatureSearch final {
      public:
       void GetSystemInfo(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest* request, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse* response, std::function<void(::grpc::Status)>) override;
       void GetSystemInfo(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest* request, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void AssignDBs(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest* request, ::com::sekirocc::feature_search::inner::AssignDBsResponse* response, std::function<void(::grpc::Status)>) override;
-      void AssignDBs(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest* request, ::com::sekirocc::feature_search::inner::AssignDBsResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void AssignDBShards(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest* request, ::com::sekirocc::feature_search::inner::AssignDBShardsResponse* response, std::function<void(::grpc::Status)>) override;
+      void AssignDBShards(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest* request, ::com::sekirocc::feature_search::inner::AssignDBShardsResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void TrainIndex(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::TrainIndexRequest* request, ::com::sekirocc::feature_search::inner::TrainIndexResponse* response, std::function<void(::grpc::Status)>) override;
       void TrainIndex(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::TrainIndexRequest* request, ::com::sekirocc::feature_search::inner::TrainIndexResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void BatchAddFeatures(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::BatchAddFeaturesRequest* request, ::com::sekirocc::feature_search::inner::BatchAddFeaturesResponse* response, std::function<void(::grpc::Status)>) override;
@@ -195,8 +195,8 @@ class FeatureSearch final {
     class async async_stub_{this};
     ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::GetSystemInfoResponse>* AsyncGetSystemInfoRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::GetSystemInfoResponse>* PrepareAsyncGetSystemInfoRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::AssignDBsResponse>* AsyncAssignDBsRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::AssignDBsResponse>* PrepareAsyncAssignDBsRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::AssignDBShardsResponse>* AsyncAssignDBShardsRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::AssignDBShardsResponse>* PrepareAsyncAssignDBShardsRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::TrainIndexResponse>* AsyncTrainIndexRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::TrainIndexRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::TrainIndexResponse>* PrepareAsyncTrainIndexRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::TrainIndexRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::BatchAddFeaturesResponse>* AsyncBatchAddFeaturesRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::BatchAddFeaturesRequest& request, ::grpc::CompletionQueue* cq) override;
@@ -206,7 +206,7 @@ class FeatureSearch final {
     ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::SearchFeatureResponse>* AsyncSearchFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::SearchFeatureRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::SearchFeatureResponse>* PrepareAsyncSearchFeatureRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::SearchFeatureRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_GetSystemInfo_;
-    const ::grpc::internal::RpcMethod rpcmethod_AssignDBs_;
+    const ::grpc::internal::RpcMethod rpcmethod_AssignDBShards_;
     const ::grpc::internal::RpcMethod rpcmethod_TrainIndex_;
     const ::grpc::internal::RpcMethod rpcmethod_BatchAddFeatures_;
     const ::grpc::internal::RpcMethod rpcmethod_BatchDeleteFeatures_;
@@ -221,7 +221,7 @@ class FeatureSearch final {
     virtual ::grpc::Status GetSystemInfo(::grpc::ServerContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest* request, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse* response);
     // assign some dbs to this worker, then it's the worker's duty to manage those databases(add,
     // search etc.) must be called once.
-    virtual ::grpc::Status AssignDBs(::grpc::ServerContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest* request, ::com::sekirocc::feature_search::inner::AssignDBsResponse* response);
+    virtual ::grpc::Status AssignDBShards(::grpc::ServerContext* context, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest* request, ::com::sekirocc::feature_search::inner::AssignDBShardsResponse* response);
     // trigger train index job, for maintaince
     virtual ::grpc::Status TrainIndex(::grpc::ServerContext* context, const ::com::sekirocc::feature_search::inner::TrainIndexRequest* request, ::com::sekirocc::feature_search::inner::TrainIndexResponse* response);
     // add feature to db
@@ -250,22 +250,22 @@ class FeatureSearch final {
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_AssignDBs : public BaseClass {
+  class WithAsyncMethod_AssignDBShards : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_AssignDBs() {
+    WithAsyncMethod_AssignDBShards() {
       ::grpc::Service::MarkMethodAsync(1);
     }
-    ~WithAsyncMethod_AssignDBs() override {
+    ~WithAsyncMethod_AssignDBShards() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status AssignDBs(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::inner::AssignDBsRequest* /*request*/, ::com::sekirocc::feature_search::inner::AssignDBsResponse* /*response*/) override {
+    ::grpc::Status AssignDBShards(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest* /*request*/, ::com::sekirocc::feature_search::inner::AssignDBShardsResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestAssignDBs(::grpc::ServerContext* context, ::com::sekirocc::feature_search::inner::AssignDBsRequest* request, ::grpc::ServerAsyncResponseWriter< ::com::sekirocc::feature_search::inner::AssignDBsResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestAssignDBShards(::grpc::ServerContext* context, ::com::sekirocc::feature_search::inner::AssignDBShardsRequest* request, ::grpc::ServerAsyncResponseWriter< ::com::sekirocc::feature_search::inner::AssignDBShardsResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -349,7 +349,7 @@ class FeatureSearch final {
       ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_GetSystemInfo<WithAsyncMethod_AssignDBs<WithAsyncMethod_TrainIndex<WithAsyncMethod_BatchAddFeatures<WithAsyncMethod_BatchDeleteFeatures<WithAsyncMethod_SearchFeature<Service > > > > > > AsyncService;
+  typedef WithAsyncMethod_GetSystemInfo<WithAsyncMethod_AssignDBShards<WithAsyncMethod_TrainIndex<WithAsyncMethod_BatchAddFeatures<WithAsyncMethod_BatchDeleteFeatures<WithAsyncMethod_SearchFeature<Service > > > > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_GetSystemInfo : public BaseClass {
    private:
@@ -378,31 +378,31 @@ class FeatureSearch final {
       ::grpc::CallbackServerContext* /*context*/, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest* /*request*/, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithCallbackMethod_AssignDBs : public BaseClass {
+  class WithCallbackMethod_AssignDBShards : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_AssignDBs() {
+    WithCallbackMethod_AssignDBShards() {
       ::grpc::Service::MarkMethodCallback(1,
-          new ::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::inner::AssignDBsRequest, ::com::sekirocc::feature_search::inner::AssignDBsResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::inner::AssignDBShardsRequest, ::com::sekirocc::feature_search::inner::AssignDBShardsResponse>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::com::sekirocc::feature_search::inner::AssignDBsRequest* request, ::com::sekirocc::feature_search::inner::AssignDBsResponse* response) { return this->AssignDBs(context, request, response); }));}
-    void SetMessageAllocatorFor_AssignDBs(
-        ::grpc::MessageAllocator< ::com::sekirocc::feature_search::inner::AssignDBsRequest, ::com::sekirocc::feature_search::inner::AssignDBsResponse>* allocator) {
+                   ::grpc::CallbackServerContext* context, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest* request, ::com::sekirocc::feature_search::inner::AssignDBShardsResponse* response) { return this->AssignDBShards(context, request, response); }));}
+    void SetMessageAllocatorFor_AssignDBShards(
+        ::grpc::MessageAllocator< ::com::sekirocc::feature_search::inner::AssignDBShardsRequest, ::com::sekirocc::feature_search::inner::AssignDBShardsResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(1);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::inner::AssignDBsRequest, ::com::sekirocc::feature_search::inner::AssignDBsResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::com::sekirocc::feature_search::inner::AssignDBShardsRequest, ::com::sekirocc::feature_search::inner::AssignDBShardsResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_AssignDBs() override {
+    ~WithCallbackMethod_AssignDBShards() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status AssignDBs(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::inner::AssignDBsRequest* /*request*/, ::com::sekirocc::feature_search::inner::AssignDBsResponse* /*response*/) override {
+    ::grpc::Status AssignDBShards(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest* /*request*/, ::com::sekirocc::feature_search::inner::AssignDBShardsResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* AssignDBs(
-      ::grpc::CallbackServerContext* /*context*/, const ::com::sekirocc::feature_search::inner::AssignDBsRequest* /*request*/, ::com::sekirocc::feature_search::inner::AssignDBsResponse* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerUnaryReactor* AssignDBShards(
+      ::grpc::CallbackServerContext* /*context*/, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest* /*request*/, ::com::sekirocc::feature_search::inner::AssignDBShardsResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithCallbackMethod_TrainIndex : public BaseClass {
@@ -512,7 +512,7 @@ class FeatureSearch final {
     virtual ::grpc::ServerUnaryReactor* SearchFeature(
       ::grpc::CallbackServerContext* /*context*/, const ::com::sekirocc::feature_search::inner::SearchFeatureRequest* /*request*/, ::com::sekirocc::feature_search::inner::SearchFeatureResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_GetSystemInfo<WithCallbackMethod_AssignDBs<WithCallbackMethod_TrainIndex<WithCallbackMethod_BatchAddFeatures<WithCallbackMethod_BatchDeleteFeatures<WithCallbackMethod_SearchFeature<Service > > > > > > CallbackService;
+  typedef WithCallbackMethod_GetSystemInfo<WithCallbackMethod_AssignDBShards<WithCallbackMethod_TrainIndex<WithCallbackMethod_BatchAddFeatures<WithCallbackMethod_BatchDeleteFeatures<WithCallbackMethod_SearchFeature<Service > > > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_GetSystemInfo : public BaseClass {
@@ -532,18 +532,18 @@ class FeatureSearch final {
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_AssignDBs : public BaseClass {
+  class WithGenericMethod_AssignDBShards : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_AssignDBs() {
+    WithGenericMethod_AssignDBShards() {
       ::grpc::Service::MarkMethodGeneric(1);
     }
-    ~WithGenericMethod_AssignDBs() override {
+    ~WithGenericMethod_AssignDBShards() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status AssignDBs(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::inner::AssignDBsRequest* /*request*/, ::com::sekirocc::feature_search::inner::AssignDBsResponse* /*response*/) override {
+    ::grpc::Status AssignDBShards(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest* /*request*/, ::com::sekirocc::feature_search::inner::AssignDBShardsResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -637,22 +637,22 @@ class FeatureSearch final {
     }
   };
   template <class BaseClass>
-  class WithRawMethod_AssignDBs : public BaseClass {
+  class WithRawMethod_AssignDBShards : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_AssignDBs() {
+    WithRawMethod_AssignDBShards() {
       ::grpc::Service::MarkMethodRaw(1);
     }
-    ~WithRawMethod_AssignDBs() override {
+    ~WithRawMethod_AssignDBShards() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status AssignDBs(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::inner::AssignDBsRequest* /*request*/, ::com::sekirocc::feature_search::inner::AssignDBsResponse* /*response*/) override {
+    ::grpc::Status AssignDBShards(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest* /*request*/, ::com::sekirocc::feature_search::inner::AssignDBShardsResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestAssignDBs(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestAssignDBShards(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -759,25 +759,25 @@ class FeatureSearch final {
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_AssignDBs : public BaseClass {
+  class WithRawCallbackMethod_AssignDBShards : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_AssignDBs() {
+    WithRawCallbackMethod_AssignDBShards() {
       ::grpc::Service::MarkMethodRawCallback(1,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->AssignDBs(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->AssignDBShards(context, request, response); }));
     }
-    ~WithRawCallbackMethod_AssignDBs() override {
+    ~WithRawCallbackMethod_AssignDBShards() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status AssignDBs(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::inner::AssignDBsRequest* /*request*/, ::com::sekirocc::feature_search::inner::AssignDBsResponse* /*response*/) override {
+    ::grpc::Status AssignDBShards(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest* /*request*/, ::com::sekirocc::feature_search::inner::AssignDBShardsResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* AssignDBs(
+    virtual ::grpc::ServerUnaryReactor* AssignDBShards(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
@@ -896,31 +896,31 @@ class FeatureSearch final {
     virtual ::grpc::Status StreamedGetSystemInfo(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::com::sekirocc::feature_search::inner::GetSystemInfoRequest,::com::sekirocc::feature_search::inner::GetSystemInfoResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_AssignDBs : public BaseClass {
+  class WithStreamedUnaryMethod_AssignDBShards : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_AssignDBs() {
+    WithStreamedUnaryMethod_AssignDBShards() {
       ::grpc::Service::MarkMethodStreamed(1,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::com::sekirocc::feature_search::inner::AssignDBsRequest, ::com::sekirocc::feature_search::inner::AssignDBsResponse>(
+          ::com::sekirocc::feature_search::inner::AssignDBShardsRequest, ::com::sekirocc::feature_search::inner::AssignDBShardsResponse>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::com::sekirocc::feature_search::inner::AssignDBsRequest, ::com::sekirocc::feature_search::inner::AssignDBsResponse>* streamer) {
-                       return this->StreamedAssignDBs(context,
+                     ::com::sekirocc::feature_search::inner::AssignDBShardsRequest, ::com::sekirocc::feature_search::inner::AssignDBShardsResponse>* streamer) {
+                       return this->StreamedAssignDBShards(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_AssignDBs() override {
+    ~WithStreamedUnaryMethod_AssignDBShards() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status AssignDBs(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::inner::AssignDBsRequest* /*request*/, ::com::sekirocc::feature_search::inner::AssignDBsResponse* /*response*/) override {
+    ::grpc::Status AssignDBShards(::grpc::ServerContext* /*context*/, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest* /*request*/, ::com::sekirocc::feature_search::inner::AssignDBShardsResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedAssignDBs(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::com::sekirocc::feature_search::inner::AssignDBsRequest,::com::sekirocc::feature_search::inner::AssignDBsResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedAssignDBShards(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::com::sekirocc::feature_search::inner::AssignDBShardsRequest,::com::sekirocc::feature_search::inner::AssignDBShardsResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_TrainIndex : public BaseClass {
@@ -1030,9 +1030,9 @@ class FeatureSearch final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedSearchFeature(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::com::sekirocc::feature_search::inner::SearchFeatureRequest,::com::sekirocc::feature_search::inner::SearchFeatureResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_GetSystemInfo<WithStreamedUnaryMethod_AssignDBs<WithStreamedUnaryMethod_TrainIndex<WithStreamedUnaryMethod_BatchAddFeatures<WithStreamedUnaryMethod_BatchDeleteFeatures<WithStreamedUnaryMethod_SearchFeature<Service > > > > > > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_GetSystemInfo<WithStreamedUnaryMethod_AssignDBShards<WithStreamedUnaryMethod_TrainIndex<WithStreamedUnaryMethod_BatchAddFeatures<WithStreamedUnaryMethod_BatchDeleteFeatures<WithStreamedUnaryMethod_SearchFeature<Service > > > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_GetSystemInfo<WithStreamedUnaryMethod_AssignDBs<WithStreamedUnaryMethod_TrainIndex<WithStreamedUnaryMethod_BatchAddFeatures<WithStreamedUnaryMethod_BatchDeleteFeatures<WithStreamedUnaryMethod_SearchFeature<Service > > > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_GetSystemInfo<WithStreamedUnaryMethod_AssignDBShards<WithStreamedUnaryMethod_TrainIndex<WithStreamedUnaryMethod_BatchAddFeatures<WithStreamedUnaryMethod_BatchDeleteFeatures<WithStreamedUnaryMethod_SearchFeature<Service > > > > > > StreamedService;
 };
 
 }  // namespace inner

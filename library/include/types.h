@@ -131,7 +131,7 @@ enum ValueType {
     ValueFeature
 };
 
-inline std::string format(const ValueType typ) {
+inline std::string format_value_type(const ValueType typ) {
     static std::map<ValueType, std::string> strings;
     if (strings.size() == 0) {
 #define insert_elem(p) strings[p] = #p
@@ -146,7 +146,7 @@ inline std::string format(const ValueType typ) {
 };
 
 inline std::ostream& operator<<(std::ostream& out, const ValueType typ) {
-    return out << format(typ);
+    return out << format_value_type(typ);
 };
 
 struct Value {

@@ -60,12 +60,12 @@ extern AddFeatureItemDefaultTypeInternal _AddFeatureItem_default_instance_;
 class AddFeatureItem_MetaEntry_DoNotUse;
 struct AddFeatureItem_MetaEntry_DoNotUseDefaultTypeInternal;
 extern AddFeatureItem_MetaEntry_DoNotUseDefaultTypeInternal _AddFeatureItem_MetaEntry_DoNotUse_default_instance_;
-class AssignDBsRequest;
-struct AssignDBsRequestDefaultTypeInternal;
-extern AssignDBsRequestDefaultTypeInternal _AssignDBsRequest_default_instance_;
-class AssignDBsResponse;
-struct AssignDBsResponseDefaultTypeInternal;
-extern AssignDBsResponseDefaultTypeInternal _AssignDBsResponse_default_instance_;
+class AssignDBShardsRequest;
+struct AssignDBShardsRequestDefaultTypeInternal;
+extern AssignDBShardsRequestDefaultTypeInternal _AssignDBShardsRequest_default_instance_;
+class AssignDBShardsResponse;
+struct AssignDBShardsResponseDefaultTypeInternal;
+extern AssignDBShardsResponseDefaultTypeInternal _AssignDBShardsResponse_default_instance_;
 class BatchAddFeaturesRequest;
 struct BatchAddFeaturesRequestDefaultTypeInternal;
 extern BatchAddFeaturesRequestDefaultTypeInternal _BatchAddFeaturesRequest_default_instance_;
@@ -109,8 +109,8 @@ extern WorkerMetricsDefaultTypeInternal _WorkerMetrics_default_instance_;
 PROTOBUF_NAMESPACE_OPEN
 template<> ::com::sekirocc::feature_search::inner::AddFeatureItem* Arena::CreateMaybeMessage<::com::sekirocc::feature_search::inner::AddFeatureItem>(Arena*);
 template<> ::com::sekirocc::feature_search::inner::AddFeatureItem_MetaEntry_DoNotUse* Arena::CreateMaybeMessage<::com::sekirocc::feature_search::inner::AddFeatureItem_MetaEntry_DoNotUse>(Arena*);
-template<> ::com::sekirocc::feature_search::inner::AssignDBsRequest* Arena::CreateMaybeMessage<::com::sekirocc::feature_search::inner::AssignDBsRequest>(Arena*);
-template<> ::com::sekirocc::feature_search::inner::AssignDBsResponse* Arena::CreateMaybeMessage<::com::sekirocc::feature_search::inner::AssignDBsResponse>(Arena*);
+template<> ::com::sekirocc::feature_search::inner::AssignDBShardsRequest* Arena::CreateMaybeMessage<::com::sekirocc::feature_search::inner::AssignDBShardsRequest>(Arena*);
+template<> ::com::sekirocc::feature_search::inner::AssignDBShardsResponse* Arena::CreateMaybeMessage<::com::sekirocc::feature_search::inner::AssignDBShardsResponse>(Arena*);
 template<> ::com::sekirocc::feature_search::inner::BatchAddFeaturesRequest* Arena::CreateMaybeMessage<::com::sekirocc::feature_search::inner::BatchAddFeaturesRequest>(Arena*);
 template<> ::com::sekirocc::feature_search::inner::BatchAddFeaturesResponse* Arena::CreateMaybeMessage<::com::sekirocc::feature_search::inner::BatchAddFeaturesResponse>(Arena*);
 template<> ::com::sekirocc::feature_search::inner::BatchDeleteFeaturesRequest* Arena::CreateMaybeMessage<::com::sekirocc::feature_search::inner::BatchDeleteFeaturesRequest>(Arena*);
@@ -131,24 +131,24 @@ namespace inner {
 
 // ===================================================================
 
-class AssignDBsRequest final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_search.inner.AssignDBsRequest) */ {
+class AssignDBShardsRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_search.inner.AssignDBShardsRequest) */ {
  public:
-  inline AssignDBsRequest() : AssignDBsRequest(nullptr) {}
-  ~AssignDBsRequest() override;
-  explicit PROTOBUF_CONSTEXPR AssignDBsRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline AssignDBShardsRequest() : AssignDBShardsRequest(nullptr) {}
+  ~AssignDBShardsRequest() override;
+  explicit PROTOBUF_CONSTEXPR AssignDBShardsRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  AssignDBsRequest(const AssignDBsRequest& from);
-  AssignDBsRequest(AssignDBsRequest&& from) noexcept
-    : AssignDBsRequest() {
+  AssignDBShardsRequest(const AssignDBShardsRequest& from);
+  AssignDBShardsRequest(AssignDBShardsRequest&& from) noexcept
+    : AssignDBShardsRequest() {
     *this = ::std::move(from);
   }
 
-  inline AssignDBsRequest& operator=(const AssignDBsRequest& from) {
+  inline AssignDBShardsRequest& operator=(const AssignDBShardsRequest& from) {
     CopyFrom(from);
     return *this;
   }
-  inline AssignDBsRequest& operator=(AssignDBsRequest&& from) noexcept {
+  inline AssignDBShardsRequest& operator=(AssignDBShardsRequest&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -171,20 +171,20 @@ class AssignDBsRequest final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const AssignDBsRequest& default_instance() {
+  static const AssignDBShardsRequest& default_instance() {
     return *internal_default_instance();
   }
-  static inline const AssignDBsRequest* internal_default_instance() {
-    return reinterpret_cast<const AssignDBsRequest*>(
-               &_AssignDBsRequest_default_instance_);
+  static inline const AssignDBShardsRequest* internal_default_instance() {
+    return reinterpret_cast<const AssignDBShardsRequest*>(
+               &_AssignDBShardsRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     0;
 
-  friend void swap(AssignDBsRequest& a, AssignDBsRequest& b) {
+  friend void swap(AssignDBShardsRequest& a, AssignDBShardsRequest& b) {
     a.Swap(&b);
   }
-  inline void Swap(AssignDBsRequest* other) {
+  inline void Swap(AssignDBShardsRequest* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -197,7 +197,7 @@ class AssignDBsRequest final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(AssignDBsRequest* other) {
+  void UnsafeArenaSwap(AssignDBShardsRequest* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -205,14 +205,14 @@ class AssignDBsRequest final :
 
   // implements Message ----------------------------------------------
 
-  AssignDBsRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<AssignDBsRequest>(arena);
+  AssignDBShardsRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<AssignDBShardsRequest>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const AssignDBsRequest& from);
+  void CopyFrom(const AssignDBShardsRequest& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const AssignDBsRequest& from) {
-    AssignDBsRequest::MergeImpl(*this, from);
+  void MergeFrom( const AssignDBShardsRequest& from) {
+    AssignDBShardsRequest::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -230,15 +230,15 @@ class AssignDBsRequest final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(AssignDBsRequest* other);
+  void InternalSwap(AssignDBShardsRequest* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "com.sekirocc.feature_search.inner.AssignDBsRequest";
+    return "com.sekirocc.feature_search.inner.AssignDBShardsRequest";
   }
   protected:
-  explicit AssignDBsRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit AssignDBShardsRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -252,33 +252,48 @@ class AssignDBsRequest final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kDbIdsFieldNumber = 1,
+    kShardIdsFieldNumber = 2,
+    kDbIdFieldNumber = 1,
   };
-  // repeated string db_ids = 1;
-  int db_ids_size() const;
+  // repeated string shard_ids = 2;
+  int shard_ids_size() const;
   private:
-  int _internal_db_ids_size() const;
+  int _internal_shard_ids_size() const;
   public:
-  void clear_db_ids();
-  const std::string& db_ids(int index) const;
-  std::string* mutable_db_ids(int index);
-  void set_db_ids(int index, const std::string& value);
-  void set_db_ids(int index, std::string&& value);
-  void set_db_ids(int index, const char* value);
-  void set_db_ids(int index, const char* value, size_t size);
-  std::string* add_db_ids();
-  void add_db_ids(const std::string& value);
-  void add_db_ids(std::string&& value);
-  void add_db_ids(const char* value);
-  void add_db_ids(const char* value, size_t size);
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>& db_ids() const;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>* mutable_db_ids();
+  void clear_shard_ids();
+  const std::string& shard_ids(int index) const;
+  std::string* mutable_shard_ids(int index);
+  void set_shard_ids(int index, const std::string& value);
+  void set_shard_ids(int index, std::string&& value);
+  void set_shard_ids(int index, const char* value);
+  void set_shard_ids(int index, const char* value, size_t size);
+  std::string* add_shard_ids();
+  void add_shard_ids(const std::string& value);
+  void add_shard_ids(std::string&& value);
+  void add_shard_ids(const char* value);
+  void add_shard_ids(const char* value, size_t size);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>& shard_ids() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>* mutable_shard_ids();
   private:
-  const std::string& _internal_db_ids(int index) const;
-  std::string* _internal_add_db_ids();
+  const std::string& _internal_shard_ids(int index) const;
+  std::string* _internal_add_shard_ids();
   public:
 
-  // @@protoc_insertion_point(class_scope:com.sekirocc.feature_search.inner.AssignDBsRequest)
+  // string db_id = 1;
+  void clear_db_id();
+  const std::string& db_id() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_db_id(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_db_id();
+  PROTOBUF_NODISCARD std::string* release_db_id();
+  void set_allocated_db_id(std::string* db_id);
+  private:
+  const std::string& _internal_db_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_db_id(const std::string& value);
+  std::string* _internal_mutable_db_id();
+  public:
+
+  // @@protoc_insertion_point(class_scope:com.sekirocc.feature_search.inner.AssignDBShardsRequest)
  private:
   class _Internal;
 
@@ -286,7 +301,8 @@ class AssignDBsRequest final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> db_ids_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> shard_ids_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr db_id_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -294,24 +310,24 @@ class AssignDBsRequest final :
 };
 // -------------------------------------------------------------------
 
-class AssignDBsResponse final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_search.inner.AssignDBsResponse) */ {
+class AssignDBShardsResponse final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_search.inner.AssignDBShardsResponse) */ {
  public:
-  inline AssignDBsResponse() : AssignDBsResponse(nullptr) {}
-  ~AssignDBsResponse() override;
-  explicit PROTOBUF_CONSTEXPR AssignDBsResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline AssignDBShardsResponse() : AssignDBShardsResponse(nullptr) {}
+  ~AssignDBShardsResponse() override;
+  explicit PROTOBUF_CONSTEXPR AssignDBShardsResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  AssignDBsResponse(const AssignDBsResponse& from);
-  AssignDBsResponse(AssignDBsResponse&& from) noexcept
-    : AssignDBsResponse() {
+  AssignDBShardsResponse(const AssignDBShardsResponse& from);
+  AssignDBShardsResponse(AssignDBShardsResponse&& from) noexcept
+    : AssignDBShardsResponse() {
     *this = ::std::move(from);
   }
 
-  inline AssignDBsResponse& operator=(const AssignDBsResponse& from) {
+  inline AssignDBShardsResponse& operator=(const AssignDBShardsResponse& from) {
     CopyFrom(from);
     return *this;
   }
-  inline AssignDBsResponse& operator=(AssignDBsResponse&& from) noexcept {
+  inline AssignDBShardsResponse& operator=(AssignDBShardsResponse&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -334,20 +350,20 @@ class AssignDBsResponse final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const AssignDBsResponse& default_instance() {
+  static const AssignDBShardsResponse& default_instance() {
     return *internal_default_instance();
   }
-  static inline const AssignDBsResponse* internal_default_instance() {
-    return reinterpret_cast<const AssignDBsResponse*>(
-               &_AssignDBsResponse_default_instance_);
+  static inline const AssignDBShardsResponse* internal_default_instance() {
+    return reinterpret_cast<const AssignDBShardsResponse*>(
+               &_AssignDBShardsResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     1;
 
-  friend void swap(AssignDBsResponse& a, AssignDBsResponse& b) {
+  friend void swap(AssignDBShardsResponse& a, AssignDBShardsResponse& b) {
     a.Swap(&b);
   }
-  inline void Swap(AssignDBsResponse* other) {
+  inline void Swap(AssignDBShardsResponse* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -360,7 +376,7 @@ class AssignDBsResponse final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(AssignDBsResponse* other) {
+  void UnsafeArenaSwap(AssignDBShardsResponse* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -368,14 +384,14 @@ class AssignDBsResponse final :
 
   // implements Message ----------------------------------------------
 
-  AssignDBsResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<AssignDBsResponse>(arena);
+  AssignDBShardsResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<AssignDBShardsResponse>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const AssignDBsResponse& from);
+  void CopyFrom(const AssignDBShardsResponse& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const AssignDBsResponse& from) {
-    AssignDBsResponse::MergeImpl(*this, from);
+  void MergeFrom( const AssignDBShardsResponse& from) {
+    AssignDBShardsResponse::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -393,15 +409,15 @@ class AssignDBsResponse final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(AssignDBsResponse* other);
+  void InternalSwap(AssignDBShardsResponse* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "com.sekirocc.feature_search.inner.AssignDBsResponse";
+    return "com.sekirocc.feature_search.inner.AssignDBShardsResponse";
   }
   protected:
-  explicit AssignDBsResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit AssignDBShardsResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -426,7 +442,7 @@ class AssignDBsResponse final :
   void _internal_set_code(::com::sekirocc::common::ResultCode value);
   public:
 
-  // @@protoc_insertion_point(class_scope:com.sekirocc.feature_search.inner.AssignDBsResponse)
+  // @@protoc_insertion_point(class_scope:com.sekirocc.feature_search.inner.AssignDBShardsResponse)
  private:
   class _Internal;
 
@@ -2570,105 +2586,155 @@ class SearchFeatureResponse final :
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
-// AssignDBsRequest
+// AssignDBShardsRequest
 
-// repeated string db_ids = 1;
-inline int AssignDBsRequest::_internal_db_ids_size() const {
-  return _impl_.db_ids_.size();
+// string db_id = 1;
+inline void AssignDBShardsRequest::clear_db_id() {
+  _impl_.db_id_.ClearToEmpty();
 }
-inline int AssignDBsRequest::db_ids_size() const {
-  return _internal_db_ids_size();
+inline const std::string& AssignDBShardsRequest::db_id() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.inner.AssignDBShardsRequest.db_id)
+  return _internal_db_id();
 }
-inline void AssignDBsRequest::clear_db_ids() {
-  _impl_.db_ids_.Clear();
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void AssignDBShardsRequest::set_db_id(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.db_id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.inner.AssignDBShardsRequest.db_id)
 }
-inline std::string* AssignDBsRequest::add_db_ids() {
-  std::string* _s = _internal_add_db_ids();
-  // @@protoc_insertion_point(field_add_mutable:com.sekirocc.feature_search.inner.AssignDBsRequest.db_ids)
+inline std::string* AssignDBShardsRequest::mutable_db_id() {
+  std::string* _s = _internal_mutable_db_id();
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_search.inner.AssignDBShardsRequest.db_id)
   return _s;
 }
-inline const std::string& AssignDBsRequest::_internal_db_ids(int index) const {
-  return _impl_.db_ids_.Get(index);
+inline const std::string& AssignDBShardsRequest::_internal_db_id() const {
+  return _impl_.db_id_.Get();
 }
-inline const std::string& AssignDBsRequest::db_ids(int index) const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.inner.AssignDBsRequest.db_ids)
-  return _internal_db_ids(index);
+inline void AssignDBShardsRequest::_internal_set_db_id(const std::string& value) {
+  
+  _impl_.db_id_.Set(value, GetArenaForAllocation());
 }
-inline std::string* AssignDBsRequest::mutable_db_ids(int index) {
-  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_search.inner.AssignDBsRequest.db_ids)
-  return _impl_.db_ids_.Mutable(index);
+inline std::string* AssignDBShardsRequest::_internal_mutable_db_id() {
+  
+  return _impl_.db_id_.Mutable(GetArenaForAllocation());
 }
-inline void AssignDBsRequest::set_db_ids(int index, const std::string& value) {
-  _impl_.db_ids_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.inner.AssignDBsRequest.db_ids)
+inline std::string* AssignDBShardsRequest::release_db_id() {
+  // @@protoc_insertion_point(field_release:com.sekirocc.feature_search.inner.AssignDBShardsRequest.db_id)
+  return _impl_.db_id_.Release();
 }
-inline void AssignDBsRequest::set_db_ids(int index, std::string&& value) {
-  _impl_.db_ids_.Mutable(index)->assign(std::move(value));
-  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.inner.AssignDBsRequest.db_ids)
+inline void AssignDBShardsRequest::set_allocated_db_id(std::string* db_id) {
+  if (db_id != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.db_id_.SetAllocated(db_id, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.db_id_.IsDefault()) {
+    _impl_.db_id_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.feature_search.inner.AssignDBShardsRequest.db_id)
 }
-inline void AssignDBsRequest::set_db_ids(int index, const char* value) {
+
+// repeated string shard_ids = 2;
+inline int AssignDBShardsRequest::_internal_shard_ids_size() const {
+  return _impl_.shard_ids_.size();
+}
+inline int AssignDBShardsRequest::shard_ids_size() const {
+  return _internal_shard_ids_size();
+}
+inline void AssignDBShardsRequest::clear_shard_ids() {
+  _impl_.shard_ids_.Clear();
+}
+inline std::string* AssignDBShardsRequest::add_shard_ids() {
+  std::string* _s = _internal_add_shard_ids();
+  // @@protoc_insertion_point(field_add_mutable:com.sekirocc.feature_search.inner.AssignDBShardsRequest.shard_ids)
+  return _s;
+}
+inline const std::string& AssignDBShardsRequest::_internal_shard_ids(int index) const {
+  return _impl_.shard_ids_.Get(index);
+}
+inline const std::string& AssignDBShardsRequest::shard_ids(int index) const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.inner.AssignDBShardsRequest.shard_ids)
+  return _internal_shard_ids(index);
+}
+inline std::string* AssignDBShardsRequest::mutable_shard_ids(int index) {
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_search.inner.AssignDBShardsRequest.shard_ids)
+  return _impl_.shard_ids_.Mutable(index);
+}
+inline void AssignDBShardsRequest::set_shard_ids(int index, const std::string& value) {
+  _impl_.shard_ids_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.inner.AssignDBShardsRequest.shard_ids)
+}
+inline void AssignDBShardsRequest::set_shard_ids(int index, std::string&& value) {
+  _impl_.shard_ids_.Mutable(index)->assign(std::move(value));
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.inner.AssignDBShardsRequest.shard_ids)
+}
+inline void AssignDBShardsRequest::set_shard_ids(int index, const char* value) {
   GOOGLE_DCHECK(value != nullptr);
-  _impl_.db_ids_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set_char:com.sekirocc.feature_search.inner.AssignDBsRequest.db_ids)
+  _impl_.shard_ids_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:com.sekirocc.feature_search.inner.AssignDBShardsRequest.shard_ids)
 }
-inline void AssignDBsRequest::set_db_ids(int index, const char* value, size_t size) {
-  _impl_.db_ids_.Mutable(index)->assign(
+inline void AssignDBShardsRequest::set_shard_ids(int index, const char* value, size_t size) {
+  _impl_.shard_ids_.Mutable(index)->assign(
     reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:com.sekirocc.feature_search.inner.AssignDBsRequest.db_ids)
+  // @@protoc_insertion_point(field_set_pointer:com.sekirocc.feature_search.inner.AssignDBShardsRequest.shard_ids)
 }
-inline std::string* AssignDBsRequest::_internal_add_db_ids() {
-  return _impl_.db_ids_.Add();
+inline std::string* AssignDBShardsRequest::_internal_add_shard_ids() {
+  return _impl_.shard_ids_.Add();
 }
-inline void AssignDBsRequest::add_db_ids(const std::string& value) {
-  _impl_.db_ids_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add:com.sekirocc.feature_search.inner.AssignDBsRequest.db_ids)
+inline void AssignDBShardsRequest::add_shard_ids(const std::string& value) {
+  _impl_.shard_ids_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:com.sekirocc.feature_search.inner.AssignDBShardsRequest.shard_ids)
 }
-inline void AssignDBsRequest::add_db_ids(std::string&& value) {
-  _impl_.db_ids_.Add(std::move(value));
-  // @@protoc_insertion_point(field_add:com.sekirocc.feature_search.inner.AssignDBsRequest.db_ids)
+inline void AssignDBShardsRequest::add_shard_ids(std::string&& value) {
+  _impl_.shard_ids_.Add(std::move(value));
+  // @@protoc_insertion_point(field_add:com.sekirocc.feature_search.inner.AssignDBShardsRequest.shard_ids)
 }
-inline void AssignDBsRequest::add_db_ids(const char* value) {
+inline void AssignDBShardsRequest::add_shard_ids(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
-  _impl_.db_ids_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add_char:com.sekirocc.feature_search.inner.AssignDBsRequest.db_ids)
+  _impl_.shard_ids_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:com.sekirocc.feature_search.inner.AssignDBShardsRequest.shard_ids)
 }
-inline void AssignDBsRequest::add_db_ids(const char* value, size_t size) {
-  _impl_.db_ids_.Add()->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_add_pointer:com.sekirocc.feature_search.inner.AssignDBsRequest.db_ids)
+inline void AssignDBShardsRequest::add_shard_ids(const char* value, size_t size) {
+  _impl_.shard_ids_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:com.sekirocc.feature_search.inner.AssignDBShardsRequest.shard_ids)
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>&
-AssignDBsRequest::db_ids() const {
-  // @@protoc_insertion_point(field_list:com.sekirocc.feature_search.inner.AssignDBsRequest.db_ids)
-  return _impl_.db_ids_;
+AssignDBShardsRequest::shard_ids() const {
+  // @@protoc_insertion_point(field_list:com.sekirocc.feature_search.inner.AssignDBShardsRequest.shard_ids)
+  return _impl_.shard_ids_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>*
-AssignDBsRequest::mutable_db_ids() {
-  // @@protoc_insertion_point(field_mutable_list:com.sekirocc.feature_search.inner.AssignDBsRequest.db_ids)
-  return &_impl_.db_ids_;
+AssignDBShardsRequest::mutable_shard_ids() {
+  // @@protoc_insertion_point(field_mutable_list:com.sekirocc.feature_search.inner.AssignDBShardsRequest.shard_ids)
+  return &_impl_.shard_ids_;
 }
 
 // -------------------------------------------------------------------
 
-// AssignDBsResponse
+// AssignDBShardsResponse
 
 // .com.sekirocc.common.ResultCode code = 1;
-inline void AssignDBsResponse::clear_code() {
+inline void AssignDBShardsResponse::clear_code() {
   _impl_.code_ = 0;
 }
-inline ::com::sekirocc::common::ResultCode AssignDBsResponse::_internal_code() const {
+inline ::com::sekirocc::common::ResultCode AssignDBShardsResponse::_internal_code() const {
   return static_cast< ::com::sekirocc::common::ResultCode >(_impl_.code_);
 }
-inline ::com::sekirocc::common::ResultCode AssignDBsResponse::code() const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.inner.AssignDBsResponse.code)
+inline ::com::sekirocc::common::ResultCode AssignDBShardsResponse::code() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.inner.AssignDBShardsResponse.code)
   return _internal_code();
 }
-inline void AssignDBsResponse::_internal_set_code(::com::sekirocc::common::ResultCode value) {
+inline void AssignDBShardsResponse::_internal_set_code(::com::sekirocc::common::ResultCode value) {
   
   _impl_.code_ = value;
 }
-inline void AssignDBsResponse::set_code(::com::sekirocc::common::ResultCode value) {
+inline void AssignDBShardsResponse::set_code(::com::sekirocc::common::ResultCode value) {
   _internal_set_code(value);
-  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.inner.AssignDBsResponse.code)
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.inner.AssignDBShardsResponse.code)
 }
 
 // -------------------------------------------------------------------

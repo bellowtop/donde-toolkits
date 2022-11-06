@@ -91,7 +91,7 @@ message SearchFeatureResponse {
 }
 
 // feature search service
-service FeatureSearch {
+service FeatureSearchManager {
 
     rpc DBNew(DBNewRequest) returns (DBNewResponse) {
         option (google.api.http) = {

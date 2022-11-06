@@ -65,8 +65,9 @@ void FeatureSearchWorkerImpl::Start() { searcher->Init(); };
 
 void FeatureSearchWorkerImpl::Stop() { searcher->Terminate(); };
 
-Status FeatureSearchWorkerImpl::AssignDBs(ServerContext* context, const AssignDBsRequest* request,
-                                          AssignDBsResponse* response) {
+Status FeatureSearchWorkerImpl::AssignDBShards(ServerContext* context,
+                                               const AssignDBShardsRequest* request,
+                                               AssignDBShardsResponse* response) {
     return Status::OK;
 };
 

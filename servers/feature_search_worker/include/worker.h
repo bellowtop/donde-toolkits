@@ -18,13 +18,13 @@
 
 using namespace std;
 
-using com::sekirocc::feature_search::inner::AssignDBsRequest;
-using com::sekirocc::feature_search::inner::AssignDBsResponse;
+using com::sekirocc::feature_search::inner::AssignDBShardsRequest;
+using com::sekirocc::feature_search::inner::AssignDBShardsResponse;
 using com::sekirocc::feature_search::inner::BatchAddFeaturesRequest;
 using com::sekirocc::feature_search::inner::BatchAddFeaturesResponse;
 using com::sekirocc::feature_search::inner::BatchDeleteFeaturesRequest;
 using com::sekirocc::feature_search::inner::BatchDeleteFeaturesResponse;
-using com::sekirocc::feature_search::inner::FeatureSearch;
+using com::sekirocc::feature_search::inner::FeatureSearchWorker;
 using com::sekirocc::feature_search::inner::GetSystemInfoRequest;
 using com::sekirocc::feature_search::inner::GetSystemInfoResponse;
 using com::sekirocc::feature_search::inner::SearchFeatureRequest;
@@ -35,7 +35,7 @@ using com::sekirocc::feature_search::inner::TrainIndexResponse;
 using grpc::ServerContext;
 using grpc::Status;
 
-class FeatureSearchWorkerImpl final : public FeatureSearch::Service {
+class FeatureSearchWorkerImpl final : public FeatureSearchWorker::Service {
   public:
     FeatureSearchWorkerImpl(Config& server_config);
     ~FeatureSearchWorkerImpl();
@@ -43,8 +43,8 @@ class FeatureSearchWorkerImpl final : public FeatureSearch::Service {
     void Start();
     void Stop();
 
-    Status AssignDBs(ServerContext* context, const AssignDBsRequest* request,
-                     AssignDBsResponse* response) override;
+    Status AssignDBShards(ServerContext* context, const AssignDBShardsRequest* request,
+                          AssignDBShardsResponse* response) override;
 
     Status GetSystemInfo(ServerContext* context, const GetSystemInfoRequest* request,
                          GetSystemInfoResponse* response) override;

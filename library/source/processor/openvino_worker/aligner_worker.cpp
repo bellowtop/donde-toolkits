@@ -60,7 +60,7 @@ void AlignerWorker::run() {
                 if (input.valueType != ValueLandmarksResult) {
                     _logger->error("AlignerWorker input value is not a ValueLandmarksResult! wrong "
                                    "valueType: {}",
-                                   format(input.valueType));
+                                   format_value_type(input.valueType));
                     continue;
                 }
                 std::shared_ptr<LandmarksResult> landmarks_result

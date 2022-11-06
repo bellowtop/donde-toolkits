@@ -3,9 +3,9 @@
 #include "Poco/Notification.h"
 #include "Poco/NotificationQueue.h"
 #include "concurrent_processor.h"
-#include "openvino_worker/workers.h"
 #include "opencv2/opencv.hpp"
 #include "openvino/openvino.hpp"
+#include "openvino_worker/workers.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
 #include "types.h"
@@ -130,7 +130,7 @@ void FeatureWorker::run() {
                 if (input.valueType != ValueAlignerResult) {
                     _logger->error("FeatureWorker input value is not a ValueAlignerResult! wrong "
                                    "valueType: {}",
-                                   format(input.valueType));
+                                   format_value_type(input.valueType));
                     continue;
                 }
                 std::shared_ptr<AlignerResult> aligner_result

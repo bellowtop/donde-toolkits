@@ -3,10 +3,9 @@
 #include "Poco/Notification.h"
 #include "Poco/NotificationQueue.h"
 #include "concurrent_processor.h"
-#include "openvino_worker/workers.h"
-
 #include "opencv2/opencv.hpp"
 #include "openvino/openvino.hpp"
+#include "openvino_worker/workers.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
 #include "types.h"
@@ -137,7 +136,7 @@ void LandmarksWorker::run() {
                 if (input.valueType != ValueDetectResult) {
                     _logger->error("LandmarksWorker input value is not a ValueDetectResult! wrong "
                                    "valueType: {}",
-                                   format(input.valueType));
+                                   format_value_type(input.valueType));
                     continue;
                 }
                 std::shared_ptr<DetectResult> detect_result

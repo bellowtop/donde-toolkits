@@ -554,32 +554,32 @@ const char descriptor_table_protodef_feature_5fsearch_2eproto[] PROTOBUF_SECTION
   "e\030\003 \001(\002\"\203\001\n\025SearchFeatureResponse\022-\n\004cod"
   "e\030\001 \001(\0162\037.com.sekirocc.common.ResultCode"
   "\022;\n\005items\030\002 \003(\0132,.com.sekirocc.feature_s"
-  "earch.SearchItemScore2\242\007\n\rFeatureSearch\022"
-  "r\n\005DBNew\022).com.sekirocc.feature_search.D"
-  "BNewRequest\032*.com.sekirocc.feature_searc"
-  "h.DBNewResponse\"\022\202\323\344\223\002\014\"\007/db_new:\001*\022v\n\006D"
-  "BList\022*.com.sekirocc.feature_search.DBLi"
-  "stRequest\032+.com.sekirocc.feature_search."
-  "DBListResponse\"\023\202\323\344\223\002\r\"\010/db_list:\001*\022r\n\005D"
-  "BGet\022).com.sekirocc.feature_search.DBGet"
-  "Request\032*.com.sekirocc.feature_search.DB"
-  "GetResponse\"\022\202\323\344\223\002\014\"\007/db_get:\001*\022~\n\010DBDel"
-  "ete\022,.com.sekirocc.feature_search.DBDele"
-  "teRequest\032-.com.sekirocc.feature_search."
-  "DBDeleteResponse\"\025\202\323\344\223\002\017\"\n/db_delete:\001*\022"
-  "\206\001\n\nAddFeature\022..com.sekirocc.feature_se"
-  "arch.AddFeatureRequest\032/.com.sekirocc.fe"
-  "ature_search.AddFeatureResponse\"\027\202\323\344\223\002\021\""
-  "\014/add_feature:\001*\022\222\001\n\rDeleteFeature\0221.com"
-  ".sekirocc.feature_search.DeleteFeatureRe"
-  "quest\0322.com.sekirocc.feature_search.Dele"
-  "teFeatureResponse\"\032\202\323\344\223\002\024\"\017/delete_featu"
-  "re:\001*\022\222\001\n\rSearchFeature\0221.com.sekirocc.f"
-  "eature_search.SearchFeatureRequest\0322.com"
-  ".sekirocc.feature_search.SearchFeatureRe"
-  "sponse\"\032\202\323\344\223\002\024\"\017/search_feature:\001*B=Z;gi"
-  "thub.com/sekirocc/face-recognition-servi"
-  "ce/feature_searchb\006proto3"
+  "earch.SearchItemScore2\251\007\n\024FeatureSearchM"
+  "anager\022r\n\005DBNew\022).com.sekirocc.feature_s"
+  "earch.DBNewRequest\032*.com.sekirocc.featur"
+  "e_search.DBNewResponse\"\022\202\323\344\223\002\014\"\007/db_new:"
+  "\001*\022v\n\006DBList\022*.com.sekirocc.feature_sear"
+  "ch.DBListRequest\032+.com.sekirocc.feature_"
+  "search.DBListResponse\"\023\202\323\344\223\002\r\"\010/db_list:"
+  "\001*\022r\n\005DBGet\022).com.sekirocc.feature_searc"
+  "h.DBGetRequest\032*.com.sekirocc.feature_se"
+  "arch.DBGetResponse\"\022\202\323\344\223\002\014\"\007/db_get:\001*\022~"
+  "\n\010DBDelete\022,.com.sekirocc.feature_search"
+  ".DBDeleteRequest\032-.com.sekirocc.feature_"
+  "search.DBDeleteResponse\"\025\202\323\344\223\002\017\"\n/db_del"
+  "ete:\001*\022\206\001\n\nAddFeature\022..com.sekirocc.fea"
+  "ture_search.AddFeatureRequest\032/.com.seki"
+  "rocc.feature_search.AddFeatureResponse\"\027"
+  "\202\323\344\223\002\021\"\014/add_feature:\001*\022\222\001\n\rDeleteFeatur"
+  "e\0221.com.sekirocc.feature_search.DeleteFe"
+  "atureRequest\0322.com.sekirocc.feature_sear"
+  "ch.DeleteFeatureResponse\"\032\202\323\344\223\002\024\"\017/delet"
+  "e_feature:\001*\022\222\001\n\rSearchFeature\0221.com.sek"
+  "irocc.feature_search.SearchFeatureReques"
+  "t\0322.com.sekirocc.feature_search.SearchFe"
+  "atureResponse\"\032\202\323\344\223\002\024\"\017/search_feature:\001"
+  "*B=Z;github.com/sekirocc/face-recognitio"
+  "n-service/feature_searchb\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_feature_5fsearch_2eproto_deps[2] = {
   &::descriptor_table_common_2eproto,
@@ -587,7 +587,7 @@ static const ::_pbi::DescriptorTable* const descriptor_table_feature_5fsearch_2e
 };
 static ::_pbi::once_flag descriptor_table_feature_5fsearch_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_feature_5fsearch_2eproto = {
-    false, false, 2665, descriptor_table_protodef_feature_5fsearch_2eproto,
+    false, false, 2672, descriptor_table_protodef_feature_5fsearch_2eproto,
     "feature_search.proto",
     &descriptor_table_feature_5fsearch_2eproto_once, descriptor_table_feature_5fsearch_2eproto_deps, 2, 20,
     schemas, file_default_instances, TableStruct_feature_5fsearch_2eproto::offsets,

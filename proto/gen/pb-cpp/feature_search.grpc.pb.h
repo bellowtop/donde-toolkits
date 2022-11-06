@@ -30,10 +30,10 @@ namespace sekirocc {
 namespace feature_search {
 
 // feature search service
-class FeatureSearch final {
+class FeatureSearchManager final {
  public:
   static constexpr char const* service_full_name() {
-    return "com.sekirocc.feature_search.FeatureSearch";
+    return "com.sekirocc.feature_search.FeatureSearchManager";
   }
   class StubInterface {
    public:
