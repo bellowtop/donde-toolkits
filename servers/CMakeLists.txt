@@ -22,6 +22,7 @@ CPMAddPackage(NAME FeatureProtos SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/../proto)
 
 include(../build/conanbuildinfo.cmake)
 conan_basic_setup(TARGETS)
+
 include_directories(${CONAN_INCLUDE_DIRS})
 
 # ----- openvino library ----

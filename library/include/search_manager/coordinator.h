@@ -4,8 +4,8 @@
 #include "search/db_searcher.h"
 #include "search/definitions.h"
 #include "search/impl/cassandra_driver.h"
-#include "shard_manager.h"
-#include "worker_client.h"
+#include "search_manager/shard_manager.h"
+#include "search_manager/worker_client.h"
 
 // #include "spdlog/spdlog.h"
 

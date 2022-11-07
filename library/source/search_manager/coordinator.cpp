@@ -1,11 +1,11 @@
-#include "coordinator.h"
+#include "search_manager/coordinator.h"
 
 #include "fmt/format.h"
-#include "gen/pb-cpp/feature_search_inner.grpc.pb.h"
 #include "search/definitions.h"
-#include "shard_manager.h"
+#include "search/impl/simple_driver.h"
+#include "search_manager/shard_manager.h"
+#include "search_manager/worker_client.h"
 #include "types.h"
-#include "worker_client.h"
 
 #include <exception>
 #include <memory>
@@ -25,8 +25,7 @@ Coordinator::Coordinator(const json& coor_config) : config(coor_config) {
     }
 
     // if (driver_type == search::SEARCH_DRIVER_CASSANDRA) {
-    _driver
-        = std::make_shared<search::CassandraDriver>((std::string)coor_config["cassandra"]["addr"]);
+    _driver = std::make_shared<search::SimpleDriver>((std::string)coor_config["cassandra"]["addr"]);
     // }
 
     _shard_manager = std::make_shared<ShardManager>(*(_driver.get()));

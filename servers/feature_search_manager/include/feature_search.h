@@ -6,8 +6,8 @@
 #include "config.h"
 #include "gen/pb-cpp/feature_search.grpc.pb.h"
 #include "search/db_searcher.h"
-#include "shard_manager.h"
-#include "worker_client.h"
+#include "search_manager/shard_manager.h"
+#include "search_manager/worker_client.h"
 
 // #include "spdlog/spdlog.h"
 

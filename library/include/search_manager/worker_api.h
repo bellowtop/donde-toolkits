@@ -10,13 +10,13 @@ class Worker {
   public:
     virtual std::string GetWorkerID() = 0;
 
+    // CloseShard close db_id/shard_id.
+    virtual RetCode CloseShard(const std::string& db_id, const std::string& shard_id) = 0;
+
     // AddFeatures to db_id/shard_id.
     virtual RetCode AddFeatures(const std::string& db_id, const std::string& shard_id,
                                 const std::vector<Feature>& fts)
         = 0;
-
-    // CloseShard close db_id/shard_id.
-    virtual RetCode CloseShard(const std::string& db_id, const std::string& shard_id) = 0;
 
     // Search feature in the worker. worker can have multiple dbs, multiple shards.
     // only search in the requested db.

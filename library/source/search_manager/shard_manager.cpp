@@ -1,7 +1,10 @@
-#include "shard_manager.h"
+#include "search_manager/shard_manager.h"
 
 #include "search/definitions.h"
+#include "types.h"
 #include "utils.h"
+
+#include <spdlog/spdlog.h>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Shard
@@ -20,7 +23,8 @@ RetCode Shard::AssignWorker(Worker* worker) {
 // AddFeatures to this shard, delegate to worker client to do the actual storage.
 RetCode Shard::AddFeatures(std::vector<Feature> fts) {
     if (_worker == nullptr) {
-        throw "shard has no worker, AssignWorker first.";
+        spdlog::error("shard has no worker, AssignWorker first.");
+        return RetCode::RET_ERR;
     }
     // delegate to worker.
     _worker->AddFeatures(_db_id, _shard_id, fts);
