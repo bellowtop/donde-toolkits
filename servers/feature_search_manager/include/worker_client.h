@@ -16,6 +16,9 @@ class WorkerClient : public Worker {
 
     inline std::string GetWorkerID() { return _worker_id; };
 
+    // CloseShard close db_id/shard_id.
+    RetCode CloseShard(const std::string& db_id, const std::string& shard_id);
+
     // WorkerAPI implement
     RetCode AddFeatures(const std::string& db_id, const std::string& shard_id,
                         const std::vector<Feature>& fts);

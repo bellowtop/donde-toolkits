@@ -61,7 +61,7 @@ namespace search {
         }
     };
 
-    std::string CassandraDriver::CreateDB(DBItem& info) {
+    std::string CassandraDriver::CreateDB(const DBItem& info) {
         // expire cache.
         _cached_db_items = {};
 
@@ -98,6 +98,12 @@ namespace search {
         delete_user_db(db_id);
 
         return RetCode::RET_OK;
+    };
+
+    std::vector<DBShard> CassandraDriver::ListShards(const std::string& db_id) { return {}; };
+
+    std::string CassandraDriver::CreateShard(const std::string& db_id, const DBShard& shard) {
+        return {};
     };
 
     PageData<FeatureDbItemList> CassandraDriver::ListFeatures(const std::string& db_id, uint page,
@@ -347,6 +353,63 @@ namespace search {
 
         return RetCode::RET_OK;
     };
+
+    RetCode CassandraDriver::insert_into_db_shards(const std::string& db_id,
+                                                   const std::string& shard_id, uint64 capacity) {
+        try {
+            std::string sql("insert into db_shards(db_id, shard_id, capacity, is_closed, "
+                            "created_at) values (?, ?, ?, ?, ?);");
+
+            time_t now = time(nullptr);
+
+            SQLite::Statement query(*db, sql);
+
+            query.bind(1, db_id);
+            query.bind(2, shard_id);
+            query.bind(3, int64(capacity));
+
+            // sqlite3 treat boolean as int, so 0 is false.
+            query.bind(4, 0);
+            query.bind(5, int64(now));
+
+            query.exec();
+        } catch (std::exception& exc) {
+            spdlog::error("cannot insert into dbs table, exc: {}", exc.what());
+            return RetCode::RET_ERR;
+        }
+
+        return RetCode::RET_OK;
+    };
+
+    std::vector<DBShard> CassandraDriver::list_db_shards(const std::string& db_id) {
+        std::vector<DBShard> shards;
+
+        try {
+            std::string sql("select db_id, shard_id, capacity, is_closed from db_shards;");
+
+            SQLite::Statement query(*db, sql);
+            while (query.executeStep()) {
+                std::string db_id = query.getColumn(0).getString();
+                std::string shard_id = query.getColumn(1).getText();
+                // type convert, int64 => uint64, because we are sure that capacity will not
+                // exceed int64, so that's fine
+                uint64 capacity = query.getColumn(2).getInt64();
+                // sqlite3 treat boolean as int
+                bool is_closed = query.getColumn(3).getInt() == 1;
+
+                shards.push_back(DBShard{
+                    .db_id = db_id,
+                    .shard_id = shard_id,
+                    .capacity = capacity,
+                    .is_closed = is_closed,
+                });
+            }
+        } catch (std::exception& exc) {
+            spdlog::error("cannot select from dbs table: {}", exc.what());
+        }
+
+        return shards;
+    }
 
     ///
     /// Features management

@@ -37,6 +37,9 @@ namespace search {
     struct DBShard {
         std::string db_id;
         std::string shard_id;
+        uint64 capacity;
+        uint64 used;
+        bool is_closed;
     };
 
     using DBItemPtr = shared_ptr<DBItem>;

@@ -16,6 +16,7 @@ using namespace std;
 
 using WorkerPtr = shared_ptr<Worker>;
 
+// Coordinator & Reducer
 class Coordinator {
   public:
     Coordinator(const json& coor_config);
@@ -25,9 +26,9 @@ class Coordinator {
 
     void Stop();
 
-    std::vector<WorkerPtr> ListWorkers();
+    // std::vector<WorkerPtr> ListWorkers();
 
-    std::vector<std::shared_ptr<search::DBItem>> ListUserDBs();
+    std::vector<search::DBItem> ListUserDBs();
 
     // AddFeatures to this db, we need find proper shard to store these fts.
     RetCode AddFeatures(const std::string& db_id, const std::vector<Feature>& fts);
@@ -40,7 +41,7 @@ class Coordinator {
 
   private:
     RetCode initialize_workers();
-    RetCode initialize_shards();
+    Worker* find_worker_for_shard();
 
   private:
     const json& config;

@@ -47,13 +47,18 @@ namespace search {
 
         RetCode Init(const std::vector<std::string>& initial_db_ids) override;
 
-        std::string CreateDB(DBItem& info) override;
+        std::string CreateDB(const DBItem& info) override;
 
         DBItem FindDB(const std::string& db_id) override;
 
         std::vector<DBItem> ListDBs() override;
 
         RetCode DeleteDB(std::string db_id) override;
+
+        // Shard management
+        std::vector<DBShard> ListShards(const std::string& db_id) override;
+
+        std::string CreateShard(const std::string& db_id, const DBShard& shard) override;
 
         PageData<FeatureDbItemList> ListFeatures(const std::string& db_id, uint page,
                                                  uint perPage) override;
@@ -94,6 +99,14 @@ namespace search {
 
         RetCode delete_user_db(const std::string& db_id);
 
+        ///
+        /// Shards management
+        ///
+
+        RetCode insert_into_db_shards(const std::string& db_id, const std::string& shard_id,
+                                      uint64 capacity);
+
+        std::vector<DBShard> list_db_shards(const std::string& db_id);
         ///
         /// Features management
         ///

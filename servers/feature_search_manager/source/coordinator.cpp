@@ -4,6 +4,7 @@
 #include "gen/pb-cpp/feature_search_inner.grpc.pb.h"
 #include "search/definitions.h"
 #include "shard_manager.h"
+#include "types.h"
 #include "worker_client.h"
 
 #include <exception>
@@ -35,12 +36,7 @@ Coordinator::Coordinator(const json& coor_config) : config(coor_config) {
 
 Coordinator::~Coordinator(){};
 
-void Coordinator::Start() {
-
-    initialize_workers();
-
-    initialize_shards();
-};
+void Coordinator::Start() { initialize_workers(); };
 
 void Coordinator::Stop(){};
 
@@ -65,20 +61,20 @@ RetCode Coordinator::initialize_workers() {
     return {};
 };
 
-RetCode Coordinator::initialize_shards() {
-    _shard_manager->LoadShards();
-
-    return {};
-};
-
-std::vector<WorkerPtr> Coordinator::ListWorkers() { return _workers; };
-
-std::vector<std::shared_ptr<search::DBItem>> Coordinator::ListUserDBs() {
-    return _shard_manager->ListUserDBs();
-};
-
 // AddFeatures to this db, we need find proper shard to store these fts.
 RetCode Coordinator::AddFeatures(const std::string& db_id, const std::vector<Feature>& fts) {
+    Shard* shard = _shard_manager->FindOrCreateWritableShard(db_id);
+    if (!shard->HasWorker()) {
+        Worker* worker = find_worker_for_shard();
+        if (worker == nullptr) {
+            spdlog::error("cannot find a worker for shard: {}", shard->GetShardID());
+            return RetCode::RET_ERR;
+        }
+        shard->AssignWorker(worker);
+    }
+
+    shard->AddFeatures(fts);
+
     return {};
 };
 
@@ -92,3 +88,5 @@ std::vector<Feature> Coordinator::SearchFeatureInTimePeriod(const std::string& d
                                                             const Feature& query, int topk) {
     return {};
 };
+
+Worker* Coordinator::find_worker_for_shard() { return {}; };

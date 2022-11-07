@@ -23,13 +23,20 @@ namespace search {
         virtual RetCode Init(const std::vector<std::string>& initial_db_ids) = 0;
 
         // DB management
-        virtual std::string CreateDB(DBItem& info) = 0;
+        virtual std::string CreateDB(const DBItem& info) = 0;
 
         virtual DBItem FindDB(const std::string& db_id) = 0;
 
         virtual std::vector<DBItem> ListDBs() = 0;
 
         virtual RetCode DeleteDB(std::string db_id) = 0;
+
+        // Shard Management
+        virtual std::vector<DBShard> ListShards(const std::string& db_id) = 0;
+
+        virtual std::string CreateShard(const std::string& db_id, const DBShard& shard) = 0;
+
+        virtual std::string CloseShard(const std::string& db_id, const std::string& shard_id) = 0;
 
         // Feature management
         virtual PageData<FeatureDbItemList> ListFeatures(const std::string& db_id, uint start,
