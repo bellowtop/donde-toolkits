@@ -62,21 +62,24 @@ struct GetSystemInfoRequestDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetSystemInfoRequestDefaultTypeInternal _GetSystemInfoRequest_default_instance_;
-PROTOBUF_CONSTEXPR WorkerMetrics::WorkerMetrics(
-    ::_pbi::ConstantInitialized) {}
-struct WorkerMetricsDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR WorkerMetricsDefaultTypeInternal()
+PROTOBUF_CONSTEXPR WorkerInfo::WorkerInfo(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.device_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.capacity_)*/int64_t{0}
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct WorkerInfoDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR WorkerInfoDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
-  ~WorkerMetricsDefaultTypeInternal() {}
+  ~WorkerInfoDefaultTypeInternal() {}
   union {
-    WorkerMetrics _instance;
+    WorkerInfo _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 WorkerMetricsDefaultTypeInternal _WorkerMetrics_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 WorkerInfoDefaultTypeInternal _WorkerInfo_default_instance_;
 PROTOBUF_CONSTEXPR GetSystemInfoResponse::GetSystemInfoResponse(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.dbs_)*/{}
-  , /*decltype(_impl_.metrics_)*/nullptr
+  , /*decltype(_impl_.worker_info_)*/nullptr
   , /*decltype(_impl_.code_)*/0
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct GetSystemInfoResponseDefaultTypeInternal {
@@ -267,11 +270,13 @@ const uint32_t TableStruct_feature_5fsearch_5finner_2eproto::offsets[] PROTOBUF_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::WorkerMetrics, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::WorkerInfo, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::WorkerInfo, _impl_.capacity_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::WorkerInfo, _impl_.device_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::GetSystemInfoResponse, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -280,7 +285,7 @@ const uint32_t TableStruct_feature_5fsearch_5finner_2eproto::offsets[] PROTOBUF_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::GetSystemInfoResponse, _impl_.code_),
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::GetSystemInfoResponse, _impl_.dbs_),
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::GetSystemInfoResponse, _impl_.metrics_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::GetSystemInfoResponse, _impl_.worker_info_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::TrainIndexRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -374,26 +379,26 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 0, -1, -1, sizeof(::com::sekirocc::feature_search::inner::AssignDBShardsRequest)},
   { 8, -1, -1, sizeof(::com::sekirocc::feature_search::inner::AssignDBShardsResponse)},
   { 15, -1, -1, sizeof(::com::sekirocc::feature_search::inner::GetSystemInfoRequest)},
-  { 21, -1, -1, sizeof(::com::sekirocc::feature_search::inner::WorkerMetrics)},
-  { 27, -1, -1, sizeof(::com::sekirocc::feature_search::inner::GetSystemInfoResponse)},
-  { 36, -1, -1, sizeof(::com::sekirocc::feature_search::inner::TrainIndexRequest)},
-  { 42, -1, -1, sizeof(::com::sekirocc::feature_search::inner::TrainIndexResponse)},
-  { 49, 57, -1, sizeof(::com::sekirocc::feature_search::inner::AddFeatureItem_MetaEntry_DoNotUse)},
-  { 59, -1, -1, sizeof(::com::sekirocc::feature_search::inner::AddFeatureItem)},
-  { 67, -1, -1, sizeof(::com::sekirocc::feature_search::inner::BatchAddFeaturesRequest)},
-  { 75, -1, -1, sizeof(::com::sekirocc::feature_search::inner::BatchAddFeaturesResponse)},
-  { 83, -1, -1, sizeof(::com::sekirocc::feature_search::inner::BatchDeleteFeaturesRequest)},
-  { 91, -1, -1, sizeof(::com::sekirocc::feature_search::inner::BatchDeleteFeaturesResponse)},
-  { 98, -1, -1, sizeof(::com::sekirocc::feature_search::inner::SearchFeatureRequest)},
-  { 107, -1, -1, sizeof(::com::sekirocc::feature_search::inner::SearchItemScore)},
-  { 116, -1, -1, sizeof(::com::sekirocc::feature_search::inner::SearchFeatureResponse)},
+  { 21, -1, -1, sizeof(::com::sekirocc::feature_search::inner::WorkerInfo)},
+  { 29, -1, -1, sizeof(::com::sekirocc::feature_search::inner::GetSystemInfoResponse)},
+  { 38, -1, -1, sizeof(::com::sekirocc::feature_search::inner::TrainIndexRequest)},
+  { 44, -1, -1, sizeof(::com::sekirocc::feature_search::inner::TrainIndexResponse)},
+  { 51, 59, -1, sizeof(::com::sekirocc::feature_search::inner::AddFeatureItem_MetaEntry_DoNotUse)},
+  { 61, -1, -1, sizeof(::com::sekirocc::feature_search::inner::AddFeatureItem)},
+  { 69, -1, -1, sizeof(::com::sekirocc::feature_search::inner::BatchAddFeaturesRequest)},
+  { 77, -1, -1, sizeof(::com::sekirocc::feature_search::inner::BatchAddFeaturesResponse)},
+  { 85, -1, -1, sizeof(::com::sekirocc::feature_search::inner::BatchDeleteFeaturesRequest)},
+  { 93, -1, -1, sizeof(::com::sekirocc::feature_search::inner::BatchDeleteFeaturesResponse)},
+  { 100, -1, -1, sizeof(::com::sekirocc::feature_search::inner::SearchFeatureRequest)},
+  { 109, -1, -1, sizeof(::com::sekirocc::feature_search::inner::SearchItemScore)},
+  { 118, -1, -1, sizeof(::com::sekirocc::feature_search::inner::SearchFeatureResponse)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
   &::com::sekirocc::feature_search::inner::_AssignDBShardsRequest_default_instance_._instance,
   &::com::sekirocc::feature_search::inner::_AssignDBShardsResponse_default_instance_._instance,
   &::com::sekirocc::feature_search::inner::_GetSystemInfoRequest_default_instance_._instance,
-  &::com::sekirocc::feature_search::inner::_WorkerMetrics_default_instance_._instance,
+  &::com::sekirocc::feature_search::inner::_WorkerInfo_default_instance_._instance,
   &::com::sekirocc::feature_search::inner::_GetSystemInfoResponse_default_instance_._instance,
   &::com::sekirocc::feature_search::inner::_TrainIndexRequest_default_instance_._instance,
   &::com::sekirocc::feature_search::inner::_TrainIndexResponse_default_instance_._instance,
@@ -415,64 +420,65 @@ const char descriptor_table_protodef_feature_5fsearch_5finner_2eproto[] PROTOBUF
   "hardsRequest\022\r\n\005db_id\030\001 \001(\t\022\021\n\tshard_ids"
   "\030\002 \003(\t\"G\n\026AssignDBShardsResponse\022-\n\004code"
   "\030\001 \001(\0162\037.com.sekirocc.common.ResultCode\""
-  "\026\n\024GetSystemInfoRequest\"\017\n\rWorkerMetrics"
-  "\"\263\001\n\025GetSystemInfoResponse\022-\n\004code\030\001 \001(\016"
-  "2\037.com.sekirocc.common.ResultCode\022(\n\003dbs"
-  "\030\002 \003(\0132\033.com.sekirocc.common.DBItem\022A\n\007m"
-  "etrics\030\003 \001(\01320.com.sekirocc.feature_sear"
-  "ch.inner.WorkerMetrics\"\023\n\021TrainIndexRequ"
-  "est\"C\n\022TrainIndexResponse\022-\n\004code\030\001 \001(\0162"
-  "\037.com.sekirocc.common.ResultCode\"\273\001\n\016Add"
-  "FeatureItem\0221\n\007feature\030\001 \001(\0132 .com.sekir"
-  "occ.common.FaceFeature\022I\n\004meta\030\002 \003(\0132;.c"
-  "om.sekirocc.feature_search.inner.AddFeat"
-  "ureItem.MetaEntry\032+\n\tMetaEntry\022\013\n\003key\030\001 "
-  "\001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"r\n\027BatchAddFeatur"
-  "esRequest\022\r\n\005db_id\030\001 \001(\t\022H\n\rfeature_item"
-  "s\030\002 \003(\01321.com.sekirocc.feature_search.in"
-  "ner.AddFeatureItem\"^\n\030BatchAddFeaturesRe"
-  "sponse\022-\n\004code\030\001 \001(\0162\037.com.sekirocc.comm"
-  "on.ResultCode\022\023\n\013feature_ids\030\002 \003(\t\"@\n\032Ba"
-  "tchDeleteFeaturesRequest\022\r\n\005db_id\030\001 \001(\t\022"
-  "\023\n\013feature_ids\030\002 \003(\t\"L\n\033BatchDeleteFeatu"
-  "resResponse\022-\n\004code\030\001 \001(\0162\037.com.sekirocc"
-  ".common.ResultCode\"e\n\024SearchFeatureReque"
-  "st\022\016\n\006db_ids\030\001 \003(\t\022/\n\005query\030\002 \001(\0132 .com."
-  "sekirocc.common.FaceFeature\022\014\n\004topk\030\003 \001("
-  "\005\"b\n\017SearchItemScore\022\r\n\005db_id\030\001 \001(\t\0221\n\007f"
-  "eature\030\002 \001(\0132 .com.sekirocc.common.FaceF"
-  "eature\022\r\n\005score\030\003 \001(\002\"\211\001\n\025SearchFeatureR"
-  "esponse\022-\n\004code\030\001 \001(\0162\037.com.sekirocc.com"
-  "mon.ResultCode\022A\n\005items\030\002 \003(\01322.com.seki"
-  "rocc.feature_search.inner.SearchItemScor"
-  "e2\373\007\n\023FeatureSearchWorker\022\237\001\n\rGetSystemI"
-  "nfo\0227.com.sekirocc.feature_search.inner."
-  "GetSystemInfoRequest\0328.com.sekirocc.feat"
-  "ure_search.inner.GetSystemInfoResponse\"\033"
-  "\202\323\344\223\002\025\"\020/get_system_info:\001*\022\243\001\n\016AssignDB"
-  "Shards\0228.com.sekirocc.feature_search.inn"
-  "er.AssignDBShardsRequest\0329.com.sekirocc."
-  "feature_search.inner.AssignDBShardsRespo"
-  "nse\"\034\202\323\344\223\002\026\"\021/assign_db_shards:\001*\022\222\001\n\nTr"
-  "ainIndex\0224.com.sekirocc.feature_search.i"
-  "nner.TrainIndexRequest\0325.com.sekirocc.fe"
-  "ature_search.inner.TrainIndexResponse\"\027\202"
-  "\323\344\223\002\021\"\014/train_index:\001*\022\253\001\n\020BatchAddFeatu"
-  "res\022:.com.sekirocc.feature_search.inner."
-  "BatchAddFeaturesRequest\032;.com.sekirocc.f"
-  "eature_search.inner.BatchAddFeaturesResp"
-  "onse\"\036\202\323\344\223\002\030\"\023/batch_add_features:\001*\022\267\001\n"
-  "\023BatchDeleteFeatures\022=.com.sekirocc.feat"
-  "ure_search.inner.BatchDeleteFeaturesRequ"
-  "est\032>.com.sekirocc.feature_search.inner."
-  "BatchDeleteFeaturesResponse\"!\202\323\344\223\002\033\"\026/ba"
-  "tch_delete_features:\001*\022\236\001\n\rSearchFeature"
-  "\0227.com.sekirocc.feature_search.inner.Sea"
-  "rchFeatureRequest\0328.com.sekirocc.feature"
-  "_search.inner.SearchFeatureResponse\"\032\202\323\344"
-  "\223\002\024\"\017/search_feature:\001*BCZAgithub.com/se"
-  "kirocc/face-recognition-service/feature_"
-  "search/innerb\006proto3"
+  "\026\n\024GetSystemInfoRequest\".\n\nWorkerInfo\022\020\n"
+  "\010capacity\030\001 \001(\003\022\016\n\006device\030\002 \001(\t\"\264\001\n\025GetS"
+  "ystemInfoResponse\022-\n\004code\030\001 \001(\0162\037.com.se"
+  "kirocc.common.ResultCode\022(\n\003dbs\030\002 \003(\0132\033."
+  "com.sekirocc.common.DBItem\022B\n\013worker_inf"
+  "o\030\003 \001(\0132-.com.sekirocc.feature_search.in"
+  "ner.WorkerInfo\"\023\n\021TrainIndexRequest\"C\n\022T"
+  "rainIndexResponse\022-\n\004code\030\001 \001(\0162\037.com.se"
+  "kirocc.common.ResultCode\"\273\001\n\016AddFeatureI"
+  "tem\0221\n\007feature\030\001 \001(\0132 .com.sekirocc.comm"
+  "on.FaceFeature\022I\n\004meta\030\002 \003(\0132;.com.sekir"
+  "occ.feature_search.inner.AddFeatureItem."
+  "MetaEntry\032+\n\tMetaEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005v"
+  "alue\030\002 \001(\t:\0028\001\"r\n\027BatchAddFeaturesReques"
+  "t\022\r\n\005db_id\030\001 \001(\t\022H\n\rfeature_items\030\002 \003(\0132"
+  "1.com.sekirocc.feature_search.inner.AddF"
+  "eatureItem\"^\n\030BatchAddFeaturesResponse\022-"
+  "\n\004code\030\001 \001(\0162\037.com.sekirocc.common.Resul"
+  "tCode\022\023\n\013feature_ids\030\002 \003(\t\"@\n\032BatchDelet"
+  "eFeaturesRequest\022\r\n\005db_id\030\001 \001(\t\022\023\n\013featu"
+  "re_ids\030\002 \003(\t\"L\n\033BatchDeleteFeaturesRespo"
+  "nse\022-\n\004code\030\001 \001(\0162\037.com.sekirocc.common."
+  "ResultCode\"e\n\024SearchFeatureRequest\022\016\n\006db"
+  "_ids\030\001 \003(\t\022/\n\005query\030\002 \001(\0132 .com.sekirocc"
+  ".common.FaceFeature\022\014\n\004topk\030\003 \001(\005\"b\n\017Sea"
+  "rchItemScore\022\r\n\005db_id\030\001 \001(\t\0221\n\007feature\030\002"
+  " \001(\0132 .com.sekirocc.common.FaceFeature\022\r"
+  "\n\005score\030\003 \001(\002\"\211\001\n\025SearchFeatureResponse\022"
+  "-\n\004code\030\001 \001(\0162\037.com.sekirocc.common.Resu"
+  "ltCode\022A\n\005items\030\002 \003(\01322.com.sekirocc.fea"
+  "ture_search.inner.SearchItemScore2\373\007\n\023Fe"
+  "atureSearchWorker\022\237\001\n\rGetSystemInfo\0227.co"
+  "m.sekirocc.feature_search.inner.GetSyste"
+  "mInfoRequest\0328.com.sekirocc.feature_sear"
+  "ch.inner.GetSystemInfoResponse\"\033\202\323\344\223\002\025\"\020"
+  "/get_system_info:\001*\022\243\001\n\016AssignDBShards\0228"
+  ".com.sekirocc.feature_search.inner.Assig"
+  "nDBShardsRequest\0329.com.sekirocc.feature_"
+  "search.inner.AssignDBShardsResponse\"\034\202\323\344"
+  "\223\002\026\"\021/assign_db_shards:\001*\022\222\001\n\nTrainIndex"
+  "\0224.com.sekirocc.feature_search.inner.Tra"
+  "inIndexRequest\0325.com.sekirocc.feature_se"
+  "arch.inner.TrainIndexResponse\"\027\202\323\344\223\002\021\"\014/"
+  "train_index:\001*\022\253\001\n\020BatchAddFeatures\022:.co"
+  "m.sekirocc.feature_search.inner.BatchAdd"
+  "FeaturesRequest\032;.com.sekirocc.feature_s"
+  "earch.inner.BatchAddFeaturesResponse\"\036\202\323"
+  "\344\223\002\030\"\023/batch_add_features:\001*\022\267\001\n\023BatchDe"
+  "leteFeatures\022=.com.sekirocc.feature_sear"
+  "ch.inner.BatchDeleteFeaturesRequest\032>.co"
+  "m.sekirocc.feature_search.inner.BatchDel"
+  "eteFeaturesResponse\"!\202\323\344\223\002\033\"\026/batch_dele"
+  "te_features:\001*\022\236\001\n\rSearchFeature\0227.com.s"
+  "ekirocc.feature_search.inner.SearchFeatu"
+  "reRequest\0328.com.sekirocc.feature_search."
+  "inner.SearchFeatureResponse\"\032\202\323\344\223\002\024\"\017/se"
+  "arch_feature:\001*BCZAgithub.com/sekirocc/f"
+  "ace-recognition-service/feature_search/i"
+  "nnerb\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_feature_5fsearch_5finner_2eproto_deps[2] = {
   &::descriptor_table_common_2eproto,
@@ -480,7 +486,7 @@ static const ::_pbi::DescriptorTable* const descriptor_table_feature_5fsearch_5f
 };
 static ::_pbi::once_flag descriptor_table_feature_5fsearch_5finner_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_feature_5fsearch_5finner_2eproto = {
-    false, false, 2540, descriptor_table_protodef_feature_5fsearch_5finner_2eproto,
+    false, false, 2572, descriptor_table_protodef_feature_5fsearch_5finner_2eproto,
     "feature_search_inner.proto",
     &descriptor_table_feature_5fsearch_5finner_2eproto_once, descriptor_table_feature_5fsearch_5finner_2eproto_deps, 2, 16,
     schemas, file_default_instances, TableStruct_feature_5fsearch_5finner_2eproto::offsets,
@@ -963,39 +969,229 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetSystemInfoRequest::GetClass
 
 // ===================================================================
 
-class WorkerMetrics::_Internal {
+class WorkerInfo::_Internal {
  public:
 };
 
-WorkerMetrics::WorkerMetrics(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+WorkerInfo::WorkerInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena, is_message_owned) {
-  // @@protoc_insertion_point(arena_constructor:com.sekirocc.feature_search.inner.WorkerMetrics)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:com.sekirocc.feature_search.inner.WorkerInfo)
 }
-WorkerMetrics::WorkerMetrics(const WorkerMetrics& from)
-  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase() {
-  WorkerMetrics* const _this = this; (void)_this;
+WorkerInfo::WorkerInfo(const WorkerInfo& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  WorkerInfo* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.device_){}
+    , decltype(_impl_.capacity_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:com.sekirocc.feature_search.inner.WorkerMetrics)
+  _impl_.device_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.device_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_device().empty()) {
+    _this->_impl_.device_.Set(from._internal_device(), 
+      _this->GetArenaForAllocation());
+  }
+  _this->_impl_.capacity_ = from._impl_.capacity_;
+  // @@protoc_insertion_point(copy_constructor:com.sekirocc.feature_search.inner.WorkerInfo)
 }
 
+inline void WorkerInfo::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.device_){}
+    , decltype(_impl_.capacity_){int64_t{0}}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.device_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.device_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+}
 
+WorkerInfo::~WorkerInfo() {
+  // @@protoc_insertion_point(destructor:com.sekirocc.feature_search.inner.WorkerInfo)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
 
+inline void WorkerInfo::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.device_.Destroy();
+}
 
+void WorkerInfo::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData WorkerMetrics::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl,
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl,
+void WorkerInfo::Clear() {
+// @@protoc_insertion_point(message_clear_start:com.sekirocc.feature_search.inner.WorkerInfo)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.device_.ClearToEmpty();
+  _impl_.capacity_ = int64_t{0};
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* WorkerInfo::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // int64 capacity = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
+          _impl_.capacity_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // string device = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          auto str = _internal_mutable_device();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "com.sekirocc.feature_search.inner.WorkerInfo.device"));
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* WorkerInfo::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.feature_search.inner.WorkerInfo)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int64 capacity = 1;
+  if (this->_internal_capacity() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt64ToArray(1, this->_internal_capacity(), target);
+  }
+
+  // string device = 2;
+  if (!this->_internal_device().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_device().data(), static_cast<int>(this->_internal_device().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "com.sekirocc.feature_search.inner.WorkerInfo.device");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_device(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.feature_search.inner.WorkerInfo)
+  return target;
+}
+
+size_t WorkerInfo::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.feature_search.inner.WorkerInfo)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string device = 2;
+  if (!this->_internal_device().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_device());
+  }
+
+  // int64 capacity = 1;
+  if (this->_internal_capacity() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_capacity());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData WorkerInfo::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    WorkerInfo::MergeImpl
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*WorkerMetrics::GetClassData() const { return &_class_data_; }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*WorkerInfo::GetClassData() const { return &_class_data_; }
 
 
+void WorkerInfo::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<WorkerInfo*>(&to_msg);
+  auto& from = static_cast<const WorkerInfo&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.feature_search.inner.WorkerInfo)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
 
+  if (!from._internal_device().empty()) {
+    _this->_internal_set_device(from._internal_device());
+  }
+  if (from._internal_capacity() != 0) {
+    _this->_internal_set_capacity(from._internal_capacity());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
 
+void WorkerInfo::CopyFrom(const WorkerInfo& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.feature_search.inner.WorkerInfo)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
 
+bool WorkerInfo::IsInitialized() const {
+  return true;
+}
 
+void WorkerInfo::InternalSwap(WorkerInfo* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.device_, lhs_arena,
+      &other->_impl_.device_, rhs_arena
+  );
+  swap(_impl_.capacity_, other->_impl_.capacity_);
+}
 
-::PROTOBUF_NAMESPACE_ID::Metadata WorkerMetrics::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata WorkerInfo::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
       file_level_metadata_feature_5fsearch_5finner_2eproto[3]);
@@ -1005,12 +1201,12 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*WorkerMetrics::GetClassData() 
 
 class GetSystemInfoResponse::_Internal {
  public:
-  static const ::com::sekirocc::feature_search::inner::WorkerMetrics& metrics(const GetSystemInfoResponse* msg);
+  static const ::com::sekirocc::feature_search::inner::WorkerInfo& worker_info(const GetSystemInfoResponse* msg);
 };
 
-const ::com::sekirocc::feature_search::inner::WorkerMetrics&
-GetSystemInfoResponse::_Internal::metrics(const GetSystemInfoResponse* msg) {
-  return *msg->_impl_.metrics_;
+const ::com::sekirocc::feature_search::inner::WorkerInfo&
+GetSystemInfoResponse::_Internal::worker_info(const GetSystemInfoResponse* msg) {
+  return *msg->_impl_.worker_info_;
 }
 void GetSystemInfoResponse::clear_dbs() {
   _impl_.dbs_.Clear();
@@ -1026,13 +1222,13 @@ GetSystemInfoResponse::GetSystemInfoResponse(const GetSystemInfoResponse& from)
   GetSystemInfoResponse* const _this = this; (void)_this;
   new (&_impl_) Impl_{
       decltype(_impl_.dbs_){from._impl_.dbs_}
-    , decltype(_impl_.metrics_){nullptr}
+    , decltype(_impl_.worker_info_){nullptr}
     , decltype(_impl_.code_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_metrics()) {
-    _this->_impl_.metrics_ = new ::com::sekirocc::feature_search::inner::WorkerMetrics(*from._impl_.metrics_);
+  if (from._internal_has_worker_info()) {
+    _this->_impl_.worker_info_ = new ::com::sekirocc::feature_search::inner::WorkerInfo(*from._impl_.worker_info_);
   }
   _this->_impl_.code_ = from._impl_.code_;
   // @@protoc_insertion_point(copy_constructor:com.sekirocc.feature_search.inner.GetSystemInfoResponse)
@@ -1044,7 +1240,7 @@ inline void GetSystemInfoResponse::SharedCtor(
   (void)is_message_owned;
   new (&_impl_) Impl_{
       decltype(_impl_.dbs_){arena}
-    , decltype(_impl_.metrics_){nullptr}
+    , decltype(_impl_.worker_info_){nullptr}
     , decltype(_impl_.code_){0}
     , /*decltype(_impl_._cached_size_)*/{}
   };
@@ -1062,7 +1258,7 @@ GetSystemInfoResponse::~GetSystemInfoResponse() {
 inline void GetSystemInfoResponse::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.dbs_.~RepeatedPtrField();
-  if (this != internal_default_instance()) delete _impl_.metrics_;
+  if (this != internal_default_instance()) delete _impl_.worker_info_;
 }
 
 void GetSystemInfoResponse::SetCachedSize(int size) const {
@@ -1076,10 +1272,10 @@ void GetSystemInfoResponse::Clear() {
   (void) cached_has_bits;
 
   _impl_.dbs_.Clear();
-  if (GetArenaForAllocation() == nullptr && _impl_.metrics_ != nullptr) {
-    delete _impl_.metrics_;
+  if (GetArenaForAllocation() == nullptr && _impl_.worker_info_ != nullptr) {
+    delete _impl_.worker_info_;
   }
-  _impl_.metrics_ = nullptr;
+  _impl_.worker_info_ = nullptr;
   _impl_.code_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
@@ -1112,10 +1308,10 @@ const char* GetSystemInfoResponse::_InternalParse(const char* ptr, ::_pbi::Parse
         } else
           goto handle_unusual;
         continue;
-      // .com.sekirocc.feature_search.inner.WorkerMetrics metrics = 3;
+      // .com.sekirocc.feature_search.inner.WorkerInfo worker_info = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
-          ptr = ctx->ParseMessage(_internal_mutable_metrics(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_worker_info(), ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -1164,11 +1360,11 @@ uint8_t* GetSystemInfoResponse::_InternalSerialize(
         InternalWriteMessage(2, repfield, repfield.GetCachedSize(), target, stream);
   }
 
-  // .com.sekirocc.feature_search.inner.WorkerMetrics metrics = 3;
-  if (this->_internal_has_metrics()) {
+  // .com.sekirocc.feature_search.inner.WorkerInfo worker_info = 3;
+  if (this->_internal_has_worker_info()) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(3, _Internal::metrics(this),
-        _Internal::metrics(this).GetCachedSize(), target, stream);
+      InternalWriteMessage(3, _Internal::worker_info(this),
+        _Internal::worker_info(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1194,11 +1390,11 @@ size_t GetSystemInfoResponse::ByteSizeLong() const {
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  // .com.sekirocc.feature_search.inner.WorkerMetrics metrics = 3;
-  if (this->_internal_has_metrics()) {
+  // .com.sekirocc.feature_search.inner.WorkerInfo worker_info = 3;
+  if (this->_internal_has_worker_info()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.metrics_);
+        *_impl_.worker_info_);
   }
 
   // .com.sekirocc.common.ResultCode code = 1;
@@ -1226,9 +1422,9 @@ void GetSystemInfoResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, 
   (void) cached_has_bits;
 
   _this->_impl_.dbs_.MergeFrom(from._impl_.dbs_);
-  if (from._internal_has_metrics()) {
-    _this->_internal_mutable_metrics()->::com::sekirocc::feature_search::inner::WorkerMetrics::MergeFrom(
-        from._internal_metrics());
+  if (from._internal_has_worker_info()) {
+    _this->_internal_mutable_worker_info()->::com::sekirocc::feature_search::inner::WorkerInfo::MergeFrom(
+        from._internal_worker_info());
   }
   if (from._internal_code() != 0) {
     _this->_internal_set_code(from._internal_code());
@@ -1254,9 +1450,9 @@ void GetSystemInfoResponse::InternalSwap(GetSystemInfoResponse* other) {
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(GetSystemInfoResponse, _impl_.code_)
       + sizeof(GetSystemInfoResponse::_impl_.code_)
-      - PROTOBUF_FIELD_OFFSET(GetSystemInfoResponse, _impl_.metrics_)>(
-          reinterpret_cast<char*>(&_impl_.metrics_),
-          reinterpret_cast<char*>(&other->_impl_.metrics_));
+      - PROTOBUF_FIELD_OFFSET(GetSystemInfoResponse, _impl_.worker_info_)>(
+          reinterpret_cast<char*>(&_impl_.worker_info_),
+          reinterpret_cast<char*>(&other->_impl_.worker_info_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata GetSystemInfoResponse::GetMetadata() const {
@@ -3443,9 +3639,9 @@ template<> PROTOBUF_NOINLINE ::com::sekirocc::feature_search::inner::GetSystemIn
 Arena::CreateMaybeMessage< ::com::sekirocc::feature_search::inner::GetSystemInfoRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::com::sekirocc::feature_search::inner::GetSystemInfoRequest >(arena);
 }
-template<> PROTOBUF_NOINLINE ::com::sekirocc::feature_search::inner::WorkerMetrics*
-Arena::CreateMaybeMessage< ::com::sekirocc::feature_search::inner::WorkerMetrics >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::com::sekirocc::feature_search::inner::WorkerMetrics >(arena);
+template<> PROTOBUF_NOINLINE ::com::sekirocc::feature_search::inner::WorkerInfo*
+Arena::CreateMaybeMessage< ::com::sekirocc::feature_search::inner::WorkerInfo >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::sekirocc::feature_search::inner::WorkerInfo >(arena);
 }
 template<> PROTOBUF_NOINLINE ::com::sekirocc::feature_search::inner::GetSystemInfoResponse*
 Arena::CreateMaybeMessage< ::com::sekirocc::feature_search::inner::GetSystemInfoResponse >(Arena* arena) {

@@ -19,14 +19,16 @@ message AssignDBShardsResponse { com.sekirocc.common.ResultCode code = 1; }
 // Worker service
 message GetSystemInfoRequest {}
 
-message WorkerMetrics {
+message WorkerInfo {
     // TODO
+  int64 capacity = 1;
+  string device = 2;
 }
 
 message GetSystemInfoResponse {
     com.sekirocc.common.ResultCode code = 1;
     repeated com.sekirocc.common.DBItem dbs = 2;
-    WorkerMetrics metrics = 3;
+    WorkerInfo worker_info = 3;
 }
 
 message TrainIndexRequest {}

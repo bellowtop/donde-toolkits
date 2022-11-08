@@ -12,8 +12,6 @@
 
 using namespace std;
 
-const size_t DEFAULT_SHARD_CAPACITY = 1024 * 1024 * 1024;
-
 class ShardManager;
 
 class Shard {
@@ -39,6 +37,8 @@ class Shard {
     inline bool IsClosed() { return _shard_info.is_closed; };
 
     inline std::string GetShardID() { return _shard_id; };
+
+    inline search::DBShard GetShardInfo() { return _shard_info; };
 
   private:
     search::DBShard _shard_info;

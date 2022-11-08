@@ -41,7 +41,8 @@ class Coordinator {
 
   private:
     RetCode initialize_workers();
-    Worker* find_worker_for_shard();
+    Worker* find_worker_for_shard(Shard* shard);
+    RetCode assign_worker_for_shards();
 
   private:
     const json& config;

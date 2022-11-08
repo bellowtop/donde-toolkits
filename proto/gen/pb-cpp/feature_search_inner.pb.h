@@ -99,9 +99,9 @@ extern TrainIndexRequestDefaultTypeInternal _TrainIndexRequest_default_instance_
 class TrainIndexResponse;
 struct TrainIndexResponseDefaultTypeInternal;
 extern TrainIndexResponseDefaultTypeInternal _TrainIndexResponse_default_instance_;
-class WorkerMetrics;
-struct WorkerMetricsDefaultTypeInternal;
-extern WorkerMetricsDefaultTypeInternal _WorkerMetrics_default_instance_;
+class WorkerInfo;
+struct WorkerInfoDefaultTypeInternal;
+extern WorkerInfoDefaultTypeInternal _WorkerInfo_default_instance_;
 }  // namespace inner
 }  // namespace feature_search
 }  // namespace sekirocc
@@ -122,7 +122,7 @@ template<> ::com::sekirocc::feature_search::inner::SearchFeatureResponse* Arena:
 template<> ::com::sekirocc::feature_search::inner::SearchItemScore* Arena::CreateMaybeMessage<::com::sekirocc::feature_search::inner::SearchItemScore>(Arena*);
 template<> ::com::sekirocc::feature_search::inner::TrainIndexRequest* Arena::CreateMaybeMessage<::com::sekirocc::feature_search::inner::TrainIndexRequest>(Arena*);
 template<> ::com::sekirocc::feature_search::inner::TrainIndexResponse* Arena::CreateMaybeMessage<::com::sekirocc::feature_search::inner::TrainIndexResponse>(Arena*);
-template<> ::com::sekirocc::feature_search::inner::WorkerMetrics* Arena::CreateMaybeMessage<::com::sekirocc::feature_search::inner::WorkerMetrics>(Arena*);
+template<> ::com::sekirocc::feature_search::inner::WorkerInfo* Arena::CreateMaybeMessage<::com::sekirocc::feature_search::inner::WorkerInfo>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace com {
 namespace sekirocc {
@@ -576,23 +576,24 @@ class GetSystemInfoRequest final :
 };
 // -------------------------------------------------------------------
 
-class WorkerMetrics final :
-    public ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_search.inner.WorkerMetrics) */ {
+class WorkerInfo final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:com.sekirocc.feature_search.inner.WorkerInfo) */ {
  public:
-  inline WorkerMetrics() : WorkerMetrics(nullptr) {}
-  explicit PROTOBUF_CONSTEXPR WorkerMetrics(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline WorkerInfo() : WorkerInfo(nullptr) {}
+  ~WorkerInfo() override;
+  explicit PROTOBUF_CONSTEXPR WorkerInfo(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  WorkerMetrics(const WorkerMetrics& from);
-  WorkerMetrics(WorkerMetrics&& from) noexcept
-    : WorkerMetrics() {
+  WorkerInfo(const WorkerInfo& from);
+  WorkerInfo(WorkerInfo&& from) noexcept
+    : WorkerInfo() {
     *this = ::std::move(from);
   }
 
-  inline WorkerMetrics& operator=(const WorkerMetrics& from) {
+  inline WorkerInfo& operator=(const WorkerInfo& from) {
     CopyFrom(from);
     return *this;
   }
-  inline WorkerMetrics& operator=(WorkerMetrics&& from) noexcept {
+  inline WorkerInfo& operator=(WorkerInfo&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -615,20 +616,20 @@ class WorkerMetrics final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const WorkerMetrics& default_instance() {
+  static const WorkerInfo& default_instance() {
     return *internal_default_instance();
   }
-  static inline const WorkerMetrics* internal_default_instance() {
-    return reinterpret_cast<const WorkerMetrics*>(
-               &_WorkerMetrics_default_instance_);
+  static inline const WorkerInfo* internal_default_instance() {
+    return reinterpret_cast<const WorkerInfo*>(
+               &_WorkerInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     3;
 
-  friend void swap(WorkerMetrics& a, WorkerMetrics& b) {
+  friend void swap(WorkerInfo& a, WorkerInfo& b) {
     a.Swap(&b);
   }
-  inline void Swap(WorkerMetrics* other) {
+  inline void Swap(WorkerInfo* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -641,7 +642,7 @@ class WorkerMetrics final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(WorkerMetrics* other) {
+  void UnsafeArenaSwap(WorkerInfo* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -649,26 +650,40 @@ class WorkerMetrics final :
 
   // implements Message ----------------------------------------------
 
-  WorkerMetrics* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<WorkerMetrics>(arena);
+  WorkerInfo* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<WorkerInfo>(arena);
   }
-  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const WorkerMetrics& from) {
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const WorkerInfo& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const WorkerInfo& from) {
+    WorkerInfo::MergeImpl(*this, from);
   }
-  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const WorkerMetrics& from) {
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
   public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(WorkerInfo* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "com.sekirocc.feature_search.inner.WorkerMetrics";
+    return "com.sekirocc.feature_search.inner.WorkerInfo";
   }
   protected:
-  explicit WorkerMetrics(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit WorkerInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -681,7 +696,34 @@ class WorkerMetrics final :
 
   // accessors -------------------------------------------------------
 
-  // @@protoc_insertion_point(class_scope:com.sekirocc.feature_search.inner.WorkerMetrics)
+  enum : int {
+    kDeviceFieldNumber = 2,
+    kCapacityFieldNumber = 1,
+  };
+  // string device = 2;
+  void clear_device();
+  const std::string& device() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_device(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_device();
+  PROTOBUF_NODISCARD std::string* release_device();
+  void set_allocated_device(std::string* device);
+  private:
+  const std::string& _internal_device() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_device(const std::string& value);
+  std::string* _internal_mutable_device();
+  public:
+
+  // int64 capacity = 1;
+  void clear_capacity();
+  int64_t capacity() const;
+  void set_capacity(int64_t value);
+  private:
+  int64_t _internal_capacity() const;
+  void _internal_set_capacity(int64_t value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:com.sekirocc.feature_search.inner.WorkerInfo)
  private:
   class _Internal;
 
@@ -689,7 +731,11 @@ class WorkerMetrics final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr device_;
+    int64_t capacity_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_feature_5fsearch_5finner_2eproto;
 };
 // -------------------------------------------------------------------
@@ -816,7 +862,7 @@ class GetSystemInfoResponse final :
 
   enum : int {
     kDbsFieldNumber = 2,
-    kMetricsFieldNumber = 3,
+    kWorkerInfoFieldNumber = 3,
     kCodeFieldNumber = 1,
   };
   // repeated .com.sekirocc.common.DBItem dbs = 2;
@@ -837,23 +883,23 @@ class GetSystemInfoResponse final :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::common::DBItem >&
       dbs() const;
 
-  // .com.sekirocc.feature_search.inner.WorkerMetrics metrics = 3;
-  bool has_metrics() const;
+  // .com.sekirocc.feature_search.inner.WorkerInfo worker_info = 3;
+  bool has_worker_info() const;
   private:
-  bool _internal_has_metrics() const;
+  bool _internal_has_worker_info() const;
   public:
-  void clear_metrics();
-  const ::com::sekirocc::feature_search::inner::WorkerMetrics& metrics() const;
-  PROTOBUF_NODISCARD ::com::sekirocc::feature_search::inner::WorkerMetrics* release_metrics();
-  ::com::sekirocc::feature_search::inner::WorkerMetrics* mutable_metrics();
-  void set_allocated_metrics(::com::sekirocc::feature_search::inner::WorkerMetrics* metrics);
+  void clear_worker_info();
+  const ::com::sekirocc::feature_search::inner::WorkerInfo& worker_info() const;
+  PROTOBUF_NODISCARD ::com::sekirocc::feature_search::inner::WorkerInfo* release_worker_info();
+  ::com::sekirocc::feature_search::inner::WorkerInfo* mutable_worker_info();
+  void set_allocated_worker_info(::com::sekirocc::feature_search::inner::WorkerInfo* worker_info);
   private:
-  const ::com::sekirocc::feature_search::inner::WorkerMetrics& _internal_metrics() const;
-  ::com::sekirocc::feature_search::inner::WorkerMetrics* _internal_mutable_metrics();
+  const ::com::sekirocc::feature_search::inner::WorkerInfo& _internal_worker_info() const;
+  ::com::sekirocc::feature_search::inner::WorkerInfo* _internal_mutable_worker_info();
   public:
-  void unsafe_arena_set_allocated_metrics(
-      ::com::sekirocc::feature_search::inner::WorkerMetrics* metrics);
-  ::com::sekirocc::feature_search::inner::WorkerMetrics* unsafe_arena_release_metrics();
+  void unsafe_arena_set_allocated_worker_info(
+      ::com::sekirocc::feature_search::inner::WorkerInfo* worker_info);
+  ::com::sekirocc::feature_search::inner::WorkerInfo* unsafe_arena_release_worker_info();
 
   // .com.sekirocc.common.ResultCode code = 1;
   void clear_code();
@@ -873,7 +919,7 @@ class GetSystemInfoResponse final :
   typedef void DestructorSkippable_;
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::com::sekirocc::common::DBItem > dbs_;
-    ::com::sekirocc::feature_search::inner::WorkerMetrics* metrics_;
+    ::com::sekirocc::feature_search::inner::WorkerInfo* worker_info_;
     int code_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -2743,7 +2789,77 @@ inline void AssignDBShardsResponse::set_code(::com::sekirocc::common::ResultCode
 
 // -------------------------------------------------------------------
 
-// WorkerMetrics
+// WorkerInfo
+
+// int64 capacity = 1;
+inline void WorkerInfo::clear_capacity() {
+  _impl_.capacity_ = int64_t{0};
+}
+inline int64_t WorkerInfo::_internal_capacity() const {
+  return _impl_.capacity_;
+}
+inline int64_t WorkerInfo::capacity() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.inner.WorkerInfo.capacity)
+  return _internal_capacity();
+}
+inline void WorkerInfo::_internal_set_capacity(int64_t value) {
+  
+  _impl_.capacity_ = value;
+}
+inline void WorkerInfo::set_capacity(int64_t value) {
+  _internal_set_capacity(value);
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.inner.WorkerInfo.capacity)
+}
+
+// string device = 2;
+inline void WorkerInfo::clear_device() {
+  _impl_.device_.ClearToEmpty();
+}
+inline const std::string& WorkerInfo::device() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.inner.WorkerInfo.device)
+  return _internal_device();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void WorkerInfo::set_device(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.device_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:com.sekirocc.feature_search.inner.WorkerInfo.device)
+}
+inline std::string* WorkerInfo::mutable_device() {
+  std::string* _s = _internal_mutable_device();
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_search.inner.WorkerInfo.device)
+  return _s;
+}
+inline const std::string& WorkerInfo::_internal_device() const {
+  return _impl_.device_.Get();
+}
+inline void WorkerInfo::_internal_set_device(const std::string& value) {
+  
+  _impl_.device_.Set(value, GetArenaForAllocation());
+}
+inline std::string* WorkerInfo::_internal_mutable_device() {
+  
+  return _impl_.device_.Mutable(GetArenaForAllocation());
+}
+inline std::string* WorkerInfo::release_device() {
+  // @@protoc_insertion_point(field_release:com.sekirocc.feature_search.inner.WorkerInfo.device)
+  return _impl_.device_.Release();
+}
+inline void WorkerInfo::set_allocated_device(std::string* device) {
+  if (device != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.device_.SetAllocated(device, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.device_.IsDefault()) {
+    _impl_.device_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.feature_search.inner.WorkerInfo.device)
+}
 
 // -------------------------------------------------------------------
 
@@ -2806,45 +2922,45 @@ GetSystemInfoResponse::dbs() const {
   return _impl_.dbs_;
 }
 
-// .com.sekirocc.feature_search.inner.WorkerMetrics metrics = 3;
-inline bool GetSystemInfoResponse::_internal_has_metrics() const {
-  return this != internal_default_instance() && _impl_.metrics_ != nullptr;
+// .com.sekirocc.feature_search.inner.WorkerInfo worker_info = 3;
+inline bool GetSystemInfoResponse::_internal_has_worker_info() const {
+  return this != internal_default_instance() && _impl_.worker_info_ != nullptr;
 }
-inline bool GetSystemInfoResponse::has_metrics() const {
-  return _internal_has_metrics();
+inline bool GetSystemInfoResponse::has_worker_info() const {
+  return _internal_has_worker_info();
 }
-inline void GetSystemInfoResponse::clear_metrics() {
-  if (GetArenaForAllocation() == nullptr && _impl_.metrics_ != nullptr) {
-    delete _impl_.metrics_;
+inline void GetSystemInfoResponse::clear_worker_info() {
+  if (GetArenaForAllocation() == nullptr && _impl_.worker_info_ != nullptr) {
+    delete _impl_.worker_info_;
   }
-  _impl_.metrics_ = nullptr;
+  _impl_.worker_info_ = nullptr;
 }
-inline const ::com::sekirocc::feature_search::inner::WorkerMetrics& GetSystemInfoResponse::_internal_metrics() const {
-  const ::com::sekirocc::feature_search::inner::WorkerMetrics* p = _impl_.metrics_;
-  return p != nullptr ? *p : reinterpret_cast<const ::com::sekirocc::feature_search::inner::WorkerMetrics&>(
-      ::com::sekirocc::feature_search::inner::_WorkerMetrics_default_instance_);
+inline const ::com::sekirocc::feature_search::inner::WorkerInfo& GetSystemInfoResponse::_internal_worker_info() const {
+  const ::com::sekirocc::feature_search::inner::WorkerInfo* p = _impl_.worker_info_;
+  return p != nullptr ? *p : reinterpret_cast<const ::com::sekirocc::feature_search::inner::WorkerInfo&>(
+      ::com::sekirocc::feature_search::inner::_WorkerInfo_default_instance_);
 }
-inline const ::com::sekirocc::feature_search::inner::WorkerMetrics& GetSystemInfoResponse::metrics() const {
-  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.inner.GetSystemInfoResponse.metrics)
-  return _internal_metrics();
+inline const ::com::sekirocc::feature_search::inner::WorkerInfo& GetSystemInfoResponse::worker_info() const {
+  // @@protoc_insertion_point(field_get:com.sekirocc.feature_search.inner.GetSystemInfoResponse.worker_info)
+  return _internal_worker_info();
 }
-inline void GetSystemInfoResponse::unsafe_arena_set_allocated_metrics(
-    ::com::sekirocc::feature_search::inner::WorkerMetrics* metrics) {
+inline void GetSystemInfoResponse::unsafe_arena_set_allocated_worker_info(
+    ::com::sekirocc::feature_search::inner::WorkerInfo* worker_info) {
   if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.metrics_);
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.worker_info_);
   }
-  _impl_.metrics_ = metrics;
-  if (metrics) {
+  _impl_.worker_info_ = worker_info;
+  if (worker_info) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:com.sekirocc.feature_search.inner.GetSystemInfoResponse.metrics)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:com.sekirocc.feature_search.inner.GetSystemInfoResponse.worker_info)
 }
-inline ::com::sekirocc::feature_search::inner::WorkerMetrics* GetSystemInfoResponse::release_metrics() {
+inline ::com::sekirocc::feature_search::inner::WorkerInfo* GetSystemInfoResponse::release_worker_info() {
   
-  ::com::sekirocc::feature_search::inner::WorkerMetrics* temp = _impl_.metrics_;
-  _impl_.metrics_ = nullptr;
+  ::com::sekirocc::feature_search::inner::WorkerInfo* temp = _impl_.worker_info_;
+  _impl_.worker_info_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
   temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
@@ -2856,44 +2972,44 @@ inline ::com::sekirocc::feature_search::inner::WorkerMetrics* GetSystemInfoRespo
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::com::sekirocc::feature_search::inner::WorkerMetrics* GetSystemInfoResponse::unsafe_arena_release_metrics() {
-  // @@protoc_insertion_point(field_release:com.sekirocc.feature_search.inner.GetSystemInfoResponse.metrics)
+inline ::com::sekirocc::feature_search::inner::WorkerInfo* GetSystemInfoResponse::unsafe_arena_release_worker_info() {
+  // @@protoc_insertion_point(field_release:com.sekirocc.feature_search.inner.GetSystemInfoResponse.worker_info)
   
-  ::com::sekirocc::feature_search::inner::WorkerMetrics* temp = _impl_.metrics_;
-  _impl_.metrics_ = nullptr;
+  ::com::sekirocc::feature_search::inner::WorkerInfo* temp = _impl_.worker_info_;
+  _impl_.worker_info_ = nullptr;
   return temp;
 }
-inline ::com::sekirocc::feature_search::inner::WorkerMetrics* GetSystemInfoResponse::_internal_mutable_metrics() {
+inline ::com::sekirocc::feature_search::inner::WorkerInfo* GetSystemInfoResponse::_internal_mutable_worker_info() {
   
-  if (_impl_.metrics_ == nullptr) {
-    auto* p = CreateMaybeMessage<::com::sekirocc::feature_search::inner::WorkerMetrics>(GetArenaForAllocation());
-    _impl_.metrics_ = p;
+  if (_impl_.worker_info_ == nullptr) {
+    auto* p = CreateMaybeMessage<::com::sekirocc::feature_search::inner::WorkerInfo>(GetArenaForAllocation());
+    _impl_.worker_info_ = p;
   }
-  return _impl_.metrics_;
+  return _impl_.worker_info_;
 }
-inline ::com::sekirocc::feature_search::inner::WorkerMetrics* GetSystemInfoResponse::mutable_metrics() {
-  ::com::sekirocc::feature_search::inner::WorkerMetrics* _msg = _internal_mutable_metrics();
-  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_search.inner.GetSystemInfoResponse.metrics)
+inline ::com::sekirocc::feature_search::inner::WorkerInfo* GetSystemInfoResponse::mutable_worker_info() {
+  ::com::sekirocc::feature_search::inner::WorkerInfo* _msg = _internal_mutable_worker_info();
+  // @@protoc_insertion_point(field_mutable:com.sekirocc.feature_search.inner.GetSystemInfoResponse.worker_info)
   return _msg;
 }
-inline void GetSystemInfoResponse::set_allocated_metrics(::com::sekirocc::feature_search::inner::WorkerMetrics* metrics) {
+inline void GetSystemInfoResponse::set_allocated_worker_info(::com::sekirocc::feature_search::inner::WorkerInfo* worker_info) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete _impl_.metrics_;
+    delete _impl_.worker_info_;
   }
-  if (metrics) {
+  if (worker_info) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(metrics);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(worker_info);
     if (message_arena != submessage_arena) {
-      metrics = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, metrics, submessage_arena);
+      worker_info = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, worker_info, submessage_arena);
     }
     
   } else {
     
   }
-  _impl_.metrics_ = metrics;
-  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.feature_search.inner.GetSystemInfoResponse.metrics)
+  _impl_.worker_info_ = worker_info;
+  // @@protoc_insertion_point(field_set_allocated:com.sekirocc.feature_search.inner.GetSystemInfoResponse.worker_info)
 }
 
 // -------------------------------------------------------------------

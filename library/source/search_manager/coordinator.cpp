@@ -35,7 +35,11 @@ Coordinator::Coordinator(const json& coor_config) : config(coor_config) {
 
 Coordinator::~Coordinator(){};
 
-void Coordinator::Start() { initialize_workers(); };
+void Coordinator::Start() {
+    initialize_workers();
+
+    assign_worker_for_shards();
+};
 
 void Coordinator::Stop(){};
 
@@ -64,12 +68,13 @@ RetCode Coordinator::initialize_workers() {
 RetCode Coordinator::AddFeatures(const std::string& db_id, const std::vector<Feature>& fts) {
     Shard* shard = _shard_manager->FindOrCreateWritableShard(db_id);
     if (!shard->HasWorker()) {
-        Worker* worker = find_worker_for_shard();
+        Worker* worker = find_worker_for_shard(shard);
         if (worker == nullptr) {
             spdlog::error("cannot find a worker for shard: {}", shard->GetShardID());
             return RetCode::RET_ERR;
         }
         shard->AssignWorker(worker);
+        worker->ServeShard(shard->GetShardInfo());
     }
 
     shard->AddFeatures(fts);
@@ -88,4 +93,33 @@ std::vector<Feature> Coordinator::SearchFeatureInTimePeriod(const std::string& d
     return {};
 };
 
-Worker* Coordinator::find_worker_for_shard() { return {}; };
+Worker* Coordinator::find_worker_for_shard(Shard* shard) {
+    int64 free_space = INT_MIN;
+    Worker* selected;
+
+    for (auto& worker : _workers) {
+        if (worker->GetFreeSpace() > free_space) {
+            selected = worker.get();
+            free_space = worker->GetFreeSpace();
+        }
+    }
+
+    return selected;
+};
+
+RetCode Coordinator::assign_worker_for_shards() {
+    std::vector<search::DBItem> dbs = _shard_manager->ListUserDBs();
+    for (auto& db : dbs) {
+        auto shards = _shard_manager->ListShards(db.db_id);
+        for (auto& shard : shards) {
+            Worker* worker = find_worker_for_shard(shard);
+            if (worker == nullptr) {
+                spdlog::error("cannot find a worker for shard: {}", shard->GetShardID());
+                continue;
+            }
+            shard->AssignWorker(worker);
+            worker->ServeShard(shard->GetShardInfo());
+        }
+    }
+    return {};
+};

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "gen/pb-cpp/feature_search_inner.grpc.pb.h"
+#include "gen/pb-cpp/feature_search_inner.pb.h"
 #include "search_manager/worker_api.h"
 #include "types.h"
 #include "utils.h"
@@ -13,6 +14,11 @@
 
 using WorkerStub = com::sekirocc::feature_search::inner::FeatureSearchWorker::Stub;
 
+using com::sekirocc::feature_search::inner::GetSystemInfoRequest;
+using com::sekirocc::feature_search::inner::GetSystemInfoResponse;
+
+using com::sekirocc::feature_search::inner::WorkerInfo;
+
 class WorkerClient : public Worker {
   public:
     WorkerClient(const std::string& addr);
@@ -23,6 +29,11 @@ class WorkerClient : public Worker {
     RetCode DisConnect();
 
     inline std::string GetWorkerID() override { return _worker_id; };
+
+    uint64 GetFreeSpace() override;
+
+    // ServeShard let the worker serve this shard, for its features' CRUD
+    RetCode ServeShard(const search::DBShard& shard_info) override;
 
     // CloseShard close db_id/shard_id.
     RetCode CloseShard(const std::string& db_id, const std::string& shard_id) override;
@@ -37,8 +48,15 @@ class WorkerClient : public Worker {
   private:
     void check_liveness_loop();
 
+    static std::pair<grpc::Status, GetSystemInfoResponse> get_system_info(WorkerStub* stub,
+                                                                          int timeout = 0);
+
   private:
     Poco::Thread _liveness_check_thread;
+
+    WorkerInfo _worker_info;
+
+    std::unordered_map<std::string, search::DBShard> _served_shards;
 
     std::chrono::time_point<chrono::steady_clock> _liveness_check_time;
     bool _liveness;
@@ -56,7 +74,4 @@ class WorkerClient : public Worker {
     bool _is_writing;
 
     std::vector<std::string> _shard_ids;
-
-    size_t _capacity;
-    size_t _used;
 };
