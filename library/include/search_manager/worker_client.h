@@ -1,12 +1,17 @@
 #pragma once
 
+#include "gen/pb-cpp/feature_search_inner.grpc.pb.h"
 #include "search_manager/worker_api.h"
 #include "types.h"
 #include "utils.h"
 
 #include <Poco/Thread.h>
+#include <chrono>
+#include <grpcpp/channel.h>
 #include <string>
 #include <vector>
+
+using WorkerStub = com::sekirocc::feature_search::inner::FeatureSearchWorker::Stub;
 
 class WorkerClient : public Worker {
   public:
@@ -34,10 +39,17 @@ class WorkerClient : public Worker {
 
   private:
     Poco::Thread _liveness_check_thread;
+
+    std::chrono::time_point<chrono::steady_clock> _liveness_check_time;
+    bool _liveness;
+
     bool stopped = false;
 
     std::string _worker_id;
     std::string _addr;
+
+    std::shared_ptr<grpc::Channel> _conn;
+    std::unique_ptr<WorkerStub> _stub;
 
     bool _connected;
 

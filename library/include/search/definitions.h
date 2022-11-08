@@ -34,6 +34,8 @@ namespace search {
         std::string description;
     };
 
+    const size_t DEFAULT_SHARD_CAPACITY = 1024 * 1024 * 1024;
+
     struct DBShard {
         std::string db_id;
         std::string shard_id;

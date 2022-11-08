@@ -10,9 +10,12 @@ set(CMAKE_CXX_STANDARD 17)
 
 project(FeatureProtos LANGUAGES CXX)
 
-include(../build/conanbuildinfo.cmake)
-conan_basic_setup(TARGETS)
-include_directories(${CONAN_INCLUDE_DIRS})
+if (NOT DEFINED CONAN_ALREADY_SETUP)
+  include(${CMAKE_CURRENT_SOURCE_DIR}/../build/conanbuildinfo.cmake)
+  conan_basic_setup(TARGETS)
+  include_directories(${CONAN_INCLUDE_DIRS})
+  set(CONAN_ALREADY_SETUP true)
+endif()
 
 
 # ---- Create library ----

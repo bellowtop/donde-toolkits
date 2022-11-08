@@ -60,7 +60,7 @@ Shard* ShardManager::FindOrCreateWritableShard(std::string db_id) {
     search::DBShard shard_info{
         .db_id = db_id,
         .is_closed = false,
-        .capacity = 1024,
+        .capacity = search::DEFAULT_SHARD_CAPACITY,
         .used = 0,
     };
 
