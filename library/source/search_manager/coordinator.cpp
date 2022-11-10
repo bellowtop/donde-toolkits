@@ -36,6 +36,7 @@ Coordinator::Coordinator(const json& coor_config) : config(coor_config) {
 Coordinator::~Coordinator(){};
 
 void Coordinator::Start() {
+
     initialize_workers();
 
     assign_worker_for_shards();

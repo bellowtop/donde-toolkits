@@ -33,15 +33,15 @@ using com::sekirocc::feature_search::inner::CloseDBShardsResponse;
 using com::sekirocc::feature_search::inner::GetSystemInfoRequest;
 using com::sekirocc::feature_search::inner::GetSystemInfoResponse;
 
+using com::sekirocc::feature_search::inner::SearchFeatureRequest;
+using com::sekirocc::feature_search::inner::SearchFeatureResponse;
+
 WorkerClient::WorkerClient(const std::string& addr) : _worker_id(generate_uuid()), _addr(addr) {
     auto ret = Connect();
 
     if (ret == RetCode::RET_OK) {
         // 1. get initial system info;
-        auto pair = WorkerClient::get_system_info(_stub.get(), 10);
-        auto status = pair.first;
-        auto response = pair.second;
-
+        auto [status, response] = WorkerClient::get_system_info(_stub.get(), 10);
         if (status.ok()) {
             _worker_info = response.worker_info();
         }
@@ -93,7 +93,7 @@ RetCode WorkerClient::ServeShard(const search::DBShard& shard_info) {
     if (shard_info.capacity > free_space) {
         spdlog::info("this worker doesn't has enough space for the shard {} (worker free:{}, shard "
                      "capacity want: {}) !",
-                     shard_info.shard_id, free, shard_info.capacity);
+                     shard_info.shard_id, free_space, shard_info.capacity);
         return RetCode::RET_ERR;
     }
 
@@ -146,13 +146,45 @@ RetCode WorkerClient::AddFeatures(const std::string& db_id, const std::string& s
     BatchAddFeaturesRequest request;
     BatchAddFeaturesResponse response;
 
-    _stub->BatchAddFeatures(&ctx, request, &response);
+    request.set_db_id(db_id);
+    request.set_shard_id(shard_id);
+    for (auto& ft : fts) {
+        auto item = request.add_feature_items();
+        auto feat = item->mutable_feature();
+        auto meta = item->mutable_meta();
+        // TODO
+    }
 
-    return {};
+    auto status = _stub->BatchAddFeatures(&ctx, request, &response);
+    if (status.ok()) {
+        return RetCode::RET_OK;
+    }
+
+    return RetCode::RET_ERR;
 };
 
 std::vector<Feature> WorkerClient::SearchFeature(const std::string& db_id, const Feature& query,
                                                  int topk) {
+
+    grpc::ClientContext ctx;
+    SearchFeatureRequest request;
+    SearchFeatureResponse response;
+
+    request.set_topk(topk);
+    request.add_db_ids()->assign(db_id);
+    auto feat = request.mutable_query();
+    // TODO
+
+    auto status = _stub->SearchFeature(&ctx, request, &response);
+    if (status.ok()) {
+        std::vector<Feature> fts;
+        for (auto item : response.items()) {
+            auto ft = item.feature();
+            // TODO
+        }
+        return fts;
+    }
+
     return {};
 };
 
@@ -164,9 +196,7 @@ void WorkerClient::check_liveness_loop() {
             break;
         }
 
-        auto pair = WorkerClient::get_system_info(_stub.get(), 10);
-        auto status = pair.first;
-        auto response = pair.second;
+        auto [status, response] = WorkerClient::get_system_info(_stub.get(), 10);
 
         // if (status.error_code() == grpc::Status::CANCELLED.error_code()) {
         if (!status.ok()) {
@@ -182,12 +212,12 @@ void WorkerClient::check_liveness_loop() {
     }
 }
 
-std::pair<grpc::Status, GetSystemInfoResponse> WorkerClient::get_system_info(WorkerStub* stub,
-                                                                             int timeout) {
+std::tuple<grpc::Status, GetSystemInfoResponse> WorkerClient::get_system_info(WorkerStub* stub,
+                                                                              int timeout) {
     grpc::ClientContext ctx;
 
     if (timeout > 0) {
-        auto now = std::chrono::steady_clock::now();
+        auto now = std::chrono::system_clock::now();
         auto deadline = now + std::chrono::seconds(timeout);
         ctx.set_deadline(deadline);
     }

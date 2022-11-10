@@ -48,8 +48,8 @@ class WorkerClient : public Worker {
   private:
     void check_liveness_loop();
 
-    static std::pair<grpc::Status, GetSystemInfoResponse> get_system_info(WorkerStub* stub,
-                                                                          int timeout = 0);
+    static std::tuple<grpc::Status, GetSystemInfoResponse> get_system_info(WorkerStub* stub,
+                                                                           int timeout = 0);
 
   private:
     Poco::Thread _liveness_check_thread;

@@ -65,9 +65,15 @@ void FeatureSearchWorkerImpl::Start() { searcher->Init(); };
 
 void FeatureSearchWorkerImpl::Stop() { searcher->Terminate(); };
 
-Status FeatureSearchWorkerImpl::AssignDBShards(ServerContext* context,
-                                               const AssignDBShardsRequest* request,
-                                               AssignDBShardsResponse* response) {
+Status FeatureSearchWorkerImpl::ServeDBShards(ServerContext* context,
+                                              const ServeDBShardsRequest* request,
+                                              ServeDBShardsResponse* response) {
+    return Status::OK;
+};
+
+Status FeatureSearchWorkerImpl::CloseDBShards(ServerContext* context,
+                                              const CloseDBShardsRequest* request,
+                                              CloseDBShardsResponse* response) {
     return Status::OK;
 };
 
