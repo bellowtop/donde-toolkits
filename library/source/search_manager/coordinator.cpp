@@ -44,25 +44,6 @@ void Coordinator::Start() {
 
 void Coordinator::Stop(){};
 
-void Coordinator::initialize_workers() {
-    for (auto& addr : _worker_addrs) {
-        try {
-            // may has exception, we handled bellow.
-            auto client = std::make_shared<WorkerClient>(addr);
-            _workers.push_back(client);
-        } catch (const std::exception& exc) {
-            _invalid_worker_addrs.push_back(addr);
-        }
-    }
-
-    if (_invalid_worker_addrs.size() > 0) {
-        spdlog::warn("supplied worker addrs has some wrong addrs, we cannot connect to them:");
-        for (auto& v : _invalid_worker_addrs) {
-            spdlog::warn("{}", v);
-        }
-    }
-};
-
 // AddFeatures to this db, we need find proper shard to store these fts.
 RetCode Coordinator::AddFeatures(const std::string& db_id, const std::vector<Feature>& fts) {
     auto [shard, new_created] = _shard_manager->FindOrCreateWritableShard(db_id, fts.size());
@@ -120,6 +101,25 @@ void Coordinator::assign_worker_for_shards() {
             }
             shard->AssignWorker(worker);
             worker->ServeShard(shard->GetShardInfo());
+        }
+    }
+};
+
+void Coordinator::initialize_workers() {
+    for (auto& addr : _worker_addrs) {
+        try {
+            // may has exception, we handled bellow.
+            auto client = std::make_shared<WorkerClient>(addr);
+            _workers.push_back(client);
+        } catch (const std::exception& exc) {
+            _invalid_worker_addrs.push_back(addr);
+        }
+    }
+
+    if (_invalid_worker_addrs.size() > 0) {
+        spdlog::warn("supplied worker addrs has some wrong addrs, we cannot connect to them:");
+        for (auto& v : _invalid_worker_addrs) {
+            spdlog::warn("{}", v);
         }
     }
 };
