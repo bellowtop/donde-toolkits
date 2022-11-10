@@ -8,13 +8,23 @@ option go_package = "github.com/sekirocc/face-recognition-service/feature_search
 
 package com.sekirocc.feature_search.inner;
 
-// Worker service
-message AssignDBShardsRequest {
+message ShardInfo {
   string db_id = 1;
-  repeated string shard_ids = 2;
+  string shard_id = 2;
 }
 
-message AssignDBShardsResponse { com.sekirocc.common.ResultCode code = 1; }
+// Worker service
+message ServeDBShardsRequest {
+  repeated ShardInfo shards = 1;
+}
+
+message ServeDBShardsResponse { com.sekirocc.common.ResultCode code = 1; }
+
+message CloseDBShardsRequest {
+  repeated ShardInfo shards = 1;
+}
+
+message CloseDBShardsResponse { com.sekirocc.common.ResultCode code = 1; }
 
 // Worker service
 message GetSystemInfoRequest {}
@@ -42,7 +52,8 @@ message AddFeatureItem {
 
 message BatchAddFeaturesRequest {
     string db_id = 1;
-    repeated AddFeatureItem feature_items = 2;
+    string shard_id = 2;
+    repeated AddFeatureItem feature_items = 3;
 }
 
 message BatchAddFeaturesResponse {
@@ -52,7 +63,8 @@ message BatchAddFeaturesResponse {
 
 message BatchDeleteFeaturesRequest {
     string db_id = 1;
-    repeated string feature_ids = 2;
+    string shard_id = 2;
+    repeated string feature_ids = 3;
 }
 
 message BatchDeleteFeaturesResponse { com.sekirocc.common.ResultCode code = 1; }
@@ -85,9 +97,18 @@ service FeatureSearchWorker {
 
     // assign some dbs to this worker, then it's the worker's duty to manage those databases(add,
     // search etc.) must be called once.
-    rpc AssignDBShards(AssignDBShardsRequest) returns (AssignDBShardsResponse) {
+    rpc ServeDBShards(ServeDBShardsRequest) returns (ServeDBShardsResponse) {
         option (google.api.http) = {
-            post : "/assign_db_shards"
+            post : "/serve_db_shards"
+            body : "*"
+        };
+    }
+
+    // assign some dbs to this worker, then it's the worker's duty to manage those databases(add,
+    // search etc.) must be called once.
+    rpc CloseDBShards(CloseDBShardsRequest) returns (CloseDBShardsResponse) {
+        option (google.api.http) = {
+            post : "/close_db_shards"
             body : "*"
         };
     }

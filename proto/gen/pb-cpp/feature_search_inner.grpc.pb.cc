@@ -26,7 +26,8 @@ namespace inner {
 
 static const char* FeatureSearchWorker_method_names[] = {
   "/com.sekirocc.feature_search.inner.FeatureSearchWorker/GetSystemInfo",
-  "/com.sekirocc.feature_search.inner.FeatureSearchWorker/AssignDBShards",
+  "/com.sekirocc.feature_search.inner.FeatureSearchWorker/ServeDBShards",
+  "/com.sekirocc.feature_search.inner.FeatureSearchWorker/CloseDBShards",
   "/com.sekirocc.feature_search.inner.FeatureSearchWorker/TrainIndex",
   "/com.sekirocc.feature_search.inner.FeatureSearchWorker/BatchAddFeatures",
   "/com.sekirocc.feature_search.inner.FeatureSearchWorker/BatchDeleteFeatures",
@@ -41,11 +42,12 @@ std::unique_ptr< FeatureSearchWorker::Stub> FeatureSearchWorker::NewStub(const s
 
 FeatureSearchWorker::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
   : channel_(channel), rpcmethod_GetSystemInfo_(FeatureSearchWorker_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_AssignDBShards_(FeatureSearchWorker_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_TrainIndex_(FeatureSearchWorker_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_BatchAddFeatures_(FeatureSearchWorker_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_BatchDeleteFeatures_(FeatureSearchWorker_method_names[4], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SearchFeature_(FeatureSearchWorker_method_names[5], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_ServeDBShards_(FeatureSearchWorker_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_CloseDBShards_(FeatureSearchWorker_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_TrainIndex_(FeatureSearchWorker_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_BatchAddFeatures_(FeatureSearchWorker_method_names[4], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_BatchDeleteFeatures_(FeatureSearchWorker_method_names[5], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SearchFeature_(FeatureSearchWorker_method_names[6], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status FeatureSearchWorker::Stub::GetSystemInfo(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::GetSystemInfoRequest& request, ::com::sekirocc::feature_search::inner::GetSystemInfoResponse* response) {
@@ -71,25 +73,48 @@ void FeatureSearchWorker::Stub::async::GetSystemInfo(::grpc::ClientContext* cont
   return result;
 }
 
-::grpc::Status FeatureSearchWorker::Stub::AssignDBShards(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest& request, ::com::sekirocc::feature_search::inner::AssignDBShardsResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::com::sekirocc::feature_search::inner::AssignDBShardsRequest, ::com::sekirocc::feature_search::inner::AssignDBShardsResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_AssignDBShards_, context, request, response);
+::grpc::Status FeatureSearchWorker::Stub::ServeDBShards(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::ServeDBShardsRequest& request, ::com::sekirocc::feature_search::inner::ServeDBShardsResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::com::sekirocc::feature_search::inner::ServeDBShardsRequest, ::com::sekirocc::feature_search::inner::ServeDBShardsResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_ServeDBShards_, context, request, response);
 }
 
-void FeatureSearchWorker::Stub::async::AssignDBShards(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest* request, ::com::sekirocc::feature_search::inner::AssignDBShardsResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::com::sekirocc::feature_search::inner::AssignDBShardsRequest, ::com::sekirocc::feature_search::inner::AssignDBShardsResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_AssignDBShards_, context, request, response, std::move(f));
+void FeatureSearchWorker::Stub::async::ServeDBShards(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::ServeDBShardsRequest* request, ::com::sekirocc::feature_search::inner::ServeDBShardsResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::com::sekirocc::feature_search::inner::ServeDBShardsRequest, ::com::sekirocc::feature_search::inner::ServeDBShardsResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_ServeDBShards_, context, request, response, std::move(f));
 }
 
-void FeatureSearchWorker::Stub::async::AssignDBShards(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest* request, ::com::sekirocc::feature_search::inner::AssignDBShardsResponse* response, ::grpc::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_AssignDBShards_, context, request, response, reactor);
+void FeatureSearchWorker::Stub::async::ServeDBShards(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::ServeDBShardsRequest* request, ::com::sekirocc::feature_search::inner::ServeDBShardsResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_ServeDBShards_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::AssignDBShardsResponse>* FeatureSearchWorker::Stub::PrepareAsyncAssignDBShardsRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::com::sekirocc::feature_search::inner::AssignDBShardsResponse, ::com::sekirocc::feature_search::inner::AssignDBShardsRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_AssignDBShards_, context, request);
+::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::ServeDBShardsResponse>* FeatureSearchWorker::Stub::PrepareAsyncServeDBShardsRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::ServeDBShardsRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::com::sekirocc::feature_search::inner::ServeDBShardsResponse, ::com::sekirocc::feature_search::inner::ServeDBShardsRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_ServeDBShards_, context, request);
 }
 
-::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::AssignDBShardsResponse>* FeatureSearchWorker::Stub::AsyncAssignDBShardsRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::ServeDBShardsResponse>* FeatureSearchWorker::Stub::AsyncServeDBShardsRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::ServeDBShardsRequest& request, ::grpc::CompletionQueue* cq) {
   auto* result =
-    this->PrepareAsyncAssignDBShardsRaw(context, request, cq);
+    this->PrepareAsyncServeDBShardsRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status FeatureSearchWorker::Stub::CloseDBShards(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::CloseDBShardsRequest& request, ::com::sekirocc::feature_search::inner::CloseDBShardsResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::com::sekirocc::feature_search::inner::CloseDBShardsRequest, ::com::sekirocc::feature_search::inner::CloseDBShardsResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_CloseDBShards_, context, request, response);
+}
+
+void FeatureSearchWorker::Stub::async::CloseDBShards(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::CloseDBShardsRequest* request, ::com::sekirocc::feature_search::inner::CloseDBShardsResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::com::sekirocc::feature_search::inner::CloseDBShardsRequest, ::com::sekirocc::feature_search::inner::CloseDBShardsResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CloseDBShards_, context, request, response, std::move(f));
+}
+
+void FeatureSearchWorker::Stub::async::CloseDBShards(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::CloseDBShardsRequest* request, ::com::sekirocc::feature_search::inner::CloseDBShardsResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CloseDBShards_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::CloseDBShardsResponse>* FeatureSearchWorker::Stub::PrepareAsyncCloseDBShardsRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::CloseDBShardsRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::com::sekirocc::feature_search::inner::CloseDBShardsResponse, ::com::sekirocc::feature_search::inner::CloseDBShardsRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_CloseDBShards_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::com::sekirocc::feature_search::inner::CloseDBShardsResponse>* FeatureSearchWorker::Stub::AsyncCloseDBShardsRaw(::grpc::ClientContext* context, const ::com::sekirocc::feature_search::inner::CloseDBShardsRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncCloseDBShardsRaw(context, request, cq);
   result->StartCall();
   return result;
 }
@@ -200,15 +225,25 @@ FeatureSearchWorker::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       FeatureSearchWorker_method_names[1],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< FeatureSearchWorker::Service, ::com::sekirocc::feature_search::inner::AssignDBShardsRequest, ::com::sekirocc::feature_search::inner::AssignDBShardsResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+      new ::grpc::internal::RpcMethodHandler< FeatureSearchWorker::Service, ::com::sekirocc::feature_search::inner::ServeDBShardsRequest, ::com::sekirocc::feature_search::inner::ServeDBShardsResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](FeatureSearchWorker::Service* service,
              ::grpc::ServerContext* ctx,
-             const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest* req,
-             ::com::sekirocc::feature_search::inner::AssignDBShardsResponse* resp) {
-               return service->AssignDBShards(ctx, req, resp);
+             const ::com::sekirocc::feature_search::inner::ServeDBShardsRequest* req,
+             ::com::sekirocc::feature_search::inner::ServeDBShardsResponse* resp) {
+               return service->ServeDBShards(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       FeatureSearchWorker_method_names[2],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< FeatureSearchWorker::Service, ::com::sekirocc::feature_search::inner::CloseDBShardsRequest, ::com::sekirocc::feature_search::inner::CloseDBShardsResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](FeatureSearchWorker::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::com::sekirocc::feature_search::inner::CloseDBShardsRequest* req,
+             ::com::sekirocc::feature_search::inner::CloseDBShardsResponse* resp) {
+               return service->CloseDBShards(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      FeatureSearchWorker_method_names[3],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< FeatureSearchWorker::Service, ::com::sekirocc::feature_search::inner::TrainIndexRequest, ::com::sekirocc::feature_search::inner::TrainIndexResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](FeatureSearchWorker::Service* service,
@@ -218,7 +253,7 @@ FeatureSearchWorker::Service::Service() {
                return service->TrainIndex(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      FeatureSearchWorker_method_names[3],
+      FeatureSearchWorker_method_names[4],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< FeatureSearchWorker::Service, ::com::sekirocc::feature_search::inner::BatchAddFeaturesRequest, ::com::sekirocc::feature_search::inner::BatchAddFeaturesResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](FeatureSearchWorker::Service* service,
@@ -228,7 +263,7 @@ FeatureSearchWorker::Service::Service() {
                return service->BatchAddFeatures(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      FeatureSearchWorker_method_names[4],
+      FeatureSearchWorker_method_names[5],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< FeatureSearchWorker::Service, ::com::sekirocc::feature_search::inner::BatchDeleteFeaturesRequest, ::com::sekirocc::feature_search::inner::BatchDeleteFeaturesResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](FeatureSearchWorker::Service* service,
@@ -238,7 +273,7 @@ FeatureSearchWorker::Service::Service() {
                return service->BatchDeleteFeatures(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      FeatureSearchWorker_method_names[5],
+      FeatureSearchWorker_method_names[6],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< FeatureSearchWorker::Service, ::com::sekirocc::feature_search::inner::SearchFeatureRequest, ::com::sekirocc::feature_search::inner::SearchFeatureResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](FeatureSearchWorker::Service* service,
@@ -259,7 +294,14 @@ FeatureSearchWorker::Service::~Service() {
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status FeatureSearchWorker::Service::AssignDBShards(::grpc::ServerContext* context, const ::com::sekirocc::feature_search::inner::AssignDBShardsRequest* request, ::com::sekirocc::feature_search::inner::AssignDBShardsResponse* response) {
+::grpc::Status FeatureSearchWorker::Service::ServeDBShards(::grpc::ServerContext* context, const ::com::sekirocc::feature_search::inner::ServeDBShardsRequest* request, ::com::sekirocc::feature_search::inner::ServeDBShardsResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status FeatureSearchWorker::Service::CloseDBShards(::grpc::ServerContext* context, const ::com::sekirocc::feature_search::inner::CloseDBShardsRequest* request, ::com::sekirocc::feature_search::inner::CloseDBShardsResponse* response) {
   (void) context;
   (void) request;
   (void) response;

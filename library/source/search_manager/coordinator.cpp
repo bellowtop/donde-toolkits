@@ -43,7 +43,7 @@ void Coordinator::Start() {
 
 void Coordinator::Stop(){};
 
-RetCode Coordinator::initialize_workers() {
+void Coordinator::initialize_workers() {
     for (auto& addr : _worker_addrs) {
         try {
             // may has exception, we handled bellow.
@@ -60,14 +60,14 @@ RetCode Coordinator::initialize_workers() {
             spdlog::warn("{}", v);
         }
     }
-
-    return {};
 };
 
 // AddFeatures to this db, we need find proper shard to store these fts.
 RetCode Coordinator::AddFeatures(const std::string& db_id, const std::vector<Feature>& fts) {
-    Shard* shard = _shard_manager->FindOrCreateWritableShard(db_id);
-    if (!shard->HasWorker()) {
+    auto [shard, new_created] = _shard_manager->FindOrCreateWritableShard(db_id, fts.size());
+
+    // if newly created shard, it doesn't have a worker.
+    if (new_created) {
         Worker* worker = find_worker_for_shard(shard);
         if (worker == nullptr) {
             spdlog::error("cannot find a worker for shard: {}", shard->GetShardID());
@@ -107,7 +107,7 @@ Worker* Coordinator::find_worker_for_shard(Shard* shard) {
     return selected;
 };
 
-RetCode Coordinator::assign_worker_for_shards() {
+void Coordinator::assign_worker_for_shards() {
     std::vector<search::DBItem> dbs = _shard_manager->ListUserDBs();
     for (auto& db : dbs) {
         auto shards = _shard_manager->ListShards(db.db_id);
@@ -121,5 +121,4 @@ RetCode Coordinator::assign_worker_for_shards() {
             worker->ServeShard(shard->GetShardInfo());
         }
     }
-    return {};
 };

@@ -58,13 +58,15 @@ class ShardManager {
     ShardManager(search::Driver& driver);
     ~ShardManager() = default;
 
-    Shard* FindOrCreateWritableShard(std::string db_id);
+    std::tuple<Shard*, bool> FindOrCreateWritableShard(std::string db_id, uint64 fts_count);
 
     std::vector<search::DBItem> ListUserDBs();
 
     std::vector<Shard*> ListShards(std::string db_id);
 
     RetCode CloseShard(std::string db_id, std::string shard_id);
+
+    std::string CreateShard(search::DBShard shard_info);
 
   private:
     RetCode load_db_shards();

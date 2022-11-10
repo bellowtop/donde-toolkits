@@ -24,33 +24,72 @@ namespace com {
 namespace sekirocc {
 namespace feature_search {
 namespace inner {
-PROTOBUF_CONSTEXPR AssignDBShardsRequest::AssignDBShardsRequest(
+PROTOBUF_CONSTEXPR ShardInfo::ShardInfo(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.shard_ids_)*/{}
-  , /*decltype(_impl_.db_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+    /*decltype(_impl_.db_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.shard_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_._cached_size_)*/{}} {}
-struct AssignDBShardsRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR AssignDBShardsRequestDefaultTypeInternal()
+struct ShardInfoDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ShardInfoDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
-  ~AssignDBShardsRequestDefaultTypeInternal() {}
+  ~ShardInfoDefaultTypeInternal() {}
   union {
-    AssignDBShardsRequest _instance;
+    ShardInfo _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AssignDBShardsRequestDefaultTypeInternal _AssignDBShardsRequest_default_instance_;
-PROTOBUF_CONSTEXPR AssignDBShardsResponse::AssignDBShardsResponse(
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ShardInfoDefaultTypeInternal _ShardInfo_default_instance_;
+PROTOBUF_CONSTEXPR ServeDBShardsRequest::ServeDBShardsRequest(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.shards_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct ServeDBShardsRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ServeDBShardsRequestDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ServeDBShardsRequestDefaultTypeInternal() {}
+  union {
+    ServeDBShardsRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ServeDBShardsRequestDefaultTypeInternal _ServeDBShardsRequest_default_instance_;
+PROTOBUF_CONSTEXPR ServeDBShardsResponse::ServeDBShardsResponse(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.code_)*/0
   , /*decltype(_impl_._cached_size_)*/{}} {}
-struct AssignDBShardsResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR AssignDBShardsResponseDefaultTypeInternal()
+struct ServeDBShardsResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ServeDBShardsResponseDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
-  ~AssignDBShardsResponseDefaultTypeInternal() {}
+  ~ServeDBShardsResponseDefaultTypeInternal() {}
   union {
-    AssignDBShardsResponse _instance;
+    ServeDBShardsResponse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AssignDBShardsResponseDefaultTypeInternal _AssignDBShardsResponse_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ServeDBShardsResponseDefaultTypeInternal _ServeDBShardsResponse_default_instance_;
+PROTOBUF_CONSTEXPR CloseDBShardsRequest::CloseDBShardsRequest(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.shards_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct CloseDBShardsRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CloseDBShardsRequestDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CloseDBShardsRequestDefaultTypeInternal() {}
+  union {
+    CloseDBShardsRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CloseDBShardsRequestDefaultTypeInternal _CloseDBShardsRequest_default_instance_;
+PROTOBUF_CONSTEXPR CloseDBShardsResponse::CloseDBShardsResponse(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.code_)*/0
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct CloseDBShardsResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CloseDBShardsResponseDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CloseDBShardsResponseDefaultTypeInternal() {}
+  union {
+    CloseDBShardsResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CloseDBShardsResponseDefaultTypeInternal _CloseDBShardsResponse_default_instance_;
 PROTOBUF_CONSTEXPR GetSystemInfoRequest::GetSystemInfoRequest(
     ::_pbi::ConstantInitialized) {}
 struct GetSystemInfoRequestDefaultTypeInternal {
@@ -144,6 +183,7 @@ PROTOBUF_CONSTEXPR BatchAddFeaturesRequest::BatchAddFeaturesRequest(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.feature_items_)*/{}
   , /*decltype(_impl_.db_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.shard_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct BatchAddFeaturesRequestDefaultTypeInternal {
   PROTOBUF_CONSTEXPR BatchAddFeaturesRequestDefaultTypeInternal()
@@ -172,6 +212,7 @@ PROTOBUF_CONSTEXPR BatchDeleteFeaturesRequest::BatchDeleteFeaturesRequest(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.feature_ids_)*/{}
   , /*decltype(_impl_.db_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.shard_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct BatchDeleteFeaturesRequestDefaultTypeInternal {
   PROTOBUF_CONSTEXPR BatchDeleteFeaturesRequestDefaultTypeInternal()
@@ -243,26 +284,47 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORIT
 }  // namespace feature_search
 }  // namespace sekirocc
 }  // namespace com
-static ::_pb::Metadata file_level_metadata_feature_5fsearch_5finner_2eproto[16];
+static ::_pb::Metadata file_level_metadata_feature_5fsearch_5finner_2eproto[19];
 static constexpr ::_pb::EnumDescriptor const** file_level_enum_descriptors_feature_5fsearch_5finner_2eproto = nullptr;
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_feature_5fsearch_5finner_2eproto = nullptr;
 
 const uint32_t TableStruct_feature_5fsearch_5finner_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::AssignDBShardsRequest, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::ShardInfo, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::AssignDBShardsRequest, _impl_.db_id_),
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::AssignDBShardsRequest, _impl_.shard_ids_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::ShardInfo, _impl_.db_id_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::ShardInfo, _impl_.shard_id_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::AssignDBShardsResponse, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::ServeDBShardsRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::AssignDBShardsResponse, _impl_.code_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::ServeDBShardsRequest, _impl_.shards_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::ServeDBShardsResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::ServeDBShardsResponse, _impl_.code_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::CloseDBShardsRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::CloseDBShardsRequest, _impl_.shards_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::CloseDBShardsResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::CloseDBShardsResponse, _impl_.code_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::GetSystemInfoRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -324,6 +386,7 @@ const uint32_t TableStruct_feature_5fsearch_5finner_2eproto::offsets[] PROTOBUF_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::BatchAddFeaturesRequest, _impl_.db_id_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::BatchAddFeaturesRequest, _impl_.shard_id_),
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::BatchAddFeaturesRequest, _impl_.feature_items_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::BatchAddFeaturesResponse, _internal_metadata_),
@@ -340,6 +403,7 @@ const uint32_t TableStruct_feature_5fsearch_5finner_2eproto::offsets[] PROTOBUF_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::BatchDeleteFeaturesRequest, _impl_.db_id_),
+  PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::BatchDeleteFeaturesRequest, _impl_.shard_id_),
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::BatchDeleteFeaturesRequest, _impl_.feature_ids_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::BatchDeleteFeaturesResponse, _internal_metadata_),
@@ -376,27 +440,33 @@ const uint32_t TableStruct_feature_5fsearch_5finner_2eproto::offsets[] PROTOBUF_
   PROTOBUF_FIELD_OFFSET(::com::sekirocc::feature_search::inner::SearchFeatureResponse, _impl_.items_),
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, -1, sizeof(::com::sekirocc::feature_search::inner::AssignDBShardsRequest)},
-  { 8, -1, -1, sizeof(::com::sekirocc::feature_search::inner::AssignDBShardsResponse)},
-  { 15, -1, -1, sizeof(::com::sekirocc::feature_search::inner::GetSystemInfoRequest)},
-  { 21, -1, -1, sizeof(::com::sekirocc::feature_search::inner::WorkerInfo)},
-  { 29, -1, -1, sizeof(::com::sekirocc::feature_search::inner::GetSystemInfoResponse)},
-  { 38, -1, -1, sizeof(::com::sekirocc::feature_search::inner::TrainIndexRequest)},
-  { 44, -1, -1, sizeof(::com::sekirocc::feature_search::inner::TrainIndexResponse)},
-  { 51, 59, -1, sizeof(::com::sekirocc::feature_search::inner::AddFeatureItem_MetaEntry_DoNotUse)},
-  { 61, -1, -1, sizeof(::com::sekirocc::feature_search::inner::AddFeatureItem)},
-  { 69, -1, -1, sizeof(::com::sekirocc::feature_search::inner::BatchAddFeaturesRequest)},
-  { 77, -1, -1, sizeof(::com::sekirocc::feature_search::inner::BatchAddFeaturesResponse)},
-  { 85, -1, -1, sizeof(::com::sekirocc::feature_search::inner::BatchDeleteFeaturesRequest)},
-  { 93, -1, -1, sizeof(::com::sekirocc::feature_search::inner::BatchDeleteFeaturesResponse)},
-  { 100, -1, -1, sizeof(::com::sekirocc::feature_search::inner::SearchFeatureRequest)},
-  { 109, -1, -1, sizeof(::com::sekirocc::feature_search::inner::SearchItemScore)},
-  { 118, -1, -1, sizeof(::com::sekirocc::feature_search::inner::SearchFeatureResponse)},
+  { 0, -1, -1, sizeof(::com::sekirocc::feature_search::inner::ShardInfo)},
+  { 8, -1, -1, sizeof(::com::sekirocc::feature_search::inner::ServeDBShardsRequest)},
+  { 15, -1, -1, sizeof(::com::sekirocc::feature_search::inner::ServeDBShardsResponse)},
+  { 22, -1, -1, sizeof(::com::sekirocc::feature_search::inner::CloseDBShardsRequest)},
+  { 29, -1, -1, sizeof(::com::sekirocc::feature_search::inner::CloseDBShardsResponse)},
+  { 36, -1, -1, sizeof(::com::sekirocc::feature_search::inner::GetSystemInfoRequest)},
+  { 42, -1, -1, sizeof(::com::sekirocc::feature_search::inner::WorkerInfo)},
+  { 50, -1, -1, sizeof(::com::sekirocc::feature_search::inner::GetSystemInfoResponse)},
+  { 59, -1, -1, sizeof(::com::sekirocc::feature_search::inner::TrainIndexRequest)},
+  { 65, -1, -1, sizeof(::com::sekirocc::feature_search::inner::TrainIndexResponse)},
+  { 72, 80, -1, sizeof(::com::sekirocc::feature_search::inner::AddFeatureItem_MetaEntry_DoNotUse)},
+  { 82, -1, -1, sizeof(::com::sekirocc::feature_search::inner::AddFeatureItem)},
+  { 90, -1, -1, sizeof(::com::sekirocc::feature_search::inner::BatchAddFeaturesRequest)},
+  { 99, -1, -1, sizeof(::com::sekirocc::feature_search::inner::BatchAddFeaturesResponse)},
+  { 107, -1, -1, sizeof(::com::sekirocc::feature_search::inner::BatchDeleteFeaturesRequest)},
+  { 116, -1, -1, sizeof(::com::sekirocc::feature_search::inner::BatchDeleteFeaturesResponse)},
+  { 123, -1, -1, sizeof(::com::sekirocc::feature_search::inner::SearchFeatureRequest)},
+  { 132, -1, -1, sizeof(::com::sekirocc::feature_search::inner::SearchItemScore)},
+  { 141, -1, -1, sizeof(::com::sekirocc::feature_search::inner::SearchFeatureResponse)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
-  &::com::sekirocc::feature_search::inner::_AssignDBShardsRequest_default_instance_._instance,
-  &::com::sekirocc::feature_search::inner::_AssignDBShardsResponse_default_instance_._instance,
+  &::com::sekirocc::feature_search::inner::_ShardInfo_default_instance_._instance,
+  &::com::sekirocc::feature_search::inner::_ServeDBShardsRequest_default_instance_._instance,
+  &::com::sekirocc::feature_search::inner::_ServeDBShardsResponse_default_instance_._instance,
+  &::com::sekirocc::feature_search::inner::_CloseDBShardsRequest_default_instance_._instance,
+  &::com::sekirocc::feature_search::inner::_CloseDBShardsResponse_default_instance_._instance,
   &::com::sekirocc::feature_search::inner::_GetSystemInfoRequest_default_instance_._instance,
   &::com::sekirocc::feature_search::inner::_WorkerInfo_default_instance_._instance,
   &::com::sekirocc::feature_search::inner::_GetSystemInfoResponse_default_instance_._instance,
@@ -416,69 +486,79 @@ static const ::_pb::Message* const file_default_instances[] = {
 const char descriptor_table_protodef_feature_5fsearch_5finner_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\032feature_search_inner.proto\022!com.sekiro"
   "cc.feature_search.inner\032\034google/api/anno"
-  "tations.proto\032\014common.proto\"9\n\025AssignDBS"
-  "hardsRequest\022\r\n\005db_id\030\001 \001(\t\022\021\n\tshard_ids"
-  "\030\002 \003(\t\"G\n\026AssignDBShardsResponse\022-\n\004code"
-  "\030\001 \001(\0162\037.com.sekirocc.common.ResultCode\""
-  "\026\n\024GetSystemInfoRequest\".\n\nWorkerInfo\022\020\n"
-  "\010capacity\030\001 \001(\003\022\016\n\006device\030\002 \001(\t\"\264\001\n\025GetS"
-  "ystemInfoResponse\022-\n\004code\030\001 \001(\0162\037.com.se"
-  "kirocc.common.ResultCode\022(\n\003dbs\030\002 \003(\0132\033."
-  "com.sekirocc.common.DBItem\022B\n\013worker_inf"
-  "o\030\003 \001(\0132-.com.sekirocc.feature_search.in"
-  "ner.WorkerInfo\"\023\n\021TrainIndexRequest\"C\n\022T"
-  "rainIndexResponse\022-\n\004code\030\001 \001(\0162\037.com.se"
-  "kirocc.common.ResultCode\"\273\001\n\016AddFeatureI"
-  "tem\0221\n\007feature\030\001 \001(\0132 .com.sekirocc.comm"
-  "on.FaceFeature\022I\n\004meta\030\002 \003(\0132;.com.sekir"
-  "occ.feature_search.inner.AddFeatureItem."
-  "MetaEntry\032+\n\tMetaEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005v"
-  "alue\030\002 \001(\t:\0028\001\"r\n\027BatchAddFeaturesReques"
-  "t\022\r\n\005db_id\030\001 \001(\t\022H\n\rfeature_items\030\002 \003(\0132"
-  "1.com.sekirocc.feature_search.inner.AddF"
-  "eatureItem\"^\n\030BatchAddFeaturesResponse\022-"
-  "\n\004code\030\001 \001(\0162\037.com.sekirocc.common.Resul"
-  "tCode\022\023\n\013feature_ids\030\002 \003(\t\"@\n\032BatchDelet"
-  "eFeaturesRequest\022\r\n\005db_id\030\001 \001(\t\022\023\n\013featu"
-  "re_ids\030\002 \003(\t\"L\n\033BatchDeleteFeaturesRespo"
-  "nse\022-\n\004code\030\001 \001(\0162\037.com.sekirocc.common."
-  "ResultCode\"e\n\024SearchFeatureRequest\022\016\n\006db"
-  "_ids\030\001 \003(\t\022/\n\005query\030\002 \001(\0132 .com.sekirocc"
-  ".common.FaceFeature\022\014\n\004topk\030\003 \001(\005\"b\n\017Sea"
-  "rchItemScore\022\r\n\005db_id\030\001 \001(\t\0221\n\007feature\030\002"
-  " \001(\0132 .com.sekirocc.common.FaceFeature\022\r"
-  "\n\005score\030\003 \001(\002\"\211\001\n\025SearchFeatureResponse\022"
-  "-\n\004code\030\001 \001(\0162\037.com.sekirocc.common.Resu"
-  "ltCode\022A\n\005items\030\002 \003(\01322.com.sekirocc.fea"
-  "ture_search.inner.SearchItemScore2\373\007\n\023Fe"
-  "atureSearchWorker\022\237\001\n\rGetSystemInfo\0227.co"
-  "m.sekirocc.feature_search.inner.GetSyste"
-  "mInfoRequest\0328.com.sekirocc.feature_sear"
-  "ch.inner.GetSystemInfoResponse\"\033\202\323\344\223\002\025\"\020"
-  "/get_system_info:\001*\022\243\001\n\016AssignDBShards\0228"
-  ".com.sekirocc.feature_search.inner.Assig"
-  "nDBShardsRequest\0329.com.sekirocc.feature_"
-  "search.inner.AssignDBShardsResponse\"\034\202\323\344"
-  "\223\002\026\"\021/assign_db_shards:\001*\022\222\001\n\nTrainIndex"
-  "\0224.com.sekirocc.feature_search.inner.Tra"
-  "inIndexRequest\0325.com.sekirocc.feature_se"
-  "arch.inner.TrainIndexResponse\"\027\202\323\344\223\002\021\"\014/"
-  "train_index:\001*\022\253\001\n\020BatchAddFeatures\022:.co"
-  "m.sekirocc.feature_search.inner.BatchAdd"
-  "FeaturesRequest\032;.com.sekirocc.feature_s"
-  "earch.inner.BatchAddFeaturesResponse\"\036\202\323"
-  "\344\223\002\030\"\023/batch_add_features:\001*\022\267\001\n\023BatchDe"
-  "leteFeatures\022=.com.sekirocc.feature_sear"
-  "ch.inner.BatchDeleteFeaturesRequest\032>.co"
-  "m.sekirocc.feature_search.inner.BatchDel"
-  "eteFeaturesResponse\"!\202\323\344\223\002\033\"\026/batch_dele"
-  "te_features:\001*\022\236\001\n\rSearchFeature\0227.com.s"
-  "ekirocc.feature_search.inner.SearchFeatu"
-  "reRequest\0328.com.sekirocc.feature_search."
-  "inner.SearchFeatureResponse\"\032\202\323\344\223\002\024\"\017/se"
-  "arch_feature:\001*BCZAgithub.com/sekirocc/f"
-  "ace-recognition-service/feature_search/i"
-  "nnerb\006proto3"
+  "tations.proto\032\014common.proto\",\n\tShardInfo"
+  "\022\r\n\005db_id\030\001 \001(\t\022\020\n\010shard_id\030\002 \001(\t\"T\n\024Ser"
+  "veDBShardsRequest\022<\n\006shards\030\001 \003(\0132,.com."
+  "sekirocc.feature_search.inner.ShardInfo\""
+  "F\n\025ServeDBShardsResponse\022-\n\004code\030\001 \001(\0162\037"
+  ".com.sekirocc.common.ResultCode\"T\n\024Close"
+  "DBShardsRequest\022<\n\006shards\030\001 \003(\0132,.com.se"
+  "kirocc.feature_search.inner.ShardInfo\"F\n"
+  "\025CloseDBShardsResponse\022-\n\004code\030\001 \001(\0162\037.c"
+  "om.sekirocc.common.ResultCode\"\026\n\024GetSyst"
+  "emInfoRequest\".\n\nWorkerInfo\022\020\n\010capacity\030"
+  "\001 \001(\003\022\016\n\006device\030\002 \001(\t\"\264\001\n\025GetSystemInfoR"
+  "esponse\022-\n\004code\030\001 \001(\0162\037.com.sekirocc.com"
+  "mon.ResultCode\022(\n\003dbs\030\002 \003(\0132\033.com.sekiro"
+  "cc.common.DBItem\022B\n\013worker_info\030\003 \001(\0132-."
+  "com.sekirocc.feature_search.inner.Worker"
+  "Info\"\023\n\021TrainIndexRequest\"C\n\022TrainIndexR"
+  "esponse\022-\n\004code\030\001 \001(\0162\037.com.sekirocc.com"
+  "mon.ResultCode\"\273\001\n\016AddFeatureItem\0221\n\007fea"
+  "ture\030\001 \001(\0132 .com.sekirocc.common.FaceFea"
+  "ture\022I\n\004meta\030\002 \003(\0132;.com.sekirocc.featur"
+  "e_search.inner.AddFeatureItem.MetaEntry\032"
+  "+\n\tMetaEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t"
+  ":\0028\001\"\204\001\n\027BatchAddFeaturesRequest\022\r\n\005db_i"
+  "d\030\001 \001(\t\022\020\n\010shard_id\030\002 \001(\t\022H\n\rfeature_ite"
+  "ms\030\003 \003(\01321.com.sekirocc.feature_search.i"
+  "nner.AddFeatureItem\"^\n\030BatchAddFeaturesR"
+  "esponse\022-\n\004code\030\001 \001(\0162\037.com.sekirocc.com"
+  "mon.ResultCode\022\023\n\013feature_ids\030\002 \003(\t\"R\n\032B"
+  "atchDeleteFeaturesRequest\022\r\n\005db_id\030\001 \001(\t"
+  "\022\020\n\010shard_id\030\002 \001(\t\022\023\n\013feature_ids\030\003 \003(\t\""
+  "L\n\033BatchDeleteFeaturesResponse\022-\n\004code\030\001"
+  " \001(\0162\037.com.sekirocc.common.ResultCode\"e\n"
+  "\024SearchFeatureRequest\022\016\n\006db_ids\030\001 \003(\t\022/\n"
+  "\005query\030\002 \001(\0132 .com.sekirocc.common.FaceF"
+  "eature\022\014\n\004topk\030\003 \001(\005\"b\n\017SearchItemScore\022"
+  "\r\n\005db_id\030\001 \001(\t\0221\n\007feature\030\002 \001(\0132 .com.se"
+  "kirocc.common.FaceFeature\022\r\n\005score\030\003 \001(\002"
+  "\"\211\001\n\025SearchFeatureResponse\022-\n\004code\030\001 \001(\016"
+  "2\037.com.sekirocc.common.ResultCode\022A\n\005ite"
+  "ms\030\002 \003(\01322.com.sekirocc.feature_search.i"
+  "nner.SearchItemScore2\231\t\n\023FeatureSearchWo"
+  "rker\022\237\001\n\rGetSystemInfo\0227.com.sekirocc.fe"
+  "ature_search.inner.GetSystemInfoRequest\032"
+  "8.com.sekirocc.feature_search.inner.GetS"
+  "ystemInfoResponse\"\033\202\323\344\223\002\025\"\020/get_system_i"
+  "nfo:\001*\022\237\001\n\rServeDBShards\0227.com.sekirocc."
+  "feature_search.inner.ServeDBShardsReques"
+  "t\0328.com.sekirocc.feature_search.inner.Se"
+  "rveDBShardsResponse\"\033\202\323\344\223\002\025\"\020/serve_db_s"
+  "hards:\001*\022\237\001\n\rCloseDBShards\0227.com.sekiroc"
+  "c.feature_search.inner.CloseDBShardsRequ"
+  "est\0328.com.sekirocc.feature_search.inner."
+  "CloseDBShardsResponse\"\033\202\323\344\223\002\025\"\020/close_db"
+  "_shards:\001*\022\222\001\n\nTrainIndex\0224.com.sekirocc"
+  ".feature_search.inner.TrainIndexRequest\032"
+  "5.com.sekirocc.feature_search.inner.Trai"
+  "nIndexResponse\"\027\202\323\344\223\002\021\"\014/train_index:\001*\022"
+  "\253\001\n\020BatchAddFeatures\022:.com.sekirocc.feat"
+  "ure_search.inner.BatchAddFeaturesRequest"
+  "\032;.com.sekirocc.feature_search.inner.Bat"
+  "chAddFeaturesResponse\"\036\202\323\344\223\002\030\"\023/batch_ad"
+  "d_features:\001*\022\267\001\n\023BatchDeleteFeatures\022=."
+  "com.sekirocc.feature_search.inner.BatchD"
+  "eleteFeaturesRequest\032>.com.sekirocc.feat"
+  "ure_search.inner.BatchDeleteFeaturesResp"
+  "onse\"!\202\323\344\223\002\033\"\026/batch_delete_features:\001*\022"
+  "\236\001\n\rSearchFeature\0227.com.sekirocc.feature"
+  "_search.inner.SearchFeatureRequest\0328.com"
+  ".sekirocc.feature_search.inner.SearchFea"
+  "tureResponse\"\032\202\323\344\223\002\024\"\017/search_feature:\001*"
+  "BCZAgithub.com/sekirocc/face-recognition"
+  "-service/feature_search/innerb\006proto3"
   ;
 static const ::_pbi::DescriptorTable* const descriptor_table_feature_5fsearch_5finner_2eproto_deps[2] = {
   &::descriptor_table_common_2eproto,
@@ -486,9 +566,9 @@ static const ::_pbi::DescriptorTable* const descriptor_table_feature_5fsearch_5f
 };
 static ::_pbi::once_flag descriptor_table_feature_5fsearch_5finner_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_feature_5fsearch_5finner_2eproto = {
-    false, false, 2572, descriptor_table_protodef_feature_5fsearch_5finner_2eproto,
+    false, false, 2997, descriptor_table_protodef_feature_5fsearch_5finner_2eproto,
     "feature_search_inner.proto",
-    &descriptor_table_feature_5fsearch_5finner_2eproto_once, descriptor_table_feature_5fsearch_5finner_2eproto_deps, 2, 16,
+    &descriptor_table_feature_5fsearch_5finner_2eproto_once, descriptor_table_feature_5fsearch_5finner_2eproto_deps, 2, 19,
     schemas, file_default_instances, TableStruct_feature_5fsearch_5finner_2eproto::offsets,
     file_level_metadata_feature_5fsearch_5finner_2eproto, file_level_enum_descriptors_feature_5fsearch_5finner_2eproto,
     file_level_service_descriptors_feature_5fsearch_5finner_2eproto,
@@ -506,22 +586,22 @@ namespace inner {
 
 // ===================================================================
 
-class AssignDBShardsRequest::_Internal {
+class ShardInfo::_Internal {
  public:
 };
 
-AssignDBShardsRequest::AssignDBShardsRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+ShardInfo::ShardInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor(arena, is_message_owned);
-  // @@protoc_insertion_point(arena_constructor:com.sekirocc.feature_search.inner.AssignDBShardsRequest)
+  // @@protoc_insertion_point(arena_constructor:com.sekirocc.feature_search.inner.ShardInfo)
 }
-AssignDBShardsRequest::AssignDBShardsRequest(const AssignDBShardsRequest& from)
+ShardInfo::ShardInfo(const ShardInfo& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
-  AssignDBShardsRequest* const _this = this; (void)_this;
+  ShardInfo* const _this = this; (void)_this;
   new (&_impl_) Impl_{
-      decltype(_impl_.shard_ids_){from._impl_.shard_ids_}
-    , decltype(_impl_.db_id_){}
+      decltype(_impl_.db_id_){}
+    , decltype(_impl_.shard_id_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
@@ -533,26 +613,38 @@ AssignDBShardsRequest::AssignDBShardsRequest(const AssignDBShardsRequest& from)
     _this->_impl_.db_id_.Set(from._internal_db_id(), 
       _this->GetArenaForAllocation());
   }
-  // @@protoc_insertion_point(copy_constructor:com.sekirocc.feature_search.inner.AssignDBShardsRequest)
+  _impl_.shard_id_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.shard_id_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_shard_id().empty()) {
+    _this->_impl_.shard_id_.Set(from._internal_shard_id(), 
+      _this->GetArenaForAllocation());
+  }
+  // @@protoc_insertion_point(copy_constructor:com.sekirocc.feature_search.inner.ShardInfo)
 }
 
-inline void AssignDBShardsRequest::SharedCtor(
+inline void ShardInfo::SharedCtor(
     ::_pb::Arena* arena, bool is_message_owned) {
   (void)arena;
   (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.shard_ids_){arena}
-    , decltype(_impl_.db_id_){}
+      decltype(_impl_.db_id_){}
+    , decltype(_impl_.shard_id_){}
     , /*decltype(_impl_._cached_size_)*/{}
   };
   _impl_.db_id_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
     _impl_.db_id_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.shard_id_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.shard_id_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
-AssignDBShardsRequest::~AssignDBShardsRequest() {
-  // @@protoc_insertion_point(destructor:com.sekirocc.feature_search.inner.AssignDBShardsRequest)
+ShardInfo::~ShardInfo() {
+  // @@protoc_insertion_point(destructor:com.sekirocc.feature_search.inner.ShardInfo)
   if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
   (void)arena;
     return;
@@ -560,28 +652,28 @@ AssignDBShardsRequest::~AssignDBShardsRequest() {
   SharedDtor();
 }
 
-inline void AssignDBShardsRequest::SharedDtor() {
+inline void ShardInfo::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  _impl_.shard_ids_.~RepeatedPtrField();
   _impl_.db_id_.Destroy();
+  _impl_.shard_id_.Destroy();
 }
 
-void AssignDBShardsRequest::SetCachedSize(int size) const {
+void ShardInfo::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
 
-void AssignDBShardsRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:com.sekirocc.feature_search.inner.AssignDBShardsRequest)
+void ShardInfo::Clear() {
+// @@protoc_insertion_point(message_clear_start:com.sekirocc.feature_search.inner.ShardInfo)
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.shard_ids_.Clear();
   _impl_.db_id_.ClearToEmpty();
+  _impl_.shard_id_.ClearToEmpty();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* AssignDBShardsRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+const char* ShardInfo::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     uint32_t tag;
@@ -593,22 +685,17 @@ const char* AssignDBShardsRequest::_InternalParse(const char* ptr, ::_pbi::Parse
           auto str = _internal_mutable_db_id();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "com.sekirocc.feature_search.inner.AssignDBShardsRequest.db_id"));
+          CHK_(::_pbi::VerifyUTF8(str, "com.sekirocc.feature_search.inner.ShardInfo.db_id"));
         } else
           goto handle_unusual;
         continue;
-      // repeated string shard_ids = 2;
+      // string shard_id = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
-          ptr -= 1;
-          do {
-            ptr += 1;
-            auto str = _internal_add_shard_ids();
-            ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-            CHK_(ptr);
-            CHK_(::_pbi::VerifyUTF8(str, "com.sekirocc.feature_search.inner.AssignDBShardsRequest.shard_ids"));
-            if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
+          auto str = _internal_mutable_shard_id();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "com.sekirocc.feature_search.inner.ShardInfo.shard_id"));
         } else
           goto handle_unusual;
         continue;
@@ -635,9 +722,9 @@ failure:
 #undef CHK_
 }
 
-uint8_t* AssignDBShardsRequest::_InternalSerialize(
+uint8_t* ShardInfo::_InternalSerialize(
     uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.feature_search.inner.AssignDBShardsRequest)
+  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.feature_search.inner.ShardInfo)
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -646,44 +733,36 @@ uint8_t* AssignDBShardsRequest::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_db_id().data(), static_cast<int>(this->_internal_db_id().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "com.sekirocc.feature_search.inner.AssignDBShardsRequest.db_id");
+      "com.sekirocc.feature_search.inner.ShardInfo.db_id");
     target = stream->WriteStringMaybeAliased(
         1, this->_internal_db_id(), target);
   }
 
-  // repeated string shard_ids = 2;
-  for (int i = 0, n = this->_internal_shard_ids_size(); i < n; i++) {
-    const auto& s = this->_internal_shard_ids(i);
+  // string shard_id = 2;
+  if (!this->_internal_shard_id().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      s.data(), static_cast<int>(s.length()),
+      this->_internal_shard_id().data(), static_cast<int>(this->_internal_shard_id().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "com.sekirocc.feature_search.inner.AssignDBShardsRequest.shard_ids");
-    target = stream->WriteString(2, s, target);
+      "com.sekirocc.feature_search.inner.ShardInfo.shard_id");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_shard_id(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.feature_search.inner.AssignDBShardsRequest)
+  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.feature_search.inner.ShardInfo)
   return target;
 }
 
-size_t AssignDBShardsRequest::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.feature_search.inner.AssignDBShardsRequest)
+size_t ShardInfo::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.feature_search.inner.ShardInfo)
   size_t total_size = 0;
 
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
-
-  // repeated string shard_ids = 2;
-  total_size += 1 *
-      ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(_impl_.shard_ids_.size());
-  for (int i = 0, n = _impl_.shard_ids_.size(); i < n; i++) {
-    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-      _impl_.shard_ids_.Get(i));
-  }
 
   // string db_id = 1;
   if (!this->_internal_db_id().empty()) {
@@ -692,55 +771,67 @@ size_t AssignDBShardsRequest::ByteSizeLong() const {
         this->_internal_db_id());
   }
 
+  // string shard_id = 2;
+  if (!this->_internal_shard_id().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_shard_id());
+  }
+
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData AssignDBShardsRequest::_class_data_ = {
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ShardInfo::_class_data_ = {
     ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    AssignDBShardsRequest::MergeImpl
+    ShardInfo::MergeImpl
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*AssignDBShardsRequest::GetClassData() const { return &_class_data_; }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ShardInfo::GetClassData() const { return &_class_data_; }
 
 
-void AssignDBShardsRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
-  auto* const _this = static_cast<AssignDBShardsRequest*>(&to_msg);
-  auto& from = static_cast<const AssignDBShardsRequest&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.feature_search.inner.AssignDBShardsRequest)
+void ShardInfo::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<ShardInfo*>(&to_msg);
+  auto& from = static_cast<const ShardInfo&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.feature_search.inner.ShardInfo)
   GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  _this->_impl_.shard_ids_.MergeFrom(from._impl_.shard_ids_);
   if (!from._internal_db_id().empty()) {
     _this->_internal_set_db_id(from._internal_db_id());
+  }
+  if (!from._internal_shard_id().empty()) {
+    _this->_internal_set_shard_id(from._internal_shard_id());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void AssignDBShardsRequest::CopyFrom(const AssignDBShardsRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.feature_search.inner.AssignDBShardsRequest)
+void ShardInfo::CopyFrom(const ShardInfo& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.feature_search.inner.ShardInfo)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool AssignDBShardsRequest::IsInitialized() const {
+bool ShardInfo::IsInitialized() const {
   return true;
 }
 
-void AssignDBShardsRequest::InternalSwap(AssignDBShardsRequest* other) {
+void ShardInfo::InternalSwap(ShardInfo* other) {
   using std::swap;
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  _impl_.shard_ids_.InternalSwap(&other->_impl_.shard_ids_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &_impl_.db_id_, lhs_arena,
       &other->_impl_.db_id_, rhs_arena
   );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.shard_id_, lhs_arena,
+      &other->_impl_.shard_id_, rhs_arena
+  );
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata AssignDBShardsRequest::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata ShardInfo::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
       file_level_metadata_feature_5fsearch_5finner_2eproto[0]);
@@ -748,29 +839,214 @@ void AssignDBShardsRequest::InternalSwap(AssignDBShardsRequest* other) {
 
 // ===================================================================
 
-class AssignDBShardsResponse::_Internal {
+class ServeDBShardsRequest::_Internal {
  public:
 };
 
-AssignDBShardsResponse::AssignDBShardsResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+ServeDBShardsRequest::ServeDBShardsRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor(arena, is_message_owned);
-  // @@protoc_insertion_point(arena_constructor:com.sekirocc.feature_search.inner.AssignDBShardsResponse)
+  // @@protoc_insertion_point(arena_constructor:com.sekirocc.feature_search.inner.ServeDBShardsRequest)
 }
-AssignDBShardsResponse::AssignDBShardsResponse(const AssignDBShardsResponse& from)
+ServeDBShardsRequest::ServeDBShardsRequest(const ServeDBShardsRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
-  AssignDBShardsResponse* const _this = this; (void)_this;
+  ServeDBShardsRequest* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.shards_){from._impl_.shards_}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:com.sekirocc.feature_search.inner.ServeDBShardsRequest)
+}
+
+inline void ServeDBShardsRequest::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.shards_){arena}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+}
+
+ServeDBShardsRequest::~ServeDBShardsRequest() {
+  // @@protoc_insertion_point(destructor:com.sekirocc.feature_search.inner.ServeDBShardsRequest)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void ServeDBShardsRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.shards_.~RepeatedPtrField();
+}
+
+void ServeDBShardsRequest::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void ServeDBShardsRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:com.sekirocc.feature_search.inner.ServeDBShardsRequest)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.shards_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* ServeDBShardsRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // repeated .com.sekirocc.feature_search.inner.ShardInfo shards = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_shards(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* ServeDBShardsRequest::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.feature_search.inner.ServeDBShardsRequest)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .com.sekirocc.feature_search.inner.ShardInfo shards = 1;
+  for (unsigned i = 0,
+      n = static_cast<unsigned>(this->_internal_shards_size()); i < n; i++) {
+    const auto& repfield = this->_internal_shards(i);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+        InternalWriteMessage(1, repfield, repfield.GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.feature_search.inner.ServeDBShardsRequest)
+  return target;
+}
+
+size_t ServeDBShardsRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.feature_search.inner.ServeDBShardsRequest)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated .com.sekirocc.feature_search.inner.ShardInfo shards = 1;
+  total_size += 1UL * this->_internal_shards_size();
+  for (const auto& msg : this->_impl_.shards_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ServeDBShardsRequest::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    ServeDBShardsRequest::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ServeDBShardsRequest::GetClassData() const { return &_class_data_; }
+
+
+void ServeDBShardsRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<ServeDBShardsRequest*>(&to_msg);
+  auto& from = static_cast<const ServeDBShardsRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.feature_search.inner.ServeDBShardsRequest)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  _this->_impl_.shards_.MergeFrom(from._impl_.shards_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void ServeDBShardsRequest::CopyFrom(const ServeDBShardsRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.feature_search.inner.ServeDBShardsRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ServeDBShardsRequest::IsInitialized() const {
+  return true;
+}
+
+void ServeDBShardsRequest::InternalSwap(ServeDBShardsRequest* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  _impl_.shards_.InternalSwap(&other->_impl_.shards_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata ServeDBShardsRequest::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
+      file_level_metadata_feature_5fsearch_5finner_2eproto[1]);
+}
+
+// ===================================================================
+
+class ServeDBShardsResponse::_Internal {
+ public:
+};
+
+ServeDBShardsResponse::ServeDBShardsResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:com.sekirocc.feature_search.inner.ServeDBShardsResponse)
+}
+ServeDBShardsResponse::ServeDBShardsResponse(const ServeDBShardsResponse& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  ServeDBShardsResponse* const _this = this; (void)_this;
   new (&_impl_) Impl_{
       decltype(_impl_.code_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   _this->_impl_.code_ = from._impl_.code_;
-  // @@protoc_insertion_point(copy_constructor:com.sekirocc.feature_search.inner.AssignDBShardsResponse)
+  // @@protoc_insertion_point(copy_constructor:com.sekirocc.feature_search.inner.ServeDBShardsResponse)
 }
 
-inline void AssignDBShardsResponse::SharedCtor(
+inline void ServeDBShardsResponse::SharedCtor(
     ::_pb::Arena* arena, bool is_message_owned) {
   (void)arena;
   (void)is_message_owned;
@@ -780,8 +1056,8 @@ inline void AssignDBShardsResponse::SharedCtor(
   };
 }
 
-AssignDBShardsResponse::~AssignDBShardsResponse() {
-  // @@protoc_insertion_point(destructor:com.sekirocc.feature_search.inner.AssignDBShardsResponse)
+ServeDBShardsResponse::~ServeDBShardsResponse() {
+  // @@protoc_insertion_point(destructor:com.sekirocc.feature_search.inner.ServeDBShardsResponse)
   if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
   (void)arena;
     return;
@@ -789,16 +1065,16 @@ AssignDBShardsResponse::~AssignDBShardsResponse() {
   SharedDtor();
 }
 
-inline void AssignDBShardsResponse::SharedDtor() {
+inline void ServeDBShardsResponse::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
 }
 
-void AssignDBShardsResponse::SetCachedSize(int size) const {
+void ServeDBShardsResponse::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
 
-void AssignDBShardsResponse::Clear() {
-// @@protoc_insertion_point(message_clear_start:com.sekirocc.feature_search.inner.AssignDBShardsResponse)
+void ServeDBShardsResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:com.sekirocc.feature_search.inner.ServeDBShardsResponse)
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -807,7 +1083,7 @@ void AssignDBShardsResponse::Clear() {
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* AssignDBShardsResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+const char* ServeDBShardsResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     uint32_t tag;
@@ -845,9 +1121,9 @@ failure:
 #undef CHK_
 }
 
-uint8_t* AssignDBShardsResponse::_InternalSerialize(
+uint8_t* ServeDBShardsResponse::_InternalSerialize(
     uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.feature_search.inner.AssignDBShardsResponse)
+  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.feature_search.inner.ServeDBShardsResponse)
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -862,12 +1138,12 @@ uint8_t* AssignDBShardsResponse::_InternalSerialize(
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.feature_search.inner.AssignDBShardsResponse)
+  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.feature_search.inner.ServeDBShardsResponse)
   return target;
 }
 
-size_t AssignDBShardsResponse::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.feature_search.inner.AssignDBShardsResponse)
+size_t ServeDBShardsResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.feature_search.inner.ServeDBShardsResponse)
   size_t total_size = 0;
 
   uint32_t cached_has_bits = 0;
@@ -883,17 +1159,17 @@ size_t AssignDBShardsResponse::ByteSizeLong() const {
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData AssignDBShardsResponse::_class_data_ = {
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ServeDBShardsResponse::_class_data_ = {
     ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    AssignDBShardsResponse::MergeImpl
+    ServeDBShardsResponse::MergeImpl
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*AssignDBShardsResponse::GetClassData() const { return &_class_data_; }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ServeDBShardsResponse::GetClassData() const { return &_class_data_; }
 
 
-void AssignDBShardsResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
-  auto* const _this = static_cast<AssignDBShardsResponse*>(&to_msg);
-  auto& from = static_cast<const AssignDBShardsResponse&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.feature_search.inner.AssignDBShardsResponse)
+void ServeDBShardsResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<ServeDBShardsResponse*>(&to_msg);
+  auto& from = static_cast<const ServeDBShardsResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.feature_search.inner.ServeDBShardsResponse)
   GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -904,27 +1180,393 @@ void AssignDBShardsResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg,
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void AssignDBShardsResponse::CopyFrom(const AssignDBShardsResponse& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.feature_search.inner.AssignDBShardsResponse)
+void ServeDBShardsResponse::CopyFrom(const ServeDBShardsResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.feature_search.inner.ServeDBShardsResponse)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool AssignDBShardsResponse::IsInitialized() const {
+bool ServeDBShardsResponse::IsInitialized() const {
   return true;
 }
 
-void AssignDBShardsResponse::InternalSwap(AssignDBShardsResponse* other) {
+void ServeDBShardsResponse::InternalSwap(ServeDBShardsResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_.code_, other->_impl_.code_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata AssignDBShardsResponse::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata ServeDBShardsResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
-      file_level_metadata_feature_5fsearch_5finner_2eproto[1]);
+      file_level_metadata_feature_5fsearch_5finner_2eproto[2]);
+}
+
+// ===================================================================
+
+class CloseDBShardsRequest::_Internal {
+ public:
+};
+
+CloseDBShardsRequest::CloseDBShardsRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:com.sekirocc.feature_search.inner.CloseDBShardsRequest)
+}
+CloseDBShardsRequest::CloseDBShardsRequest(const CloseDBShardsRequest& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  CloseDBShardsRequest* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.shards_){from._impl_.shards_}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:com.sekirocc.feature_search.inner.CloseDBShardsRequest)
+}
+
+inline void CloseDBShardsRequest::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.shards_){arena}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+}
+
+CloseDBShardsRequest::~CloseDBShardsRequest() {
+  // @@protoc_insertion_point(destructor:com.sekirocc.feature_search.inner.CloseDBShardsRequest)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void CloseDBShardsRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.shards_.~RepeatedPtrField();
+}
+
+void CloseDBShardsRequest::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void CloseDBShardsRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:com.sekirocc.feature_search.inner.CloseDBShardsRequest)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.shards_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* CloseDBShardsRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // repeated .com.sekirocc.feature_search.inner.ShardInfo shards = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_shards(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* CloseDBShardsRequest::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.feature_search.inner.CloseDBShardsRequest)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .com.sekirocc.feature_search.inner.ShardInfo shards = 1;
+  for (unsigned i = 0,
+      n = static_cast<unsigned>(this->_internal_shards_size()); i < n; i++) {
+    const auto& repfield = this->_internal_shards(i);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+        InternalWriteMessage(1, repfield, repfield.GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.feature_search.inner.CloseDBShardsRequest)
+  return target;
+}
+
+size_t CloseDBShardsRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.feature_search.inner.CloseDBShardsRequest)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated .com.sekirocc.feature_search.inner.ShardInfo shards = 1;
+  total_size += 1UL * this->_internal_shards_size();
+  for (const auto& msg : this->_impl_.shards_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CloseDBShardsRequest::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    CloseDBShardsRequest::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CloseDBShardsRequest::GetClassData() const { return &_class_data_; }
+
+
+void CloseDBShardsRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<CloseDBShardsRequest*>(&to_msg);
+  auto& from = static_cast<const CloseDBShardsRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.feature_search.inner.CloseDBShardsRequest)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  _this->_impl_.shards_.MergeFrom(from._impl_.shards_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void CloseDBShardsRequest::CopyFrom(const CloseDBShardsRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.feature_search.inner.CloseDBShardsRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool CloseDBShardsRequest::IsInitialized() const {
+  return true;
+}
+
+void CloseDBShardsRequest::InternalSwap(CloseDBShardsRequest* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  _impl_.shards_.InternalSwap(&other->_impl_.shards_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata CloseDBShardsRequest::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
+      file_level_metadata_feature_5fsearch_5finner_2eproto[3]);
+}
+
+// ===================================================================
+
+class CloseDBShardsResponse::_Internal {
+ public:
+};
+
+CloseDBShardsResponse::CloseDBShardsResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:com.sekirocc.feature_search.inner.CloseDBShardsResponse)
+}
+CloseDBShardsResponse::CloseDBShardsResponse(const CloseDBShardsResponse& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  CloseDBShardsResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.code_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_impl_.code_ = from._impl_.code_;
+  // @@protoc_insertion_point(copy_constructor:com.sekirocc.feature_search.inner.CloseDBShardsResponse)
+}
+
+inline void CloseDBShardsResponse::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.code_){0}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+}
+
+CloseDBShardsResponse::~CloseDBShardsResponse() {
+  // @@protoc_insertion_point(destructor:com.sekirocc.feature_search.inner.CloseDBShardsResponse)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void CloseDBShardsResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+}
+
+void CloseDBShardsResponse::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void CloseDBShardsResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:com.sekirocc.feature_search.inner.CloseDBShardsResponse)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.code_ = 0;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* CloseDBShardsResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // .com.sekirocc.common.ResultCode code = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+          _internal_set_code(static_cast<::com::sekirocc::common::ResultCode>(val));
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* CloseDBShardsResponse::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:com.sekirocc.feature_search.inner.CloseDBShardsResponse)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .com.sekirocc.common.ResultCode code = 1;
+  if (this->_internal_code() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+      1, this->_internal_code(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:com.sekirocc.feature_search.inner.CloseDBShardsResponse)
+  return target;
+}
+
+size_t CloseDBShardsResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:com.sekirocc.feature_search.inner.CloseDBShardsResponse)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .com.sekirocc.common.ResultCode code = 1;
+  if (this->_internal_code() != 0) {
+    total_size += 1 +
+      ::_pbi::WireFormatLite::EnumSize(this->_internal_code());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CloseDBShardsResponse::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    CloseDBShardsResponse::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CloseDBShardsResponse::GetClassData() const { return &_class_data_; }
+
+
+void CloseDBShardsResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<CloseDBShardsResponse*>(&to_msg);
+  auto& from = static_cast<const CloseDBShardsResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:com.sekirocc.feature_search.inner.CloseDBShardsResponse)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_code() != 0) {
+    _this->_internal_set_code(from._internal_code());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void CloseDBShardsResponse::CopyFrom(const CloseDBShardsResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:com.sekirocc.feature_search.inner.CloseDBShardsResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool CloseDBShardsResponse::IsInitialized() const {
+  return true;
+}
+
+void CloseDBShardsResponse::InternalSwap(CloseDBShardsResponse* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_.code_, other->_impl_.code_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata CloseDBShardsResponse::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
+      file_level_metadata_feature_5fsearch_5finner_2eproto[4]);
 }
 
 // ===================================================================
@@ -964,7 +1606,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetSystemInfoRequest::GetClass
 ::PROTOBUF_NAMESPACE_ID::Metadata GetSystemInfoRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
-      file_level_metadata_feature_5fsearch_5finner_2eproto[2]);
+      file_level_metadata_feature_5fsearch_5finner_2eproto[5]);
 }
 
 // ===================================================================
@@ -1194,7 +1836,7 @@ void WorkerInfo::InternalSwap(WorkerInfo* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata WorkerInfo::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
-      file_level_metadata_feature_5fsearch_5finner_2eproto[3]);
+      file_level_metadata_feature_5fsearch_5finner_2eproto[6]);
 }
 
 // ===================================================================
@@ -1458,7 +2100,7 @@ void GetSystemInfoResponse::InternalSwap(GetSystemInfoResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata GetSystemInfoResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
-      file_level_metadata_feature_5fsearch_5finner_2eproto[4]);
+      file_level_metadata_feature_5fsearch_5finner_2eproto[7]);
 }
 
 // ===================================================================
@@ -1498,7 +2140,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*TrainIndexRequest::GetClassDat
 ::PROTOBUF_NAMESPACE_ID::Metadata TrainIndexRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
-      file_level_metadata_feature_5fsearch_5finner_2eproto[5]);
+      file_level_metadata_feature_5fsearch_5finner_2eproto[8]);
 }
 
 // ===================================================================
@@ -1679,7 +2321,7 @@ void TrainIndexResponse::InternalSwap(TrainIndexResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata TrainIndexResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
-      file_level_metadata_feature_5fsearch_5finner_2eproto[6]);
+      file_level_metadata_feature_5fsearch_5finner_2eproto[9]);
 }
 
 // ===================================================================
@@ -1693,7 +2335,7 @@ void AddFeatureItem_MetaEntry_DoNotUse::MergeFrom(const AddFeatureItem_MetaEntry
 ::PROTOBUF_NAMESPACE_ID::Metadata AddFeatureItem_MetaEntry_DoNotUse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
-      file_level_metadata_feature_5fsearch_5finner_2eproto[7]);
+      file_level_metadata_feature_5fsearch_5finner_2eproto[10]);
 }
 
 // ===================================================================
@@ -1960,7 +2602,7 @@ void AddFeatureItem::InternalSwap(AddFeatureItem* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata AddFeatureItem::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
-      file_level_metadata_feature_5fsearch_5finner_2eproto[8]);
+      file_level_metadata_feature_5fsearch_5finner_2eproto[11]);
 }
 
 // ===================================================================
@@ -1981,6 +2623,7 @@ BatchAddFeaturesRequest::BatchAddFeaturesRequest(const BatchAddFeaturesRequest& 
   new (&_impl_) Impl_{
       decltype(_impl_.feature_items_){from._impl_.feature_items_}
     , decltype(_impl_.db_id_){}
+    , decltype(_impl_.shard_id_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
@@ -1990,6 +2633,14 @@ BatchAddFeaturesRequest::BatchAddFeaturesRequest(const BatchAddFeaturesRequest& 
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_db_id().empty()) {
     _this->_impl_.db_id_.Set(from._internal_db_id(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.shard_id_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.shard_id_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_shard_id().empty()) {
+    _this->_impl_.shard_id_.Set(from._internal_shard_id(), 
       _this->GetArenaForAllocation());
   }
   // @@protoc_insertion_point(copy_constructor:com.sekirocc.feature_search.inner.BatchAddFeaturesRequest)
@@ -2002,11 +2653,16 @@ inline void BatchAddFeaturesRequest::SharedCtor(
   new (&_impl_) Impl_{
       decltype(_impl_.feature_items_){arena}
     , decltype(_impl_.db_id_){}
+    , decltype(_impl_.shard_id_){}
     , /*decltype(_impl_._cached_size_)*/{}
   };
   _impl_.db_id_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
     _impl_.db_id_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.shard_id_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.shard_id_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
@@ -2023,6 +2679,7 @@ inline void BatchAddFeaturesRequest::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.feature_items_.~RepeatedPtrField();
   _impl_.db_id_.Destroy();
+  _impl_.shard_id_.Destroy();
 }
 
 void BatchAddFeaturesRequest::SetCachedSize(int size) const {
@@ -2037,6 +2694,7 @@ void BatchAddFeaturesRequest::Clear() {
 
   _impl_.feature_items_.Clear();
   _impl_.db_id_.ClearToEmpty();
+  _impl_.shard_id_.ClearToEmpty();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -2056,16 +2714,26 @@ const char* BatchAddFeaturesRequest::_InternalParse(const char* ptr, ::_pbi::Par
         } else
           goto handle_unusual;
         continue;
-      // repeated .com.sekirocc.feature_search.inner.AddFeatureItem feature_items = 2;
+      // string shard_id = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          auto str = _internal_mutable_shard_id();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "com.sekirocc.feature_search.inner.BatchAddFeaturesRequest.shard_id"));
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated .com.sekirocc.feature_search.inner.AddFeatureItem feature_items = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
           ptr -= 1;
           do {
             ptr += 1;
             ptr = ctx->ParseMessage(_internal_add_feature_items(), ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<26>(ptr));
         } else
           goto handle_unusual;
         continue;
@@ -2108,12 +2776,22 @@ uint8_t* BatchAddFeaturesRequest::_InternalSerialize(
         1, this->_internal_db_id(), target);
   }
 
-  // repeated .com.sekirocc.feature_search.inner.AddFeatureItem feature_items = 2;
+  // string shard_id = 2;
+  if (!this->_internal_shard_id().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_shard_id().data(), static_cast<int>(this->_internal_shard_id().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "com.sekirocc.feature_search.inner.BatchAddFeaturesRequest.shard_id");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_shard_id(), target);
+  }
+
+  // repeated .com.sekirocc.feature_search.inner.AddFeatureItem feature_items = 3;
   for (unsigned i = 0,
       n = static_cast<unsigned>(this->_internal_feature_items_size()); i < n; i++) {
     const auto& repfield = this->_internal_feature_items(i);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-        InternalWriteMessage(2, repfield, repfield.GetCachedSize(), target, stream);
+        InternalWriteMessage(3, repfield, repfield.GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2132,7 +2810,7 @@ size_t BatchAddFeaturesRequest::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated .com.sekirocc.feature_search.inner.AddFeatureItem feature_items = 2;
+  // repeated .com.sekirocc.feature_search.inner.AddFeatureItem feature_items = 3;
   total_size += 1UL * this->_internal_feature_items_size();
   for (const auto& msg : this->_impl_.feature_items_) {
     total_size +=
@@ -2144,6 +2822,13 @@ size_t BatchAddFeaturesRequest::ByteSizeLong() const {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_db_id());
+  }
+
+  // string shard_id = 2;
+  if (!this->_internal_shard_id().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_shard_id());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -2167,6 +2852,9 @@ void BatchAddFeaturesRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg
   _this->_impl_.feature_items_.MergeFrom(from._impl_.feature_items_);
   if (!from._internal_db_id().empty()) {
     _this->_internal_set_db_id(from._internal_db_id());
+  }
+  if (!from._internal_shard_id().empty()) {
+    _this->_internal_set_shard_id(from._internal_shard_id());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -2192,12 +2880,16 @@ void BatchAddFeaturesRequest::InternalSwap(BatchAddFeaturesRequest* other) {
       &_impl_.db_id_, lhs_arena,
       &other->_impl_.db_id_, rhs_arena
   );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.shard_id_, lhs_arena,
+      &other->_impl_.shard_id_, rhs_arena
+  );
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata BatchAddFeaturesRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
-      file_level_metadata_feature_5fsearch_5finner_2eproto[9]);
+      file_level_metadata_feature_5fsearch_5finner_2eproto[12]);
 }
 
 // ===================================================================
@@ -2417,7 +3109,7 @@ void BatchAddFeaturesResponse::InternalSwap(BatchAddFeaturesResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata BatchAddFeaturesResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
-      file_level_metadata_feature_5fsearch_5finner_2eproto[10]);
+      file_level_metadata_feature_5fsearch_5finner_2eproto[13]);
 }
 
 // ===================================================================
@@ -2438,6 +3130,7 @@ BatchDeleteFeaturesRequest::BatchDeleteFeaturesRequest(const BatchDeleteFeatures
   new (&_impl_) Impl_{
       decltype(_impl_.feature_ids_){from._impl_.feature_ids_}
     , decltype(_impl_.db_id_){}
+    , decltype(_impl_.shard_id_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
@@ -2447,6 +3140,14 @@ BatchDeleteFeaturesRequest::BatchDeleteFeaturesRequest(const BatchDeleteFeatures
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_db_id().empty()) {
     _this->_impl_.db_id_.Set(from._internal_db_id(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.shard_id_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.shard_id_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_shard_id().empty()) {
+    _this->_impl_.shard_id_.Set(from._internal_shard_id(), 
       _this->GetArenaForAllocation());
   }
   // @@protoc_insertion_point(copy_constructor:com.sekirocc.feature_search.inner.BatchDeleteFeaturesRequest)
@@ -2459,11 +3160,16 @@ inline void BatchDeleteFeaturesRequest::SharedCtor(
   new (&_impl_) Impl_{
       decltype(_impl_.feature_ids_){arena}
     , decltype(_impl_.db_id_){}
+    , decltype(_impl_.shard_id_){}
     , /*decltype(_impl_._cached_size_)*/{}
   };
   _impl_.db_id_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
     _impl_.db_id_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.shard_id_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.shard_id_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
@@ -2480,6 +3186,7 @@ inline void BatchDeleteFeaturesRequest::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.feature_ids_.~RepeatedPtrField();
   _impl_.db_id_.Destroy();
+  _impl_.shard_id_.Destroy();
 }
 
 void BatchDeleteFeaturesRequest::SetCachedSize(int size) const {
@@ -2494,6 +3201,7 @@ void BatchDeleteFeaturesRequest::Clear() {
 
   _impl_.feature_ids_.Clear();
   _impl_.db_id_.ClearToEmpty();
+  _impl_.shard_id_.ClearToEmpty();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -2513,9 +3221,19 @@ const char* BatchDeleteFeaturesRequest::_InternalParse(const char* ptr, ::_pbi::
         } else
           goto handle_unusual;
         continue;
-      // repeated string feature_ids = 2;
+      // string shard_id = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          auto str = _internal_mutable_shard_id();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "com.sekirocc.feature_search.inner.BatchDeleteFeaturesRequest.shard_id"));
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated string feature_ids = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
           ptr -= 1;
           do {
             ptr += 1;
@@ -2524,7 +3242,7 @@ const char* BatchDeleteFeaturesRequest::_InternalParse(const char* ptr, ::_pbi::
             CHK_(ptr);
             CHK_(::_pbi::VerifyUTF8(str, "com.sekirocc.feature_search.inner.BatchDeleteFeaturesRequest.feature_ids"));
             if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<26>(ptr));
         } else
           goto handle_unusual;
         continue;
@@ -2567,14 +3285,24 @@ uint8_t* BatchDeleteFeaturesRequest::_InternalSerialize(
         1, this->_internal_db_id(), target);
   }
 
-  // repeated string feature_ids = 2;
+  // string shard_id = 2;
+  if (!this->_internal_shard_id().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_shard_id().data(), static_cast<int>(this->_internal_shard_id().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "com.sekirocc.feature_search.inner.BatchDeleteFeaturesRequest.shard_id");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_shard_id(), target);
+  }
+
+  // repeated string feature_ids = 3;
   for (int i = 0, n = this->_internal_feature_ids_size(); i < n; i++) {
     const auto& s = this->_internal_feature_ids(i);
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       s.data(), static_cast<int>(s.length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "com.sekirocc.feature_search.inner.BatchDeleteFeaturesRequest.feature_ids");
-    target = stream->WriteString(2, s, target);
+    target = stream->WriteString(3, s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2593,7 +3321,7 @@ size_t BatchDeleteFeaturesRequest::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated string feature_ids = 2;
+  // repeated string feature_ids = 3;
   total_size += 1 *
       ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(_impl_.feature_ids_.size());
   for (int i = 0, n = _impl_.feature_ids_.size(); i < n; i++) {
@@ -2606,6 +3334,13 @@ size_t BatchDeleteFeaturesRequest::ByteSizeLong() const {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_db_id());
+  }
+
+  // string shard_id = 2;
+  if (!this->_internal_shard_id().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_shard_id());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -2629,6 +3364,9 @@ void BatchDeleteFeaturesRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_
   _this->_impl_.feature_ids_.MergeFrom(from._impl_.feature_ids_);
   if (!from._internal_db_id().empty()) {
     _this->_internal_set_db_id(from._internal_db_id());
+  }
+  if (!from._internal_shard_id().empty()) {
+    _this->_internal_set_shard_id(from._internal_shard_id());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -2654,12 +3392,16 @@ void BatchDeleteFeaturesRequest::InternalSwap(BatchDeleteFeaturesRequest* other)
       &_impl_.db_id_, lhs_arena,
       &other->_impl_.db_id_, rhs_arena
   );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.shard_id_, lhs_arena,
+      &other->_impl_.shard_id_, rhs_arena
+  );
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata BatchDeleteFeaturesRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
-      file_level_metadata_feature_5fsearch_5finner_2eproto[11]);
+      file_level_metadata_feature_5fsearch_5finner_2eproto[14]);
 }
 
 // ===================================================================
@@ -2840,7 +3582,7 @@ void BatchDeleteFeaturesResponse::InternalSwap(BatchDeleteFeaturesResponse* othe
 ::PROTOBUF_NAMESPACE_ID::Metadata BatchDeleteFeaturesResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
-      file_level_metadata_feature_5fsearch_5finner_2eproto[12]);
+      file_level_metadata_feature_5fsearch_5finner_2eproto[15]);
 }
 
 // ===================================================================
@@ -3109,7 +3851,7 @@ void SearchFeatureRequest::InternalSwap(SearchFeatureRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SearchFeatureRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
-      file_level_metadata_feature_5fsearch_5finner_2eproto[13]);
+      file_level_metadata_feature_5fsearch_5finner_2eproto[16]);
 }
 
 // ===================================================================
@@ -3403,7 +4145,7 @@ void SearchItemScore::InternalSwap(SearchItemScore* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SearchItemScore::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
-      file_level_metadata_feature_5fsearch_5finner_2eproto[14]);
+      file_level_metadata_feature_5fsearch_5finner_2eproto[17]);
 }
 
 // ===================================================================
@@ -3618,7 +4360,7 @@ void SearchFeatureResponse::InternalSwap(SearchFeatureResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata SearchFeatureResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_feature_5fsearch_5finner_2eproto_getter, &descriptor_table_feature_5fsearch_5finner_2eproto_once,
-      file_level_metadata_feature_5fsearch_5finner_2eproto[15]);
+      file_level_metadata_feature_5fsearch_5finner_2eproto[18]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
@@ -3627,13 +4369,25 @@ void SearchFeatureResponse::InternalSwap(SearchFeatureResponse* other) {
 }  // namespace sekirocc
 }  // namespace com
 PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::com::sekirocc::feature_search::inner::AssignDBShardsRequest*
-Arena::CreateMaybeMessage< ::com::sekirocc::feature_search::inner::AssignDBShardsRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::com::sekirocc::feature_search::inner::AssignDBShardsRequest >(arena);
+template<> PROTOBUF_NOINLINE ::com::sekirocc::feature_search::inner::ShardInfo*
+Arena::CreateMaybeMessage< ::com::sekirocc::feature_search::inner::ShardInfo >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::sekirocc::feature_search::inner::ShardInfo >(arena);
 }
-template<> PROTOBUF_NOINLINE ::com::sekirocc::feature_search::inner::AssignDBShardsResponse*
-Arena::CreateMaybeMessage< ::com::sekirocc::feature_search::inner::AssignDBShardsResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::com::sekirocc::feature_search::inner::AssignDBShardsResponse >(arena);
+template<> PROTOBUF_NOINLINE ::com::sekirocc::feature_search::inner::ServeDBShardsRequest*
+Arena::CreateMaybeMessage< ::com::sekirocc::feature_search::inner::ServeDBShardsRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::sekirocc::feature_search::inner::ServeDBShardsRequest >(arena);
+}
+template<> PROTOBUF_NOINLINE ::com::sekirocc::feature_search::inner::ServeDBShardsResponse*
+Arena::CreateMaybeMessage< ::com::sekirocc::feature_search::inner::ServeDBShardsResponse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::sekirocc::feature_search::inner::ServeDBShardsResponse >(arena);
+}
+template<> PROTOBUF_NOINLINE ::com::sekirocc::feature_search::inner::CloseDBShardsRequest*
+Arena::CreateMaybeMessage< ::com::sekirocc::feature_search::inner::CloseDBShardsRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::sekirocc::feature_search::inner::CloseDBShardsRequest >(arena);
+}
+template<> PROTOBUF_NOINLINE ::com::sekirocc::feature_search::inner::CloseDBShardsResponse*
+Arena::CreateMaybeMessage< ::com::sekirocc::feature_search::inner::CloseDBShardsResponse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::com::sekirocc::feature_search::inner::CloseDBShardsResponse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::com::sekirocc::feature_search::inner::GetSystemInfoRequest*
 Arena::CreateMaybeMessage< ::com::sekirocc::feature_search::inner::GetSystemInfoRequest >(Arena* arena) {

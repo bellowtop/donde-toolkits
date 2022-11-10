@@ -40,9 +40,9 @@ class Coordinator {
                                                    int topk);
 
   private:
-    RetCode initialize_workers();
+    void initialize_workers();
+    void assign_worker_for_shards();
     Worker* find_worker_for_shard(Shard* shard);
-    RetCode assign_worker_for_shards();
 
   private:
     const json& config;

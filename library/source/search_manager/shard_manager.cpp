@@ -27,7 +27,10 @@ RetCode Shard::AddFeatures(std::vector<Feature> fts) {
         return RetCode::RET_ERR;
     }
     // delegate to worker.
-    _worker->AddFeatures(_db_id, _shard_id, fts);
+    auto ret = _worker->AddFeatures(_db_id, _shard_id, fts);
+    if (ret == RetCode::RET_OK) {
+        _shard_info.used += fts.size();
+    }
     return {};
 };
 
@@ -46,13 +49,20 @@ RetCode Shard::Close() {
 
 ShardManager::ShardManager(search::Driver& driver) : _driver(driver) { load_db_shards(); };
 
-Shard* ShardManager::FindOrCreateWritableShard(std::string db_id) {
+std::tuple<Shard*, bool> ShardManager::FindOrCreateWritableShard(std::string db_id,
+                                                                 uint64 fts_count) {
     // if db_id not exists, this will throw 404.
     auto shards = ListShards(db_id);
 
     for (auto shard : shards) {
         if (!shard->IsClosed()) {
-            return shard;
+            auto shard_info = shard->GetShardInfo();
+            if (shard_info.capacity - shard_info.used > fts_count) {
+                return {shard, false};
+            } else {
+                shard->Close();
+                break;
+            }
         }
     }
 
@@ -64,14 +74,14 @@ Shard* ShardManager::FindOrCreateWritableShard(std::string db_id) {
         .used = 0,
     };
 
-    std::string shard_id = _driver.CreateShard(db_id, shard_info);
+    std::string shard_id = CreateShard(shard_info);
     shard_info.shard_id = shard_id;
 
     // shards for db_id must exists.
     Shard* shard = new Shard{this, shard_info};
     _db_shards[db_id].push_back(shard);
 
-    return shard;
+    return {shard, true};
 };
 
 std::vector<search::DBItem> ShardManager::ListUserDBs() {
@@ -95,6 +105,11 @@ std::vector<Shard*> ShardManager::ListShards(std::string db_id) {
 RetCode ShardManager::CloseShard(std::string db_id, std::string shard_id) {
     _driver.CloseShard(db_id, shard_id);
     return {};
+};
+
+std::string ShardManager::CreateShard(search::DBShard shard_info) {
+    std::string shard_id = _driver.CreateShard(shard_info.db_id, shard_info);
+    return shard_id;
 };
 
 RetCode ShardManager::load_db_shards() {

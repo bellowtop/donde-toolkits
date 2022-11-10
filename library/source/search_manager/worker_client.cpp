@@ -24,6 +24,12 @@ using com::sekirocc::feature_search::inner::GetSystemInfoResponse;
 using com::sekirocc::feature_search::inner::BatchAddFeaturesRequest;
 using com::sekirocc::feature_search::inner::BatchAddFeaturesResponse;
 
+using com::sekirocc::feature_search::inner::ServeDBShardsRequest;
+using com::sekirocc::feature_search::inner::ServeDBShardsResponse;
+
+using com::sekirocc::feature_search::inner::CloseDBShardsRequest;
+using com::sekirocc::feature_search::inner::CloseDBShardsResponse;
+
 using com::sekirocc::feature_search::inner::GetSystemInfoRequest;
 using com::sekirocc::feature_search::inner::GetSystemInfoResponse;
 
@@ -79,24 +85,48 @@ uint64 WorkerClient::GetFreeSpace() {
 RetCode WorkerClient::ServeShard(const search::DBShard& shard_info) {
     auto found = _served_shards.find(shard_info.shard_id);
     if (found != _served_shards.end()) {
-        spdlog::info("shard {} is already served by this worker!", shard_info.shard_id);
-        return RetCode::RET_ERR;
+        spdlog::warn("shard {} is already served by this worker!", shard_info.shard_id);
+        return RetCode::RET_OK;
     }
 
     auto free_space = GetFreeSpace();
     if (shard_info.capacity > free_space) {
-        spdlog::info("this worker doesn't has enough space for the shard {} (free:{}, want: {}) !",
+        spdlog::info("this worker doesn't has enough space for the shard {} (worker free:{}, shard "
+                     "capacity want: {}) !",
                      shard_info.shard_id, free, shard_info.capacity);
         return RetCode::RET_ERR;
     }
 
-    _served_shards.insert({shard_info.shard_id, shard_info});
-    // _served_shards[shard_info.shard_id] = shard_info;
-    return RetCode::RET_OK;
+    grpc::ClientContext ctx;
+    ServeDBShardsRequest request;
+    ServeDBShardsResponse response;
+    auto shard = request.add_shards();
+    shard->set_db_id(shard_info.db_id);
+    shard->set_shard_id(shard_info.shard_id);
+    auto status = _stub->ServeDBShards(&ctx, request, &response);
+    if (status.ok()) {
+        _served_shards[shard_info.shard_id] = shard_info;
+        return RetCode::RET_OK;
+    }
+
+    return RetCode::RET_ERR;
 };
 
 RetCode WorkerClient::CloseShard(const std::string& db_id, const std::string& shard_id) {
-    return {};
+
+    grpc::ClientContext ctx;
+    CloseDBShardsRequest request;
+    CloseDBShardsResponse response;
+    auto shard = request.add_shards();
+    shard->set_db_id(db_id);
+    shard->set_shard_id(shard_id);
+    auto status = _stub->CloseDBShards(&ctx, request, &response);
+    if (status.ok()) {
+        _served_shards[shard_id].is_closed = true;
+        return RetCode::RET_OK;
+    }
+
+    return RetCode::RET_ERR;
 };
 
 // WorkerAPI implement
