@@ -81,6 +81,14 @@ uint64 WorkerClient::GetFreeSpace() {
     return _worker_info.capacity() - total_used;
 };
 
+std::vector<search::DBShard> WorkerClient::ListShards() {
+    std::vector<search::DBShard> shards;
+    for (auto it = _served_shards.begin(); it != _served_shards.end(); it++) {
+        shards.push_back(it->second);
+    }
+    return shards;
+};
+
 // ServeShard let the worker serve this shard, for its features' CRUD
 RetCode WorkerClient::ServeShard(const search::DBShard& shard_info) {
     auto found = _served_shards.find(shard_info.shard_id);
@@ -163,8 +171,8 @@ RetCode WorkerClient::AddFeatures(const std::string& db_id, const std::string& s
     return RetCode::RET_ERR;
 };
 
-std::vector<Feature> WorkerClient::SearchFeature(const std::string& db_id, const Feature& query,
-                                                 int topk) {
+std::vector<FeatureScore> WorkerClient::SearchFeature(const std::string& db_id,
+                                                      const Feature& query, int topk) {
 
     grpc::ClientContext ctx;
     SearchFeatureRequest request;
@@ -177,7 +185,7 @@ std::vector<Feature> WorkerClient::SearchFeature(const std::string& db_id, const
 
     auto status = _stub->SearchFeature(&ctx, request, &response);
     if (status.ok()) {
-        std::vector<Feature> fts;
+        std::vector<FeatureScore> fts;
         for (auto item : response.items()) {
             auto ft = item.feature();
             // TODO

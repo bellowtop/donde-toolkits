@@ -28,6 +28,9 @@ class Shard {
     // AddFeatures to this shard, delegate to worker client to do the actual storage.
     RetCode AddFeatures(std::vector<Feature> fts);
 
+    // SearchFeature in this shard, delegate to worker client to do the actual search.
+    std::vector<FeatureScore> SearchFeature(const Feature& query, int topk);
+
     RetCode Close();
 
     // check the shard has been assigned worker or not.
@@ -59,6 +62,8 @@ class ShardManager {
     ~ShardManager() = default;
 
     std::tuple<Shard*, bool> FindOrCreateWritableShard(std::string db_id, uint64 fts_count);
+
+    RetCode AssignWorkerToShard(Shard* shard, Worker* worker);
 
     std::vector<search::DBItem> ListUserDBs();
 

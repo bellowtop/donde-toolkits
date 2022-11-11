@@ -108,6 +108,17 @@ struct Feature {
     MSGPACK_DEFINE(model, version, dimension, raw);
 };
 
+struct FeatureScore {
+    Feature feature;
+    float score;
+};
+
+struct FeatureScoreComparator {
+    bool operator()(const FeatureScore& lhs, const FeatureScore& rhs) {
+        return lhs.score > rhs.score;
+    }
+};
+
 template <int size>
 Feature gen_feature_dim() {
     std::vector<float> raw(size);

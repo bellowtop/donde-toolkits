@@ -17,7 +17,9 @@ RetCode Shard::AssignWorker(Worker* worker) {
         _worker_id = worker->GetWorkerID();
     }
 
-    return {};
+    _worker->ServeShard(_shard_info);
+
+    return RetCode::RET_OK;
 };
 
 // AddFeatures to this shard, delegate to worker client to do the actual storage.
@@ -32,6 +34,11 @@ RetCode Shard::AddFeatures(std::vector<Feature> fts) {
         _shard_info.used += fts.size();
     }
     return {};
+};
+
+// SearchFeature in this shard, delegate to worker client to do the actual search.
+std::vector<FeatureScore> Shard::SearchFeature(const Feature& query, int topk) {
+    return _worker->SearchFeature(_shard_info.db_id, query, topk);
 };
 
 RetCode Shard::Close() {
@@ -60,6 +67,7 @@ std::tuple<Shard*, bool> ShardManager::FindOrCreateWritableShard(std::string db_
             if (shard_info.capacity - shard_info.used > fts_count) {
                 return {shard, false};
             } else {
+                // close now?
                 shard->Close();
                 break;
             }
@@ -82,6 +90,11 @@ std::tuple<Shard*, bool> ShardManager::FindOrCreateWritableShard(std::string db_
     _db_shards[db_id].push_back(shard);
 
     return {shard, true};
+};
+
+RetCode AssignWorkerToShard(Shard* shard, Worker* worker) {
+    shard->AssignWorker(worker);
+    return RetCode::RET_OK;
 };
 
 std::vector<search::DBItem> ShardManager::ListUserDBs() {

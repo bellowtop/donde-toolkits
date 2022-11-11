@@ -33,6 +33,9 @@ class WorkerClient : public Worker {
     uint64 GetFreeSpace() override;
 
     // ServeShard let the worker serve this shard, for its features' CRUD
+    std::vector<search::DBShard> ListShards() override;
+
+    // ServeShard let the worker serve this shard, for its features' CRUD
     RetCode ServeShard(const search::DBShard& shard_info) override;
 
     // CloseShard close db_id/shard_id.
@@ -42,8 +45,9 @@ class WorkerClient : public Worker {
     RetCode AddFeatures(const std::string& db_id, const std::string& shard_id,
                         const std::vector<Feature>& fts) override;
 
-    std::vector<Feature> SearchFeature(const std::string& db_id, const Feature& query,
-                                       int topk) override;
+    // SearchFeature search query in this db, across all shards.
+    std::vector<FeatureScore> SearchFeature(const std::string& db_id, const Feature& query,
+                                            int topk) override;
 
   private:
     void check_liveness_loop();

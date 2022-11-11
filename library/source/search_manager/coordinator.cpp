@@ -9,6 +9,7 @@
 
 #include <exception>
 #include <memory>
+#include <queue>
 #include <spdlog/spdlog.h>
 
 Coordinator::Coordinator(const json& coor_config) : config(coor_config) {
@@ -42,7 +43,7 @@ void Coordinator::Start() {
     assign_worker_for_shards();
 };
 
-void Coordinator::Stop(){};
+void Coordinator::Stop() { deinitialize_workers(); };
 
 // AddFeatures to this db, we need find proper shard to store these fts.
 RetCode Coordinator::AddFeatures(const std::string& db_id, const std::vector<Feature>& fts) {
@@ -55,24 +56,51 @@ RetCode Coordinator::AddFeatures(const std::string& db_id, const std::vector<Fea
             spdlog::error("cannot find a worker for shard: {}", shard->GetShardID());
             return RetCode::RET_ERR;
         }
-        shard->AssignWorker(worker);
-        worker->ServeShard(shard->GetShardInfo());
+        _shard_manager->AssignWorkerToShard(shard, worker);
+        // shard->AssignWorker(worker);
+        // worker->ServeShard(shard->GetShardInfo());
     }
 
     shard->AddFeatures(fts);
 
-    return {};
+    return RetCode::RET_OK;
 };
 
 // SearchFeatures in this db.
-std::vector<Feature> Coordinator::SearchFeature(const std::string& db_id, const Feature& query,
-                                                int topk) {
-    return {};
-};
+std::vector<FeatureScore> Coordinator::SearchFeature(const std::string& db_id, const Feature& query,
+                                                     int topk) {
+    // use min heap to sort topk
+    std::priority_queue<FeatureScore, std::vector<FeatureScore>, FeatureScoreComparator> min_heap;
 
-std::vector<Feature> Coordinator::SearchFeatureInTimePeriod(const std::string& db_id,
-                                                            const Feature& query, int topk) {
-    return {};
+    // enlarge search area
+    int enlarge_topk = topk * 2;
+
+    auto shards = _shard_manager->ListShards(db_id);
+
+    // TODO group shards to search at once.
+    // a db has many shards, we should not search one by one, as each search trigger worker
+    // connection.
+    for (auto& shard : shards) {
+        auto searched = shard->SearchFeature(query, enlarge_topk);
+        for (auto& ft_score : searched) {
+            if (min_heap.size() < topk) {
+                min_heap.push(ft_score);
+                continue;
+            }
+            if (min_heap.top().score < ft_score.score) {
+                min_heap.pop();
+                min_heap.push(ft_score);
+            }
+        }
+    }
+
+    std::vector<FeatureScore> ret;
+    while (!min_heap.empty()) {
+        ret.push_back(min_heap.top());
+        min_heap.pop();
+    }
+
+    return ret;
 };
 
 Worker* Coordinator::find_worker_for_shard(Shard* shard) {
@@ -91,6 +119,7 @@ Worker* Coordinator::find_worker_for_shard(Shard* shard) {
 
 void Coordinator::assign_worker_for_shards() {
     std::vector<search::DBItem> dbs = _shard_manager->ListUserDBs();
+
     for (auto& db : dbs) {
         auto shards = _shard_manager->ListShards(db.db_id);
         for (auto& shard : shards) {
@@ -99,8 +128,9 @@ void Coordinator::assign_worker_for_shards() {
                 spdlog::error("cannot find a worker for shard: {}", shard->GetShardID());
                 continue;
             }
-            shard->AssignWorker(worker);
-            worker->ServeShard(shard->GetShardInfo());
+            _shard_manager->AssignWorkerToShard(shard, worker);
+            // shard->AssignWorker(worker);
+            // worker->ServeShard(shard->GetShardInfo());
         }
     }
 };
@@ -123,3 +153,5 @@ void Coordinator::initialize_workers() {
         }
     }
 };
+
+void Coordinator::deinitialize_workers(){};

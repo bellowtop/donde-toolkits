@@ -34,13 +34,12 @@ class Coordinator {
     RetCode AddFeatures(const std::string& db_id, const std::vector<Feature>& fts);
 
     // SearchFeatures in this db.
-    std::vector<Feature> SearchFeature(const std::string& db_id, const Feature& query, int topk);
-
-    std::vector<Feature> SearchFeatureInTimePeriod(const std::string& db_id, const Feature& query,
-                                                   int topk);
+    std::vector<FeatureScore> SearchFeature(const std::string& db_id, const Feature& query,
+                                            int topk);
 
   private:
     void initialize_workers();
+    void deinitialize_workers();
     void assign_worker_for_shards();
     Worker* find_worker_for_shard(Shard* shard);
 
