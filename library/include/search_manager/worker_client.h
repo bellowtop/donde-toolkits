@@ -32,7 +32,7 @@ class WorkerClient : public Worker {
 
     uint64 GetFreeSpace() override;
 
-    // ServeShard let the worker serve this shard, for its features' CRUD
+    // ListShards list all shards served by this worker
     std::vector<search::DBShard> ListShards() override;
 
     // ServeShard let the worker serve this shard, for its features' CRUD

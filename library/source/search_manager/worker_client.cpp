@@ -12,6 +12,7 @@
 #include <grpcpp/client_context.h>
 #include <grpcpp/support/status.h>
 #include <grpcpp/support/stub_options.h>
+#include <numeric>
 #include <openvino/runtime/properties.hpp>
 #include <thread>
 #include <utility>
@@ -74,10 +75,14 @@ RetCode WorkerClient::DisConnect() {
 };
 
 uint64 WorkerClient::GetFreeSpace() {
-    size_t total_used = 0;
+    uint64 total_used = 0;
     for (auto it = _served_shards.begin(); it != _served_shards.end(); it++) {
         total_used += it->second.capacity;
     };
+    // another approach?
+    // std::reduce(_served_shards.begin(), _served_shards.end(), 0,
+    //             [](int sum, auto it) { return sum + it->second.capacity; });
+
     return _worker_info.capacity() - total_used;
 };
 

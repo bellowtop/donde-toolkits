@@ -1,54 +1,11 @@
 #include "search_manager/shard_manager.h"
 
 #include "search/definitions.h"
+#include "search_manager/shard.h"
 #include "types.h"
 #include "utils.h"
 
 #include <spdlog/spdlog.h>
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/// Shard
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// Assign a worker for this shard.
-RetCode Shard::AssignWorker(Worker* worker) {
-    if (worker != nullptr) {
-        _worker = worker;
-        _worker_id = worker->GetWorkerID();
-    }
-
-    _worker->ServeShard(_shard_info);
-
-    return RetCode::RET_OK;
-};
-
-// AddFeatures to this shard, delegate to worker client to do the actual storage.
-RetCode Shard::AddFeatures(std::vector<Feature> fts) {
-    if (_worker == nullptr) {
-        spdlog::error("shard has no worker, AssignWorker first.");
-        return RetCode::RET_ERR;
-    }
-    // delegate to worker.
-    auto ret = _worker->AddFeatures(_db_id, _shard_id, fts);
-    if (ret == RetCode::RET_OK) {
-        _shard_info.used += fts.size();
-    }
-    return {};
-};
-
-// SearchFeature in this shard, delegate to worker client to do the actual search.
-std::vector<FeatureScore> Shard::SearchFeature(const Feature& query, int topk) {
-    return _worker->SearchFeature(_shard_info.db_id, query, topk);
-};
-
-RetCode Shard::Close() {
-    _shard_mgr->CloseShard(_db_id, _shard_id);
-    _worker->CloseShard(_db_id, _shard_id);
-
-    _shard_info.is_closed = true;
-
-    return {};
-};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// ShardManager
@@ -67,7 +24,7 @@ std::tuple<Shard*, bool> ShardManager::FindOrCreateWritableShard(std::string db_
             if (shard_info.capacity - shard_info.used > fts_count) {
                 return {shard, false};
             } else {
-                // close now?
+                // TODO close now?
                 shard->Close();
                 break;
             }
@@ -123,6 +80,10 @@ RetCode ShardManager::CloseShard(std::string db_id, std::string shard_id) {
 std::string ShardManager::CreateShard(search::DBShard shard_info) {
     std::string shard_id = _driver.CreateShard(shard_info.db_id, shard_info);
     return shard_id;
+};
+
+RetCode ShardManager::UpdateShard(search::DBShard shard_info) {
+    return _driver.UpdateShard(shard_info.db_id, shard_info);
 };
 
 RetCode ShardManager::load_db_shards() {

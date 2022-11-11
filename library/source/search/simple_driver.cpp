@@ -106,6 +106,8 @@ namespace search {
         return {};
     };
 
+    RetCode UpdateShard(const std::string& db_id, const DBShard& shard) { return {}; };
+
     std::string SimpleDriver::CloseShard(const std::string& db_id, const std::string& shard) {
         return {};
     };

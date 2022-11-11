@@ -36,6 +36,8 @@ namespace search {
 
         virtual std::string CreateShard(const std::string& db_id, const DBShard& shard) = 0;
 
+        virtual RetCode UpdateShard(const std::string& db_id, const DBShard& shard) = 0;
+
         virtual std::string CloseShard(const std::string& db_id, const std::string& shard_id) = 0;
 
         // Feature management
