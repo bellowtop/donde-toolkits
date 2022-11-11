@@ -3,6 +3,7 @@
 #include "Poco/Notification.h"
 #include "Poco/NotificationQueue.h"
 #include "concurrent_processor.h"
+#include "message.h"
 #include "opencv2/opencv.hpp"
 #include "openvino/openvino.hpp"
 #include "openvino_worker/workers.h"
@@ -11,6 +12,7 @@
 #include "types.h"
 #include "utils.h"
 
+#include <Poco/Channel.h>
 #include <cassert>
 #include <cmath>
 #include <filesystem>
@@ -29,7 +31,7 @@ using Poco::NotificationQueue;
 using namespace Poco;
 using namespace openvino_worker;
 
-AlignerWorker::AlignerWorker(std::shared_ptr<NotificationQueue> ch) : Worker(ch) {}
+AlignerWorker::AlignerWorker(std::shared_ptr<MsgChannel> ch) : Worker(ch) {}
 
 AlignerWorker::~AlignerWorker() {
     // _channel.reset();
@@ -48,33 +50,29 @@ RetCode AlignerWorker::Init(json conf, int i, std::string device_id) {
 
 void AlignerWorker::run() {
     for (;;) {
-        Notification::Ptr pNf(_channel->waitDequeueNotification());
-
-        if (pNf) {
-            WorkMessage::Ptr msg = pNf.cast<WorkMessage>();
-            if (msg) {
-                if (msg->isQuitMessage()) {
-                    break;
-                }
-                Value input = msg->getRequest();
-                if (input.valueType != ValueLandmarksResult) {
-                    _logger->error("AlignerWorker input value is not a ValueLandmarksResult! wrong "
-                                   "valueType: {}",
-                                   format_value_type(input.valueType));
-                    continue;
-                }
-                std::shared_ptr<LandmarksResult> landmarks_result
-                    = std::static_pointer_cast<LandmarksResult>(input.valuePtr);
-                std::shared_ptr<AlignerResult> result = std::make_shared<AlignerResult>();
-
-                RetCode ret = process(*landmarks_result, *result);
-                _logger->debug("process ret: {}", ret);
-
-                Value output{ValueAlignerResult, result};
-                msg->setResponse(output);
-            }
-        } else {
+        Notification::Ptr pNf;
+        if (_channel->output(pNf) == ChanError::ErrClosed) {
             break;
+        }
+
+        if (!pNf.isNull()) {
+            WorkMessage<Value>::Ptr msg = pNf.cast<WorkMessage<Value>>();
+            Value input = msg->getRequest();
+            if (input.valueType != ValueLandmarksResult) {
+                _logger->error("AlignerWorker input value is not a ValueLandmarksResult! wrong "
+                               "valueType: {}",
+                               format_value_type(input.valueType));
+                continue;
+            }
+            std::shared_ptr<LandmarksResult> landmarks_result
+                = std::static_pointer_cast<LandmarksResult>(input.valuePtr);
+            std::shared_ptr<AlignerResult> result = std::make_shared<AlignerResult>();
+
+            RetCode ret = process(*landmarks_result, *result);
+            _logger->debug("process ret: {}", ret);
+
+            Value output{ValueAlignerResult, result};
+            msg->setResponse(output);
         }
     }
 }

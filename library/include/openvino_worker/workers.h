@@ -7,6 +7,7 @@
 #include "Poco/Thread.h"
 #include "Poco/ThreadPool.h"
 #include "concurrent_processor.h"
+#include "message.h"
 #include "nlohmann/json.hpp"
 #include "openvino/openvino.hpp"
 #include "types.h"
@@ -24,7 +25,7 @@ namespace openvino_worker {
 
     class DetectorWorker : public Worker {
       public:
-        DetectorWorker(std::shared_ptr<NotificationQueue> ch);
+        DetectorWorker(std::shared_ptr<MsgChannel> ch);
         ~DetectorWorker();
 
         RetCode Init(json conf, int id, std::string device_id) override;
@@ -50,7 +51,7 @@ namespace openvino_worker {
 
     class LandmarksWorker : public Worker {
       public:
-        LandmarksWorker(std::shared_ptr<NotificationQueue> ch);
+        LandmarksWorker(std::shared_ptr<MsgChannel> ch);
         ~LandmarksWorker();
 
         RetCode Init(json conf, int id, std::string device_id) override;
@@ -88,7 +89,7 @@ namespace openvino_worker {
 
     class AlignerWorker : public Worker {
       public:
-        AlignerWorker(std::shared_ptr<NotificationQueue> ch);
+        AlignerWorker(std::shared_ptr<MsgChannel> ch);
 
         ~AlignerWorker();
 
@@ -104,7 +105,7 @@ namespace openvino_worker {
 
     class FeatureWorker : public Worker {
       public:
-        FeatureWorker(std::shared_ptr<NotificationQueue> ch);
+        FeatureWorker(std::shared_ptr<MsgChannel> ch);
 
         ~FeatureWorker();
 
@@ -139,4 +140,4 @@ namespace openvino_worker {
     //   private:
     // };
     //
-}; // namespace openvino
+}; // namespace openvino_worker

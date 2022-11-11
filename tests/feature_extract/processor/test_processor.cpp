@@ -37,7 +37,7 @@ TEST_CASE("ConcurrentProcessor comunicate with DummyWorker using channel.") {
                 Notification::Ptr pNf(_channel->waitDequeueNotification());
 
                 if (pNf) {
-                    WorkMessage::Ptr msg = pNf.cast<WorkMessage>();
+                    WorkMessage<Value>::Ptr msg = pNf.cast<WorkMessage<Value>>();
                     if (msg) {
                         if (msg->isQuitMessage()) {
                             break;

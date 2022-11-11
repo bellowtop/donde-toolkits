@@ -3,6 +3,7 @@
 #include "Poco/Notification.h"
 #include "Poco/NotificationQueue.h"
 #include "concurrent_processor.h"
+#include "message.h"
 #include "opencv2/opencv.hpp"
 #include "openvino/openvino.hpp"
 #include "openvino_worker/workers.h"
@@ -20,12 +21,11 @@
 #include <vector>
 
 using Poco::Notification;
-using Poco::NotificationQueue;
 
 using namespace Poco;
 using namespace openvino_worker;
 
-LandmarksWorker::LandmarksWorker(std::shared_ptr<NotificationQueue> ch) : Worker(ch) {}
+LandmarksWorker::LandmarksWorker(std::shared_ptr<MsgChannel> ch) : Worker(ch) {}
 
 LandmarksWorker::~LandmarksWorker() {
     // _channel.reset();
@@ -124,33 +124,29 @@ RetCode LandmarksWorker::Init(json conf, int i, std::string device_id) {
 
 void LandmarksWorker::run() {
     for (;;) {
-        Notification::Ptr pNf(_channel->waitDequeueNotification());
-
-        if (pNf) {
-            WorkMessage::Ptr msg = pNf.cast<WorkMessage>();
-            if (msg) {
-                if (msg->isQuitMessage()) {
-                    break;
-                }
-                Value input = msg->getRequest();
-                if (input.valueType != ValueDetectResult) {
-                    _logger->error("LandmarksWorker input value is not a ValueDetectResult! wrong "
-                                   "valueType: {}",
-                                   format_value_type(input.valueType));
-                    continue;
-                }
-                std::shared_ptr<DetectResult> detect_result
-                    = std::static_pointer_cast<DetectResult>(input.valuePtr);
-                std::shared_ptr<LandmarksResult> result = std::make_shared<LandmarksResult>();
-
-                RetCode ret = process(*detect_result, *result);
-                _logger->debug("process ret: {}", ret);
-
-                Value output{ValueLandmarksResult, result};
-                msg->setResponse(output);
-            }
-        } else {
+        Notification::Ptr pNf;
+        if (_channel->output(pNf) == ChanError::ErrClosed) {
             break;
+        }
+
+        if (!pNf.isNull()) {
+            WorkMessage<Value>::Ptr msg = pNf.cast<WorkMessage<Value>>();
+            Value input = msg->getRequest();
+            if (input.valueType != ValueDetectResult) {
+                _logger->error("LandmarksWorker input value is not a ValueDetectResult! wrong "
+                               "valueType: {}",
+                               format_value_type(input.valueType));
+                continue;
+            }
+            std::shared_ptr<DetectResult> detect_result
+                = std::static_pointer_cast<DetectResult>(input.valuePtr);
+            std::shared_ptr<LandmarksResult> result = std::make_shared<LandmarksResult>();
+
+            RetCode ret = process(*detect_result, *result);
+            _logger->debug("process ret: {}", ret);
+
+            Value output{ValueLandmarksResult, result};
+            msg->setResponse(output);
         }
     }
 }

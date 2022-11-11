@@ -6,6 +6,7 @@
 #include "Poco/Runnable.h"
 #include "Poco/Thread.h"
 #include "Poco/ThreadPool.h"
+#include "message.h"
 #include "nlohmann/json.hpp"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
@@ -28,7 +29,7 @@ using json = nlohmann::json;
 
 class Worker : public Runnable {
   public:
-    Worker(std::shared_ptr<NotificationQueue> ch) : _channel(ch){};
+    Worker(std::shared_ptr<MsgChannel> ch) : _channel(ch){};
     virtual RetCode Init(json conf, int id, std::string device_id) = 0;
     std::string GetName() { return _name; };
 
@@ -43,34 +44,13 @@ class Worker : public Runnable {
     virtual void run() = 0;
 
   protected:
-    std::shared_ptr<NotificationQueue> _channel;
+    std::shared_ptr<MsgChannel> _channel;
     int _id;
     json _conf;
     std::string _name;
     std::string _device_id;
 
     std::shared_ptr<spdlog::logger> _logger;
-};
-
-class WorkMessage : public Notification {
-  public:
-    typedef AutoPtr<WorkMessage> Ptr;
-
-    WorkMessage(Value req, bool quit_flag);
-    bool isQuitMessage();
-
-    Value getRequest();
-
-    void setResponse(Value resp);
-    Value getResponse();
-
-    void waitResponse();
-
-  private:
-    Value _request;
-    Value _response;
-    bool _quit_flag;
-    Poco::Event _evt;
 };
 
 class Processor {
@@ -105,7 +85,7 @@ class ConcurrentProcessor<T, typename std::enable_if_t<std::is_base_of_v<Worker,
   private:
     std::string _name;
     ThreadPool _pool;
-    std::shared_ptr<NotificationQueue> _channel;
+    std::shared_ptr<MsgChannel> _channel;
     std::vector<std::shared_ptr<T>> _workers;
 };
 
@@ -118,7 +98,7 @@ ConcurrentProcessor<T,
                     typename std::enable_if_t<std::is_base_of_v<Worker, T>>>::ConcurrentProcessor()
     : _name("concurrent-process-master"),
       _pool(Poco::ThreadPool(1, 1)),
-      _channel(std::make_shared<NotificationQueue>()), // create a channel
+      _channel(std::make_shared<MsgChannel>()), // create a channel
       _workers(0){};
 
 template <typename T>
@@ -169,37 +149,24 @@ RetCode ConcurrentProcessor<T, typename std::enable_if_t<std::is_base_of_v<Worke
     spdlog::info("input.valueType : {}, valuePtr: {}", format_value_type(input.valueType),
                  input.valuePtr.get());
 
-    WorkMessage::Ptr msg = WorkMessage::Ptr(new WorkMessage(input, false));
-    _channel->enqueueNotification(msg);
+    WorkMessage<Value>::Ptr msg = WorkMessage<Value>::Ptr(new WorkMessage(input, false));
+    if (_channel->input(msg) == ChanError::OK) {
+        Value resp = msg->waitResponse();
+        output = resp;
 
-    msg->waitResponse();
+        spdlog::info("output.valueType : {}, valuePtr: {}", format_value_type(output.valueType),
+                     output.valuePtr.get());
 
-    Value resp = msg->getResponse();
-    output = resp;
-
-    spdlog::info("output.valueType : {}, valuePtr: {}", format_value_type(output.valueType),
-                 output.valuePtr.get());
-
-    return RET_OK;
+        return RET_OK;
+    }
+    return RET_ERR;
 }
 
 template <typename T>
 RetCode
 ConcurrentProcessor<T, typename std::enable_if_t<std::is_base_of_v<Worker, T>>>::Terminate() {
-    // enqueue quit message.
-    Value empty{};
-    for (size_t i = 0; i < _workers.size(); i++) {
-        _channel->enqueueNotification(new WorkMessage(empty, true));
-    }
-
-    // every messages are processed, including the quit message.
-    while (!_channel->empty()) {
-        // Logger::Tracef("controller sleep 100 ms");
-        Poco::Thread::sleep(100);
-    }
-    Poco::Thread::sleep(100);
-
-    _channel->wakeUpAll();
+    // close the cahnnel, workers will catch this event, b'c close will wake all blocking threads.
+    _channel->close();
     _pool.joinAll();
 
     // Logger::Tracef("controller shutdown all workers");

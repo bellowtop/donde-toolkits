@@ -25,7 +25,7 @@ using Poco::NotificationQueue;
 using namespace Poco;
 using namespace openvino_worker;
 
-FeatureWorker::FeatureWorker(std::shared_ptr<NotificationQueue> ch) : Worker(ch) {}
+FeatureWorker::FeatureWorker(std::shared_ptr<MsgChannel> ch) : Worker(ch) {}
 
 FeatureWorker::~FeatureWorker() {
     // _channel.reset();
@@ -118,33 +118,29 @@ RetCode FeatureWorker::Init(json conf, int i, std::string device_id) {
 
 void FeatureWorker::run() {
     for (;;) {
-        Notification::Ptr pNf(_channel->waitDequeueNotification());
-
-        if (pNf) {
-            WorkMessage::Ptr msg = pNf.cast<WorkMessage>();
-            if (msg) {
-                if (msg->isQuitMessage()) {
-                    break;
-                }
-                Value input = msg->getRequest();
-                if (input.valueType != ValueAlignerResult) {
-                    _logger->error("FeatureWorker input value is not a ValueAlignerResult! wrong "
-                                   "valueType: {}",
-                                   format_value_type(input.valueType));
-                    continue;
-                }
-                std::shared_ptr<AlignerResult> aligner_result
-                    = std::static_pointer_cast<AlignerResult>(input.valuePtr);
-                std::shared_ptr<FeatureResult> result = std::make_shared<FeatureResult>();
-
-                RetCode ret = process(*aligner_result, *result);
-                _logger->debug("process ret: {}", ret);
-
-                Value output{ValueFeatureResult, result};
-                msg->setResponse(output);
-            }
-        } else {
+        Notification::Ptr pNf;
+        if (_channel->output(pNf) == ChanError::ErrClosed) {
             break;
+        }
+
+        if (!pNf.isNull()) {
+            WorkMessage<Value>::Ptr msg = pNf.cast<WorkMessage<Value>>();
+            Value input = msg->getRequest();
+            if (input.valueType != ValueAlignerResult) {
+                _logger->error("FeatureWorker input value is not a ValueAlignerResult! wrong "
+                               "valueType: {}",
+                               format_value_type(input.valueType));
+                continue;
+            }
+            std::shared_ptr<AlignerResult> aligner_result
+                = std::static_pointer_cast<AlignerResult>(input.valuePtr);
+            std::shared_ptr<FeatureResult> result = std::make_shared<FeatureResult>();
+
+            RetCode ret = process(*aligner_result, *result);
+            _logger->debug("process ret: {}", ret);
+
+            Value output{ValueFeatureResult, result};
+            msg->setResponse(output);
         }
     }
 }

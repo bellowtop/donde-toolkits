@@ -26,7 +26,7 @@ using Poco::NotificationQueue;
 using namespace Poco;
 using namespace openvino_worker;
 
-DetectorWorker::DetectorWorker(std::shared_ptr<NotificationQueue> ch) : Worker(ch) {}
+DetectorWorker::DetectorWorker(std::shared_ptr<MsgChannel> ch) : Worker(ch) {}
 
 DetectorWorker::~DetectorWorker() {
     // _channel.reset();
@@ -141,34 +141,30 @@ RetCode DetectorWorker::Init(json conf, int i, std::string device_id) {
 
 void DetectorWorker::run() {
     for (;;) {
-        Notification::Ptr pNf(_channel->waitDequeueNotification());
-
-        if (pNf) {
-            WorkMessage::Ptr msg = pNf.cast<WorkMessage>();
-            if (msg) {
-                if (msg->isQuitMessage()) {
-                    break;
-                }
-                Value input = msg->getRequest();
-                if (input.valueType != ValueFrame) {
-                    _logger->error("DetectorWorker input value is not a frame! wrong valueType: {}",
-                                   input.valueType);
-                    continue;
-                }
-                std::shared_ptr<Frame> f = std::static_pointer_cast<Frame>(input.valuePtr);
-
-                std::shared_ptr<DetectResult> result = std::make_shared<DetectResult>();
-                // acquire! hold a reference to the frame.
-                result->frame = f;
-
-                RetCode ret = process(f->image, *result);
-                _logger->debug("process ret: {}", ret);
-
-                Value output{ValueDetectResult, result};
-                msg->setResponse(output);
-            }
-        } else {
+        Notification::Ptr pNf;
+        if (_channel->output(pNf) == ChanError::ErrClosed) {
             break;
+        }
+
+        if (!pNf.isNull()) {
+            WorkMessage<Value>::Ptr msg = pNf.cast<WorkMessage<Value>>();
+            Value input = msg->getRequest();
+            if (input.valueType != ValueFrame) {
+                _logger->error("DetectorWorker input value is not a frame! wrong valueType: {}",
+                               input.valueType);
+                continue;
+            }
+            std::shared_ptr<Frame> f = std::static_pointer_cast<Frame>(input.valuePtr);
+
+            std::shared_ptr<DetectResult> result = std::make_shared<DetectResult>();
+            // acquire! hold a reference to the frame.
+            result->frame = f;
+
+            RetCode ret = process(f->image, *result);
+            _logger->debug("process ret: {}", ret);
+
+            Value output{ValueDetectResult, result};
+            msg->setResponse(output);
         }
     }
 }

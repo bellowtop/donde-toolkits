@@ -60,6 +60,8 @@ namespace search {
 
         std::string CreateShard(const std::string& db_id, const DBShard& shard) override;
 
+        RetCode UpdateShard(const std::string& db_id, const DBShard& shard) override;
+
         std::string CloseShard(const std::string& db_id, const std::string& shard) override;
 
         PageData<FeatureDbItemList> ListFeatures(const std::string& db_id, uint page,
