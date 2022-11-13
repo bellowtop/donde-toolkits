@@ -31,7 +31,7 @@ enum ChanError { OK, ErrFull, ErrEmpty, ErrClosed };
 // loosely means in a multi-thread environment, the channel size may exceed the size a little.
 class MsgChannel {
   public:
-    MsgChannel(size_t size = 64) : _size(size), _queue(std::make_shared<NotificationQueue>()){};
+    MsgChannel(int size = 64) : _size(size), _queue(std::make_shared<NotificationQueue>()){};
 
     ChanError output(Notification::Ptr& msg) {
         if (closed) {
@@ -75,7 +75,7 @@ class MsgChannel {
     bool is_closed() { return closed; };
 
   private:
-    size_t _size;
+    int _size;
     bool closed;
     std::shared_ptr<NotificationQueue> _queue;
 };

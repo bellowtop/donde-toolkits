@@ -1,4 +1,5 @@
 #include "concurrent_processor.h"
+#include "message.h"
 #include "types.h"
 
 #include <Poco/NotificationQueue.h>
@@ -10,7 +11,6 @@ using namespace std;
 using namespace Poco;
 
 using Poco::Notification;
-using Poco::NotificationQueue;
 
 using nlohmann::json;
 
@@ -22,7 +22,7 @@ TEST_CASE("ConcurrentProcessor comunicate with DummyWorker using channel.") {
     //
     class DummyWorker : public Worker {
       public:
-        DummyWorker(std::shared_ptr<NotificationQueue> ch) : Worker(ch){};
+        DummyWorker(std::shared_ptr<MsgChannel> ch) : Worker(ch){};
         ~DummyWorker(){};
 
         RetCode Init(json conf, int id, std::string device_id) override {
@@ -34,32 +34,29 @@ TEST_CASE("ConcurrentProcessor comunicate with DummyWorker using channel.") {
 
         void run() override {
             for (;;) {
-                Notification::Ptr pNf(_channel->waitDequeueNotification());
-
-                if (pNf) {
-                    WorkMessage<Value>::Ptr msg = pNf.cast<WorkMessage<Value>>();
-                    if (msg) {
-                        if (msg->isQuitMessage()) {
-                            break;
-                        }
-                        processedMsg++;
-
-                        Value input = msg->getRequest();
-                        std::cout << "get input, valueType: " << input.valueType << std::endl;
-
-                        CHECK(input.valueType == ValueFrame);
-                        CHECK(input.valuePtr != nullptr);
-
-                        // allocate memory in heap, the caller is responsible to free it!
-                        std::shared_ptr<Feature> result = std::make_shared<Feature>();
-
-                        result->raw.resize(100);
-                        Value output{ValueFeature, result};
-
-                        msg->setResponse(output);
-                    }
-                } else {
+                Notification::Ptr pNf;
+                if (_channel->output(pNf) == ChanError::ErrClosed) {
                     break;
+                }
+
+                if (!pNf.isNull()) {
+                    WorkMessage<Value>::Ptr msg = pNf.cast<WorkMessage<Value>>();
+
+                    processedMsg++;
+
+                    Value input = msg->getRequest();
+                    std::cout << "get input, valueType: " << input.valueType << std::endl;
+
+                    CHECK(input.valueType == ValueFrame);
+                    CHECK(input.valuePtr != nullptr);
+
+                    // allocate memory in heap, the caller is responsible to free it!
+                    std::shared_ptr<Feature> result = std::make_shared<Feature>();
+
+                    result->raw.resize(100);
+                    Value output{ValueFeature, result};
+
+                    msg->setResponse(output);
                 }
             }
         };

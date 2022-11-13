@@ -33,13 +33,13 @@ build-proto:
 	cd proto && ./build_proto.sh
 
 build-server:
-	cmake --build build/servers -- -j 4
+	cmake --build build/servers -- -j 8
 
 build-test:
-	cmake --build build/tests
+	cmake --build build/tests -- -j 8
 
 build-lib:
-	cmake --build build/library
+	cmake --build build/library -- -j 8
 
 build-all: build-pre build-lib build-servers build-tests
 
