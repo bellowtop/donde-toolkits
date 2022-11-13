@@ -5,10 +5,9 @@
 #include "utils.h"
 
 #include <Poco/Logger.h>
-#include <doctest/doctest.h>
-#include <doctest/trompeloeil.hpp>
 #include <filesystem>
 #include <fstream>
+#include <gtest/gtest.h>
 #include <iostream>
 #include <memory>
 #include <nlohmann/json.hpp>
@@ -21,7 +20,7 @@ using namespace openvino_worker;
 
 using nlohmann::json;
 
-TEST_CASE("FacePipeline can decode image binary to frame, aka cv::Mat.") {
+TEST(FeatureExtract, FacePipelineCanDecodeImageBinaryToFrame) {
 
     json conf = R"(
 {
@@ -68,10 +67,10 @@ TEST_CASE("FacePipeline can decode image binary to frame, aka cv::Mat.") {
 
         spdlog::debug("pipeline.Detect DetectResult.confidence: {}", detected_face.confidence);
 
-        CHECK(box.empty() == false);
-        CHECK_GT(box.size().width, 10);
-        CHECK_GT(box.size().height, 10);
-        CHECK_GT(detected_face.confidence, 0.8);
+        EXPECT_EQ(box.empty(), false);
+        EXPECT_GT(box.size().width, 10);
+        EXPECT_GT(box.size().height, 10);
+        EXPECT_GT(detected_face.confidence, 0.8);
 
         boxes.push_back(box);
     }
@@ -82,14 +81,14 @@ TEST_CASE("FacePipeline can decode image binary to frame, aka cv::Mat.") {
 
     // RetCode ret = pipe.Init(a, a, a, a);
 
-    // CHECK(ret == RET_OK);
+    // EXPECT_EQ(ret, RET_OK);
 
     pipeline.Terminate();
 
-    CHECK("aa" == "aa");
+    EXPECT_EQ("aa", "aa");
 };
 
-TEST_CASE("FacePipeline can detect landmarks from DetectResult.") {
+TEST(FeatureExtract, FacePipelineCanDetectLandmarksFromDetectResult) {
 
     json conf = R"(
  {
@@ -122,11 +121,12 @@ TEST_CASE("FacePipeline can detect landmarks from DetectResult.") {
     std::shared_ptr<LandmarksResult> result = pipeline.Landmarks(detect_result);
 
     // we only set one face
-    CHECK(result->faces.size() == 1);
-    CHECK(result->face_landmarks.size() == 1);
-    CHECK(result->face_landmarks[0].size() == 35);
-    CHECK(result->face_landmarks[0][0].x > 0.0f);
-    CHECK(result->face_landmarks[0][0].y > 0.0f);
+    EXPECT_EQ(result->faces.size(), 1);
+    EXPECT_EQ(result->face_landmarks.size(), 1);
+    EXPECT_EQ(result->face_landmarks[0].size(), 35);
+
+    EXPECT_GT(result->face_landmarks[0][0].x, 0.0f);
+    EXPECT_GT(result->face_landmarks[0][0].y, 0.0f);
 
     std::shared_ptr<AlignerResult> align_result = pipeline.Align(result);
 
@@ -136,14 +136,14 @@ TEST_CASE("FacePipeline can detect landmarks from DetectResult.") {
 
     // RetCode ret = pipe.Init(a, a, a, a);
 
-    // CHECK(ret == RET_OK);
+    // EXPECT_EQ(ret, RET_OK);
 
     pipeline.Terminate();
 
-    CHECK("aa" == "aa");
+    EXPECT_EQ("aa", "aa");
 };
 
-TEST_CASE("FacePipeline extract face feature from image file.") {
+TEST(FeatureExtract, FacePipelineExtractFaceFeatureFromImageFile) {
 
     json conf = R"(
  {
@@ -198,21 +198,22 @@ TEST_CASE("FacePipeline extract face feature from image file.") {
             spdlog::debug("box.y: {}", box.y);
             spdlog::debug("box.width: {}", box.width);
             spdlog::debug("box.height: {}", box.height);
-            CHECK(box.empty() == false);
-            CHECK_GT(box.size().width, 10);
-            CHECK_GT(box.size().height, 10);
-            CHECK_GT(detected_face.confidence, 0.8);
+            EXPECT_EQ(box.empty(), false);
+            EXPECT_GT(box.size().width, 10);
+            EXPECT_GT(box.size().height, 10);
+            EXPECT_GT(detected_face.confidence, 0.8);
         }
     }
 
     std::shared_ptr<LandmarksResult> landmarks_result = pipeline.Landmarks(detect_result);
 
     {
-        CHECK(landmarks_result->faces.size() == 5);
-        CHECK(landmarks_result->face_landmarks.size() == 5);
-        CHECK(landmarks_result->face_landmarks[0].size() == 35);
-        CHECK(landmarks_result->face_landmarks[0][0].x > 0.0f);
-        CHECK(landmarks_result->face_landmarks[0][0].y > 0.0f);
+        EXPECT_EQ(landmarks_result->faces.size(), 5);
+        EXPECT_EQ(landmarks_result->face_landmarks.size(), 5);
+        EXPECT_EQ(landmarks_result->face_landmarks[0].size(), 35);
+
+        EXPECT_GT(landmarks_result->face_landmarks[0][0].x, 0.0f);
+        EXPECT_GT(landmarks_result->face_landmarks[0][0].y, 0.0f);
     }
 
     std::shared_ptr<AlignerResult> aligner_result = pipeline.Align(landmarks_result);
@@ -230,5 +231,5 @@ TEST_CASE("FacePipeline extract face feature from image file.") {
 
     pipeline.Terminate();
 
-    CHECK("aa" == "aa");
+    EXPECT_EQ("aa", "aa");
 };

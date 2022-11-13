@@ -22,6 +22,10 @@ toml11/3.7.1
 nlohmann_json/3.10.5
 opencv/4.5.5
 doctest/2.4.9
+
+gtest/cci.20210126
+
+
 trompeloeil/42
 
 spdlog/1.10.0

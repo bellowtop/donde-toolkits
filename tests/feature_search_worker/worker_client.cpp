@@ -5,8 +5,8 @@
 #include "utils.h"
 
 #include <chrono>
-#include <doctest/doctest.h>
 #include <filesystem>
+#include <gtest/gtest.h>
 #include <iostream>
 #include <memory>
 #include <nlohmann/json.hpp>
@@ -17,12 +17,17 @@ using namespace std;
 
 using nlohmann::json;
 
-TEST_CASE("WorkerClient: check liveness loop.") {
+TEST(SearchWorkerTest, Basic) {
 
-    WorkerClient client{""};
+    // Expect two strings not to be equal.
+    EXPECT_STRNE("hello", "world");
+    // Expect equality.
+    EXPECT_EQ(7 * 6, 42);
 
-    // std::this_thread::sleep_for(std::chrono::milliseconds(10000));
-    client.DisConnect();
+    // WorkerClient client{""};
 
-    CHECK("aa" == "aa");
+    // // std::this_thread::sleep_for(std::chrono::milliseconds(10000));
+    // client.DisConnect();
+
+    // CHECK("aa" == "aa");
 };

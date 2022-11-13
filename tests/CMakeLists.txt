@@ -55,7 +55,7 @@ target_link_libraries(${PROJECT_NAME}
 	CONAN_PKG::nlohmann_json
 	CONAN_PKG::cassandra-cpp-driver
 	CONAN_PKG::toml11
-	CONAN_PKG::doctest
+	CONAN_PKG::gtest
 	CONAN_PKG::trompeloeil
 	openvino::runtime
 
@@ -74,17 +74,4 @@ endif()
 
 enable_testing()
 
-# Note: doctest and similar testing frameworks can automatically configure CMake tests. For other
-# testing frameworks add the tests target instead:
-#     add_test(NAME ${PROJECT_NAME} COMMAND ${PROJECT_NAME})
-
-## no need to include doctest.cmake, conan did that.
-# include(${doctest_SOURCE_DIR}/scripts/cmake/doctest.cmake)
-doctest_discover_tests(${PROJECT_NAME})
-
-# ---- code coverage ----
-
-if(ENABLE_TEST_COVERAGE)
-  target_compile_options(${PROJECT_NAME} PUBLIC -O0 -g -fprofile-arcs -ftest-coverage)
-  target_link_options(${PROJECT_NAME} PUBLIC -fprofile-arcs -ftest-coverage)
-endif()
+# gtest_discover_tests(${PROJECT_NAME})

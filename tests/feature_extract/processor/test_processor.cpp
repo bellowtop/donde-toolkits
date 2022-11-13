@@ -3,7 +3,7 @@
 #include "types.h"
 
 #include <Poco/NotificationQueue.h>
-#include <doctest/doctest.h>
+#include <gtest/gtest.h>
 #include <memory>
 #include <nlohmann/json.hpp>
 
@@ -14,7 +14,7 @@ using Poco::Notification;
 
 using nlohmann::json;
 
-TEST_CASE("ConcurrentProcessor comunicate with DummyWorker using channel.") {
+TEST(FeatureExtract, ConcurrentProcessorComunicateWithDummyWorkerUsingChannel) {
     static int processedMsg = 0;
 
     //
@@ -26,9 +26,9 @@ TEST_CASE("ConcurrentProcessor comunicate with DummyWorker using channel.") {
         ~DummyWorker(){};
 
         RetCode Init(json conf, int id, std::string device_id) override {
-            CHECK(conf != nullptr);
-            CHECK(id != -1);
-            CHECK(device_id == "CPU");
+            EXPECT_NE(conf, nullptr);
+            EXPECT_NE(id, -1);
+            EXPECT_NE(device_id, "CPU");
             return RET_OK;
         };
 
@@ -47,8 +47,8 @@ TEST_CASE("ConcurrentProcessor comunicate with DummyWorker using channel.") {
                     Value input = msg->getRequest();
                     std::cout << "get input, valueType: " << input.valueType << std::endl;
 
-                    CHECK(input.valueType == ValueFrame);
-                    CHECK(input.valuePtr != nullptr);
+                    EXPECT_EQ(input.valueType, ValueFrame);
+                    EXPECT_NE(input.valuePtr, nullptr);
 
                     // allocate memory in heap, the caller is responsible to free it!
                     std::shared_ptr<Feature> result = std::make_shared<Feature>();
@@ -81,19 +81,19 @@ TEST_CASE("ConcurrentProcessor comunicate with DummyWorker using channel.") {
     Value output;
     processor.Process(input, output);
 
-    CHECK(output.valueType == ValueFeature);
-    CHECK(output.valuePtr != nullptr);
+    EXPECT_NE(output.valueType, ValueFeature);
+    EXPECT_NE(output.valuePtr, nullptr);
 
     std::shared_ptr<Feature> feature = std::static_pointer_cast<Feature>(output.valuePtr);
-    CHECK(feature->raw.size() == 100);
+    EXPECT_EQ(feature->raw.size(), 100);
 
     processor.Process(input, output);
     processor.Process(input, output);
 
     // Process is  blocking function, it will wait for output.
-    CHECK(processedMsg == 3);
+    EXPECT_EQ(processedMsg, 3);
 
     processor.Terminate();
 
-    CHECK("aa" == "aa");
+    EXPECT_EQ("aa", "aa");
 };
