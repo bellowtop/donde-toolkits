@@ -62,6 +62,9 @@ class Shard {
     Shard(ShardManager* manager, search::DBShard shard_info);
     ~Shard();
 
+    void Start();
+    void Stop();
+
     // Assign a worker for this shard.
     RetCode AssignWorker(Worker* worker);
 
@@ -79,13 +82,15 @@ class Shard {
     // check the shard is closed or not.
     inline bool IsClosed() { return _shard_info.is_closed; };
 
+    // check the shard is closed or not.
+    inline bool IsRunning() { return _loop_thread.isRunning(); };
+
     inline std::string GetShardID() { return _shard_id; };
 
     inline search::DBShard GetShardInfo() { return _shard_info; };
 
   private:
     void loop();
-    void stop();
 
     shardOp do_assign_worker(const shardOp& input);
     shardOp do_add_features(const shardOp& input);

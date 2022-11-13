@@ -15,16 +15,35 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Shard::Shard(ShardManager* manager, search::DBShard shard_info)
-    : _shard_info(shard_info),
-      _shard_id(shard_info.shard_id),
-      _db_id(shard_info.db_id),
-      _channel(new MsgChannel()) {
+    : _shard_info(shard_info), _shard_id(shard_info.shard_id), _db_id(shard_info.db_id) {
+
+    Start();
+};
+
+Shard::~Shard() { Stop(); };
+
+void Shard::Start() {
+    if (IsRunning()) {
+        spdlog::warn("shard already is running, double Start??.");
+        return;
+    }
+    _channel = std::make_shared<MsgChannel>();
 
     Poco::RunnableAdapter<Shard> ra(*this, &Shard::loop);
     _loop_thread.start(ra);
 };
 
-Shard::~Shard() { stop(); };
+void Shard::Stop() {
+    if (!IsRunning()) {
+        spdlog::warn("shard already is stopped, double Stop??.");
+        return;
+    }
+    _channel->close();
+
+    if (_loop_thread.isRunning()) {
+        _loop_thread.join();
+    }
+}
 
 // Assign a worker for this shard.
 RetCode Shard::AssignWorker(Worker* worker) {
@@ -95,7 +114,7 @@ RetCode Shard::Close() {
 
     _shard_info.is_closed = true;
 
-    stop();
+    Stop();
 
     return RetCode::RET_OK;
 };
@@ -103,7 +122,7 @@ RetCode Shard::Close() {
 void Shard::loop() {
     for (;;) {
         Notification::Ptr pNf;
-        // output is a blocking api.
+        // output is a blocking call.
         if (_channel->output(pNf) == ChanError::ErrClosed) {
             break;
         }
@@ -141,14 +160,6 @@ void Shard::loop() {
                 continue;
             }
         }
-    }
-}
-
-void Shard::stop() {
-    _channel->close();
-
-    if (_loop_thread.isRunning()) {
-        _loop_thread.join();
     }
 }
 
