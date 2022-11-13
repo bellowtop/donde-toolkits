@@ -141,31 +141,29 @@ RetCode DetectorWorker::Init(json conf, int i, std::string device_id) {
 
 void DetectorWorker::run() {
     for (;;) {
-        Notification::Ptr pNf;
-        if (_channel->output(pNf) == ChanError::ErrClosed) {
+        // output is a blocking call.
+        Notification::Ptr pNf = _channel->waitDequeueNotification();
+        if (pNf.isNull()) {
             break;
         }
-
-        if (!pNf.isNull()) {
-            WorkMessage<Value>::Ptr msg = pNf.cast<WorkMessage<Value>>();
-            Value input = msg->getRequest();
-            if (input.valueType != ValueFrame) {
-                _logger->error("DetectorWorker input value is not a frame! wrong valueType: {}",
-                               input.valueType);
-                continue;
-            }
-            std::shared_ptr<Frame> f = std::static_pointer_cast<Frame>(input.valuePtr);
-
-            std::shared_ptr<DetectResult> result = std::make_shared<DetectResult>();
-            // acquire! hold a reference to the frame.
-            result->frame = f;
-
-            RetCode ret = process(f->image, *result);
-            _logger->debug("process ret: {}", ret);
-
-            Value output{ValueDetectResult, result};
-            msg->setResponse(output);
+        WorkMessage<Value>::Ptr msg = pNf.cast<WorkMessage<Value>>();
+        Value input = msg->getRequest();
+        if (input.valueType != ValueFrame) {
+            _logger->error("DetectorWorker input value is not a frame! wrong valueType: {}",
+                           input.valueType);
+            continue;
         }
+        std::shared_ptr<Frame> f = std::static_pointer_cast<Frame>(input.valuePtr);
+
+        std::shared_ptr<DetectResult> result = std::make_shared<DetectResult>();
+        // acquire! hold a reference to the frame.
+        result->frame = f;
+
+        RetCode ret = process(f->image, *result);
+        _logger->debug("process ret: {}", ret);
+
+        Value output{ValueDetectResult, result};
+        msg->setResponse(output);
     }
 }
 

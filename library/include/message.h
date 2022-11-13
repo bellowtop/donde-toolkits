@@ -11,9 +11,12 @@
 #include "spdlog/spdlog.h"
 #include "types.h"
 
+#include <chrono>
 #include <functional>
 #include <iostream>
 #include <memory>
+#include <mutex>
+#include <shared_mutex>
 #include <type_traits>
 
 using Poco::AutoPtr;
@@ -29,56 +32,8 @@ enum ChanError { OK, ErrFull, ErrEmpty, ErrClosed };
 
 // Loosely size-bound channel.
 // loosely means in a multi-thread environment, the channel size may exceed the size a little.
-class MsgChannel {
-  public:
-    MsgChannel(int size = 64) : _size(size), _queue(std::make_shared<NotificationQueue>()){};
 
-    ChanError output(Notification::Ptr& msg) {
-        if (closed) {
-            return ChanError::ErrClosed;
-        }
-
-        if (_queue->empty()) {
-            return ChanError::ErrEmpty;
-        }
-        Notification::Ptr pNf(_queue->waitDequeueNotification());
-        if (pNf.isNull()) {
-            return ChanError::ErrEmpty;
-        }
-
-        msg = pNf;
-        return ChanError::OK;
-    };
-
-    ChanError input(const Notification::Ptr& msg) {
-        if (closed) {
-            return ChanError::ErrClosed;
-        }
-
-        if (_queue->size() > _size) {
-            return ChanError::ErrFull;
-        }
-        _queue->enqueueNotification(msg);
-        return ChanError::OK;
-    };
-
-    ChanError close() {
-        if (closed) {
-            return ChanError::OK;
-        }
-        closed = true;
-        _queue->wakeUpAll();
-
-        return ChanError::OK;
-    };
-
-    bool is_closed() { return closed; };
-
-  private:
-    int _size;
-    bool closed;
-    std::shared_ptr<NotificationQueue> _queue;
-};
+using MsgChannel = NotificationQueue;
 
 template <typename V>
 class WorkMessage : public Notification {

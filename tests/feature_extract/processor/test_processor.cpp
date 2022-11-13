@@ -3,9 +3,11 @@
 #include "types.h"
 
 #include <Poco/NotificationQueue.h>
+#include <chrono>
 #include <gtest/gtest.h>
 #include <memory>
 #include <nlohmann/json.hpp>
+#include <thread>
 
 using namespace std;
 using namespace Poco;
@@ -28,36 +30,37 @@ TEST(FeatureExtract, ConcurrentProcessorComunicateWithDummyWorkerUsingChannel) {
         RetCode Init(json conf, int id, std::string device_id) override {
             EXPECT_NE(conf, nullptr);
             EXPECT_NE(id, -1);
-            EXPECT_NE(device_id, "CPU");
+            EXPECT_EQ(device_id, "CPU");
             return RET_OK;
         };
 
         void run() override {
             for (;;) {
-                Notification::Ptr pNf;
-                if (_channel->output(pNf) == ChanError::ErrClosed) {
+                // output is a blocking call.
+                Notification::Ptr pNf = _channel->waitDequeueNotification();
+                std::cout << "pNf is null?" << pNf.isNull() << std::endl;
+
+                if (pNf.isNull()) {
                     break;
                 }
 
-                if (!pNf.isNull()) {
-                    WorkMessage<Value>::Ptr msg = pNf.cast<WorkMessage<Value>>();
+                WorkMessage<Value>::Ptr msg = pNf.cast<WorkMessage<Value>>();
 
-                    processedMsg++;
+                processedMsg++;
 
-                    Value input = msg->getRequest();
-                    std::cout << "get input, valueType: " << input.valueType << std::endl;
+                Value input = msg->getRequest();
+                std::cout << "get input, valueType: " << input.valueType << std::endl;
 
-                    EXPECT_EQ(input.valueType, ValueFrame);
-                    EXPECT_NE(input.valuePtr, nullptr);
+                EXPECT_EQ(input.valueType, ValueFrame);
+                EXPECT_NE(input.valuePtr, nullptr);
 
-                    // allocate memory in heap, the caller is responsible to free it!
-                    std::shared_ptr<Feature> result = std::make_shared<Feature>();
+                // allocate memory in heap, the caller is responsible to free it!
+                std::shared_ptr<Feature> result = std::make_shared<Feature>();
 
-                    result->raw.resize(100);
-                    Value output{ValueFeature, result};
+                result->raw.resize(100);
+                Value output{ValueFeature, result};
 
-                    msg->setResponse(output);
-                }
+                msg->setResponse(output);
             }
         };
     };
@@ -81,7 +84,7 @@ TEST(FeatureExtract, ConcurrentProcessorComunicateWithDummyWorkerUsingChannel) {
     Value output;
     processor.Process(input, output);
 
-    EXPECT_NE(output.valueType, ValueFeature);
+    EXPECT_EQ(output.valueType, ValueFeature);
     EXPECT_NE(output.valuePtr, nullptr);
 
     std::shared_ptr<Feature> feature = std::static_pointer_cast<Feature>(output.valuePtr);
@@ -90,7 +93,6 @@ TEST(FeatureExtract, ConcurrentProcessorComunicateWithDummyWorkerUsingChannel) {
     processor.Process(input, output);
     processor.Process(input, output);
 
-    // Process is  blocking function, it will wait for output.
     EXPECT_EQ(processedMsg, 3);
 
     processor.Terminate();

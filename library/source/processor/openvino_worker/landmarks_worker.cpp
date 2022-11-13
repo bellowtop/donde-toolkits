@@ -124,30 +124,29 @@ RetCode LandmarksWorker::Init(json conf, int i, std::string device_id) {
 
 void LandmarksWorker::run() {
     for (;;) {
-        Notification::Ptr pNf;
-        if (_channel->output(pNf) == ChanError::ErrClosed) {
+        // output is a blocking call.
+        Notification::Ptr pNf = _channel->waitDequeueNotification();
+        if (pNf.isNull()) {
             break;
         }
 
-        if (!pNf.isNull()) {
-            WorkMessage<Value>::Ptr msg = pNf.cast<WorkMessage<Value>>();
-            Value input = msg->getRequest();
-            if (input.valueType != ValueDetectResult) {
-                _logger->error("LandmarksWorker input value is not a ValueDetectResult! wrong "
-                               "valueType: {}",
-                               format_value_type(input.valueType));
-                continue;
-            }
-            std::shared_ptr<DetectResult> detect_result
-                = std::static_pointer_cast<DetectResult>(input.valuePtr);
-            std::shared_ptr<LandmarksResult> result = std::make_shared<LandmarksResult>();
-
-            RetCode ret = process(*detect_result, *result);
-            _logger->debug("process ret: {}", ret);
-
-            Value output{ValueLandmarksResult, result};
-            msg->setResponse(output);
+        WorkMessage<Value>::Ptr msg = pNf.cast<WorkMessage<Value>>();
+        Value input = msg->getRequest();
+        if (input.valueType != ValueDetectResult) {
+            _logger->error("LandmarksWorker input value is not a ValueDetectResult! wrong "
+                           "valueType: {}",
+                           format_value_type(input.valueType));
+            continue;
         }
+        std::shared_ptr<DetectResult> detect_result
+            = std::static_pointer_cast<DetectResult>(input.valuePtr);
+        std::shared_ptr<LandmarksResult> result = std::make_shared<LandmarksResult>();
+
+        RetCode ret = process(*detect_result, *result);
+        _logger->debug("process ret: {}", ret);
+
+        Value output{ValueLandmarksResult, result};
+        msg->setResponse(output);
     }
 }
 

@@ -150,23 +150,20 @@ RetCode ConcurrentProcessor<T, typename std::enable_if_t<std::is_base_of_v<Worke
                  input.valuePtr.get());
 
     WorkMessage<Value>::Ptr msg = WorkMessage<Value>::Ptr(new WorkMessage(input, false));
-    if (_channel->input(msg) == ChanError::OK) {
-        Value resp = msg->waitResponse();
-        output = resp;
+    _channel->enqueueNotification(msg);
+    Value resp = msg->waitResponse();
+    output = resp;
 
-        spdlog::info("output.valueType : {}, valuePtr: {}", format_value_type(output.valueType),
-                     output.valuePtr.get());
+    spdlog::info("output.valueType : {}, valuePtr: {}", format_value_type(output.valueType),
+                 output.valuePtr.get());
 
-        return RET_OK;
-    }
-    return RET_ERR;
+    return RET_OK;
 }
 
 template <typename T>
 RetCode
 ConcurrentProcessor<T, typename std::enable_if_t<std::is_base_of_v<Worker, T>>>::Terminate() {
-    // close the cahnnel, workers will catch this event, b'c close will wake all blocking threads.
-    _channel->close();
+    _channel->wakeUpAll();
     _pool.joinAll();
 
     // Logger::Tracef("controller shutdown all workers");

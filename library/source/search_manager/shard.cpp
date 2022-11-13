@@ -38,7 +38,8 @@ void Shard::Stop() {
         spdlog::warn("shard already is stopped, double Stop??.");
         return;
     }
-    _channel->close();
+
+    _channel->wakeUpAll();
 
     if (_loop_thread.isRunning()) {
         _loop_thread.join();
@@ -60,7 +61,7 @@ RetCode Shard::AssignWorker(Worker* worker) {
     _worker_id = worker->GetWorkerID();
 
     auto msg = NewWorkMessage(shardOp{assignWorkerReqType});
-    _channel->input(msg);
+    _channel->enqueueNotification(msg);
     auto output = msg->waitResponse();
     auto value = std::static_pointer_cast<assignWorkerRsp>(output.valuePtr);
 
@@ -81,7 +82,7 @@ RetCode Shard::AddFeatures(const std::vector<Feature>& fts) {
     };
 
     auto msg = NewWorkMessage(input);
-    _channel->input(msg);
+    _channel->enqueueNotification(msg);
     auto output = msg->waitResponse();
     auto value = std::static_pointer_cast<addFeaturesRsp>(output.valuePtr);
 
@@ -99,7 +100,7 @@ std::vector<FeatureScore> Shard::SearchFeature(const Feature& query, int topk) {
         .valueType = searchFeatureReqType,
         .valuePtr = std::shared_ptr<searchFeatureReq>(new searchFeatureReq{query, topk}),
     });
-    _channel->input(msg);
+    _channel->enqueueNotification(msg);
     auto output = msg->waitResponse();
     auto value = std::static_pointer_cast<searchFeatureRsp>(output.valuePtr);
 
@@ -108,7 +109,7 @@ std::vector<FeatureScore> Shard::SearchFeature(const Feature& query, int topk) {
 
 RetCode Shard::Close() {
     auto msg = NewWorkMessage(shardOp{closeShardReqType});
-    _channel->input(msg);
+    _channel->enqueueNotification(msg);
     auto output = msg->waitResponse();
     auto value = std::static_pointer_cast<closeShardRsp>(output.valuePtr);
 
@@ -121,44 +122,42 @@ RetCode Shard::Close() {
 
 void Shard::loop() {
     for (;;) {
-        Notification::Ptr pNf;
         // output is a blocking call.
-        if (_channel->output(pNf) == ChanError::ErrClosed) {
+        Notification::Ptr pNf = _channel->waitDequeueNotification();
+        if (pNf.isNull()) {
             break;
         }
 
-        if (!pNf.isNull()) {
-            WorkMessage<shardOp>::Ptr msg = pNf.cast<WorkMessage<shardOp>>();
-            auto input = msg->getRequest();
+        WorkMessage<shardOp>::Ptr msg = pNf.cast<WorkMessage<shardOp>>();
+        auto input = msg->getRequest();
 
-            switch (input.valueType) {
-            case assignWorkerReqType: {
-                // start a fiber?
-                {
-                    auto output = do_assign_worker(input);
-                    msg->setResponse(output);
-                }
-                break;
-            }
-            case addFeaturesReqType: {
-                auto output = do_add_features(input);
+        switch (input.valueType) {
+        case assignWorkerReqType: {
+            // start a fiber?
+            {
+                auto output = do_assign_worker(input);
                 msg->setResponse(output);
-                break;
             }
-            case searchFeatureReqType: {
-                auto output = do_search_feature(input);
-                msg->setResponse(output);
-                break;
-            }
-            case closeShardReqType: {
-                auto output = do_close_shard(input);
-                msg->setResponse(output);
-                break;
-            }
-            default:
-                spdlog::error("shard loop input value is not valid! wrong valueType: ");
-                continue;
-            }
+            break;
+        }
+        case addFeaturesReqType: {
+            auto output = do_add_features(input);
+            msg->setResponse(output);
+            break;
+        }
+        case searchFeatureReqType: {
+            auto output = do_search_feature(input);
+            msg->setResponse(output);
+            break;
+        }
+        case closeShardReqType: {
+            auto output = do_close_shard(input);
+            msg->setResponse(output);
+            break;
+        }
+        default:
+            spdlog::error("shard loop input value is not valid! wrong valueType: ");
+            continue;
         }
     }
 }

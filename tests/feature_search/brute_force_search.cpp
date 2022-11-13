@@ -81,6 +81,10 @@ TEST(SearchManager, SearchTopkTeatures) {
 
     search::BruteForceSearcher search(store);
 
+    // preapre features in db.
+    std::vector<std::string> feature_ids = search.AddFeatures(db_id, fts);
+    EXPECT_EQ(feature_ids.size(), feature_count);
+
     // query is the first one. so that we definitely can find matched fts.
     Feature query{fts[0].feature};
 
