@@ -15,71 +15,51 @@ using namespace std;
 
 using nlohmann::json;
 
-TEST(SearchManager, BruteForceSearch) {
+namespace {
 
-    const int feature_count = 100;
-    const int dim = 512;
+class SearchManager_BruteForceSearch : public ::testing::Test {
+  protected:
+    void SetUp() override {
+        for (int i = 0; i < feature_count; i++) {
+            auto ft = gen_feature_dim<512>();
+            std::map<string, string> meta{{"keya", "valueb"}};
+            fts.push_back(search::FeatureDbItem{
+                .feature = ft,
+                .metadata = meta,
+            });
+        }
 
-    std::vector<search::FeatureDbItem> fts;
-    for (int i = 0; i < feature_count; i++) {
-        auto ft = gen_feature_dim<dim>();
-        std::map<string, string> meta{{"keya", "valueb"}};
-        fts.push_back(search::FeatureDbItem{
-            .feature = ft,
-            .metadata = meta,
-        });
-    }
+        store = new search::SimpleDriver("/tmp/test_store");
+        search::DBItem db1{
+            .name = "test-db1",
+            .description = "this is a test db",
+            .capacity = 1024,
+        };
 
-    // setup
-    search::SimpleDriver store("/tmp/test_store");
-
-    search::DBItem db1{
-        .name = "test-db1",
-        .description = "this is a test db",
-        .capacity = 1024,
+        db_id = store->CreateDB(db1);
     };
 
-    std::string db_id = store.CreateDB(db1);
+    void TearDown() override {
+        // cleanup db file
+        std::filesystem::remove_all("/tmp/test_store/");
+    };
 
-    search::BruteForceSearcher search(store);
+    search::SimpleDriver* store;
+    const int feature_count = 100;
+    const int dim = 512;
+    std::vector<search::FeatureDbItem> fts;
+    std::string db_id;
+};
 
-    // preapre features in db.
+TEST_F(SearchManager_BruteForceSearch, BruteForceSearch) {
+    search::BruteForceSearcher search(*store);
+
     std::vector<std::string> feature_ids = search.AddFeatures(db_id, fts);
     EXPECT_EQ(feature_ids.size(), feature_count);
-
-    // cleanup db file
-    std::filesystem::remove_all("/tmp/test_store/");
-
-    EXPECT_EQ("aa", "aa");
 }
 
-TEST(SearchManager, SearchTopkTeatures) {
-
-    const int feature_count = 100;
-    const int dim = 512;
-
-    std::vector<search::FeatureDbItem> fts;
-    for (int i = 0; i < feature_count; i++) {
-        auto ft = gen_feature_dim<dim>();
-        std::map<string, string> meta{{"keya", "valueb"}};
-        fts.push_back(search::FeatureDbItem{
-            .feature = ft,
-            .metadata = meta,
-        });
-    }
-
-    // setup
-    search::SimpleDriver store("/tmp/test_store");
-
-    search::DBItem db1{
-        .name = "test-db1",
-        .description = "this is a test db",
-        .capacity = 1024,
-    };
-
-    std::string db_id = store.CreateDB(db1);
-
-    search::BruteForceSearcher search(store);
+TEST_F(SearchManager_BruteForceSearch, SearchTopkTeatures) {
+    search::BruteForceSearcher search(*store);
 
     // preapre features in db.
     std::vector<std::string> feature_ids = search.AddFeatures(db_id, fts);
@@ -110,3 +90,5 @@ TEST(SearchManager, SearchTopkTeatures) {
         }
     }
 }
+
+} // namespace
