@@ -49,11 +49,11 @@ set(CONAN_LIBs
 # ---- Create feature_extract executable ----
 ######################################################
 
-file(GLOB_RECURSE feature_extract_headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/feature_extract/include/*.h)
-file(GLOB_RECURSE feature_extract_sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/feature_extract/source/*.cc)
+file(GLOB_RECURSE feature_extract_headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/feature_extract/*.h)
+file(GLOB_RECURSE feature_extract_sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/feature_extract/*.cc)
 add_executable(feature_extract ${feature_extract_headers} ${feature_extract_sources})
 target_include_directories(feature_extract
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/feature_extract/include
+  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/feature_extract
   # $<INSTALL_INTERFACE:../include/${PROJECT_NAME}-${PROJECT_VERSION}>
 )
 target_link_libraries(feature_extract
@@ -64,11 +64,11 @@ target_link_libraries(feature_extract
 # ---- Create feature_search_manager executable ----
 ######################################################
 
-file(GLOB_RECURSE feature_search_manager_headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/feature_search_manager/include/*.h)
-file(GLOB_RECURSE feature_search_manager_sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/feature_search_manager/source/*.cc)
+file(GLOB_RECURSE feature_search_manager_headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/feature_search_manager/*.h)
+file(GLOB_RECURSE feature_search_manager_sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/feature_search_manager/*.cc)
 add_executable(feature_search_manager ${feature_search_manager_headers} ${feature_search_manager_sources})
 target_include_directories(feature_search_manager
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/feature_search_manager/include
+  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/feature_search_manager
   # $<INSTALL_INTERFACE:../include/${PROJECT_NAME}-${PROJECT_VERSION}>
 )
 
@@ -79,11 +79,11 @@ target_link_libraries(feature_search_manager
 # ---- Create feature_search_worker executable ----
 ######################################################
 
-file(GLOB_RECURSE feature_search_worker_headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/feature_search_worker/include/*.h)
-file(GLOB_RECURSE feature_search_worker_sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/feature_search_worker/source/*.cc)
+file(GLOB_RECURSE feature_search_worker_headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/feature_search_worker/*.h)
+file(GLOB_RECURSE feature_search_worker_sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/feature_search_worker/*.cc)
 add_executable(feature_search_worker ${feature_search_worker_headers} ${feature_search_worker_sources})
 target_include_directories(feature_search_worker
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/feature_search_worker/include
+  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/feature_search_worker
          # $<INSTALL_INTERFACE:../include/${PROJECT_NAME}-${PROJECT_VERSION}>
 )
 target_link_libraries(feature_search_worker
