@@ -7,12 +7,12 @@
 #include "gen/pb-cpp/feature_search_inner.grpc.pb.h"
 #include "gen/pb-cpp/feature_search_inner.pb.h"
 #include "nlohmann/json.hpp"
-#include "search/db_searcher.h"
+#include "search/api.h"
 #include "search/impl/brute_force_searcher.h"
 #include "search/impl/simple_driver.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
-#include "types.h"
+#include "definitions.h"
 #include "utils.h"
 
 #include <algorithm>

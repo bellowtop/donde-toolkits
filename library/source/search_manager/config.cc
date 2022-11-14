@@ -1,4 +1,4 @@
-#include "search_worker/config.h"
+#include "config.h"
 
 #include "nlohmann/json.hpp"
 

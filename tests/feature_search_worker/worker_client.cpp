@@ -1,7 +1,7 @@
 
 #include "search_manager/worker_client.h"
 
-#include "types.h"
+#include "definitions.h"
 #include "utils.h"
 
 #include <chrono>

@@ -5,7 +5,7 @@
 #include "Poco/Timestamp.h"
 #include "config.h"
 #include "gen/pb-cpp/feature_search_inner.grpc.pb.h"
-#include "search/db_searcher.h"
+#include "search/api.h"
 
 // #include "spdlog/spdlog.h"
 

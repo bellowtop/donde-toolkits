@@ -2,14 +2,13 @@
 #include "Poco/Logger.h"
 #include "Poco/Notification.h"
 #include "Poco/NotificationQueue.h"
-#include "concurrent_processor.h"
+#include "definitions.h"
 #include "opencv2/opencv.hpp"
 #include "openvino/openvino.hpp"
-#include "openvino_worker/workers.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
-#include "types.h"
 #include "utils.h"
+#include "workers.h"
 
 #include <cassert>
 #include <filesystem>
@@ -19,12 +18,11 @@
 #include <spdlog/common.h>
 #include <string>
 
-using Poco::Logger;
 using Poco::Notification;
 using Poco::NotificationQueue;
 
 using namespace Poco;
-using namespace openvino_worker;
+namespace openvino_worker {
 
 DetectorWorker::DetectorWorker(std::shared_ptr<MsgChannel> ch) : Worker(ch) {}
 
@@ -228,3 +226,4 @@ RetCode DetectorWorker::process(const cv::Mat& img, DetectResult& result) {
 
     return RetCode::RET_OK;
 }
+} // namespace openvino_worker

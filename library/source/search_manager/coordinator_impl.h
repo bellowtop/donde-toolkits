@@ -1,11 +1,9 @@
 #pragma once
 
+#include "../search/cassandra_driver.h"
 #include "config.h"
-#include "search/db_searcher.h"
-#include "search/definitions.h"
-#include "search/impl/cassandra_driver.h"
-#include "search_manager/shard_manager.h"
-#include "search_manager/worker_client.h"
+#include "search/api.h"
+#include "search_manager/api.h"
 
 // #include "spdlog/spdlog.h"
 
@@ -17,10 +15,10 @@ using namespace std;
 using WorkerPtr = shared_ptr<Worker>;
 
 // Coordinator & Reducer
-class Coordinator {
+class CoordinatorImpl : public Coordinator {
   public:
-    Coordinator(const json& coor_config);
-    ~Coordinator();
+    CoordinatorImpl(const json& coor_config);
+    ~CoordinatorImpl();
 
     void Start();
 

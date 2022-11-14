@@ -11,7 +11,7 @@
 #include "nlohmann/json.hpp"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
-#include "types.h"
+#include "definitions.h"
 #include "utils.h"
 
 #include <algorithm>

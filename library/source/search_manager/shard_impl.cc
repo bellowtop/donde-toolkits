@@ -1,9 +1,8 @@
-#include "search_manager/shard.h"
+#include "shard_impl.h"
 
+#include "definitions.h"
 #include "message.h"
 #include "search/definitions.h"
-#include "search_manager/shard_manager.h"
-#include "types.h"
 #include "utils.h"
 
 #include <Poco/RunnableAdapter.h>
@@ -14,26 +13,26 @@
 /// Shard
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Shard::Shard(ShardManager* manager, search::DBShard shard_info)
+ShardImpl::ShardImpl(ShardManager* manager, search::DBShard shard_info)
     : _shard_info(shard_info), _shard_id(shard_info.shard_id), _db_id(shard_info.db_id) {
 
     Start();
 };
 
-Shard::~Shard() { Stop(); };
+ShardImpl::~ShardImpl() { Stop(); };
 
-void Shard::Start() {
+void ShardImpl::Start() {
     if (IsRunning()) {
         spdlog::warn("shard already is running, double Start??.");
         return;
     }
     _channel = std::make_shared<MsgChannel>();
 
-    Poco::RunnableAdapter<Shard> ra(*this, &Shard::loop);
+    Poco::RunnableAdapter<ShardImpl> ra(*this, &ShardImpl::loop);
     _loop_thread.start(ra);
 };
 
-void Shard::Stop() {
+void ShardImpl::Stop() {
     if (!IsRunning()) {
         spdlog::warn("shard already is stopped, double Stop??.");
         return;
@@ -47,7 +46,7 @@ void Shard::Stop() {
 }
 
 // Assign a worker for this shard.
-RetCode Shard::AssignWorker(Worker* worker) {
+RetCode ShardImpl::AssignWorker(Worker* worker) {
     if (_worker != nullptr) {
         spdlog::error("shard already has worker, double AssignWorker??.");
         return RetCode::RET_ERR;
@@ -69,7 +68,7 @@ RetCode Shard::AssignWorker(Worker* worker) {
 };
 
 // AddFeatures to this shard, delegate to worker client to do the actual storage.
-RetCode Shard::AddFeatures(const std::vector<Feature>& fts) {
+RetCode ShardImpl::AddFeatures(const std::vector<Feature>& fts) {
     if (_worker == nullptr) {
         spdlog::error("shard has no worker, AssignWorker first.");
         return RetCode::RET_ERR;
@@ -90,7 +89,7 @@ RetCode Shard::AddFeatures(const std::vector<Feature>& fts) {
 };
 
 // SearchFeature in this shard, delegate to worker client to do the actual search.
-std::vector<FeatureScore> Shard::SearchFeature(const Feature& query, int topk) {
+std::vector<FeatureScore> ShardImpl::SearchFeature(const Feature& query, int topk) {
     if (_worker == nullptr) {
         spdlog::error("shard has no worker, AssignWorker first.");
         return {};
@@ -107,7 +106,7 @@ std::vector<FeatureScore> Shard::SearchFeature(const Feature& query, int topk) {
     return std::move(value->fts);
 };
 
-RetCode Shard::Close() {
+RetCode ShardImpl::Close() {
     auto msg = NewWorkMessage(shardOp{closeShardReqType});
     _channel->enqueueNotification(msg);
     auto output = msg->waitResponse();
@@ -120,7 +119,7 @@ RetCode Shard::Close() {
     return RetCode::RET_OK;
 };
 
-void Shard::loop() {
+void ShardImpl::loop() {
     for (;;) {
         // output is a blocking call.
         Notification::Ptr pNf = _channel->waitDequeueNotification();
@@ -166,7 +165,7 @@ void Shard::loop() {
 /// Inner implements.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-shardOp Shard::do_assign_worker(const shardOp& input) {
+shardOp ShardImpl::do_assign_worker(const shardOp& input) {
     auto req = std::static_pointer_cast<assignWorkerReq>(input.valuePtr);
     auto rsp = std::make_shared<assignWorkerRsp>();
 
@@ -178,7 +177,7 @@ shardOp Shard::do_assign_worker(const shardOp& input) {
     };
     return output;
 };
-shardOp Shard::do_add_features(const shardOp& input) {
+shardOp ShardImpl::do_add_features(const shardOp& input) {
     auto req = std::static_pointer_cast<addFeaturesReq>(input.valuePtr);
     auto rsp = std::make_shared<addFeaturesRsp>();
 
@@ -197,7 +196,7 @@ shardOp Shard::do_add_features(const shardOp& input) {
     };
     return output;
 };
-shardOp Shard::do_search_feature(const shardOp& input) {
+shardOp ShardImpl::do_search_feature(const shardOp& input) {
     auto req = std::static_pointer_cast<searchFeatureReq>(input.valuePtr);
     auto rsp = std::make_shared<searchFeatureRsp>();
 
@@ -213,7 +212,7 @@ shardOp Shard::do_search_feature(const shardOp& input) {
     return output;
 };
 
-shardOp Shard::do_close_shard(const shardOp& input) {
+shardOp ShardImpl::do_close_shard(const shardOp& input) {
     auto req = std::static_pointer_cast<closeShardReq>(input.valuePtr);
     auto rsp = std::make_shared<closeShardRsp>();
 

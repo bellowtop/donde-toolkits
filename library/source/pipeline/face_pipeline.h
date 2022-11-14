@@ -1,10 +1,9 @@
 #pragma once
 
-#include "concurrent_processor.h"
-#include "nlohmann/json.hpp"
-#include "types.h"
-
+#include "definitions.h"
 #include "faiss/Index2Layer.h"
+#include "nlohmann/json.hpp"
+#include "processor.h"
 
 #include <map>
 

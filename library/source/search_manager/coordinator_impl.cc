@@ -1,18 +1,18 @@
-#include "search_manager/coordinator.h"
+#include "coordinator_impl.h"
 
+#include "../search/simple_driver.h"
+#include "definitions.h"
 #include "fmt/format.h"
 #include "search/definitions.h"
-#include "search/impl/simple_driver.h"
-#include "search_manager/shard_manager.h"
-#include "search_manager/worker_client.h"
-#include "types.h"
+#include "search_manager/api.h"
+#include "shard_manager_impl.h"
 
 #include <exception>
 #include <memory>
 #include <queue>
 #include <spdlog/spdlog.h>
 
-Coordinator::Coordinator(const json& coor_config) : config(coor_config) {
+CoordinatorImpl::CoordinatorImpl(const json& coor_config) : config(coor_config) {
     if (!coor_config.contains("workers")) {
         throw "json config missing workers list.";
     }
@@ -29,24 +29,24 @@ Coordinator::Coordinator(const json& coor_config) : config(coor_config) {
     _driver = std::make_shared<search::SimpleDriver>((std::string)coor_config["cassandra"]["addr"]);
     // }
 
-    _shard_manager = std::make_shared<ShardManager>(*(_driver.get()));
+    _shard_manager = std::make_shared<ShardManagerImpl>(*(_driver.get()));
 
     _worker_addrs = (std::vector<std::string>)coor_config["workers"];
 };
 
-Coordinator::~Coordinator(){};
+CoordinatorImpl::~CoordinatorImpl(){};
 
-void Coordinator::Start() {
+void CoordinatorImpl::Start() {
 
     initialize_workers();
 
     assign_worker_for_shards();
 };
 
-void Coordinator::Stop() { deinitialize_workers(); };
+void CoordinatorImpl::Stop() { deinitialize_workers(); };
 
 // AddFeatures to this db, we need find proper shard to store these fts.
-RetCode Coordinator::AddFeatures(const std::string& db_id, const std::vector<Feature>& fts) {
+RetCode CoordinatorImpl::AddFeatures(const std::string& db_id, const std::vector<Feature>& fts) {
     auto [shard, new_created] = _shard_manager->FindOrCreateWritableShard(db_id, fts.size());
 
     // if newly created shard, it doesn't have a worker.
@@ -67,8 +67,8 @@ RetCode Coordinator::AddFeatures(const std::string& db_id, const std::vector<Fea
 };
 
 // SearchFeatures in this db.
-std::vector<FeatureScore> Coordinator::SearchFeature(const std::string& db_id, const Feature& query,
-                                                     int topk) {
+std::vector<FeatureScore> CoordinatorImpl::SearchFeature(const std::string& db_id,
+                                                         const Feature& query, int topk) {
     // use min heap to sort topk
     std::priority_queue<FeatureScore, std::vector<FeatureScore>, FeatureScoreComparator> min_heap;
 
@@ -103,7 +103,7 @@ std::vector<FeatureScore> Coordinator::SearchFeature(const std::string& db_id, c
     return ret;
 };
 
-Worker* Coordinator::find_worker_for_shard(Shard* shard) {
+Worker* CoordinatorImpl::find_worker_for_shard(Shard* shard) {
     int64 free_space = INT_MIN;
     Worker* selected;
 
@@ -117,7 +117,7 @@ Worker* Coordinator::find_worker_for_shard(Shard* shard) {
     return selected;
 };
 
-void Coordinator::assign_worker_for_shards() {
+void CoordinatorImpl::assign_worker_for_shards() {
     std::vector<search::DBItem> dbs = _shard_manager->ListUserDBs();
 
     for (auto& db : dbs) {
@@ -135,11 +135,11 @@ void Coordinator::assign_worker_for_shards() {
     }
 };
 
-void Coordinator::initialize_workers() {
+void CoordinatorImpl::initialize_workers() {
     for (auto& addr : _worker_addrs) {
         try {
             // may has exception, we handled bellow.
-            auto client = std::make_shared<WorkerClient>(addr);
+            auto client = std::make_shared<WorkerImpl>(addr);
             _workers.push_back(client);
         } catch (const std::exception& exc) {
             _invalid_worker_addrs.push_back(addr);
@@ -154,4 +154,4 @@ void Coordinator::initialize_workers() {
     }
 };
 
-void Coordinator::deinitialize_workers(){};
+void CoordinatorImpl::deinitialize_workers(){};

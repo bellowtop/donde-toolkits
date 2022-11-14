@@ -1,8 +1,9 @@
-#include "search_manager/shard_manager.h"
+#include "shard_manager_impl.h"
 
-#include "search/definitions.h"
-#include "search_manager/shard.h"
-#include "types.h"
+#include "definitions.h"
+#include "search/api.h"
+#include "search_manager/api.h"
+#include "shard_impl.h"
 #include "utils.h"
 
 #include <spdlog/spdlog.h>
@@ -11,10 +12,10 @@
 /// ShardManager
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ShardManager::ShardManager(search::Driver& driver) : _driver(driver) { load_db_shards(); };
+ShardManagerImpl::ShardManagerImpl(search::Driver& driver) : _driver(driver) { load_db_shards(); };
 
-std::tuple<Shard*, bool> ShardManager::FindOrCreateWritableShard(std::string db_id,
-                                                                 uint64 fts_count) {
+std::tuple<Shard*, bool> ShardManagerImpl::FindOrCreateWritableShard(std::string db_id,
+                                                                     uint64 fts_count) {
     // if db_id not exists, this will throw 404.
     auto shards = ListShards(db_id);
 
@@ -43,7 +44,7 @@ std::tuple<Shard*, bool> ShardManager::FindOrCreateWritableShard(std::string db_
     shard_info.shard_id = shard_id;
 
     // shards for db_id must exists.
-    Shard* shard = new Shard{this, shard_info};
+    Shard* shard = new ShardImpl{this, shard_info};
     _db_shards[db_id].push_back(shard);
 
     return {shard, true};
@@ -54,7 +55,7 @@ RetCode AssignWorkerToShard(Shard* shard, Worker* worker) {
     return RetCode::RET_OK;
 };
 
-std::vector<search::DBItem> ShardManager::ListUserDBs() {
+std::vector<search::DBItem> ShardManagerImpl::ListUserDBs() {
     std::vector<search::DBItem> dbs;
 
     for (auto it = _user_dbs.begin(); it != _user_dbs.end(); it++) {
@@ -64,7 +65,7 @@ std::vector<search::DBItem> ShardManager::ListUserDBs() {
     return dbs;
 };
 
-std::vector<Shard*> ShardManager::ListShards(std::string db_id) {
+std::vector<Shard*> ShardManagerImpl::ListShards(std::string db_id) {
     auto iter = _db_shards.find(db_id);
     if (iter == _db_shards.end()) {
         throw "db_id not exists";
@@ -72,31 +73,31 @@ std::vector<Shard*> ShardManager::ListShards(std::string db_id) {
     return iter->second;
 };
 
-RetCode ShardManager::CloseShard(std::string db_id, std::string shard_id) {
+RetCode ShardManagerImpl::CloseShard(std::string db_id, std::string shard_id) {
     _driver.CloseShard(db_id, shard_id);
     return {};
 };
 
-std::string ShardManager::CreateShard(search::DBShard shard_info) {
+std::string ShardManagerImpl::CreateShard(search::DBShard shard_info) {
     std::string shard_id = _driver.CreateShard(shard_info.db_id, shard_info);
     return shard_id;
 };
 
-RetCode ShardManager::UpdateShard(search::DBShard shard_info) {
+RetCode ShardManagerImpl::UpdateShard(search::DBShard shard_info) {
     return _driver.UpdateShard(shard_info.db_id, shard_info);
 };
 
-RetCode ShardManager::load_db_shards() {
+RetCode ShardManagerImpl::load_db_shards() {
     std::vector<search::DBItem> user_dbs = _driver.ListDBs();
 
     for (auto& db : user_dbs) {
         // _user_dbs[db.db_id] = db;
         _user_dbs.insert({db.db_id, db});
 
-        std::vector<Shard*> shards;
+        std::vector<ShardImpl*> shards;
         std::vector<search::DBShard> shard_infos = _driver.ListShards(db.db_id);
         for (auto& shard_info : shard_infos) {
-            shards.push_back(new Shard{this, shard_info});
+            shards.push_back(new ShardImpl{this, shard_info});
 
             // this will be more efficient?
             // _db_shards[db.db_id].push_back(new Shard{this, shard_info});

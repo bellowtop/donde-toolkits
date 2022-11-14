@@ -7,10 +7,10 @@
 #include "gen/pb-cpp/feature_search.grpc.pb.h"
 #include "gen/pb-cpp/feature_search.pb.h"
 #include "nlohmann/json.hpp"
-#include "search/db_searcher.h"
+#include "search/api.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
-#include "types.h"
+#include "definitions.h"
 #include "utils.h"
 
 #include <algorithm>

@@ -1,6 +1,6 @@
 #include "concurrent_processor.h"
+#include "definitions.h"
 #include "message.h"
-#include "types.h"
 
 #include <Poco/NotificationQueue.h>
 #include <chrono>

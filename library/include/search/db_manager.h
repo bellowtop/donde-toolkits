@@ -1,8 +1,8 @@
 #pragma once
 
+#include "definitions.h"
 #include "faiss/Index2Layer.h"
 #include "nlohmann/json.hpp"
-#include "types.h"
 
 #include <map>
 #include <memory>
@@ -14,19 +14,19 @@ using json = nlohmann::json;
 
 namespace search {
 
-    class DBManager {
+class DBManager {
 
-      public:
-        DBManager(const json& config, const json& driver_config);
-        ~DBManager() = default;
+  public:
+    DBManager(const json& config, const json& driver_config);
+    ~DBManager() = default;
 
-        RetCode DBNew();
+    RetCode DBNew();
 
-        RetCode DBList();
+    RetCode DBList();
 
-        RetCode DBGet();
+    RetCode DBGet();
 
-        RetCode DBDelete();
-    };
+    RetCode DBDelete();
+};
 
 } // namespace search

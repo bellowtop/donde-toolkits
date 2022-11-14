@@ -2,8 +2,8 @@
 
 #include "gen/pb-cpp/feature_search_inner.grpc.pb.h"
 #include "gen/pb-cpp/feature_search_inner.pb.h"
-#include "search_manager/worker_api.h"
-#include "types.h"
+#include "search_manager/api.h"
+#include "definitions.h"
 #include "utils.h"
 
 #include <Poco/Thread.h>
@@ -14,15 +14,14 @@
 
 using WorkerStub = com::sekirocc::feature_search::inner::FeatureSearchWorker::Stub;
 
-using com::sekirocc::feature_search::inner::GetSystemInfoRequest;
 using com::sekirocc::feature_search::inner::GetSystemInfoResponse;
 
 using com::sekirocc::feature_search::inner::WorkerInfo;
 
-class WorkerClient : public Worker {
+class WorkerImpl : public Worker {
   public:
-    WorkerClient(const std::string& addr);
-    virtual ~WorkerClient() = default;
+    WorkerImpl(const std::string& addr);
+    virtual ~WorkerImpl() = default;
 
     // Connect to remote addr, and regularly check liveness.
     RetCode Connect();

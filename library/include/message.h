@@ -6,10 +6,10 @@
 #include "Poco/Runnable.h"
 #include "Poco/Thread.h"
 #include "Poco/ThreadPool.h"
+#include "definitions.h"
 #include "nlohmann/json.hpp"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
-#include "types.h"
 
 #include <chrono>
 #include <functional>

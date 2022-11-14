@@ -1,7 +1,7 @@
 #pragma once
+#include "definitions.h"
 #include "opencv2/opencv.hpp"
 #include "openvino/openvino.hpp"
-#include "types.h"
 #include "uuid/uuid.h"
 
 #include <google/protobuf/map.h>

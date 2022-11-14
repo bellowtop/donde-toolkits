@@ -1,10 +1,9 @@
 #pragma once
 
+#include "definitions.h"
 #include "message.h"
-#include "search/definitions.h"
-#include "search/driver.h"
-#include "search_manager/worker_api.h"
-#include "types.h"
+#include "search/api.h"
+#include "search_manager/api.h"
 #include "utils.h"
 
 #include <Poco/Thread.h>
@@ -15,7 +14,7 @@
 
 using namespace std;
 
-class ShardManager;
+class ShardManagerImpl;
 
 struct assignWorkerReq {};
 struct assignWorkerRsp {};
@@ -56,38 +55,38 @@ struct shardOp {
     std::shared_ptr<void> valuePtr;
 };
 
-class Shard {
+class ShardImpl : public Shard {
 
   public:
-    Shard(ShardManager* manager, search::DBShard shard_info);
-    ~Shard();
+    ShardImpl(ShardManager* manager, search::DBShard shard_info);
+    ~ShardImpl();
 
-    void Start();
-    void Stop();
+    void Start() override;
+    void Stop() override;
 
     // Assign a worker for this shard.
-    RetCode AssignWorker(Worker* worker);
+    RetCode AssignWorker(Worker* worker) override;
 
     // AddFeatures to this shard, delegate to worker client to do the actual storage.
-    RetCode AddFeatures(const std::vector<Feature>& fts);
+    RetCode AddFeatures(const std::vector<Feature>& fts) override;
 
     // SearchFeature in this shard, delegate to worker client to do the actual search.
-    std::vector<FeatureScore> SearchFeature(const Feature& query, int topk);
+    std::vector<FeatureScore> SearchFeature(const Feature& query, int topk) override;
 
-    RetCode Close();
+    RetCode Close() override;
 
     // check the shard has been assigned worker or not.
-    inline bool HasWorker() { return _worker == nullptr; };
+    inline bool HasWorker() override { return _worker == nullptr; };
 
     // check the shard is closed or not.
-    inline bool IsClosed() { return _shard_info.is_closed; };
+    inline bool IsClosed() override { return _shard_info.is_closed; };
 
     // check the shard is closed or not.
-    inline bool IsRunning() { return _loop_thread.isRunning(); };
+    inline bool IsRunning() override { return _loop_thread.isRunning(); };
 
-    inline std::string GetShardID() { return _shard_id; };
+    inline std::string GetShardID() override { return _shard_id; };
 
-    inline search::DBShard GetShardInfo() { return _shard_info; };
+    inline search::DBShard GetShardInfo() override { return _shard_info; };
 
   private:
     void loop();

@@ -1,7 +1,7 @@
 #include "search/impl/simple_driver.h"
 
+#include "definitions.h"
 #include "search/definitions.h"
-#include "types.h"
 #include "utils.h"
 
 #include <filesystem>

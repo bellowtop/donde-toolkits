@@ -1,7 +1,7 @@
 #include "concurrent_processor.h"
+#include "definitions.h"
 #include "face_pipeline.h"
 #include "openvino_worker/workers.h"
-#include "types.h"
 #include "utils.h"
 
 #include <Poco/Logger.h>

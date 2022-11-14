@@ -6,11 +6,12 @@
 #include "Poco/Runnable.h"
 #include "Poco/Thread.h"
 #include "Poco/ThreadPool.h"
+#include "definitions.h"
 #include "message.h"
 #include "nlohmann/json.hpp"
+#include "processor.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
-#include "types.h"
 
 #include <iostream>
 #include <memory>
@@ -51,18 +52,6 @@ class Worker : public Runnable {
     std::string _device_id;
 
     std::shared_ptr<spdlog::logger> _logger;
-};
-
-class Processor {
-  public:
-    virtual RetCode Init(const json& cfg) = 0;
-    virtual bool IsInited() = 0;
-    virtual RetCode Process(const Value& input, Value& output) = 0;
-    virtual RetCode Terminate() = 0;
-    virtual std::string GetName() = 0;
-
-  protected:
-    bool _is_inited;
 };
 
 template <typename T, typename U = void>

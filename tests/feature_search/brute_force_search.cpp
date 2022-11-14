@@ -1,6 +1,6 @@
+#include "definitions.h"
 #include "search/impl/brute_force_searcher.h"
 #include "search/impl/simple_driver.h"
-#include "types.h"
 #include "utils.h"
 
 #include <cstdlib>

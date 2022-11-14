@@ -1,13 +1,11 @@
 #include "face_pipeline.h"
 
+#include "../processor/concurrent_processor.h"
+#include "../processor/openvino_worker/workers.h"
 #include "Poco/Thread.h"
-#include "concurrent_processor.h"
-
-#include "openvino_worker/workers.h"
-
+#include "definitions.h"
 #include "nlohmann/json.hpp"
 #include "spdlog/spdlog.h"
-#include "types.h"
 
 #include <cstdint>
 #include <memory>

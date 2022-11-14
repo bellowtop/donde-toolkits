@@ -1,4 +1,4 @@
-#include "search_manager/config.h"
+#include "config.h"
 
 #include "nlohmann/json.hpp"
 
