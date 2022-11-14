@@ -2,16 +2,16 @@
 
 #include "Poco/Format.h"
 #include "Poco/Timestamp.h"
+#include "api/common.pb.h"
+#include "api/feature_search.grpc.pb.h"
+#include "api/feature_search.pb.h"
 #include "config.h"
-#include "gen/pb-cpp/common.pb.h"
-#include "gen/pb-cpp/feature_search.grpc.pb.h"
-#include "gen/pb-cpp/feature_search.pb.h"
+#include "donde/definitions.h"
+#include "donde/search/api.h"
+#include "donde/utils.h"
 #include "nlohmann/json.hpp"
-#include "search/api.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
-#include "definitions.h"
-#include "utils.h"
 
 #include <algorithm>
 #include <cassert>

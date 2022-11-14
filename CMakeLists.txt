@@ -37,10 +37,10 @@ endif()
 
 # ---- Create library ----
 file(GLOB_RECURSE sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/source/*.cc)
-file(GLOB_RECURSE headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/source/*.cc)
+file(GLOB_RECURSE headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/source/*.h)
 
-file(GLOB_RECURSE donde CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/donde)
-file(GLOB_RECURSE api CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/api)
+file(GLOB_RECURSE donde CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/donde/*)
+file(GLOB_RECURSE api CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/api/*)
 
 add_library(${PROJECT_NAME} ${sources} ${headers} ${donde} ${api})
 
@@ -64,6 +64,4 @@ target_link_libraries(${PROJECT_NAME}
 	CONAN_PKG::cassandra-cpp-driver
 	openvino::runtime
 	faiss
-
-	FeatureProtos
 	)

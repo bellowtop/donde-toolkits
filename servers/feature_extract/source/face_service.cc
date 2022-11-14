@@ -2,16 +2,16 @@
 
 #include "Poco/Format.h"
 #include "Poco/Timestamp.h"
+#include "api/common.pb.h"
+#include "api/feature_extract.grpc.pb.h"
+#include "api/feature_extract.pb.h"
 #include "config.h"
-#include "definitions.h"
-#include "gen/pb-cpp/common.pb.h"
-#include "gen/pb-cpp/feature_extract.grpc.pb.h"
-#include "gen/pb-cpp/feature_extract.pb.h"
+#include "donde/definitions.h"
+#include "donde/utils.h"
 #include "nlohmann/json.hpp"
-#include "pipeline/face_pipeline.h"
+#include "source/pipeline/face_pipeline.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
-#include "utils.h"
 
 #include <algorithm>
 #include <cassert>
