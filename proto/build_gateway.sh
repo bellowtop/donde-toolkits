@@ -17,8 +17,8 @@ sed -i -e 's|.*server.swagger.json.*|COPY --from=build /app/gen/server.swagger.j
 rm -rf gen/grpc-gateway/Dockerfile-e
 
 docker build -t face-service-grpc-gateway:latest  \
-       --build-arg http_proxy=http://172.16.1.135:3128 \
-       --build-arg https_proxy=http://172.16.1.135:3128 \
-       --build-arg HTTP_PROXY=http://172.16.1.135:3128 \
-       --build-arg HTTPS_PROXY=http://172.16.1.135:3128 \
+       # --build-arg http_proxy=http://172.16.1.135:3128 \
+       # --build-arg https_proxy=http://172.16.1.135:3128 \
+       # --build-arg HTTP_PROXY=http://172.16.1.135:3128 \
+       # --build-arg HTTPS_PROXY=http://172.16.1.135:3128 \
        gen/grpc-gateway/

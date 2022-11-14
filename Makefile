@@ -26,7 +26,7 @@ conan:
 build-pre: conan
 	cmake -S servers -B build/servers
 	cmake -S tests   -B build/tests
-	cmake -S library -B build/library
+	cmake            -B build
 	cmake -S proto   -B build/proto
 
 build-proto:
@@ -36,10 +36,10 @@ build-server:
 	cmake --build build/servers -- -j 8
 
 build-test:
-	cmake --build build/tests -- -j 8
+	cmake --build build/tests   -- -j 8
 
 build-lib:
-	cmake --build build/library -- -j 8
+	cmake --build build         -- -j 8
 
 build-all: build-pre build-lib build-servers build-tests
 

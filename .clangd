@@ -7,18 +7,26 @@ CompileFlags:
 ---
 
 If:
-  PathMatch: proto/.*
+  PathMatch: source/.*
 
 CompileFlags:
-  CompilationDatabase: build/proto
+  CompilationDatabase: build
 
 ---
 
 If:
-  PathMatch: library/.*
+  PathMatch: api/.*
 
 CompileFlags:
-  CompilationDatabase: build/library
+  CompilationDatabase: build
+
+---
+
+If:
+  PathMatch: donde/.*
+
+CompileFlags:
+  CompilationDatabase: build
 
 ---
 
