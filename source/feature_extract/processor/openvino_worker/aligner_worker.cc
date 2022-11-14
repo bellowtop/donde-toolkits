@@ -7,7 +7,7 @@
 #include "donde/utils.h"
 #include "opencv2/opencv.hpp"
 #include "openvino/openvino.hpp"
-#include "source/feature_extract/processor/openvino_worker/workers.h"
+#include "source/feature_extract/processor/openvino_worker/workers_impl.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
 
@@ -33,7 +33,7 @@ namespace donde {
 namespace feature_extract {
 namespace openvino_worker {
 
-AlignerWorker::AlignerWorker(std::shared_ptr<MsgChannel> ch) : Worker(ch) {}
+AlignerWorker::AlignerWorker(std::shared_ptr<MsgChannel> ch) : WorkerBaseImpl(ch) {}
 
 AlignerWorker::~AlignerWorker() {
     // _channel.reset();

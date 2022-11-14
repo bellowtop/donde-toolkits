@@ -10,7 +10,7 @@
 #include "donde/message.h"
 #include "nlohmann/json.hpp"
 #include "openvino/openvino.hpp"
-#include "source/feature_extract/processor/concurrent_processor.h"
+#include "source/feature_extract/processor/worker_base_impl.h"
 
 #include <iostream>
 #include <memory>
@@ -27,7 +27,7 @@ namespace feature_extract {
 
 namespace openvino_worker {
 
-class DetectorWorker : public Worker {
+class DetectorWorker : public WorkerBaseImpl {
   public:
     DetectorWorker(std::shared_ptr<MsgChannel> ch);
     ~DetectorWorker();
@@ -53,7 +53,7 @@ class DetectorWorker : public Worker {
     std::shared_ptr<ov::InferRequest> _infer_request;
 };
 
-class LandmarksWorker : public Worker {
+class LandmarksWorker : public WorkerBaseImpl {
   public:
     LandmarksWorker(std::shared_ptr<MsgChannel> ch);
     ~LandmarksWorker();
@@ -78,7 +78,7 @@ class LandmarksWorker : public Worker {
     std::shared_ptr<ov::InferRequest> _infer_request;
 };
 
-// class LandmarksWorker : public Worker {
+// class LandmarksWorker : public WorkerImpl {
 //   public:
 //     LandmarksWorker(std::shared_ptr<NotificationQueue> ch);
 //     ~LandmarksWorker();
@@ -91,7 +91,7 @@ class LandmarksWorker : public Worker {
 // };
 //
 
-class AlignerWorker : public Worker {
+class AlignerWorker : public WorkerBaseImpl {
   public:
     AlignerWorker(std::shared_ptr<MsgChannel> ch);
 
@@ -107,7 +107,7 @@ class AlignerWorker : public Worker {
     cv::Mat align_face(const cv::Mat& face_image, const std::vector<cv::Point2f>& landmarks);
 };
 
-class FeatureWorker : public Worker {
+class FeatureWorker : public WorkerBaseImpl {
   public:
     FeatureWorker(std::shared_ptr<MsgChannel> ch);
 
@@ -132,7 +132,7 @@ class FeatureWorker : public Worker {
 };
 
 //
-// class FeatureWorker : public Worker {
+// class FeatureWorker : public WorkerImpl {
 //   public:
 //     FeatureWorker(std::shared_ptr<NotificationQueue> ch);
 //     ~FeatureWorker();

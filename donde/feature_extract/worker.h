@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Poco/Runnable.h"
 #include "donde/definitions.h"
 #include "donde/message.h"
 #include "nlohmann/json.hpp"
@@ -12,21 +13,25 @@
 
 using namespace std;
 
+using Poco::Runnable;
 using json = nlohmann::json;
 
 namespace donde {
 
 namespace feature_extract {
 
-class Processor {
-
+class Worker : public Runnable {
   public:
-    virtual RetCode Init(const json& cfg) = 0;
-    virtual bool IsInited() = 0;
-    virtual RetCode Process(const Value& input, Value& output) = 0;
-    virtual RetCode Terminate() = 0;
+    Worker(std::shared_ptr<MsgChannel> ch);
+    virtual ~Worker() = default;
+
+    virtual RetCode Init(json conf, int id, std::string device_id) = 0;
+
     virtual std::string GetName() = 0;
+
+    virtual void run() = 0;
 };
+;
 
 } // namespace feature_extract
 

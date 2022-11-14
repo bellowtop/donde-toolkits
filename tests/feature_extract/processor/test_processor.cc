@@ -1,7 +1,8 @@
 #include "donde/definitions.h"
+#include "donde/feature_extract/worker.h"
 #include "donde/message.h"
-#include "source/feature_extract/pipeline/face_pipeline.h"
-#include "source/feature_extract/processor/concurrent_processor.h"
+#include "source/feature_extract/processor/concurrent_processor_impl.h"
+#include "source/feature_extract/processor/worker_base_impl.h"
 
 #include <Poco/NotificationQueue.h>
 #include <chrono>
@@ -22,8 +23,8 @@ using donde::Frame;
 using donde::Value;
 using donde::ValueFeature;
 using donde::ValueFrame;
-using donde::feature_extract::ConcurrentProcessor;
-using donde::feature_extract::Worker;
+using donde::feature_extract::ConcurrentProcessorImpl;
+using donde::feature_extract::WorkerBaseImpl;
 
 TEST(FeatureExtract, ConcurrentProcessorComunicateWithDummyWorkerUsingChannel) {
     static int processedMsg = 0;
@@ -31,9 +32,9 @@ TEST(FeatureExtract, ConcurrentProcessorComunicateWithDummyWorkerUsingChannel) {
     //
     // define a dummy worker for this test.
     //
-    class DummyWorker : public Worker {
+    class DummyWorker : public WorkerBaseImpl {
       public:
-        DummyWorker(std::shared_ptr<donde::MsgChannel> ch) : Worker(ch){};
+        DummyWorker(std::shared_ptr<donde::MsgChannel> ch) : WorkerBaseImpl(ch){};
         ~DummyWorker(){};
 
         donde::RetCode Init(json conf, int id, std::string device_id) override {
@@ -84,7 +85,7 @@ TEST(FeatureExtract, ConcurrentProcessorComunicateWithDummyWorkerUsingChannel) {
   }
 })"_json;
 
-    ConcurrentProcessor<DummyWorker> processor;
+    ConcurrentProcessorImpl<DummyWorker> processor;
     processor.Init(conf["dummy"]);
 
     std::shared_ptr<Frame> f = std::make_shared<Frame>();

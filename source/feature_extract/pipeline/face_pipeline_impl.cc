@@ -1,9 +1,8 @@
-#include "source/feature_extract/pipeline/face_pipeline.h"
-
 #include "Poco/Thread.h"
 #include "nlohmann/json.hpp"
-#include "source/feature_extract/processor/concurrent_processor.h"
-#include "source/feature_extract/processor/openvino_worker/workers.h"
+#include "source/feature_extract/pipeline/face_pipeline_imp.h"
+#include "source/feature_extract/processor/concurrent_processor_impl.h"
+#include "source/feature_extract/processor/openvino_worker/workers_impl.h"
 #include "spdlog/spdlog.h"
 
 #include <cstdint>
@@ -46,14 +45,14 @@ namespace donde {
 
 namespace feature_extract {
 
-FacePipeline::FacePipeline(const json& conf)
+FacePipelineImpl::FacePipelineImpl(const json& conf)
     : _config(conf),
-      _detectorProcessor(std::make_shared<ConcurrentProcessor<DetectorWorker>>()),
-      _landmarksProcessor(std::make_shared<ConcurrentProcessor<LandmarksWorker>>()),
-      _alignerProcessor(std::make_shared<ConcurrentProcessor<AlignerWorker>>()),
-      _featureProcessor(std::make_shared<ConcurrentProcessor<FeatureWorker>>()) {}
+      _detectorProcessor(std::make_shared<ConcurrentProcessorImpl<DetectorWorker>>()),
+      _landmarksProcessor(std::make_shared<ConcurrentProcessorImpl<LandmarksWorker>>()),
+      _alignerProcessor(std::make_shared<ConcurrentProcessorImpl<AlignerWorker>>()),
+      _featureProcessor(std::make_shared<ConcurrentProcessorImpl<FeatureWorker>>()) {}
 
-RetCode FacePipeline::Init() {
+RetCode FacePipelineImpl::Init() {
     if (_config.contains("detector")) {
         RetCode ret = _detectorProcessor->Init(_config["detector"]);
     } else {
@@ -81,7 +80,7 @@ RetCode FacePipeline::Init() {
     return RET_OK;
 }
 
-RetCode FacePipeline::Terminate() {
+RetCode FacePipelineImpl::Terminate() {
     if (_detectorProcessor->IsInited()) {
         RetCode ret = _detectorProcessor->Terminate();
     }
@@ -101,19 +100,19 @@ RetCode FacePipeline::Terminate() {
     return RET_OK;
 }
 
-std::shared_ptr<Frame> FacePipeline::Decode(const vector<uint8_t>& image_data) {
+std::shared_ptr<Frame> FacePipelineImpl::Decode(const vector<uint8_t>& image_data) {
     cv::Mat image(cv::imdecode(image_data, cv::IMREAD_UNCHANGED));
 
     return std::make_shared<Frame>(image);
 }
 
-std::shared_ptr<DetectResult> FacePipeline::Detect(std::shared_ptr<Frame> frame) {
+std::shared_ptr<DetectResult> FacePipelineImpl::Detect(std::shared_ptr<Frame> frame) {
     Value input{ValueFrame, frame};
     // output.valuePtr memory is allocated by inner Process();
     Value output;
 
     RetCode ret = _detectorProcessor->Process(input, output);
-    spdlog::info("FacePipeline::Detect ret: {}", ret);
+    spdlog::info("FacePipelineImpl::Detect ret: {}", ret);
 
     if (output.valueType != ValueDetectResult) {
         spdlog::error("Detect output is not ValueDetectResult, return empty result");
@@ -124,13 +123,13 @@ std::shared_ptr<DetectResult> FacePipeline::Detect(std::shared_ptr<Frame> frame)
 }
 
 std::shared_ptr<LandmarksResult>
-FacePipeline::Landmarks(std::shared_ptr<DetectResult> detect_result) {
+FacePipelineImpl::Landmarks(std::shared_ptr<DetectResult> detect_result) {
     Value input{ValueDetectResult, detect_result};
     // output.valuePtr memory is allocated by inner Process();
     Value output;
 
     RetCode ret = _landmarksProcessor->Process(input, output);
-    spdlog::info("FacePipeline::Landmarks ret: {}", ret);
+    spdlog::info("FacePipelineImpl::Landmarks ret: {}", ret);
 
     if (output.valueType != ValueLandmarksResult) {
         spdlog::error("Landmarks output is not ValueLandmarksResult, return empty result");
@@ -141,13 +140,13 @@ FacePipeline::Landmarks(std::shared_ptr<DetectResult> detect_result) {
 }
 
 std::shared_ptr<AlignerResult>
-FacePipeline::Align(std::shared_ptr<LandmarksResult> landmarks_result) {
+FacePipelineImpl::Align(std::shared_ptr<LandmarksResult> landmarks_result) {
     Value input{ValueLandmarksResult, landmarks_result};
     // output.valuePtr memory is allocated by inner Process();
     Value output;
 
     RetCode ret = _alignerProcessor->Process(input, output);
-    spdlog::info("FacePipeline::Align ret: {}", ret);
+    spdlog::info("FacePipelineImpl::Align ret: {}", ret);
 
     if (output.valueType != ValueAlignerResult) {
         spdlog::error("Align output is not ValueAlignerResult, return empty result");
@@ -158,13 +157,13 @@ FacePipeline::Align(std::shared_ptr<LandmarksResult> landmarks_result) {
 }
 
 std::shared_ptr<FeatureResult>
-FacePipeline::Extract(std::shared_ptr<AlignerResult> aligner_result) {
+FacePipelineImpl::Extract(std::shared_ptr<AlignerResult> aligner_result) {
     Value input{ValueAlignerResult, aligner_result};
     // output.valuePtr memory is allocated by inner Process();
     Value output;
 
     RetCode ret = _featureProcessor->Process(input, output);
-    spdlog::info("FacePipeline::Extract ret: {}", ret);
+    spdlog::info("FacePipelineImpl::Extract ret: {}", ret);
 
     if (output.valueType != ValueFeatureResult) {
         spdlog::error("Align output is not ValueFeatureResult, return empty result");

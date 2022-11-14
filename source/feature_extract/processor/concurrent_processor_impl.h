@@ -18,7 +18,6 @@
 #include <type_traits>
 
 using Poco::NotificationQueue;
-using Poco::Runnable;
 using Poco::ThreadPool;
 
 using namespace Poco;
@@ -30,41 +29,17 @@ namespace donde {
 
 namespace feature_extract {
 
-class Worker : public Runnable {
-  public:
-    Worker(std::shared_ptr<MsgChannel> ch) : _channel(ch){};
-    virtual RetCode Init(json conf, int id, std::string device_id) = 0;
-    std::string GetName() { return _name; };
-
-    inline void init_log(const std::string& name) {
-        try {
-            _logger = spdlog::stdout_color_mt(name);
-        } catch (const spdlog::spdlog_ex& ex) {
-            _logger = spdlog::get(name);
-        }
-    }
-
-    virtual void run() = 0;
-
-  protected:
-    std::shared_ptr<MsgChannel> _channel;
-    int _id;
-    json _conf;
-    std::string _name;
-    std::string _device_id;
-
-    std::shared_ptr<spdlog::logger> _logger;
-};
+class Worker;
 
 template <typename T, typename U = void>
-class ConcurrentProcessor {};
+class ConcurrentProcessorImpl {};
 
 template <typename T>
-class ConcurrentProcessor<T, typename std::enable_if_t<std::is_base_of_v<Worker, T>>> final
+class ConcurrentProcessorImpl<T, typename std::enable_if_t<std::is_base_of_v<Worker, T>>> final
     : public Processor {
   public:
-    ConcurrentProcessor();
-    ~ConcurrentProcessor();
+    ConcurrentProcessorImpl();
+    ~ConcurrentProcessorImpl();
 
     RetCode Init(const json& cfg) override;
     bool IsInited() override;
@@ -78,6 +53,8 @@ class ConcurrentProcessor<T, typename std::enable_if_t<std::is_base_of_v<Worker,
     ThreadPool _pool;
     std::shared_ptr<MsgChannel> _channel;
     std::vector<std::shared_ptr<T>> _workers;
+
+    bool _is_inited;
 };
 
 //
@@ -85,22 +62,22 @@ class ConcurrentProcessor<T, typename std::enable_if_t<std::is_base_of_v<Worker,
 //
 
 template <typename T>
-ConcurrentProcessor<T,
-                    typename std::enable_if_t<std::is_base_of_v<Worker, T>>>::ConcurrentProcessor()
+ConcurrentProcessorImpl<
+    T, typename std::enable_if_t<std::is_base_of_v<Worker, T>>>::ConcurrentProcessorImpl()
     : _name("concurrent-process-master"),
       _pool(Poco::ThreadPool(1, 1)),
       _channel(std::make_shared<MsgChannel>()), // create a channel
       _workers(0){};
 
 template <typename T>
-ConcurrentProcessor<
-    T, typename std::enable_if_t<std::is_base_of_v<Worker, T>>>::~ConcurrentProcessor() {
+ConcurrentProcessorImpl<
+    T, typename std::enable_if_t<std::is_base_of_v<Worker, T>>>::~ConcurrentProcessorImpl() {
     // _channel.reset();
     _workers.clear();
 };
 
 template <typename T>
-RetCode ConcurrentProcessor<T, typename std::enable_if_t<std::is_base_of_v<Worker, T>>>::Init(
+RetCode ConcurrentProcessorImpl<T, typename std::enable_if_t<std::is_base_of_v<Worker, T>>>::Init(
     const json& conf) {
     int concurrent = conf["concurrent"];
     std::string device_id = conf["device_id"];
@@ -130,12 +107,14 @@ RetCode ConcurrentProcessor<T, typename std::enable_if_t<std::is_base_of_v<Worke
 }
 
 template <typename T>
-bool ConcurrentProcessor<T, typename std::enable_if_t<std::is_base_of_v<Worker, T>>>::IsInited() {
+bool ConcurrentProcessorImpl<T,
+                             typename std::enable_if_t<std::is_base_of_v<Worker, T>>>::IsInited() {
     return _is_inited;
 }
 
 template <typename T>
-RetCode ConcurrentProcessor<T, typename std::enable_if_t<std::is_base_of_v<Worker, T>>>::Process(
+RetCode
+ConcurrentProcessorImpl<T, typename std::enable_if_t<std::is_base_of_v<Worker, T>>>::Process(
     const Value& input, Value& output) {
     spdlog::info("input.valueType : {}, valuePtr: {}", format_value_type(input.valueType),
                  input.valuePtr.get());
@@ -153,7 +132,7 @@ RetCode ConcurrentProcessor<T, typename std::enable_if_t<std::is_base_of_v<Worke
 
 template <typename T>
 RetCode
-ConcurrentProcessor<T, typename std::enable_if_t<std::is_base_of_v<Worker, T>>>::Terminate() {
+ConcurrentProcessorImpl<T, typename std::enable_if_t<std::is_base_of_v<Worker, T>>>::Terminate() {
     _channel->wakeUpAll();
     _pool.joinAll();
 
@@ -164,7 +143,7 @@ ConcurrentProcessor<T, typename std::enable_if_t<std::is_base_of_v<Worker, T>>>:
 
 template <typename T>
 std::string
-ConcurrentProcessor<T, typename std::enable_if_t<std::is_base_of_v<Worker, T>>>::GetName() {
+ConcurrentProcessorImpl<T, typename std::enable_if_t<std::is_base_of_v<Worker, T>>>::GetName() {
     return _name;
 }
 

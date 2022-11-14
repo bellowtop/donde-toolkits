@@ -7,7 +7,7 @@
 #include "donde/utils.h"
 #include "opencv2/opencv.hpp"
 #include "openvino/openvino.hpp"
-#include "source/feature_extract/processor/openvino_worker/workers.h"
+#include "source/feature_extract/processor/openvino_worker/workers_impl.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
 
@@ -29,7 +29,7 @@ namespace feature_extract {
 
 namespace openvino_worker {
 
-FeatureWorker::FeatureWorker(std::shared_ptr<MsgChannel> ch) : Worker(ch) {}
+FeatureWorker::FeatureWorker(std::shared_ptr<MsgChannel> ch) : WorkerBaseImpl(ch) {}
 
 FeatureWorker::~FeatureWorker() {
     // _channel.reset();

@@ -1,8 +1,8 @@
 #include "donde/definitions.h"
 #include "donde/utils.h"
-#include "source/feature_extract/pipeline/face_pipeline.h"
-#include "source/feature_extract/processor/concurrent_processor.h"
-#include "source/feature_extract/processor/openvino_worker/workers.h"
+#include "source/feature_extract/pipeline/face_pipeline_imp.h"
+#include "source/feature_extract/processor/concurrent_processor_impl.h"
+#include "source/feature_extract/processor/openvino_worker/workers_impl.h"
 
 #include <Poco/Logger.h>
 #include <filesystem>
@@ -43,7 +43,7 @@ TEST(FeatureExtract, FacePipelineCanDecodeImageBinaryToFrame) {
 
 )"_json;
 
-    FacePipeline pipeline{conf};
+    FacePipelineImpl pipeline{conf};
     pipeline.Init();
 
     // read image data;
@@ -114,7 +114,7 @@ TEST(FeatureExtract, FacePipelineCanDetectLandmarksFromDetectResult) {
 }
 )"_json;
 
-    FacePipeline pipeline{conf};
+    FacePipelineImpl pipeline{conf};
     pipeline.Init();
 
     std::string warmup_image = "./contrib/data/test_image_5_person.jpeg";
@@ -181,7 +181,7 @@ TEST(FeatureExtract, FacePipelineExtractFaceFeatureFromImageFile) {
 }
 )"_json;
 
-    FacePipeline pipeline{conf};
+    FacePipelineImpl pipeline{conf};
     pipeline.Init();
 
     std::string img_path = "./contrib/data/test_image_5_person.jpeg";
