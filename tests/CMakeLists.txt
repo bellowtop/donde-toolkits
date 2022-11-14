@@ -35,7 +35,7 @@ find_package(OpenVINO REQUIRED COMPONENTS Runtime)
 
 # ---- Create executable ----
 file(GLOB_RECURSE headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
-file(GLOB_RECURSE sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+file(GLOB_RECURSE sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/*.cc)
 add_executable(${PROJECT_NAME} ${headers} ${sources})
 
 target_include_directories(${PROJECT_NAME}
