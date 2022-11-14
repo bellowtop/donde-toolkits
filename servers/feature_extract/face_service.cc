@@ -9,7 +9,7 @@
 #include "donde/definitions.h"
 #include "donde/utils.h"
 #include "nlohmann/json.hpp"
-#include "source/pipeline/face_pipeline.h"
+#include "source/feature_extract/pipeline/face_pipeline.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
 
@@ -74,8 +74,8 @@ Status FaceServiceImpl::Detect(ServerContext* context, const DetectionRequest* r
     const std::vector<uint8_t> image_char_vec(image_data.begin(), image_data.end());
 
     // auto release.
-    std::shared_ptr<Frame> frame = pipeline.Decode(image_char_vec);
-    std::shared_ptr<DetectResult> result = pipeline.Detect(frame);
+    std::shared_ptr<donde::Frame> frame = pipeline.Decode(image_char_vec);
+    std::shared_ptr<donde::DetectResult> result = pipeline.Detect(frame);
 
     response->set_code(ResultCode::OK);
 
@@ -128,11 +128,11 @@ Status FaceServiceImpl::ExtractFeature(ServerContext* context, const ExtractionR
     const std::vector<uint8_t> image_char_vec(image_data.begin(), image_data.end());
 
     // auto release.
-    std::shared_ptr<Frame> frame = pipeline.Decode(image_char_vec);
-    std::shared_ptr<DetectResult> detect_result = pipeline.Detect(frame);
-    std::shared_ptr<LandmarksResult> landmarks_result = pipeline.Landmarks(detect_result);
-    std::shared_ptr<AlignerResult> aligner_result = pipeline.Align(landmarks_result);
-    std::shared_ptr<FeatureResult> feature_result = pipeline.Extract(aligner_result);
+    std::shared_ptr<donde::Frame> frame = pipeline.Decode(image_char_vec);
+    std::shared_ptr<donde::DetectResult> detect_result = pipeline.Detect(frame);
+    std::shared_ptr<donde::LandmarksResult> landmarks_result = pipeline.Landmarks(detect_result);
+    std::shared_ptr<donde::AlignerResult> aligner_result = pipeline.Align(landmarks_result);
+    std::shared_ptr<donde::FeatureResult> feature_result = pipeline.Extract(aligner_result);
 
     if (detect_result->faces.size() != feature_result->face_features.size()) {
         return Status(StatusCode::INTERNAL, "internal error",
@@ -181,8 +181,10 @@ Status FaceServiceImpl::CompareFeature(ServerContext* context, const CompareRequ
     const std::string& one_blob = one.blob();
     const std::string& two_blob = two.blob();
 
-    Feature ft1(convertFeatureBlobToFloats(one_blob), std::string(one.model()), one.version());
-    Feature ft2(convertFeatureBlobToFloats(two_blob), std::string(two.model()), two.version());
+    donde::Feature ft1(donde::convertFeatureBlobToFloats(one_blob), std::string(one.model()),
+                       one.version());
+    donde::Feature ft2(donde::convertFeatureBlobToFloats(two_blob), std::string(two.model()),
+                       two.version());
 
     if (ft1.raw.size() != ft2.raw.size()) {
         return Status(StatusCode::INVALID_ARGUMENT, "invalid request feature",

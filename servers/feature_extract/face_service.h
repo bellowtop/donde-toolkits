@@ -6,7 +6,7 @@
 #include "api/feature_extract.grpc.pb.h"
 #include "api/feature_extract.pb.h"
 #include "config.h"
-#include "source/pipeline/face_pipeline.h"
+#include "source/feature_extract/pipeline/face_pipeline.h"
 
 // #include "spdlog/spdlog.h"
 
@@ -51,5 +51,5 @@ class FaceServiceImpl final : public FaceService::Service {
     Config& config;
     // spdlog::Logger& logger;
     std::string device_id;
-    FacePipeline pipeline;
+    donde::feature_extract::FacePipeline pipeline;
 };

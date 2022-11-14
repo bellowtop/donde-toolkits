@@ -88,10 +88,11 @@ Status FeatureSearchManagerImpl::AddFeature(ServerContext* context,
     // auto meta = ((AddFeatureRequest*)request)->mutable_meta();
     // (*meta)["a"] = "b";
 
-    Feature feature(convertFeatureBlobToFloats(ft.blob()), std::string(ft.model()), ft.version());
-    std::map<string, string> meta = convertMetadataToMap(item.meta());
+    donde::Feature feature(donde::convertFeatureBlobToFloats(ft.blob()), std::string(ft.model()),
+                           ft.version());
+    std::map<string, string> meta = donde::convertMetadataToMap(item.meta());
 
-    std::vector<search::FeatureDbItem> fts{search::FeatureDbItem{
+    std::vector<donde::feature_search::FeatureDbItem> fts{donde::feature_search::FeatureDbItem{
         .feature = feature,
         .metadata = meta,
     }};
@@ -122,10 +123,11 @@ Status FeatureSearchManagerImpl::SearchFeature(ServerContext* context,
 
     auto ft = request->query();
     auto topk = request->topk();
-    Feature query(convertFeatureBlobToFloats(ft.blob()), std::string(ft.model()), ft.version());
+    donde::Feature query(donde::convertFeatureBlobToFloats(ft.blob()), std::string(ft.model()),
+                         ft.version());
 
     // FIXME: only search first db for now !!!
-    std::vector<search::FeatureSearchItem> ret
+    std::vector<donde::feature_search::FeatureSearchItem> ret
         = searcher->SearchFeature(db_ids.Get(0), query, topk);
 
     response->set_code(ResultCode::OK);

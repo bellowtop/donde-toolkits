@@ -10,8 +10,8 @@
 #include "donde/feature_search/api.h"
 #include "donde/utils.h"
 #include "nlohmann/json.hpp"
-#include "source/search/brute_force_searcher.h"
-#include "source/search/simple_driver.h"
+#include "source/feature_search/brute_force_searcher.h"
+#include "source/feature_search/simple_driver.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
 
@@ -54,8 +54,8 @@ using grpc::Status;
 using json = nlohmann::json;
 
 FeatureSearchWorkerImpl::FeatureSearchWorkerImpl(Config& server_config) : config(server_config) {
-    driver
-        = std::make_shared<search::SimpleDriver>(server_config.get_searcher_config()["filepath"]);
+    driver = std::make_shared<donde::feature_search::SimpleDriver>(
+        server_config.get_searcher_config()["filepath"]);
     // searcher = std::make_shared<search::BruteForceSearcher>(*driver);
 };
 
@@ -95,16 +95,16 @@ Status FeatureSearchWorkerImpl::BatchAddFeatures(ServerContext* context,
     auto items = request->feature_items();
     auto db_id = request->db_id();
 
-    std::vector<search::FeatureDbItem> fts;
+    std::vector<donde::feature_search::FeatureDbItem> fts;
 
     for (auto& item : items) {
         auto ft = item.feature();
         // auto meta = ((AddFeatureRequest*)request)->mutable_meta();
         // (*meta)["a"] = "b";
-        Feature feature(convertFeatureBlobToFloats(ft.blob()), std::string(ft.model()),
-                        ft.version());
-        std::map<string, string> meta = convertMetadataToMap(item.meta());
-        fts.push_back(search::FeatureDbItem{
+        donde::Feature feature(donde::convertFeatureBlobToFloats(ft.blob()),
+                               std::string(ft.model()), ft.version());
+        std::map<string, string> meta = donde::convertMetadataToMap(item.meta());
+        fts.push_back(donde::feature_search::FeatureDbItem{
             .feature = feature,
             .metadata = meta,
         });
@@ -142,10 +142,11 @@ Status FeatureSearchWorkerImpl::SearchFeature(ServerContext* context,
 
     auto ft = request->query();
     auto topk = request->topk();
-    Feature query(convertFeatureBlobToFloats(ft.blob()), std::string(ft.model()), ft.version());
+    donde::Feature query(donde::convertFeatureBlobToFloats(ft.blob()), std::string(ft.model()),
+                         ft.version());
 
     // FIXME: only search first db now!!!
-    std::vector<search::FeatureSearchItem> ret
+    std::vector<donde::feature_search::FeatureSearchItem> ret
         = searcher->SearchFeature(db_ids.Get(0), query, topk);
 
     for (const auto& feature_search_result : ret) {
