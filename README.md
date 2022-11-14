@@ -1,6 +1,6 @@
-#Face Recognition Service
+# Donde server
 
-Face feature extraction and searching and clustering service, built with openvino and faiss[todo] [wip].
+It's a group project, consist of different services, such as face feature extraction and searching and clustering service. Built with openvino and faiss[todo] [wip].
 
 Currently developed with macOS, llvm-clang
 
