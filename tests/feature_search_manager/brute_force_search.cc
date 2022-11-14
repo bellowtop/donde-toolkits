@@ -1,7 +1,8 @@
-#include "definitions.h"
-#include "search_manager/brute_force_searcher.h"
-#include "search_manager/simple_driver.h"
-#include "utils.h"
+#include "donde/definitions.h"
+#include "donde/feature_search/definitions.h"
+#include "donde/utils.h"
+#include "source/feature_search/brute_force_searcher.h"
+#include "source/feature_search/simple_driver.h"
 
 #include <cstdlib>
 #include <filesystem>
@@ -15,6 +16,15 @@ using namespace std;
 
 using nlohmann::json;
 
+using donde::feature_search::BruteForceSearcher;
+using donde::feature_search::DBItem;
+using donde::feature_search::FeatureDbItem;
+using donde::feature_search::FeatureSearchItem;
+using donde::feature_search::SimpleDriver;
+
+using donde::Feature;
+using donde::gen_feature_dim;
+
 namespace {
 
 class SearchManager_BruteForceSearch : public ::testing::Test {
@@ -23,14 +33,14 @@ class SearchManager_BruteForceSearch : public ::testing::Test {
         for (int i = 0; i < feature_count; i++) {
             auto ft = gen_feature_dim<512>();
             std::map<string, string> meta{{"keya", "valueb"}};
-            fts.push_back(search::FeatureDbItem{
+            fts.push_back(FeatureDbItem{
                 .feature = ft,
                 .metadata = meta,
             });
         }
 
-        store = new search::SimpleDriver("/tmp/test_store");
-        search::DBItem db1{
+        store = new SimpleDriver("/tmp/test_store");
+        DBItem db1{
             .name = "test-db1",
             .description = "this is a test db",
             .capacity = 1024,
@@ -44,22 +54,22 @@ class SearchManager_BruteForceSearch : public ::testing::Test {
         std::filesystem::remove_all("/tmp/test_store/");
     };
 
-    search::SimpleDriver* store;
+    SimpleDriver* store;
     const int feature_count = 100;
     const int dim = 512;
-    std::vector<search::FeatureDbItem> fts;
+    std::vector<FeatureDbItem> fts;
     std::string db_id;
 };
 
 TEST_F(SearchManager_BruteForceSearch, BruteForceSearch) {
-    search::BruteForceSearcher search(*store);
+    BruteForceSearcher search(*store);
 
     std::vector<std::string> feature_ids = search.AddFeatures(db_id, fts);
     EXPECT_EQ(feature_ids.size(), feature_count);
 }
 
 TEST_F(SearchManager_BruteForceSearch, SearchTopkTeatures) {
-    search::BruteForceSearcher search(*store);
+    BruteForceSearcher search(*store);
 
     // preapre features in db.
     std::vector<std::string> feature_ids = search.AddFeatures(db_id, fts);
@@ -69,7 +79,7 @@ TEST_F(SearchManager_BruteForceSearch, SearchTopkTeatures) {
     Feature query{fts[0].feature};
 
     int topk = 10;
-    std::vector<search::FeatureSearchItem> search_result = search.SearchFeature(db_id, query, topk);
+    std::vector<FeatureSearchItem> search_result = search.SearchFeature(db_id, query, topk);
 
     for (const auto& r : search_result) {
         std::cout << "score: " << r.score << std::endl;

@@ -1,8 +1,7 @@
 
-#include "search_manager/worker_client.h"
-
-#include "definitions.h"
-#include "utils.h"
+#include "donde/definitions.h"
+#include "donde/utils.h"
+#include "source/feature_search/search_manager/worker_impl.h"
 
 #include <chrono>
 #include <filesystem>

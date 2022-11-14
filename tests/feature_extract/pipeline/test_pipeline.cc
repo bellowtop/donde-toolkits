@@ -1,8 +1,8 @@
-#include "concurrent_processor.h"
-#include "definitions.h"
-#include "face_pipeline.h"
-#include "openvino_worker/workers.h"
-#include "utils.h"
+#include "donde/definitions.h"
+#include "donde/utils.h"
+#include "source/feature_extract/pipeline/face_pipeline.h"
+#include "source/feature_extract/processor/concurrent_processor.h"
+#include "source/feature_extract/processor/openvino_worker/workers.h"
 
 #include <Poco/Logger.h>
 #include <filesystem>
@@ -16,7 +16,15 @@
 #include <string>
 
 using namespace std;
-using namespace openvino_worker;
+using namespace donde::feature_extract;
+
+using donde::AlignerResult;
+using donde::DetectResult;
+using donde::FaceDetection;
+using donde::Feature;
+using donde::FeatureResult;
+using donde::Frame;
+using donde::LandmarksResult;
 
 using nlohmann::json;
 
@@ -221,7 +229,7 @@ TEST(FeatureExtract, FacePipelineExtractFaceFeatureFromImageFile) {
     std::shared_ptr<FeatureResult> feature_result = pipeline.Extract(aligner_result);
 
     {
-        for (Feature& ft : feature_result->face_features) {
+        for (donde::Feature& ft : feature_result->face_features) {
             std::cout << "face_feature:\n\t";
             for (float& f : ft.raw)
                 std::cout << f << " ";

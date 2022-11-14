@@ -1,6 +1,7 @@
-#include "concurrent_processor.h"
-#include "definitions.h"
-#include "message.h"
+#include "donde/definitions.h"
+#include "donde/message.h"
+#include "source/feature_extract/pipeline/face_pipeline.h"
+#include "source/feature_extract/processor/concurrent_processor.h"
 
 #include <Poco/NotificationQueue.h>
 #include <chrono>
@@ -16,6 +17,14 @@ using Poco::Notification;
 
 using nlohmann::json;
 
+using donde::Feature;
+using donde::Frame;
+using donde::Value;
+using donde::ValueFeature;
+using donde::ValueFrame;
+using donde::feature_extract::ConcurrentProcessor;
+using donde::feature_extract::Worker;
+
 TEST(FeatureExtract, ConcurrentProcessorComunicateWithDummyWorkerUsingChannel) {
     static int processedMsg = 0;
 
@@ -24,14 +33,14 @@ TEST(FeatureExtract, ConcurrentProcessorComunicateWithDummyWorkerUsingChannel) {
     //
     class DummyWorker : public Worker {
       public:
-        DummyWorker(std::shared_ptr<MsgChannel> ch) : Worker(ch){};
+        DummyWorker(std::shared_ptr<donde::MsgChannel> ch) : Worker(ch){};
         ~DummyWorker(){};
 
-        RetCode Init(json conf, int id, std::string device_id) override {
+        donde::RetCode Init(json conf, int id, std::string device_id) override {
             EXPECT_NE(conf, nullptr);
             EXPECT_NE(id, -1);
             EXPECT_EQ(device_id, "CPU");
-            return RET_OK;
+            return donde::RET_OK;
         };
 
         void run() override {
@@ -44,7 +53,7 @@ TEST(FeatureExtract, ConcurrentProcessorComunicateWithDummyWorkerUsingChannel) {
                     break;
                 }
 
-                WorkMessage<Value>::Ptr msg = pNf.cast<WorkMessage<Value>>();
+                donde::WorkMessage<Value>::Ptr msg = pNf.cast<donde::WorkMessage<Value>>();
 
                 processedMsg++;
 

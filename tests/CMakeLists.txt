@@ -15,7 +15,7 @@ project(FaceRecognitionTests LANGUAGES CXX)
 
 
 include(../cmake/CPM_0.35.1.cmake)
-CPMAddPackage(NAME FeatureLibraries SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/../library)
+CPMAddPackage(NAME FeatureLibraries SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..)
 
 
 if (NOT DEFINED CONAN_ALREADY_SETUP)
@@ -38,10 +38,10 @@ file(GLOB_RECURSE headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
 file(GLOB_RECURSE sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/*.cc)
 add_executable(${PROJECT_NAME} ${headers} ${sources})
 
-target_include_directories(${PROJECT_NAME}
-  PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/../include>
-         # $<INSTALL_INTERFACE:../include/${PROJECT_NAME}-${PROJECT_VERSION}>
-)
+# target_include_directories(${PROJECT_NAME}
+#   PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/../include>
+#          # $<INSTALL_INTERFACE:../include/${PROJECT_NAME}-${PROJECT_VERSION}>
+# )
 
 target_link_libraries(${PROJECT_NAME}
 	CONAN_PKG::grpc
@@ -59,7 +59,7 @@ target_link_libraries(${PROJECT_NAME}
 	CONAN_PKG::trompeloeil
 	openvino::runtime
 
-	FeatureLibraries
+	Donde
 	)
 
 # enable compiler warnings

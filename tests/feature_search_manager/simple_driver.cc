@@ -1,8 +1,8 @@
-#include "search/impl/simple_driver.h"
+#include "source/feature_search/simple_driver.h"
 
-#include "definitions.h"
-#include "search/definitions.h"
-#include "utils.h"
+#include "donde/definitions.h"
+#include "donde/feature_search/definitions.h"
+#include "donde/utils.h"
 
 #include <filesystem>
 #include <gtest/gtest.h>
@@ -15,6 +15,17 @@ using namespace std;
 
 using nlohmann::json;
 
+using donde::Feature;
+using donde::gen_feature_dim;
+
+using donde::feature_search::DBItem;
+using donde::feature_search::FeatureDbItem;
+using donde::feature_search::FeatureDbItemList;
+using donde::feature_search::SimpleDriver;
+;
+using donde::feature_search::convert_to_feature_ids;
+using donde::feature_search::PageData;
+
 namespace {
 
 class SearchManager_SimpleDriver : public ::testing::Test {
@@ -23,9 +34,9 @@ class SearchManager_SimpleDriver : public ::testing::Test {
 
         fts = generate_features(100);
 
-        store = new search::SimpleDriver("/tmp/test_store");
+        store = new SimpleDriver("/tmp/test_store");
 
-        db1 = search::DBItem{
+        db1 = DBItem{
             .name = "test-db1",
             .description = "this is a test db",
             .capacity = 1024,
@@ -39,12 +50,12 @@ class SearchManager_SimpleDriver : public ::testing::Test {
         std::filesystem::remove_all("/tmp/test_store/");
     };
 
-    std::vector<search::FeatureDbItem> generate_features(int feature_count) {
-        std::vector<search::FeatureDbItem> ret;
+    std::vector<FeatureDbItem> generate_features(int feature_count) {
+        std::vector<FeatureDbItem> ret;
         for (int i = 0; i < feature_count; i++) {
             auto ft = gen_feature_dim<512>();
             std::map<string, string> meta{{"keya", "valueb"}};
-            ret.push_back(search::FeatureDbItem{
+            ret.push_back(FeatureDbItem{
                 .feature = ft,
                 .metadata = meta,
             });
@@ -52,16 +63,16 @@ class SearchManager_SimpleDriver : public ::testing::Test {
         return ret;
     };
 
-    search::SimpleDriver* store;
-    search::DBItem db1;
+    SimpleDriver* store;
+    DBItem db1;
     int feature_count = 100;
     const int dim = 512;
-    std::vector<search::FeatureDbItem> fts;
+    std::vector<FeatureDbItem> fts;
     std::string db_id;
 };
 
 TEST_F(SearchManager_SimpleDriver, DBCreateGet) {
-    search::DBItem got = store->FindDB(db_id);
+    DBItem got = store->FindDB(db_id);
 
     EXPECT_EQ(db_id, got.db_id);
     EXPECT_EQ(db1.name, got.name);
@@ -72,7 +83,7 @@ TEST_F(SearchManager_SimpleDriver, DBCreateGet) {
 TEST_F(SearchManager_SimpleDriver, DBCreateDelete) {
     store->DeleteDB(db_id);
 
-    search::DBItem got2 = store->FindDB(db_id);
+    DBItem got2 = store->FindDB(db_id);
     EXPECT_EQ(got2.db_id, "");
     EXPECT_EQ(got2.name, "");
     EXPECT_EQ(got2.capacity, 0);
@@ -81,17 +92,17 @@ TEST_F(SearchManager_SimpleDriver, DBCreateDelete) {
 TEST_F(SearchManager_SimpleDriver, DBlist) {
     store->DeleteDB(db_id);
 
-    search::DBItem db1{
+    DBItem db1{
         .name = "test-db1",
         .description = "this is a test db1",
         .capacity = 1024,
     };
-    search::DBItem db2{
+    DBItem db2{
         .name = "test-db2",
         .description = "this is a test db2",
         .capacity = 1024 * 1024,
     };
-    search::DBItem db3{
+    DBItem db3{
         .name = "test-db3",
         .description = "this is a test db3",
         .capacity = 1024 * 1024 * 1024,
@@ -101,14 +112,14 @@ TEST_F(SearchManager_SimpleDriver, DBlist) {
     std::string db_id2 = store->CreateDB(db2);
     std::string db_id3 = store->CreateDB(db3);
 
-    std::vector<search::DBItem> got = store->ListDBs();
+    std::vector<DBItem> got = store->ListDBs();
     EXPECT_EQ(got.size(), 3);
 
     store->DeleteDB(db_id1);
     store->DeleteDB(db_id2);
     store->DeleteDB(db_id3);
 
-    std::vector<search::DBItem> got2 = store->ListDBs();
+    std::vector<DBItem> got2 = store->ListDBs();
     EXPECT_EQ(got2.size(), 0);
 }
 
@@ -122,8 +133,8 @@ TEST_F(SearchManager_SimpleDriver, featureCrud) {
         EXPECT_EQ(std::filesystem::exists(p1), true);
     }
 
-    search::PageData<search::FeatureDbItemList> listed = store->ListFeatures(db_id, 0, 100);
-    std::vector<std::string> listed_feature_ids = search::convert_to_feature_ids(listed.data);
+    PageData<FeatureDbItemList> listed = store->ListFeatures(db_id, 0, 100);
+    std::vector<std::string> listed_feature_ids = convert_to_feature_ids(listed.data);
     EXPECT_EQ(listed_feature_ids.size(), feature_ids.size());
     for (size_t i = 0; i < listed_feature_ids.size(); i++) {
         EXPECT_EQ(listed_feature_ids[i], feature_ids[i]);
@@ -162,7 +173,7 @@ TEST_F(SearchManager_SimpleDriver, Paging) {
     int page = 0;
     int perPage = 10;
 
-    search::PageData<search::FeatureDbItemList> listed = store->ListFeatures(db_id, page, perPage);
+    PageData<FeatureDbItemList> listed = store->ListFeatures(db_id, page, perPage);
     EXPECT_EQ(listed.data.size(), perPage);
     EXPECT_EQ(listed.page, page);
     EXPECT_EQ(listed.perPage, perPage);

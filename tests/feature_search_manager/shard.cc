@@ -1,7 +1,7 @@
-#include "search/api.h"
-#include "search/definitions.h"
-#include "search_manager/shard_impl.h"
-#include "utils.h"
+#include "donde/feature_search/api.h"
+#include "donde/feature_search/definitions.h"
+#include "donde/utils.h"
+#include "source/feature_search/search_manager/shard_impl.h"
 
 #include <cstdlib>
 #include <filesystem>
