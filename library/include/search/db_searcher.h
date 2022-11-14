@@ -18,7 +18,7 @@ namespace search {
 class Searcher {
 
   public:
-    ~Searcher() = default;
+    virtual ~Searcher() = default;
 
     virtual RetCode Init() = 0;
 

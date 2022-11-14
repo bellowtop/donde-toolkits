@@ -4,11 +4,8 @@
 #include "Poco/NotificationQueue.h"
 #include "Poco/Thread.h"
 #include "Poco/Timestamp.h"
-#include "concurrent_processor.h"
 #include "config.h"
-#include "face_pipeline.h"
 #include "openvino/openvino.hpp"
-
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
 
@@ -75,8 +72,6 @@ auto main(int argc, char** argv) -> int {
         auto console_log = spdlog::stdout_color_mt("main");
         console_log->set_level(spdlog::level::trace);
         spdlog::set_default_logger(console_log);
-
-
 
     } catch (Poco::Exception& exc) {
         std::cerr << exc.displayText() << std::endl;

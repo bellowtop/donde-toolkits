@@ -228,6 +228,6 @@ shardOp ShardImpl::do_close_shard(const shardOp& input) {
     return output;
 };
 
-Shard* ShardFactoryImpl::CreateShard(search::DBShard shard_info) {
-    return new ShardImpl(_mgr, shard_info);
+Shard* ShardFactoryImpl::CreateShard(ShardManager* mgr, search::DBShard shard_info) {
+    return new ShardImpl(mgr, shard_info);
 };

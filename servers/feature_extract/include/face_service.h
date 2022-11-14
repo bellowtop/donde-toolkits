@@ -4,9 +4,9 @@
 #include "Poco/Logger.h"
 #include "Poco/Timestamp.h"
 #include "config.h"
-#include "face_pipeline.h"
 #include "gen/pb-cpp/feature_extract.grpc.pb.h"
 #include "gen/pb-cpp/feature_extract.pb.h"
+#include "pipeline/face_pipeline.h"
 
 // #include "spdlog/spdlog.h"
 

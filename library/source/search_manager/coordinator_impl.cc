@@ -5,6 +5,7 @@
 #include "fmt/format.h"
 #include "search/definitions.h"
 #include "search_manager/api.h"
+#include "search_manager/shard_impl.h"
 #include "shard_manager_impl.h"
 #include "worker_impl.h"
 
@@ -30,7 +31,7 @@ CoordinatorImpl::CoordinatorImpl(const json& coor_config) : config(coor_config) 
     _driver = std::make_shared<search::SimpleDriver>((std::string)coor_config["cassandra"]["addr"]);
     // }
 
-    _shard_manager = std::make_shared<ShardManagerImpl>(*(_driver.get()));
+    _shard_manager = std::make_shared<ShardManagerImpl>(*(_driver.get()), new ShardFactoryImpl());
 
     _worker_addrs = (std::vector<std::string>)coor_config["workers"];
 };

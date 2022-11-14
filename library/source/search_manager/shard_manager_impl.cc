@@ -100,7 +100,7 @@ RetCode ShardManagerImpl::load_db_shards() {
         std::vector<Shard*> shards;
         std::vector<search::DBShard> shard_infos = _driver.ListShards(db.db_id);
         for (auto& shard_info : shard_infos) {
-            shards.push_back(_shard_factory->CreateShard(shard_info));
+            shards.push_back(_shard_factory->CreateShard(this, shard_info));
 
             // this will be more efficient?
             // _db_shards[db.db_id].push_back(new Shard{this, shard_info});

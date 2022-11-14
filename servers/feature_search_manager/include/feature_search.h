@@ -6,8 +6,8 @@
 #include "config.h"
 #include "gen/pb-cpp/feature_search.grpc.pb.h"
 #include "search/api.h"
-#include "search_manager/shard_manager.h"
-#include "search_manager/worker_client.h"
+#include "search_manager/api.h"
+#include "search_manager/worker_impl.h"
 
 // #include "spdlog/spdlog.h"
 
@@ -82,7 +82,7 @@ class FeatureSearchManagerImpl final : public FeatureSearchManager::Service {
     std::vector<std::string> db_ids;
 
     // worker_id => worker
-    std::unordered_map<std::string, WorkerClient*> workers;
+    std::unordered_map<std::string, WorkerImpl*> workers;
 
     // worker_id => db_ids
     std::unordered_map<std::string, std::vector<std::string>> worker_dbs;

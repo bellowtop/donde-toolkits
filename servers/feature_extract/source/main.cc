@@ -4,12 +4,9 @@
 #include "Poco/NotificationQueue.h"
 #include "Poco/Thread.h"
 #include "Poco/Timestamp.h"
-#include "concurrent_processor.h"
 #include "config.h"
-#include "face_pipeline.h"
 #include "face_service.h"
 #include "openvino/openvino.hpp"
-
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
 

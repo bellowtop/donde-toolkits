@@ -3,16 +3,16 @@
 #include "Poco/Format.h"
 #include "Poco/Timestamp.h"
 #include "config.h"
+#include "definitions.h"
 #include "gen/pb-cpp/common.pb.h"
 #include "gen/pb-cpp/feature_search_inner.grpc.pb.h"
 #include "gen/pb-cpp/feature_search_inner.pb.h"
 #include "nlohmann/json.hpp"
 #include "search/api.h"
-#include "search/impl/brute_force_searcher.h"
-#include "search/impl/simple_driver.h"
+#include "search/brute_force_searcher.h"
+#include "search/simple_driver.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
-#include "definitions.h"
 #include "utils.h"
 
 #include <algorithm>
@@ -56,7 +56,7 @@ using json = nlohmann::json;
 FeatureSearchWorkerImpl::FeatureSearchWorkerImpl(Config& server_config) : config(server_config) {
     driver
         = std::make_shared<search::SimpleDriver>(server_config.get_searcher_config()["filepath"]);
-    searcher = std::make_shared<search::BruteForceSearcher>(*driver);
+    // searcher = std::make_shared<search::BruteForceSearcher>(*driver);
 };
 
 FeatureSearchWorkerImpl::~FeatureSearchWorkerImpl(){};

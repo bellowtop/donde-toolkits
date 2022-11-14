@@ -99,7 +99,7 @@ class Shard {
 class ShardFactory {
   public:
     virtual ~ShardFactory() = default;
-    virtual Shard* CreateShard(search::DBShard shard_info) = 0;
+    virtual Shard* CreateShard(ShardManager* mgr, search::DBShard shard_info) = 0;
 };
 
 class ShardManager {

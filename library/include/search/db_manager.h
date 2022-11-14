@@ -1,8 +1,8 @@
 #pragma once
 
-#include "definitions.h"
 #include "faiss/Index2Layer.h"
 #include "nlohmann/json.hpp"
+#include "search/definitions.h"
 
 #include <map>
 #include <memory>

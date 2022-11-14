@@ -113,9 +113,5 @@ class ShardImpl : public Shard {
 
 class ShardFactoryImpl : public ShardFactory {
   public:
-    ShardFactoryImpl(ShardManager* mgr) : _mgr(mgr){};
-    Shard* CreateShard(search::DBShard shard_info) override;
-
-  private:
-    ShardManager* _mgr;
+    Shard* CreateShard(ShardManager* mgr, search::DBShard shard_info) override;
 };

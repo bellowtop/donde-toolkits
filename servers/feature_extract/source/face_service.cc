@@ -2,16 +2,15 @@
 
 #include "Poco/Format.h"
 #include "Poco/Timestamp.h"
-#include "concurrent_processor.h"
 #include "config.h"
-#include "face_pipeline.h"
+#include "definitions.h"
+#include "gen/pb-cpp/common.pb.h"
 #include "gen/pb-cpp/feature_extract.grpc.pb.h"
 #include "gen/pb-cpp/feature_extract.pb.h"
-#include "gen/pb-cpp/common.pb.h"
 #include "nlohmann/json.hpp"
+#include "pipeline/face_pipeline.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
-#include "definitions.h"
 #include "utils.h"
 
 #include <algorithm>
