@@ -14,7 +14,7 @@ using namespace std;
 class ShardManagerImpl : public ShardManager {
 
   public:
-    ShardManagerImpl(search::Driver& driver);
+    ShardManagerImpl(search::Driver& driver, ShardFactory* factory);
     ~ShardManagerImpl() = default;
 
     std::tuple<Shard*, bool> FindOrCreateWritableShard(std::string db_id,
@@ -41,4 +41,5 @@ class ShardManagerImpl : public ShardManager {
     std::unordered_map<std::string, search::DBItem> _user_dbs;
 
     search::Driver& _driver;
+    std::shared_ptr<ShardFactory> _shard_factory;
 };

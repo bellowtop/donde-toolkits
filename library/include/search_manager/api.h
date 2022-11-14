@@ -2,6 +2,7 @@
 
 #include "definitions.h"
 #include "search/api.h"
+#include "search/definitions.h"
 
 // #include "spdlog/spdlog.h"
 
@@ -58,6 +59,7 @@ class Worker {
                                                     int topk)
         = 0;
 };
+
 using WorkerPtr = shared_ptr<Worker>;
 
 class ShardManager;
@@ -92,6 +94,12 @@ class Shard {
     virtual std::string GetShardID() = 0;
 
     virtual search::DBShard GetShardInfo() = 0;
+};
+
+class ShardFactory {
+  public:
+    virtual ~ShardFactory() = default;
+    virtual Shard* CreateShard(search::DBShard shard_info) = 0;
 };
 
 class ShardManager {

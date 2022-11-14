@@ -12,7 +12,10 @@
 /// ShardManager
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ShardManagerImpl::ShardManagerImpl(search::Driver& driver) : _driver(driver) { load_db_shards(); };
+ShardManagerImpl::ShardManagerImpl(search::Driver& driver, ShardFactory* factory)
+    : _driver(driver), _shard_factory(factory) {
+    load_db_shards();
+};
 
 std::tuple<Shard*, bool> ShardManagerImpl::FindOrCreateWritableShard(std::string db_id,
                                                                      uint64 fts_count) {
@@ -94,10 +97,10 @@ RetCode ShardManagerImpl::load_db_shards() {
         // _user_dbs[db.db_id] = db;
         _user_dbs.insert({db.db_id, db});
 
-        std::vector<ShardImpl*> shards;
+        std::vector<Shard*> shards;
         std::vector<search::DBShard> shard_infos = _driver.ListShards(db.db_id);
         for (auto& shard_info : shard_infos) {
-            shards.push_back(new ShardImpl{this, shard_info});
+            shards.push_back(_shard_factory->CreateShard(shard_info));
 
             // this will be more efficient?
             // _db_shards[db.db_id].push_back(new Shard{this, shard_info});

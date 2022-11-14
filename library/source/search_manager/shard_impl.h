@@ -110,3 +110,12 @@ class ShardImpl : public Shard {
     std::shared_ptr<MsgChannel> _channel;
     Poco::Thread _loop_thread;
 };
+
+class ShardFactoryImpl : public ShardFactory {
+  public:
+    ShardFactoryImpl(ShardManager* mgr) : _mgr(mgr){};
+    Shard* CreateShard(search::DBShard shard_info) override;
+
+  private:
+    ShardManager* _mgr;
+};

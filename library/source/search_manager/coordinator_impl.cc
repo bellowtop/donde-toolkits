@@ -6,6 +6,7 @@
 #include "search/definitions.h"
 #include "search_manager/api.h"
 #include "shard_manager_impl.h"
+#include "worker_impl.h"
 
 #include <exception>
 #include <memory>
