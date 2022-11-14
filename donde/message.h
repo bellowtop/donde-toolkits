@@ -28,6 +28,8 @@ using namespace std;
 
 using json = nlohmann::json;
 
+namespace donde {
+
 enum ChanError { OK, ErrFull, ErrEmpty, ErrClosed };
 
 // Loosely size-bound channel.
@@ -89,3 +91,5 @@ void WorkMessage<V>::setResponse(V resp) {
 
     _evt.set();
 }
+
+} // namespace donde

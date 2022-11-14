@@ -10,6 +10,8 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgcodecs.hpp>
 
+namespace donde {
+
 inline void printInputAndOutputsInfo(const ov::Model& network) {
     std::cout << "model name: " << network.get_friendly_name() << std::endl;
 
@@ -90,3 +92,5 @@ inline std::string replace_underscore_for_uuid(const std::string& u) {
     std::replace(ret.begin(), ret.end(), '-', '_');
     return ret;
 }
+
+} // namespace donde

@@ -5,7 +5,7 @@
 #include "Poco/Timestamp.h"
 #include "api/feature_search_inner.grpc.pb.h"
 #include "config.h"
-#include "donde/search/api.h"
+#include "donde/feature_search/api.h"
 
 // #include "spdlog/spdlog.h"
 

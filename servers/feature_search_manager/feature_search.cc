@@ -7,7 +7,7 @@
 #include "api/feature_search.pb.h"
 #include "config.h"
 #include "donde/definitions.h"
-#include "donde/search/api.h"
+#include "donde/feature_search/api.h"
 #include "donde/utils.h"
 #include "nlohmann/json.hpp"
 #include "spdlog/sinks/stdout_color_sinks.h"

@@ -20,6 +20,8 @@
 
 using namespace std;
 
+namespace donde {
+
 enum RetCode { RET_OK, RET_ERR };
 
 struct Frame {
@@ -164,3 +166,5 @@ struct Value {
     ValueType valueType;
     std::shared_ptr<void> valuePtr;
 };
+
+} // namespace donde
