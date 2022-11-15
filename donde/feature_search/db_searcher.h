@@ -2,7 +2,7 @@
 
 #include "definitions.h"
 #include "driver.h"
-#include "faiss/Index2Layer.h"
+// #include "faiss/Index2Layer.h"
 #include "nlohmann/json.hpp"
 
 #include <map>

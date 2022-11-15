@@ -24,11 +24,11 @@ if (NOT DEFINED CONAN_ALREADY_SETUP)
   set(CONAN_ALREADY_SETUP true)
 endif()
 
-# ----- openvino library ----
-# install openvino distribution for macos
-
-set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}, "/usr/local/runtime/cmake")
-find_package(OpenVINO REQUIRED COMPONENTS Runtime)
+# # ----- openvino library ----
+# # install openvino distribution for macos
+#
+# set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}, "/usr/local/runtime/cmake")
+# find_package(OpenVINO REQUIRED COMPONENTS Runtime)
 
 
 set(CONAN_LIBs
@@ -57,7 +57,7 @@ target_include_directories(feature_extract
   # $<INSTALL_INTERFACE:../include/${PROJECT_NAME}-${PROJECT_VERSION}>
 )
 target_link_libraries(feature_extract
-	${CONAN_LIBs} openvino::runtime Donde)
+	${CONAN_LIBs} Donde)
 
 
 ######################################################
@@ -73,7 +73,7 @@ target_include_directories(feature_search_manager
 )
 
 target_link_libraries(feature_search_manager
-	${CONAN_LIBs} openvino::runtime Donde)
+	${CONAN_LIBs} Donde)
 
 ######################################################
 # ---- Create feature_search_worker executable ----
@@ -87,4 +87,4 @@ target_include_directories(feature_search_worker
          # $<INSTALL_INTERFACE:../include/${PROJECT_NAME}-${PROJECT_VERSION}>
 )
 target_link_libraries(feature_search_worker
-	${CONAN_LIBs} openvino::runtime Donde)
+	${CONAN_LIBs} Donde)

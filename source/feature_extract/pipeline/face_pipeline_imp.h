@@ -3,7 +3,7 @@
 #include "donde/definitions.h"
 #include "donde/feature_extract/face_pipeline.h"
 #include "donde/feature_extract/processor.h"
-#include "faiss/Index2Layer.h"
+// #include "faiss/Index2Layer.h"
 #include "nlohmann/json.hpp"
 
 #include <map>

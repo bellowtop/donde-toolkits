@@ -26,11 +26,11 @@ if (NOT DEFINED CONAN_ALREADY_SETUP)
 endif()
 
 
-# ----- openvino library ----
-# install openvino distribution for macos
-
-set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}, "/usr/local/runtime/cmake")
-find_package(OpenVINO REQUIRED COMPONENTS Runtime)
+# # ----- openvino library ----
+# # install openvino distribution for macos
+#
+# set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}, "/usr/local/runtime/cmake")
+# find_package(OpenVINO REQUIRED COMPONENTS Runtime)
 
 
 # ---- Create executable ----
@@ -57,7 +57,6 @@ target_link_libraries(${PROJECT_NAME}
 	CONAN_PKG::toml11
 	CONAN_PKG::gtest
 	CONAN_PKG::trompeloeil
-	openvino::runtime
 
 	Donde
 	)

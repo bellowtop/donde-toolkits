@@ -1,7 +1,7 @@
 #pragma once
 
 #include "donde/feature_search/definitions.h"
-#include "faiss/Index2Layer.h"
+// #include "faiss/Index2Layer.h"
 #include "nlohmann/json.hpp"
 
 #include <map>

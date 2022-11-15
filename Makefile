@@ -27,7 +27,6 @@ build-pre: conan
 	cmake -S servers -B build/servers
 	cmake -S tests   -B build/tests
 	cmake            -B build
-	cmake -S proto   -B build/proto
 
 build-proto:
 	cd proto && ./build_proto.sh

@@ -20,18 +20,18 @@ endif()
 
 # ----- openvino library ----
 # install openvino distribution for macos
-# set(OpenVINO_DIR "/opt/intel/openvino_2022/runtime/cmake")
+set(OpenVINO_DIR "/code/l_openvino_toolkit_runtime_ubuntu20_p_2022.1.0.643/runtime/cmake")
 
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}, "/usr/local/runtime/cmake")
 find_package(OpenVINO REQUIRED COMPONENTS Runtime)
 
 # faiss
-find_package(faiss CONFIG REQUIRED)
-if (faiss_FOUND)
-  message(STATUS "faiss found ${faiss_FOUND}, ${faiss_INCLUDE_DIR}, ${faiss_LIBRARIES}")
-else()
-  message(STATUS "faiss not found, ${faiss_INCLUDE_DIR}, ${faiss_LIBRARIES}")
-endif()
+# find_package(faiss CONFIG REQUIRED)
+# if (faiss_FOUND)
+#   message(STATUS "faiss found ${faiss_FOUND}, ${faiss_INCLUDE_DIR}, ${faiss_LIBRARIES}")
+# else()
+#   message(STATUS "faiss not found, ${faiss_INCLUDE_DIR}, ${faiss_LIBRARIES}")
+# endif()
 
 
 

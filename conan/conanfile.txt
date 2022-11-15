@@ -40,6 +40,9 @@ poco:enable_data_odbc=False
 poco:enable_data_postgresql=False
 poco:enable_data_sqlite=False
 poco:enable_redis=False
+poco:enable_crypto=False
+poco:enable_jwt=False
+poco:enable_netssl=False
 
 opencv:with_ffmpeg=False
 

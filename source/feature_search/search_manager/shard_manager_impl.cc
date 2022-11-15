@@ -39,9 +39,9 @@ std::tuple<Shard*, bool> ShardManagerImpl::FindOrCreateWritableShard(std::string
     // create new shard;
     DBShard shard_info{
         .db_id = db_id,
-        .is_closed = false,
         .capacity = DEFAULT_SHARD_CAPACITY,
         .used = 0,
+        .is_closed = false,
     };
 
     std::string shard_id = CreateShard(shard_info);

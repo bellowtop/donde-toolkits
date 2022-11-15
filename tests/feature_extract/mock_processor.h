@@ -3,6 +3,7 @@
 #include "donde/feature_extract/processor.h"
 #include "donde/feature_extract/worker.h"
 #include "source/feature_extract/processor/concurrent_processor_impl.h"
+#include "source/feature_extract/processor/worker_base_impl.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -27,7 +28,7 @@ class MockProcessor : public Processor {
     ~MockProcessor() override { Die(); };
 };
 
-class MockWorker : public Worker {
+class MockWorker : public WorkerBaseImpl {
 
   public:
     MOCK_METHOD(RetCode, Init, (json conf, int id, std::string device_id), (override));

@@ -1,10 +1,10 @@
 #include "worker_impl.h"
 
+#include "Poco/RunnableAdapter.h"
 #include "api/feature_search_inner.grpc.pb.h"
 #include "api/feature_search_inner.pb.h"
 #include "grpcpp/create_channel.h"
 #include "grpcpp/security/credentials.h"
-#include "poco/RunnableAdapter.h"
 
 #include <chrono>
 #include <cstdlib>
