@@ -50,7 +50,7 @@ RetCode ShardImpl::AssignWorker(Worker* worker) {
         spdlog::error("shard already has worker, double AssignWorker??.");
         return RetCode::RET_ERR;
     }
-    if (worker != nullptr) {
+    if (worker == nullptr) {
         spdlog::error("assigned null worker?");
         return RetCode::RET_ERR;
     }
