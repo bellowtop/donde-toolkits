@@ -85,7 +85,7 @@ RetCode ConcurrentProcessorImpl<T, typename std::enable_if_t<std::is_base_of_v<W
     _pool.addCapacity(concurrent);
 
     for (int i = 0; i < concurrent; i++) {
-        auto worker = std::make_shared<T>(T(_channel));
+        auto worker = std::make_shared<T>(_channel);
         RetCode ret = worker->Init(conf, i, device_id);
         if (ret != RET_OK) {
             spdlog::error("failed to init worker");

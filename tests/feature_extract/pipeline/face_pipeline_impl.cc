@@ -9,7 +9,7 @@
 #include <filesystem>
 #include <fstream>
 #include <gmock/gmock-actions.h>
-#include <gtest/gmock.h>
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <iostream>
 #include <memory>
@@ -36,6 +36,8 @@ using donde::feature_extract::openvino_worker::AlignerWorker;
 using donde::feature_extract::openvino_worker::DetectorWorker;
 using donde::feature_extract::openvino_worker::FeatureWorker;
 using donde::feature_extract::openvino_worker::LandmarksWorker;
+
+using testing::Return;
 
 TEST(FeatureExtract, FacePipelineCanDecodeImageBinaryToFrame) {
 
@@ -265,7 +267,7 @@ TEST(FeatureExtract, FacePipelineExtractFaceFeatureFromImageFile) {
     EXPECT_EQ("aa", "aa");
 };
 
-TEST(FeatureExtract, FacePipelineCanManageProcessorLife) {
+TEST(FeatureExtract, FacePipelineCanReleaseProcessorsLifecycle) {
 
     json conf = R"(
 {
@@ -280,15 +282,22 @@ TEST(FeatureExtract, FacePipelineCanManageProcessorLife) {
 
 )"_json;
 
-    // pipeline is responsible to release
+    // pipeline is responsible to release this pointers
     auto detector = new MockProcessor();
 
-    EXPECT_CALL(*detector, Init).WillOnce(testing::Return(RetCode::RET_OK));
-    EXPECT_CALL(*detector, Process).WillOnce(testing::Return(RetCode::RET_OK));
+    EXPECT_CALL(*detector, Init).WillOnce(Return(RetCode::RET_OK));
+    EXPECT_CALL(*detector, Process).WillOnce(Return(RetCode::RET_OK));
+    EXPECT_CALL(*detector, IsInited).WillOnce(Return(true));
+    EXPECT_CALL(*detector, Terminate).WillOnce(Return(RetCode::RET_OK));
+
+    // dtor will be called when pipeline destructed.
+    EXPECT_CALL(*detector, Die);
 
     {
         FacePipelineImpl pipeline{conf};
         pipeline.Init(detector, nullptr, nullptr, nullptr);
+        std::shared_ptr<Frame> frame;
+        std::shared_ptr<DetectResult> out = pipeline.Detect(frame);
         pipeline.Terminate();
     }
 
