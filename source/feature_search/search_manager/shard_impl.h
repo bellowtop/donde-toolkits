@@ -85,7 +85,7 @@ class ShardImpl : public Shard {
     inline bool IsClosed() override { return _shard_info.is_closed; };
 
     // check the shard is closed or not.
-    inline bool IsRunning() override { return _loop_thread.isRunning(); };
+    inline bool IsRunning() override { return !_is_stopped.load(); };
 
     inline std::string GetShardID() override { return _shard_id; };
 
@@ -110,8 +110,10 @@ class ShardImpl : public Shard {
 
     ShardManager* _shard_mgr = nullptr;
 
+    std::atomic<bool> _is_stopped;
     std::shared_ptr<MsgChannel> _channel;
-    Poco::Thread _loop_thread;
+    std::shared_ptr<Poco::Thread> _loop_thread;
+    std::mutex _thread_mu;
 };
 
 class ShardFactoryImpl : public ShardFactory {
