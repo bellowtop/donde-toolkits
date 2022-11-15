@@ -22,7 +22,11 @@ class FacePipeline {
 
     virtual const json& GetConfig() = 0;
 
-    virtual RetCode Init() = 0;
+    // take owner of these input pointers.
+    // implementations should release them in dtor.
+    virtual RetCode Init(Processor* detector, Processor* landmarks, Processor* aligner,
+                         Processor* feature)
+        = 0;
 
     virtual RetCode Terminate() = 0;
 

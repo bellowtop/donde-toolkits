@@ -31,9 +31,14 @@ namespace feature_extract {
 // dummy worker impl
 class WorkerBaseImpl : public Worker {
   public:
-    WorkerBaseImpl(std::shared_ptr<MsgChannel> ch) : Worker(ch), _channel(ch){};
+    WorkerBaseImpl(std::shared_ptr<MsgChannel> ch) : _channel(ch){};
 
-    RetCode Init(json conf, int id, std::string device_id) override { return {}; };
+    RetCode Init(json conf, int id, std::string device_id) override {
+        (void)conf;
+        (void)id;
+        (void)device_id;
+        return {};
+    };
 
     std::string GetName() override { return _name; };
 

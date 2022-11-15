@@ -1,4 +1,6 @@
 #include "Poco/Thread.h"
+#include "donde/definitions.h"
+#include "donde/feature_extract/processor.h"
 #include "nlohmann/json.hpp"
 #include "source/feature_extract/pipeline/face_pipeline_imp.h"
 #include "source/feature_extract/processor/concurrent_processor_impl.h"
@@ -45,34 +47,48 @@ namespace donde {
 
 namespace feature_extract {
 
-FacePipelineImpl::FacePipelineImpl(const json& conf)
-    : _config(conf),
-      _detectorProcessor(std::make_shared<ConcurrentProcessorImpl<DetectorWorker>>()),
-      _landmarksProcessor(std::make_shared<ConcurrentProcessorImpl<LandmarksWorker>>()),
-      _alignerProcessor(std::make_shared<ConcurrentProcessorImpl<AlignerWorker>>()),
-      _featureProcessor(std::make_shared<ConcurrentProcessorImpl<FeatureWorker>>()) {}
+FacePipelineImpl::FacePipelineImpl(const json& conf) : _config(conf) {}
 
-RetCode FacePipelineImpl::Init() {
+RetCode FacePipelineImpl::Init(Processor* detector, Processor* landmarks, Processor* aligner,
+                               Processor* feature) {
+
+    _detectorProcessor.reset(detector);
+    _landmarksProcessor.reset(landmarks);
+    _alignerProcessor.reset(aligner);
+    _featureProcessor.reset(feature);
+
     if (_config.contains("detector")) {
-        RetCode ret = _detectorProcessor->Init(_config["detector"]);
+        if (_detectorProcessor->Init(_config["detector"]) != RetCode::RET_OK) {
+            spdlog::warn("cannot init detector processor");
+            return RetCode::RET_ERR;
+        };
     } else {
         spdlog::warn("no detector found in _config json, skip init detector processor");
     }
 
     if (_config.contains("landmarks")) {
-        RetCode ret = _landmarksProcessor->Init(_config["landmarks"]);
+        if (_landmarksProcessor->Init(_config["landmarks"]) != RetCode::RET_OK) {
+            spdlog::warn("cannot init landmarks processor");
+            return RetCode::RET_ERR;
+        };
     } else {
         spdlog::warn("no landmarks found in _config json, skip init landmarks processor");
     }
 
     if (_config.contains("aligner")) {
-        RetCode ret = _alignerProcessor->Init(_config["aligner"]);
+        if (_alignerProcessor->Init(_config["aligner"]) != RetCode::RET_OK) {
+            spdlog::warn("cannot init aligner processor");
+            return RetCode::RET_ERR;
+        };
     } else {
         spdlog::warn("no aligner found in _config json, skip init aligner processor");
     }
 
     if (_config.contains("feature")) {
-        RetCode ret = _featureProcessor->Init(_config["feature"]);
+        if (_featureProcessor->Init(_config["feature"]) != RetCode::RET_OK) {
+            spdlog::warn("cannot init feature processor");
+            return RetCode::RET_ERR;
+        };
     } else {
         spdlog::warn("no feature found in _config json, skip init feature processor");
     }
@@ -81,19 +97,19 @@ RetCode FacePipelineImpl::Init() {
 }
 
 RetCode FacePipelineImpl::Terminate() {
-    if (_detectorProcessor->IsInited()) {
+    if (_detectorProcessor && _detectorProcessor->IsInited()) {
         RetCode ret = _detectorProcessor->Terminate();
     }
 
-    if (_landmarksProcessor->IsInited()) {
+    if (_landmarksProcessor && _landmarksProcessor->IsInited()) {
         RetCode ret = _landmarksProcessor->Terminate();
     }
 
-    if (_alignerProcessor->IsInited()) {
+    if (_alignerProcessor && _alignerProcessor->IsInited()) {
         RetCode ret = _alignerProcessor->Terminate();
     }
 
-    if (_featureProcessor->IsInited()) {
+    if (_featureProcessor && _featureProcessor->IsInited()) {
         RetCode ret = _featureProcessor->Terminate();
     }
 

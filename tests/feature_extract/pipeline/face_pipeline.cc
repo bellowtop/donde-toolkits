@@ -3,10 +3,13 @@
 #include "source/feature_extract/pipeline/face_pipeline_imp.h"
 #include "source/feature_extract/processor/concurrent_processor_impl.h"
 #include "source/feature_extract/processor/openvino_worker/workers_impl.h"
+#include "tests/feature_extract/mock_processor.h"
 
 #include <Poco/Logger.h>
 #include <filesystem>
 #include <fstream>
+#include <gmock/gmock-actions.h>
+#include <gtest/gmock.h>
 #include <gtest/gtest.h>
 #include <iostream>
 #include <memory>
@@ -28,6 +31,12 @@ using donde::LandmarksResult;
 
 using nlohmann::json;
 
+using donde::feature_extract::ConcurrentProcessorImpl;
+using donde::feature_extract::openvino_worker::AlignerWorker;
+using donde::feature_extract::openvino_worker::DetectorWorker;
+using donde::feature_extract::openvino_worker::FeatureWorker;
+using donde::feature_extract::openvino_worker::LandmarksWorker;
+
 TEST(FeatureExtract, FacePipelineCanDecodeImageBinaryToFrame) {
 
     json conf = R"(
@@ -44,7 +53,11 @@ TEST(FeatureExtract, FacePipelineCanDecodeImageBinaryToFrame) {
 )"_json;
 
     FacePipelineImpl pipeline{conf};
-    pipeline.Init();
+
+    // pipeline is responsible to release
+    auto detector = new ConcurrentProcessorImpl<DetectorWorker>();
+
+    pipeline.Init(detector, nullptr, nullptr, nullptr);
 
     // read image data;
     // std::string img_path = "./contrib/data/test_image2.png";
@@ -114,8 +127,12 @@ TEST(FeatureExtract, FacePipelineCanDetectLandmarksFromDetectResult) {
 }
 )"_json;
 
+    // pipeline is responsible to release
+    auto landmarks = new ConcurrentProcessorImpl<LandmarksWorker>();
+    auto aligner = new ConcurrentProcessorImpl<AlignerWorker>();
+
     FacePipelineImpl pipeline{conf};
-    pipeline.Init();
+    pipeline.Init(nullptr, landmarks, aligner, nullptr);
 
     std::string warmup_image = "./contrib/data/test_image_5_person.jpeg";
     cv::Mat img = cv::imread(warmup_image);
@@ -181,8 +198,14 @@ TEST(FeatureExtract, FacePipelineExtractFaceFeatureFromImageFile) {
 }
 )"_json;
 
+    // pipeline is responsible to release
+    auto detector = new ConcurrentProcessorImpl<DetectorWorker>();
+    auto landmarks = new ConcurrentProcessorImpl<LandmarksWorker>();
+    auto aligner = new ConcurrentProcessorImpl<AlignerWorker>();
+    auto feature = new ConcurrentProcessorImpl<FeatureWorker>();
+
     FacePipelineImpl pipeline{conf};
-    pipeline.Init();
+    pipeline.Init(detector, landmarks, aligner, feature);
 
     std::string img_path = "./contrib/data/test_image_5_person.jpeg";
     // std::string img_path = "./contrib/data/zly_1.jpeg";
@@ -238,6 +261,36 @@ TEST(FeatureExtract, FacePipelineExtractFaceFeatureFromImageFile) {
     }
 
     pipeline.Terminate();
+
+    EXPECT_EQ("aa", "aa");
+};
+
+TEST(FeatureExtract, FacePipelineCanManageProcessorLife) {
+
+    json conf = R"(
+{
+  "detector": {
+    "concurrent": 2,
+    "device_id": "CPU",
+    "model": "./contrib/models/face-detection-adas-0001.xml",
+    "warmup": false
+  }
+}
+
+
+)"_json;
+
+    // pipeline is responsible to release
+    auto detector = new MockProcessor();
+
+    EXPECT_CALL(*detector, Init).WillOnce(testing::Return(RetCode::RET_OK));
+    EXPECT_CALL(*detector, Process).WillOnce(testing::Return(RetCode::RET_OK));
+
+    {
+        FacePipelineImpl pipeline{conf};
+        pipeline.Init(detector, nullptr, nullptr, nullptr);
+        pipeline.Terminate();
+    }
 
     EXPECT_EQ("aa", "aa");
 };

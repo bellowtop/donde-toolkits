@@ -10,6 +10,8 @@
 #include "donde/utils.h"
 #include "nlohmann/json.hpp"
 #include "source/feature_extract/pipeline/face_pipeline.h"
+#include "source/feature_extract/processor/concurrent_processor_impl.h"
+#include "source/feature_extract/processor/openvino_worker/workers_impl.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
 
@@ -54,13 +56,28 @@ using grpc::StatusCode;
 
 using json = nlohmann::json;
 
+using donde::feature_extract::ConcurrentProcessorImpl;
+using donde::feature_extract::openvino_worker::AlignerWorker;
+using donde::feature_extract::openvino_worker::DetectorWorker;
+using donde::feature_extract::openvino_worker::FeatureWorker;
+using donde::feature_extract::openvino_worker::LandmarksWorker;
+
 FaceServiceImpl::FaceServiceImpl(Config& server_config)
     : config(server_config),
       device_id(server_config.get_device_id()),
       pipeline(config.get_pipeline_config()){};
+
 FaceServiceImpl::~FaceServiceImpl(){};
 
-void FaceServiceImpl::Start() { pipeline.Init(); };
+void FaceServiceImpl::Start() {
+    // pipeline is responsible to release
+    auto detector = new ConcurrentProcessorImpl<DetectorWorker>();
+    auto landmarks = new ConcurrentProcessorImpl<LandmarksWorker>();
+    auto aligner = new ConcurrentProcessorImpl<AlignerWorker>();
+    auto feature = new ConcurrentProcessorImpl<FeatureWorker>();
+
+    pipeline.Init(detector, landmarks, aligner, feature);
+}
 
 void FaceServiceImpl::Stop() { pipeline.Terminate(); };
 

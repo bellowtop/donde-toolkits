@@ -65,7 +65,7 @@ template <typename T>
 ConcurrentProcessorImpl<
     T, typename std::enable_if_t<std::is_base_of_v<Worker, T>>>::ConcurrentProcessorImpl()
     : _name("concurrent-process-master"),
-      _pool(Poco::ThreadPool(1, 1)),
+      _pool(Poco::ThreadPool(1, 1)),            // TODO 1,1?
       _channel(std::make_shared<MsgChannel>()), // create a channel
       _workers(0){};
 

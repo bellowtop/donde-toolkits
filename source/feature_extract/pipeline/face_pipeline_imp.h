@@ -23,7 +23,8 @@ class FacePipelineImpl : public FacePipeline {
 
     const json& GetConfig() override { return _config; };
 
-    RetCode Init() override;
+    RetCode Init(Processor* detector, Processor* landmarks, Processor* aligner,
+                 Processor* feature) override;
 
     RetCode Terminate() override;
 

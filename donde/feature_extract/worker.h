@@ -22,7 +22,6 @@ namespace feature_extract {
 
 class Worker : public Runnable {
   public:
-    Worker(std::shared_ptr<MsgChannel> ch);
     virtual ~Worker() = default;
 
     virtual RetCode Init(json conf, int id, std::string device_id) = 0;
