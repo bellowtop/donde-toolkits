@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 
 # use llvm clang, not the apple clang
@@ -8,8 +8,10 @@ set(CMAKE_CXX_STANDARD 17)
 # set(CMAKE_CXX_COMPILER  /opt/homebrew/opt/llvm@14/bin/clang++ )
 
 
-add_compile_options("-fstandalone-debug")
-add_compile_options("-stdlib=libc++")
+# add_compile_options("-fstandalone-debug")
+# add_compile_options("-stdlib=libc++")
+
+add_compile_options("-std=c++20")
 
 project(FaceRecognitionTests LANGUAGES CXX)
 
@@ -64,7 +66,7 @@ target_link_libraries(${PROJECT_NAME}
 # enable compiler warnings
 if(NOT TEST_INSTALLED_VERSION)
   if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    target_compile_options(${PROJECT_NAME} PUBLIC -Wall -Wpedantic -Wextra -Werror)
+    target_compile_options(${PROJECT_NAME} PUBLIC -Wall -Wpedantic -Wextra )
   elseif(MSVC)
     target_compile_options(${PROJECT_NAME} PUBLIC /W4 /WX)
     target_compile_definitions(${PROJECT_NAME} PUBLIC DOCTEST_CONFIG_USE_STD_HEADERS)

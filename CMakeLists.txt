@@ -20,7 +20,7 @@ endif()
 
 # ----- openvino library ----
 # install openvino distribution for macos
-set(OpenVINO_DIR "/code/l_openvino_toolkit_runtime_ubuntu20_p_2022.1.0.643/runtime/cmake")
+set(OpenVINO_DIR "/code/l_openvino_toolkit_debian9_arm_2022.2.0.7713.af16ea1d79a_armhf/runtime/cmake")
 
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}, "/usr/local/runtime/cmake")
 find_package(OpenVINO REQUIRED COMPONENTS Runtime)

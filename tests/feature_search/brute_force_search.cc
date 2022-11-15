@@ -42,8 +42,8 @@ class SearchManager_BruteForceSearch : public ::testing::Test {
         store = new SimpleDriver("/tmp/test_store");
         DBItem db1{
             .name = "test-db1",
-            .description = "this is a test db",
             .capacity = 1024,
+            .description = "this is a test db",
         };
 
         db_id = store->CreateDB(db1);
