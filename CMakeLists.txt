@@ -20,7 +20,7 @@ endif()
 
 # ----- openvino library ----
 # install openvino distribution for macos
-set(OpenVINO_DIR "/code/l_openvino_toolkit_debian9_arm_2022.2.0.7713.af16ea1d79a_armhf/runtime/cmake")
+set(OpenVINO_DIR "./l_openvino_toolkit_ubuntu20_2022.2.0.7713.af16ea1d79a_x86_64/runtime/cmake")
 
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}, "/usr/local/runtime/cmake")
 find_package(OpenVINO REQUIRED COMPONENTS Runtime)
@@ -63,5 +63,5 @@ target_link_libraries(${PROJECT_NAME}
 	CONAN_PKG::nlohmann_json
 	CONAN_PKG::cassandra-cpp-driver
 	openvino::runtime
-	faiss
+	# faiss
 	)
