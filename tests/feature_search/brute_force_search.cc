@@ -96,7 +96,10 @@ TEST_F(SearchManager_BruteForceSearch, SearchTopkTeatures) {
         // t.target.debugPrint();
 
         for (size_t i = 0; i < t.target.raw.size(); i++) {
-            EXPECT_EQ(t.target.raw[i], fts[0].feature.raw[i]);
+            if (t.target.raw[i] != query.raw[i]) {
+                std::cout << "i : " << i << std::endl;
+            }
+            EXPECT_EQ(t.target.raw[i], query.raw[i]);
         }
     }
 }

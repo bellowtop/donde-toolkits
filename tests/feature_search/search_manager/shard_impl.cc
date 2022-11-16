@@ -46,31 +46,18 @@ TEST_F(SearchManager_Shard, CanStartStop) {
     // impl.Start();
 
     EXPECT_EQ(impl.IsRunning(), true);
-
-    std::cout << "stop()..." << std::endl;
-
-    impl.Stop();
-
-    std::cout << "sleep" << std::endl;
-
-    // let the shard loop run...
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
+    impl.Stop();
     EXPECT_EQ(impl.IsRunning(), false);
 
     // manually start again
     impl.Start();
-
     EXPECT_EQ(impl.IsRunning(), true);
-
-    impl.Stop();
-
-    std::cout << "sleep2" << std::endl;
-    // let the shard loop run...
+    // let it running for a while
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
-    std::cout << "ddddddddd" << std::endl;
-
+    impl.Stop();
     EXPECT_EQ(impl.IsRunning(), false);
 };
 

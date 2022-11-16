@@ -8,6 +8,7 @@
 #include <Poco/Thread.h>
 #include <memory>
 #include <string>
+#include <thread>
 #include <unordered_map>
 #include <vector>
 
@@ -112,7 +113,7 @@ class ShardImpl : public Shard {
 
     std::atomic<bool> _is_stopped;
     std::shared_ptr<MsgChannel> _channel;
-    std::shared_ptr<Poco::Thread> _loop_thread;
+    std::shared_ptr<std::thread> _loop_thread;
     std::mutex _thread_mu;
 };
 

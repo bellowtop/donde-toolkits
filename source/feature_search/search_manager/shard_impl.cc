@@ -1,7 +1,5 @@
 #include "shard_impl.h"
 
-#include <Poco/RunnableAdapter.h>
-#include <Poco/Thread.h>
 #include <exception>
 #include <memory>
 #include <mutex>
@@ -36,10 +34,7 @@ void ShardImpl::Start() {
         return;
     }
 
-    Poco::RunnableAdapter<ShardImpl> ra(*this, &ShardImpl::loop);
-    auto t = new Poco::Thread();
-    t->start(ra);
-    _loop_thread.reset(t);
+    _loop_thread.reset(new std::thread(&ShardImpl::loop, std::ref(*this)));
 
     auto c = new MsgChannel();
     _channel.reset(c);
@@ -56,17 +51,11 @@ void ShardImpl::Stop() {
     }
 
     _is_stopped.store(true);
-
-    std::cout << "wakeUpAll" << std::endl;
-
     _channel->wakeUpAll();
-
-    std::cout << "try join" << std::endl;
 
     try {
         if (_loop_thread) {
             _loop_thread->join();
-            std::cout << "after join1" << std::endl;
             // release thread.
             _loop_thread.reset();
         }
@@ -155,13 +144,13 @@ RetCode ShardImpl::Close() {
 void ShardImpl::loop() {
     for (;;) {
         if (_is_stopped.load()) {
-            std::cout << "is_stopped, break;" << std::endl;
+            spdlog::info("get stopped flag, break loop");
             break;
         }
         // output is a blocking call.
         Notification::Ptr pNf = _channel->waitDequeueNotification(WAIT_MSG_INTERVAL_MS);
         if (pNf.isNull()) {
-            std::cout << "null value, continue" << std::endl;
+            spdlog::info("get null message, continue loop");
             continue;
         }
 
