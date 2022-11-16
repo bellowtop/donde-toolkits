@@ -107,7 +107,7 @@ struct Feature {
     };
 
     // message pack
-    MSGPACK_DEFINE(model, version, dimension, raw);
+    MSGPACK_DEFINE(model, version, dimension, raw)
 };
 
 struct FeatureScore {

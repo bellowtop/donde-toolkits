@@ -38,8 +38,8 @@ class SearchManager_SimpleDriver : public ::testing::Test {
 
         db1 = DBItem{
             .name = "test-db1",
-            .description = "this is a test db",
             .capacity = 1024,
+            .description = "this is a test db",
         };
 
         db_id = store->CreateDB(db1);
@@ -94,18 +94,18 @@ TEST_F(SearchManager_SimpleDriver, DBlist) {
 
     DBItem db1{
         .name = "test-db1",
-        .description = "this is a test db1",
         .capacity = 1024,
+        .description = "this is a test db1",
     };
     DBItem db2{
         .name = "test-db2",
-        .description = "this is a test db2",
         .capacity = 1024 * 1024,
+        .description = "this is a test db2",
     };
     DBItem db3{
         .name = "test-db3",
-        .description = "this is a test db3",
         .capacity = 1024 * 1024 * 1024,
+        .description = "this is a test db3",
     };
 
     std::string db_id1 = store->CreateDB(db1);

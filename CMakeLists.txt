@@ -19,19 +19,22 @@ endif()
 
 
 # ----- openvino library ----
-# install openvino distribution for macos
-# set(OpenVINO_DIR "/opt/intel/openvino_2022/runtime/cmake")
+# install openvino distribution
+if(APPLE)
+  set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}, "/usr/local/runtime/cmake")
+  find_package(OpenVINO REQUIRED COMPONENTS Runtime)
+elseif(UNIX AND NOT APPLE)
+  set(OpenVINO_DIR "/opt/l_openvino_toolkit_ubuntu20_2022.2.0.7713.af16ea1d79a_x86_64/runtime/cmake")
+endif()
 
-set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}, "/usr/local/runtime/cmake")
-find_package(OpenVINO REQUIRED COMPONENTS Runtime)
 
 # faiss
-find_package(faiss CONFIG REQUIRED)
-if (faiss_FOUND)
-  message(STATUS "faiss found ${faiss_FOUND}, ${faiss_INCLUDE_DIR}, ${faiss_LIBRARIES}")
-else()
-  message(STATUS "faiss not found, ${faiss_INCLUDE_DIR}, ${faiss_LIBRARIES}")
-endif()
+# find_package(faiss CONFIG REQUIRED)
+# if (faiss_FOUND)
+#   message(STATUS "faiss found ${faiss_FOUND}, ${faiss_INCLUDE_DIR}, ${faiss_LIBRARIES}")
+# else()
+#   message(STATUS "faiss not found, ${faiss_INCLUDE_DIR}, ${faiss_LIBRARIES}")
+# endif()
 
 
 
@@ -63,5 +66,5 @@ target_link_libraries(${PROJECT_NAME}
 	CONAN_PKG::nlohmann_json
 	CONAN_PKG::cassandra-cpp-driver
 	openvino::runtime
-	faiss
+	# faiss
 	)

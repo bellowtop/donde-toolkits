@@ -1,19 +1,25 @@
 #include "shard_impl.h"
 
-#include <Poco/RunnableAdapter.h>
+#include <exception>
 #include <memory>
+#include <mutex>
 #include <spdlog/spdlog.h>
 
 namespace donde {
 namespace feature_search {
 namespace search_manager {
 
+const int WAIT_MSG_INTERVAL_MS = 3000;
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Shard
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ShardImpl::ShardImpl(ShardManager* manager, DBShard shard_info)
-    : _shard_info(shard_info), _shard_id(shard_info.shard_id), _db_id(shard_info.db_id) {
+    : _shard_info(shard_info),
+      _shard_id(shard_info.shard_id),
+      _db_id(shard_info.db_id),
+      _is_stopped(true) {
 
     Start();
 };
@@ -21,29 +27,45 @@ ShardImpl::ShardImpl(ShardManager* manager, DBShard shard_info)
 ShardImpl::~ShardImpl() { Stop(); };
 
 void ShardImpl::Start() {
-    if (IsRunning()) {
+    std::lock_guard<std::mutex> l(_thread_mu);
+
+    if (!_is_stopped.load()) {
         spdlog::warn("shard already is running, double Start??.");
         return;
     }
-    _channel = std::make_shared<MsgChannel>();
 
-    Poco::RunnableAdapter<ShardImpl> ra(*this, &ShardImpl::loop);
-    _loop_thread.start(ra);
+    // create new thread
+    _loop_thread.reset(new std::thread(&ShardImpl::loop, std::ref(*this)));
+    _channel.reset(new MsgChannel());
+
+    _is_stopped.store(false);
 };
 
 void ShardImpl::Stop() {
-    if (!IsRunning()) {
+    std::lock_guard<std::mutex> l(_thread_mu);
+
+    if (_is_stopped.load()) {
         spdlog::warn("shard already is stopped, double Stop??.");
         return;
     }
 
+    _is_stopped.store(true);
     _channel->wakeUpAll();
 
-    if (_loop_thread.isRunning()) {
-        _loop_thread.join();
+    try {
+        if (_loop_thread) {
+            _loop_thread->join();
+            // release thread.
+            _loop_thread.reset();
+        }
+    } catch (const std::exception& exc) {
+        spdlog::warn("catch exc when join thread {}.", exc.what());
     }
-}
+    // release channel
+    _channel.reset();
 
+    std::cout << "after join" << std::endl;
+}
 // Assign a worker for this shard.
 RetCode ShardImpl::AssignWorker(Worker* worker) {
     if (_worker != nullptr) {
@@ -120,10 +142,15 @@ RetCode ShardImpl::Close() {
 
 void ShardImpl::loop() {
     for (;;) {
-        // output is a blocking call.
-        Notification::Ptr pNf = _channel->waitDequeueNotification();
-        if (pNf.isNull()) {
+        if (_is_stopped.load()) {
+            spdlog::info("get stopped flag, break loop");
             break;
+        }
+        // output is a blocking call.
+        Notification::Ptr pNf = _channel->waitDequeueNotification(WAIT_MSG_INTERVAL_MS);
+        if (pNf.isNull()) {
+            spdlog::info("get null message, continue loop");
+            continue;
         }
 
         WorkMessage<shardOp>::Ptr msg = pNf.cast<WorkMessage<shardOp>>();

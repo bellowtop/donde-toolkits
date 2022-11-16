@@ -3,6 +3,7 @@
 !/build/compile_commands.json
 !/build2/compile_commands.json
 
+/*_openvino_*
 /.vscode
 /cpm_modules
 .DS_Store

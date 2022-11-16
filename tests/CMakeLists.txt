@@ -8,8 +8,15 @@ set(CMAKE_CXX_STANDARD 17)
 # set(CMAKE_CXX_COMPILER  /opt/homebrew/opt/llvm@14/bin/clang++ )
 
 
-add_compile_options("-fstandalone-debug")
-add_compile_options("-stdlib=libc++")
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options("-fstandalone-debug")
+  add_compile_options("-stdlib=libc++")
+
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+  add_compile_options("-std=c++20")
+  set(CMAKE_CXX_STANDARD 20)
+
+endif()
 
 project(FaceRecognitionTests LANGUAGES CXX)
 
@@ -26,11 +33,11 @@ if (NOT DEFINED CONAN_ALREADY_SETUP)
 endif()
 
 
-# ----- openvino library ----
-# install openvino distribution for macos
-
-set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}, "/usr/local/runtime/cmake")
-find_package(OpenVINO REQUIRED COMPONENTS Runtime)
+# # ----- openvino library ----
+# # install openvino distribution for macos
+#
+# set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}, "/usr/local/runtime/cmake")
+# find_package(OpenVINO REQUIRED COMPONENTS Runtime)
 
 
 # ---- Create executable ----
@@ -57,7 +64,6 @@ target_link_libraries(${PROJECT_NAME}
 	CONAN_PKG::toml11
 	CONAN_PKG::gtest
 	CONAN_PKG::trompeloeil
-	openvino::runtime
 
 	Donde
 	)
@@ -65,7 +71,7 @@ target_link_libraries(${PROJECT_NAME}
 # enable compiler warnings
 if(NOT TEST_INSTALLED_VERSION)
   if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    target_compile_options(${PROJECT_NAME} PUBLIC -Wall -Wpedantic -Wextra -Werror)
+    target_compile_options(${PROJECT_NAME} PUBLIC -Wall -Wpedantic -Wextra )
   elseif(MSVC)
     target_compile_options(${PROJECT_NAME} PUBLIC /W4 /WX)
     target_compile_definitions(${PROJECT_NAME} PUBLIC DOCTEST_CONFIG_USE_STD_HEADERS)
