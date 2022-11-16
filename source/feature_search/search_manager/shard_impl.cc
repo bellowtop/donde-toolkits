@@ -34,10 +34,9 @@ void ShardImpl::Start() {
         return;
     }
 
+    // create new thread
     _loop_thread.reset(new std::thread(&ShardImpl::loop, std::ref(*this)));
-
-    auto c = new MsgChannel();
-    _channel.reset(c);
+    _channel.reset(new MsgChannel());
 
     _is_stopped.store(false);
 };
