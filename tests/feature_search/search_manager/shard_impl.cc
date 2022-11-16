@@ -1,5 +1,6 @@
 #include "source/feature_search/search_manager/shard_impl.h"
 
+#include "donde/definitions.h"
 #include "donde/feature_search/api.h"
 #include "donde/feature_search/definitions.h"
 #include "donde/feature_search/search_manager/shard_manager.h"
@@ -10,6 +11,7 @@
 #include <chrono>
 #include <cstdlib>
 #include <filesystem>
+#include <gmock/gmock-nice-strict.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <iostream>
@@ -24,6 +26,8 @@ using nlohmann::json;
 
 using namespace donde::feature_search;
 using namespace donde::feature_search::search_manager;
+
+using testing::NiceMock;
 
 namespace {
 
@@ -79,6 +83,33 @@ TEST_F(SearchManager_Shard, CanAssignWorker) {
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
     EXPECT_EQ(impl.HasWorker(), true);
+};
+
+TEST_F(SearchManager_Shard, CanCloseShard) {
+    DBShard shard_info;
+
+    MockShardManager mMgr;
+    ShardImpl impl(&mMgr, shard_info);
+
+    // 1. no worker yet
+    EXPECT_EQ(impl.HasWorker(), false);
+
+    EXPECT_EQ(impl.Close(), RetCode::RET_ERR);
+
+    // 2. after assign worker
+    NiceMock<MockWorker> mWorker;
+    EXPECT_CALL(mWorker, CloseShard);
+    EXPECT_CALL(mMgr, CloseShard);
+
+    impl.AssignWorker(&mWorker);
+
+    EXPECT_EQ(impl.HasWorker(), true);
+
+    // 3. now can close, and worker.CloseShard must be called.
+    EXPECT_EQ(impl.Close(), RetCode::RET_OK);
+
+    // let the loop run...
+    std::this_thread::sleep_for(std::chrono::seconds(1));
 }
 
 } // namespace

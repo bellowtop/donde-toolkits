@@ -1,5 +1,7 @@
 #include "shard_impl.h"
 
+#include "donde/definitions.h"
+
 #include <exception>
 #include <memory>
 #include <mutex>
@@ -19,6 +21,7 @@ ShardImpl::ShardImpl(ShardManager* manager, DBShard shard_info)
     : _shard_info(shard_info),
       _shard_id(shard_info.shard_id),
       _db_id(shard_info.db_id),
+      _shard_mgr(manager),
       _is_stopped(true) {
 
     Start();
@@ -65,11 +68,16 @@ void ShardImpl::Stop() {
     _channel.reset();
 
     std::cout << "after join" << std::endl;
-}
+};
+
+//////////////////////////////////////////////////////////////////////////////////
+// Feature management
+//////////////////////////////////////////////////////////////////////////////////
+
 // Assign a worker for this shard.
 RetCode ShardImpl::AssignWorker(Worker* worker) {
-    if (_worker != nullptr) {
-        spdlog::error("shard already has worker, double AssignWorker??.");
+    if (HasWorker()) {
+        spdlog::error("shard already has worker, double AssignWorker.");
         return RetCode::RET_ERR;
     }
     if (worker == nullptr) {
@@ -90,7 +98,7 @@ RetCode ShardImpl::AssignWorker(Worker* worker) {
 
 // AddFeatures to this shard, delegate to worker client to do the actual storage.
 RetCode ShardImpl::AddFeatures(const std::vector<Feature>& fts) {
-    if (_worker == nullptr) {
+    if (!HasWorker()) {
         spdlog::error("shard has no worker, AssignWorker first.");
         return RetCode::RET_ERR;
     }
@@ -111,7 +119,7 @@ RetCode ShardImpl::AddFeatures(const std::vector<Feature>& fts) {
 
 // SearchFeature in this shard, delegate to worker client to do the actual search.
 std::vector<FeatureScore> ShardImpl::SearchFeature(const Feature& query, int topk) {
-    if (_worker == nullptr) {
+    if (!HasWorker()) {
         spdlog::error("shard has no worker, AssignWorker first.");
         return {};
     }
@@ -128,6 +136,11 @@ std::vector<FeatureScore> ShardImpl::SearchFeature(const Feature& query, int top
 };
 
 RetCode ShardImpl::Close() {
+    if (!HasWorker()) {
+        spdlog::error("shard has no worker, AssignWorker first.");
+        return RetCode::RET_ERR;
+    }
+
     auto msg = NewWorkMessage(shardOp{closeShardReqType});
     _channel->enqueueNotification(msg);
     auto output = msg->waitResponse();
