@@ -30,9 +30,9 @@ using namespace donde::feature_search::search_manager;
 
 using testing::NiceMock;
 
-namespace {
+namespace search_manager {
 
-class SearchManager_Shard : public ::testing::Test {
+class TestShardImpl : public ::testing::Test {
   protected:
     void SetUp() override{
 
@@ -54,7 +54,7 @@ class SearchManager_Shard : public ::testing::Test {
     void TearDown() override{};
 };
 
-TEST_F(SearchManager_Shard, CanGetInfo) {
+TEST_F(TestShardImpl, CanGetInfo) {
     DBShard shard_info{
         .db_id = "foo",
         .shard_id = "bar",
@@ -79,7 +79,7 @@ TEST_F(SearchManager_Shard, CanGetInfo) {
     EXPECT_EQ(impl.IsClosed(), shard_info.is_closed);
 };
 
-TEST_F(SearchManager_Shard, CanStartStop) {
+TEST_F(TestShardImpl, CanStartStop) {
     DBShard shard_info;
 
     MockShardManager mMgr;
@@ -104,7 +104,7 @@ TEST_F(SearchManager_Shard, CanStartStop) {
     EXPECT_EQ(impl.IsStopped(), true);
 };
 
-TEST_F(SearchManager_Shard, CanCloseShard) {
+TEST_F(TestShardImpl, CanCloseShard) {
     DBShard shard_info;
 
     MockShardManager mMgr;
@@ -129,7 +129,7 @@ TEST_F(SearchManager_Shard, CanCloseShard) {
     // let the loop run...
     std::this_thread::sleep_for(std::chrono::seconds(1));
 }
-TEST_F(SearchManager_Shard, CanAssignWorker) {
+TEST_F(TestShardImpl, CanAssignWorker) {
     DBShard shard_info;
 
     MockShardManager mMgr;
@@ -151,7 +151,7 @@ TEST_F(SearchManager_Shard, CanAssignWorker) {
     EXPECT_EQ(impl.HasWorker(), true);
 };
 
-TEST_F(SearchManager_Shard, CanAddFeatures) {
+TEST_F(TestShardImpl, CanAddFeatures) {
     DBShard shard_info;
 
     MockShardManager mMgr;
@@ -181,7 +181,7 @@ TEST_F(SearchManager_Shard, CanAddFeatures) {
     EXPECT_EQ(used1 + 10, used2);
 };
 
-TEST_F(SearchManager_Shard, CanSearchFeature) {
+TEST_F(TestShardImpl, CanSearchFeature) {
     DBShard shard_info;
 
     MockShardManager mMgr;
@@ -211,4 +211,4 @@ TEST_F(SearchManager_Shard, CanSearchFeature) {
     EXPECT_EQ(used1 + 10, used2);
 };
 
-} // namespace
+} // namespace search_manager
