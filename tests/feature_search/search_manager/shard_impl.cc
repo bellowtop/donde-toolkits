@@ -54,6 +54,31 @@ class SearchManager_Shard : public ::testing::Test {
     void TearDown() override{};
 };
 
+TEST_F(SearchManager_Shard, CanGetInfo) {
+    DBShard shard_info{
+        .db_id = "foo",
+        .shard_id = "bar",
+        .capacity = 1000,
+        .used = 100,
+        .is_closed = false,
+    };
+
+    MockShardManager mMgr;
+    ShardImpl impl(&mMgr, shard_info);
+
+    auto got = impl.GetShardInfo();
+
+    EXPECT_EQ(got.db_id, shard_info.db_id);
+    EXPECT_EQ(got.shard_id, shard_info.shard_id);
+    EXPECT_EQ(got.capacity, shard_info.capacity);
+    EXPECT_EQ(got.used, shard_info.used);
+    EXPECT_EQ(got.is_closed, shard_info.is_closed);
+
+    // shortcut
+    EXPECT_EQ(impl.GetShardID(), shard_info.shard_id);
+    EXPECT_EQ(impl.IsClosed(), shard_info.is_closed);
+};
+
 TEST_F(SearchManager_Shard, CanStartStop) {
     DBShard shard_info;
 
@@ -155,6 +180,7 @@ TEST_F(SearchManager_Shard, CanAddFeatures) {
     auto used2 = impl.GetShardInfo().used;
     EXPECT_EQ(used1 + 10, used2);
 };
+
 TEST_F(SearchManager_Shard, CanSearchFeature) {
     DBShard shard_info;
 
