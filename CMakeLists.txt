@@ -19,11 +19,14 @@ endif()
 
 
 # ----- openvino library ----
-# install openvino distribution for macos
-set(OpenVINO_DIR "./l_openvino_toolkit_ubuntu20_2022.2.0.7713.af16ea1d79a_x86_64/runtime/cmake")
+# install openvino distribution
+if(APPLE)
+  set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}, "/usr/local/runtime/cmake")
+  find_package(OpenVINO REQUIRED COMPONENTS Runtime)
+elseif(UNIX AND NOT APPLE)
+  set(OpenVINO_DIR "/opt/l_openvino_toolkit_ubuntu20_2022.2.0.7713.af16ea1d79a_x86_64/runtime/cmake")
+endif()
 
-set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}, "/usr/local/runtime/cmake")
-find_package(OpenVINO REQUIRED COMPONENTS Runtime)
 
 # faiss
 # find_package(faiss CONFIG REQUIRED)
