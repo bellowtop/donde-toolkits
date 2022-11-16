@@ -80,13 +80,13 @@ class ShardImpl : public Shard {
     RetCode Close() override;
 
     // check the shard has been assigned worker or not.
-    inline bool HasWorker() override { return _worker == nullptr; };
+    inline bool HasWorker() override { return _worker != nullptr; };
 
     // check the shard is closed or not.
     inline bool IsClosed() override { return _shard_info.is_closed; };
 
     // check the shard is closed or not.
-    inline bool IsRunning() override { return !_is_stopped.load(); };
+    inline bool IsStopped() override { return _is_stopped.load(); };
 
     inline std::string GetShardID() override { return _shard_id; };
 

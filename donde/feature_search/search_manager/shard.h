@@ -44,7 +44,7 @@ class Shard {
     virtual bool IsClosed() = 0;
 
     // check the shard is closed or not.
-    virtual bool IsRunning() = 0;
+    virtual bool IsStopped() = 0;
 
     virtual std::string GetShardID() = 0;
 

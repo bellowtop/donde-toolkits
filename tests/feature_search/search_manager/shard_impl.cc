@@ -45,20 +45,20 @@ TEST_F(SearchManager_Shard, CanStartStop) {
     // already start by constructor.
     // impl.Start();
 
-    EXPECT_EQ(impl.IsRunning(), true);
+    EXPECT_EQ(impl.IsStopped(), false);
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
     impl.Stop();
-    EXPECT_EQ(impl.IsRunning(), false);
+    EXPECT_EQ(impl.IsStopped(), true);
 
     // manually start again
     impl.Start();
-    EXPECT_EQ(impl.IsRunning(), true);
+    EXPECT_EQ(impl.IsStopped(), false);
     // let it running for a while
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
     impl.Stop();
-    EXPECT_EQ(impl.IsRunning(), false);
+    EXPECT_EQ(impl.IsStopped(), true);
 };
 
 TEST_F(SearchManager_Shard, CanAssignWorker) {

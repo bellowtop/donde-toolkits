@@ -11,8 +11,8 @@ Currently developed with macOS, llvm-clang
 - Openvino inference
 - Full pipeline detect/landmarks/align/extract
 - Feature search service with simple store
-- Feature searching with faiss - TODO
-- Feature clustering with faiss - TODO
+- Feature searching with faiss
+- Feature clustering with faiss
 - Master/Workers architecture, Poco messaging
 - Conan to manage dependencies
 - Protobuf proto & GRPC server
