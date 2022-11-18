@@ -1,4 +1,4 @@
-#include "source/feature_search/brute_force_searcher.h"
+#include "brute_force_searcher.h"
 
 #include "nlohmann/json.hpp"
 
@@ -15,6 +15,8 @@ using json = nlohmann::json;
 namespace donde {
 
 namespace feature_search {
+
+namespace search_worker {
 
 BruteForceSearcher::BruteForceSearcher(Driver& driver) : _driver(driver){};
 
@@ -89,5 +91,8 @@ RetCode BruteForceSearcher::RemoveFeatures(const std::string& db_id,
     return RetCode::RET_OK;
 };
 
+} // namespace search_worker
+
 } // namespace feature_search
+
 } // namespace donde

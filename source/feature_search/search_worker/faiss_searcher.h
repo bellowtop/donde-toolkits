@@ -1,13 +1,10 @@
 #include "donde/definitions.h"
 #include "donde/feature_search/api.h"
+#include "donde/feature_search/search_worker/api.h"
 #include "donde/utils.h"
 #include "nlohmann/json.hpp"
 
-#include <algorithm>
-#include <functional>
 #include <map>
-#include <memory>
-#include <queue>
 
 using namespace std;
 
@@ -17,12 +14,13 @@ namespace donde {
 
 namespace feature_search {
 
-class BruteForceSearcher : public Searcher {
+namespace search_worker {
+
+class FaissSearcher : public Searcher {
 
   public:
-    BruteForceSearcher(Driver& driver);
-
-    ~BruteForceSearcher() = default;
+    FaissSearcher(const json& config, Driver& driver);
+    ~FaissSearcher() = default;
 
     RetCode Init() override {
         spdlog::warn("Init is not implemented by BruteForceSearch");
@@ -52,6 +50,8 @@ class BruteForceSearcher : public Searcher {
     json _config;
     Driver& _driver;
 };
+
+} // namespace search_worker
 
 } // namespace feature_search
 

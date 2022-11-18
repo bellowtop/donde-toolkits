@@ -1,5 +1,9 @@
 #pragma once
 
+#include "donde/feature_search/search_worker/db_searcher.h"
+#include "donde/feature_search/search_worker/shard.h"
+#include "donde/feature_search/search_worker/shard_manager.h"
+
 // #include "spdlog/spdlog.h"
 
 #include <iostream>

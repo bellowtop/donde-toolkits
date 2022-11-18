@@ -1,7 +1,7 @@
 #include "donde/definitions.h"
 #include "donde/feature_search/definitions.h"
 #include "donde/utils.h"
-#include "source/feature_search/brute_force_searcher.h"
+#include "source/feature_search/search_worker/brute_force_searcher.h"
 #include "source/feature_search/simple_driver.h"
 
 #include <cstdlib>
@@ -16,11 +16,12 @@ using namespace std;
 
 using nlohmann::json;
 
-using donde::feature_search::BruteForceSearcher;
 using donde::feature_search::DBItem;
 using donde::feature_search::FeatureDbItem;
 using donde::feature_search::FeatureSearchItem;
 using donde::feature_search::SimpleDriver;
+
+using donde::feature_search::search_worker::BruteForceSearcher;
 
 using donde::Feature;
 using donde::gen_feature_dim;
