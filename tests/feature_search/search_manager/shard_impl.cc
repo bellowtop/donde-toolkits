@@ -167,7 +167,8 @@ TEST_F(TestShardImpl, CanAddFeatures) {
     auto used1 = impl.GetShardInfo().used;
 
     // set expect.
-    EXPECT_CALL(mWorker, AddFeatures).WillOnce(testing::Return(RetCode::RET_OK));
+    std::vector<std::string> ft_ids(10);
+    EXPECT_CALL(mWorker, AddFeatures).WillOnce(testing::Return(ft_ids));
     EXPECT_CALL(mMgr, UpdateShard).WillOnce(testing::Return(RetCode::RET_OK));
 
     // do api
@@ -197,7 +198,8 @@ TEST_F(TestShardImpl, CanSearchFeature) {
     auto used1 = impl.GetShardInfo().used;
 
     // set expect.
-    EXPECT_CALL(mWorker, AddFeatures).WillOnce(testing::Return(RetCode::RET_OK));
+    std::vector<std::string> ft_ids(10);
+    EXPECT_CALL(mWorker, AddFeatures).WillOnce(testing::Return(ft_ids));
     EXPECT_CALL(mMgr, UpdateShard).WillOnce(testing::Return(RetCode::RET_OK));
 
     // do api

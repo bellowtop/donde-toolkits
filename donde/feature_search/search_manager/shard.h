@@ -30,7 +30,7 @@ class Shard {
     virtual RetCode AssignWorker(Worker* worker) = 0;
 
     // AddFeatures to this shard, delegate to worker client to do the actual storage.
-    virtual RetCode AddFeatures(const std::vector<Feature>& fts) = 0;
+    virtual std::vector<std::string> AddFeatures(const std::vector<Feature>& fts) = 0;
 
     // SearchFeature in this shard, delegate to worker client to do the actual search.
     virtual std::vector<FeatureScore> SearchFeature(const Feature& query, int topk) = 0;

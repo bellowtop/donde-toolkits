@@ -97,10 +97,10 @@ RetCode ShardImpl::AssignWorker(Worker* worker) {
 };
 
 // AddFeatures to this shard, delegate to worker client to do the actual storage.
-RetCode ShardImpl::AddFeatures(const std::vector<Feature>& fts) {
+std::vector<std::string> ShardImpl::AddFeatures(const std::vector<Feature>& fts) {
     if (!HasWorker()) {
         spdlog::error("shard has no worker, AssignWorker first.");
-        return RetCode::RET_ERR;
+        return {};
     }
 
     ;
@@ -113,8 +113,7 @@ RetCode ShardImpl::AddFeatures(const std::vector<Feature>& fts) {
     _channel->enqueueNotification(msg);
     auto output = msg->waitResponse();
     auto value = std::static_pointer_cast<addFeaturesRsp>(output.valuePtr);
-
-    return RetCode::RET_OK;
+    return value->feature_ids;
 };
 
 // SearchFeature in this shard, delegate to worker client to do the actual search.
@@ -222,9 +221,10 @@ shardOp ShardImpl::do_add_features(const shardOp& input) {
 
     // delegate to worker.
     auto ret = _worker->AddFeatures(_db_id, _shard_id, req->fts);
-    if (ret == RetCode::RET_OK) {
+    if (ret.size() > 0) {
         _shard_info.used += req->fts.size();
         _shard_mgr->UpdateShard(_shard_info);
+        rsp->feature_ids = ret;
     }
 
     // TODO: what about _worker api error?

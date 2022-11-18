@@ -26,7 +26,7 @@ class MockWorker : public Worker {
     MOCK_METHOD(RetCode, CloseShard, (const std::string& db_id, const std::string& shard_id));
 
     // AddFeatures to db_id/shard_id, delegate to remote worker.
-    MOCK_METHOD(RetCode, AddFeatures,
+    MOCK_METHOD(std::vector<std::string>, AddFeatures,
                 (const std::string& db_id, const std::string& shard_id,
                  const std::vector<Feature>& fts));
 

@@ -146,16 +146,17 @@ RetCode WorkerImpl::CloseShard(const std::string& db_id, const std::string& shar
 };
 
 // WorkerAPI implement
-RetCode WorkerImpl::AddFeatures(const std::string& db_id, const std::string& shard_id,
-                                const std::vector<Feature>& fts) {
+std::vector<std::string> WorkerImpl::AddFeatures(const std::string& db_id,
+                                                 const std::string& shard_id,
+                                                 const std::vector<Feature>& fts) {
     auto found = _served_shards.find(shard_id);
     if (found == _served_shards.end()) {
         spdlog::info("shard {} is not served by this worker!", shard_id);
-        return RetCode::RET_ERR;
+        return {};
     }
     if (found->second.is_closed) {
         spdlog::info("shard {} is closed, cannot AddFeatures.!", shard_id);
-        return RetCode::RET_ERR;
+        return {};
     }
 
     grpc::ClientContext ctx;
@@ -173,10 +174,15 @@ RetCode WorkerImpl::AddFeatures(const std::string& db_id, const std::string& sha
 
     auto status = _stub->BatchAddFeatures(&ctx, request, &response);
     if (status.ok()) {
-        return RetCode::RET_OK;
+        std::vector<std::string> feature_ids;
+        auto ids = response.feature_ids();
+        for (auto& id : ids) {
+            feature_ids.push_back(id);
+        }
+        return feature_ids;
     }
 
-    return RetCode::RET_ERR;
+    return {};
 };
 
 std::vector<FeatureScore> WorkerImpl::SearchFeature(const std::string& db_id, const Feature& query,

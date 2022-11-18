@@ -7,6 +7,7 @@
 #include "config.h"
 #include "donde/feature_search/api.h"
 #include "donde/feature_search/search_manager/api.h"
+#include "donde/feature_search/search_manager/coordinator.h"
 #include "source/feature_search/search_manager/worker_impl.h"
 
 // #include "spdlog/spdlog.h"
@@ -77,7 +78,7 @@ class FeatureSearchManagerImpl final : public FeatureSearchManager::Service {
     Config& config;
     // spdlog::Logger& logger;
 
-    std::shared_ptr<donde::feature_search::Searcher> searcher;
+    std::shared_ptr<donde::feature_search::search_manager::Coordinator> coordinator;
 
     std::vector<std::string> db_ids;
 

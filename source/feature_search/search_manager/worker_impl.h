@@ -45,8 +45,8 @@ class WorkerImpl : public Worker {
     RetCode CloseShard(const std::string& db_id, const std::string& shard_id) override;
 
     // WorkerAPI implement
-    RetCode AddFeatures(const std::string& db_id, const std::string& shard_id,
-                        const std::vector<Feature>& fts) override;
+    std::vector<std::string> AddFeatures(const std::string& db_id, const std::string& shard_id,
+                                         const std::vector<Feature>& fts) override;
 
     // SearchFeature search query in this db, across all shards.
     std::vector<FeatureScore> SearchFeature(const std::string& db_id, const Feature& query,

@@ -33,7 +33,10 @@ class CoordinatorImpl : public Coordinator {
     std::vector<DBItem> ListUserDBs();
 
     // AddFeatures to this db, we need find proper shard to store these fts.
-    RetCode AddFeatures(const std::string& db_id, const std::vector<Feature>& fts);
+    std::vector<std::string> AddFeatures(const std::string& db_id, const std::vector<Feature>& fts);
+
+    // RemoveFeatures from this db
+    RetCode RemoveFeatures(const std::string& db_id, const std::vector<std::string>& feature_ids);
 
     // SearchFeatures in this db.
     std::vector<FeatureScore> SearchFeature(const std::string& db_id, const Feature& query,

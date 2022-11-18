@@ -53,9 +53,9 @@ FeatureSearchManagerImpl::FeatureSearchManagerImpl(Config& server_config) : conf
 
 FeatureSearchManagerImpl::~FeatureSearchManagerImpl(){};
 
-void FeatureSearchManagerImpl::Start() { searcher->Init(); };
+void FeatureSearchManagerImpl::Start() { coordinator->Start(); };
 
-void FeatureSearchManagerImpl::Stop() { searcher->Terminate(); };
+void FeatureSearchManagerImpl::Stop() { coordinator->Stop(); };
 
 Status FeatureSearchManagerImpl::DBNew(ServerContext* context, const DBNewRequest* request,
                                        DBNewResponse* response) {
@@ -92,11 +92,14 @@ Status FeatureSearchManagerImpl::AddFeature(ServerContext* context,
                            ft.version());
     std::map<string, string> meta = donde::convertMetadataToMap(item.meta());
 
-    std::vector<donde::feature_search::FeatureDbItem> fts{donde::feature_search::FeatureDbItem{
-        .feature = feature,
-        .metadata = meta,
-    }};
-    std::vector<std::string> feature_ids = searcher->AddFeatures(db_id, fts);
+    // std::vector<donde::feature_search::FeatureDbItem> fts{donde::feature_search::FeatureDbItem{
+    //     .feature = feature,
+    //     .metadata = meta,
+    // }};
+
+    std::vector<donde::Feature> fts{feature};
+
+    std::vector<std::string> feature_ids = coordinator->AddFeatures(db_id, fts);
 
     response->set_feature_id(feature_ids[0]);
     response->set_code(ResultCode::OK);
@@ -111,7 +114,7 @@ Status FeatureSearchManagerImpl::DeleteFeature(ServerContext* context,
     auto db_id = request->db_id();
     std::string feature_id = request->feature_id();
     std::vector<std::string> feature_ids{feature_id};
-    searcher->RemoveFeatures(db_id, feature_ids);
+    coordinator->RemoveFeatures(db_id, feature_ids);
 
     return Status::OK;
 };
@@ -128,7 +131,7 @@ Status FeatureSearchManagerImpl::SearchFeature(ServerContext* context,
 
     // FIXME: only search first db for now !!!
     std::vector<donde::feature_search::FeatureSearchItem> ret
-        = searcher->SearchFeature(db_ids.Get(0), query, topk);
+        = coordinator->SearchFeature(db_ids.Get(0), query, topk);
 
     response->set_code(ResultCode::OK);
 

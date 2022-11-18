@@ -32,8 +32,9 @@ class Worker {
     virtual RetCode CloseShard(const std::string& db_id, const std::string& shard_id) = 0;
 
     // AddFeatures to db_id/shard_id, delegate to remote worker.
-    virtual RetCode AddFeatures(const std::string& db_id, const std::string& shard_id,
-                                const std::vector<Feature>& fts)
+    virtual std::vector<std::string> AddFeatures(const std::string& db_id,
+                                                 const std::string& shard_id,
+                                                 const std::vector<Feature>& fts)
         = 0;
 
     // Search feature in the worker. worker can have multiple dbs, multiple shards.

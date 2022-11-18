@@ -26,7 +26,9 @@ struct assignWorkerRsp {};
 struct addFeaturesReq {
     std::vector<Feature> fts;
 };
-struct addFeaturesRsp {};
+struct addFeaturesRsp {
+    std::vector<std::string> feature_ids;
+};
 
 struct closeShardReq {};
 struct closeShardRsp {};
@@ -72,7 +74,7 @@ class ShardImpl : public Shard {
     RetCode AssignWorker(Worker* worker) override;
 
     // AddFeatures to this shard, delegate to worker client to do the actual storage.
-    RetCode AddFeatures(const std::vector<Feature>& fts) override;
+    std::vector<std::string> AddFeatures(const std::vector<Feature>& fts) override;
 
     // SearchFeature in this shard, delegate to worker client to do the actual search.
     std::vector<FeatureScore> SearchFeature(const Feature& query, int topk) override;

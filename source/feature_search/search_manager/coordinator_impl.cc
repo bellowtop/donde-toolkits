@@ -49,7 +49,8 @@ void CoordinatorImpl::Start() {
 void CoordinatorImpl::Stop() { deinitialize_workers(); };
 
 // AddFeatures to this db, we need find proper shard to store these fts.
-RetCode CoordinatorImpl::AddFeatures(const std::string& db_id, const std::vector<Feature>& fts) {
+std::vector<std::string> CoordinatorImpl::AddFeatures(const std::string& db_id,
+                                                      const std::vector<Feature>& fts) {
     auto [shard, new_created] = _shard_manager->FindOrCreateWritableShard(db_id, fts.size());
 
     // if newly created shard, it doesn't have a worker.
@@ -57,15 +58,20 @@ RetCode CoordinatorImpl::AddFeatures(const std::string& db_id, const std::vector
         Worker* worker = find_worker_for_shard(shard);
         if (worker == nullptr) {
             spdlog::error("cannot find a worker for shard: {}", shard->GetShardID());
-            return RetCode::RET_ERR;
+            return {};
         }
         _shard_manager->AssignWorkerToShard(shard, worker);
         // shard->AssignWorker(worker);
         // worker->ServeShard(shard->GetShardInfo());
     }
 
-    shard->AddFeatures(fts);
+    return shard->AddFeatures(fts);
+};
 
+// RemoveFeatures from this db
+RetCode CoordinatorImpl::RemoveFeatures(const std::string& db_id,
+                                        const std::vector<std::string>& feature_ids) {
+    // TODO
     return RetCode::RET_OK;
 };
 
