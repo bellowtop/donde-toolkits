@@ -1,4 +1,4 @@
-#include "worker.h"
+#include "feature_search_worker.h"
 
 #include "Poco/Format.h"
 #include "Poco/Timestamp.h"
@@ -10,7 +10,7 @@
 #include "donde/feature_search/api.h"
 #include "donde/utils.h"
 #include "nlohmann/json.hpp"
-#include "source/feature_search/brute_force_searcher.h"
+#include "source/feature_search/search_worker/brute_force_searcher.h"
 #include "source/feature_search/simple_driver.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
@@ -48,6 +48,8 @@ using com::sekirocc::common::FaceFeature;
 
 using com::sekirocc::common::ResultCode;
 
+using donde::feature_search::DBShard;
+
 using grpc::ServerContext;
 using grpc::Status;
 
@@ -61,19 +63,41 @@ FeatureSearchWorkerImpl::FeatureSearchWorkerImpl(Config& server_config) : config
 
 FeatureSearchWorkerImpl::~FeatureSearchWorkerImpl(){};
 
-void FeatureSearchWorkerImpl::Start() { searcher->Init(); };
+void FeatureSearchWorkerImpl::Start() { searcher->Start(); };
 
-void FeatureSearchWorkerImpl::Stop() { searcher->Terminate(); };
+void FeatureSearchWorkerImpl::Stop() { searcher->Stop(); };
 
 Status FeatureSearchWorkerImpl::ServeDBShards(ServerContext* context,
                                               const ServeDBShardsRequest* request,
                                               ServeDBShardsResponse* response) {
+    std::vector<DBShard> shard_infos;
+    for (auto& s : request->shards()) {
+        shard_infos.push_back(DBShard{
+            .db_id = s.db_id(),
+            .shard_id = s.shard_id(),
+            .capacity = 0,
+            .used = 0,
+            .is_closed = false,
+        });
+    };
+    searcher->ServeShards(shard_infos);
     return Status::OK;
 };
 
 Status FeatureSearchWorkerImpl::CloseDBShards(ServerContext* context,
                                               const CloseDBShardsRequest* request,
                                               CloseDBShardsResponse* response) {
+    std::vector<DBShard> shard_infos;
+    for (auto& s : request->shards()) {
+        shard_infos.push_back(DBShard{
+            .db_id = s.db_id(),
+            .shard_id = s.shard_id(),
+            .capacity = 0,
+            .used = 0,
+            .is_closed = false,
+        });
+    };
+    searcher->CloseShards(shard_infos);
     return Status::OK;
 };
 

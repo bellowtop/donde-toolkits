@@ -1,6 +1,7 @@
 #include "donde/definitions.h"
 #include "donde/feature_search/api.h"
 #include "donde/feature_search/search_worker/api.h"
+#include "donde/feature_search/search_worker/shard.h"
 #include "donde/utils.h"
 #include "nlohmann/json.hpp"
 
@@ -17,21 +18,23 @@ using json = nlohmann::json;
 namespace donde {
 
 namespace feature_search {
+
 namespace search_worker {
 
 class BruteForceSearcher : public Searcher {
 
   public:
-    BruteForceSearcher(Driver& driver);
+    // Searcher contructor, owns the input ShardManager* pointer and Driver* pointer.
+    BruteForceSearcher(ShardManager* shard_manager, Driver* driver);
 
     ~BruteForceSearcher() = default;
 
-    RetCode Init() override {
+    RetCode Start() override {
         spdlog::warn("Init is not implemented by BruteForceSearch");
         return RetCode::RET_OK;
     };
 
-    RetCode Terminate() override {
+    RetCode Stop() override {
         spdlog::warn("Iterminate is not implemented by BruteForceSearch");
         return RetCode::RET_OK;
     };
@@ -40,6 +43,16 @@ class BruteForceSearcher : public Searcher {
         spdlog::warn("TrainIndex is not implemented by BruteForceSearch");
         return RetCode::RET_OK;
     };
+
+    // ServeShards let this searcher serve these shards, typically loads shards' data into search
+    // engine.
+    RetCode ServeShards(const std::vector<DBShard>& shard_infos) override;
+
+    // CloseShards close these shards, so that user cannot write to them.
+    // if implementation map db with shard as 1:1, then after close the shard
+    // user should call `ServeShards` for those db, so that there will be active writing shard
+    // available, if not, user cannot AddFeatures to the db anymore.
+    RetCode CloseShards(const std::vector<DBShard>& shard_infos) override;
 
     std::vector<FeatureSearchItem> SearchFeature(const std::string& db_id, const Feature& query,
                                                  size_t topk) override;
@@ -52,7 +65,8 @@ class BruteForceSearcher : public Searcher {
 
   private:
     json _config;
-    Driver& _driver;
+    std::shared_ptr<ShardManager> _shard_mgr;
+    std::shared_ptr<Driver> _driver;
 };
 
 } // namespace search_worker

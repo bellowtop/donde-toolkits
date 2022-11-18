@@ -2,6 +2,8 @@
 
 #include "donde/definitions.h"
 #include "donde/feature_search/api.h"
+#include "donde/feature_search/driver.h"
+#include "donde/feature_search/search_worker/shard.h"
 
 // #include "spdlog/spdlog.h"
 
@@ -14,23 +16,23 @@ namespace donde {
 
 namespace feature_search {
 
-namespace search_manager {
+namespace search_worker {
 
-class Shard;
-class Worker;
 class ShardManager {
 
   public:
+    ShardManager(Driver&){};
+
     virtual ~ShardManager() = default;
 
-    virtual RetCode ManageShard(std::string db_id, Shard*) = 0;
-
     virtual std::vector<Shard*> ListShards(std::string db_id) = 0;
+
+    virtual RetCode ManageShard(std::string db_id, Shard*) = 0;
 
     virtual RetCode CloseShard(std::string db_id, std::string shard_id) = 0;
 };
 ;
 
-} // namespace search_manager
+} // namespace search_worker
 } // namespace feature_search
 } // namespace donde
