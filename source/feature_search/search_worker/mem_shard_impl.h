@@ -20,6 +20,9 @@ namespace search_worker {
 
 class ShardManagerImpl;
 
+struct loadFeaturesReq {};
+struct loadFeaturesRsp {};
+
 struct addFeaturesReq {
     std::vector<FeatureDbItem> fts;
 };
@@ -44,6 +47,9 @@ struct searchFeatureRsp {
 };
 
 enum shardOpType {
+    loadFeaturesReqType,
+    loadFeaturesRspType,
+
     addFeaturesReqType,
     addFeaturesRspType,
 
@@ -102,7 +108,11 @@ class MemoryShardImpl : public Shard {
     void loop();
 
     shardOp do_assign_worker(const shardOp& input);
+
+    shardOp do_load_features(const shardOp& input);
     shardOp do_add_features(const shardOp& input);
+    shardOp do_remove_features(const shardOp& input);
+
     shardOp do_search_feature(const shardOp& input);
     shardOp do_close_shard(const shardOp& input);
 
@@ -115,6 +125,7 @@ class MemoryShardImpl : public Shard {
     ShardManager& _shard_mgr;
     Driver& _driver;
 
+    std::atomic<bool> _is_loaded;
     std::atomic<bool> _is_stopped;
     std::shared_ptr<MsgChannel> _channel;
     std::shared_ptr<std::thread> _loop_thread;

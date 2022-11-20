@@ -48,13 +48,20 @@ class WorkMessage : public Notification {
     V getRequest();
 
     V waitResponse();
-    void setResponse(V resp);
+    void giveReceipt();
+
+    void setResponse(V resp, bool wait_receipt = false, int wait_receipt_ms = 1000);
 
   private:
     V _request;
     V _response;
+
     bool _quit_flag;
-    Poco::Event _evt;
+
+    // flag for response is ready
+    Poco::Event _evt_response;
+    // flag the response is consumed.
+    Poco::Event _evt_receipt;
 };
 
 template <typename V>
@@ -66,10 +73,8 @@ WorkMessagePtr<V> NewWorkMessage(V req) {
 };
 
 template <typename V>
-WorkMessage<V>::WorkMessage(V request, bool quit_flag) : _request(request), _quit_flag(quit_flag) {
-    Event _evt(Event::EVENT_AUTORESET);
-    _evt.reset();
-}
+WorkMessage<V>::WorkMessage(V request, bool quit_flag) : _request(request), _quit_flag(quit_flag) {}
+
 template <typename V>
 bool WorkMessage<V>::isQuitMessage() {
     return _quit_flag;
@@ -77,8 +82,13 @@ bool WorkMessage<V>::isQuitMessage() {
 
 template <typename V>
 V WorkMessage<V>::waitResponse() {
-    _evt.wait();
+    _evt_response.wait();
     return _response;
+}
+
+template <typename V>
+void WorkMessage<V>::giveReceipt() {
+    _evt_receipt.set();
 }
 
 template <typename V>
@@ -86,10 +96,14 @@ V WorkMessage<V>::getRequest() {
     return _request;
 }
 template <typename V>
-void WorkMessage<V>::setResponse(V resp) {
+void WorkMessage<V>::setResponse(V resp, bool wait_receipt, int wait_receipt_ms) {
     _response = resp;
 
-    _evt.set();
+    _evt_response.set();
+    if (wait_receipt) {
+        // wait timeout, in case of infinite blocking.
+        _evt_receipt.wait(wait_receipt_ms);
+    }
 }
 
 } // namespace donde

@@ -48,6 +48,7 @@ BruteForceSearcher::SearchFeature(const std::string& db_id, const Feature& query
 
     FeatureTopkRanking rank(query, topk);
 
+    // search across evey shard, and merge results.
     for (auto& s : shards) {
         std::vector<FeatureSearchItem> searched = s->SearchFeature(query, topk);
         // merge
@@ -69,6 +70,7 @@ BruteForceSearcher::AddFeatures(const std::string& db_id,
         return {};
     }
 
+    // what about shard full? the search_manager handle this.
     std::vector<std::string> feature_ids = shard->AddFeatures(features);
     return feature_ids;
 };

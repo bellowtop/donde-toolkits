@@ -26,10 +26,11 @@ MemoryShardImpl::MemoryShardImpl(ShardManager& manager, Driver& driver, DBShard 
       _db_id(shard_info.db_id),
       _shard_mgr(manager),
       _driver(driver),
+      _is_loaded(false),
       _is_stopped(true) {
 
-    Load();
     Start();
+    Load();
 };
 
 MemoryShardImpl::~MemoryShardImpl() { Stop(); };
@@ -76,7 +77,19 @@ void MemoryShardImpl::Stop() {
 };
 
 // Load features into this shard.
-void MemoryShardImpl::Load(){};
+void MemoryShardImpl::Load() {
+    auto input = shardOp{
+        .valueType = loadFeaturesReqType,
+        .valuePtr = std::shared_ptr<loadFeaturesReq>(new loadFeaturesReq{}),
+    };
+
+    auto msg = NewWorkMessage(input);
+    _channel->enqueueNotification(msg);
+    auto output = msg->waitResponse();
+    msg->giveReceipt();
+    auto value = std::static_pointer_cast<loadFeaturesRsp>(output.valuePtr);
+    return;
+};
 
 //////////////////////////////////////////////////////////////////////////////////
 // Feature management
@@ -92,6 +105,7 @@ std::vector<std::string> MemoryShardImpl::AddFeatures(const std::vector<FeatureD
     auto msg = NewWorkMessage(input);
     _channel->enqueueNotification(msg);
     auto output = msg->waitResponse();
+    msg->giveReceipt();
     auto value = std::static_pointer_cast<addFeaturesRsp>(output.valuePtr);
     return value->feature_ids;
 };
@@ -106,6 +120,7 @@ RetCode MemoryShardImpl::RemoveFeatures(const std::vector<std::string>& feature_
     auto msg = NewWorkMessage(input);
     _channel->enqueueNotification(msg);
     auto output = msg->waitResponse();
+    msg->giveReceipt();
     auto value = std::static_pointer_cast<removeFeaturesRsp>(output.valuePtr);
 
     return RetCode::RET_OK;
@@ -119,6 +134,7 @@ std::vector<FeatureSearchItem> MemoryShardImpl::SearchFeature(const Feature& que
     });
     _channel->enqueueNotification(msg);
     auto output = msg->waitResponse();
+    msg->giveReceipt();
     auto value = std::static_pointer_cast<searchFeatureRsp>(output.valuePtr);
 
     return std::move(value->fts);
@@ -128,6 +144,7 @@ RetCode MemoryShardImpl::Close() {
     auto msg = NewWorkMessage(shardOp{closeShardReqType});
     _channel->enqueueNotification(msg);
     auto output = msg->waitResponse();
+    msg->giveReceipt();
     auto value = std::static_pointer_cast<closeShardRsp>(output.valuePtr);
 
     _shard_info.is_closed = true;
@@ -150,24 +167,38 @@ void MemoryShardImpl::loop() {
             continue;
         }
 
+        // NOTICE: if pNF go out of scope, the `msg` will be freed!
+        // so if you need to use it, use it early!
         WorkMessage<shardOp>::Ptr msg = pNf.cast<WorkMessage<shardOp>>();
         auto input = msg->getRequest();
 
         switch (input.valueType) {
 
+        case loadFeaturesReqType: {
+            auto output = do_load_features(input);
+            // set a response and wait for a receipt, blocking call.
+            // blocking for at most 1s (default).
+            msg->setResponse(output, true);
+            break;
+        }
         case addFeaturesReqType: {
             auto output = do_add_features(input);
-            msg->setResponse(output);
+            msg->setResponse(output, true);
+            break;
+        }
+        case removeFeaturesReqType: {
+            auto output = do_remove_features(input);
+            msg->setResponse(output, true);
             break;
         }
         case searchFeatureReqType: {
             auto output = do_search_feature(input);
-            msg->setResponse(output);
+            msg->setResponse(output, true);
             break;
         }
         case closeShardReqType: {
             auto output = do_close_shard(input);
-            msg->setResponse(output);
+            msg->setResponse(output, true);
             break;
         }
         default:
@@ -181,6 +212,21 @@ void MemoryShardImpl::loop() {
 /// Inner implements.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+shardOp MemoryShardImpl::do_load_features(const shardOp& input) {
+    auto req = std::static_pointer_cast<loadFeaturesReq>(input.valuePtr);
+    auto rsp = std::make_shared<loadFeaturesRsp>();
+
+    // TODO
+
+    _is_loaded.store(true);
+
+    shardOp output{
+        .valueType = loadFeaturesRspType,
+        .valuePtr = rsp,
+    };
+    return output;
+};
+
 shardOp MemoryShardImpl::do_add_features(const shardOp& input) {
     auto req = std::static_pointer_cast<addFeaturesReq>(input.valuePtr);
     auto rsp = std::make_shared<addFeaturesRsp>();
@@ -189,6 +235,19 @@ shardOp MemoryShardImpl::do_add_features(const shardOp& input) {
 
     shardOp output{
         .valueType = addFeaturesRspType,
+        .valuePtr = rsp,
+    };
+    return output;
+};
+
+shardOp MemoryShardImpl::do_remove_features(const shardOp& input) {
+    auto req = std::static_pointer_cast<removeFeaturesReq>(input.valuePtr);
+    auto rsp = std::make_shared<removeFeaturesRsp>();
+
+    // TODO
+
+    shardOp output{
+        .valueType = removeFeaturesRspType,
         .valuePtr = rsp,
     };
     return output;

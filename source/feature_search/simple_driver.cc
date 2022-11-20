@@ -436,8 +436,8 @@ std::vector<DBShard> SimpleDriver::list_db_shards(const std::string& db_id) {
 ///
 
 RetCode SimpleDriver::init_features_table_for_db(const std::string& db_id) {
-    std::ostringstream ss("create table if not exists ");
-    ss << feature_table_name(db_id);
+    std::stringstream ss;
+    ss << "create table if not exists " << feature_table_name(db_id);
     ss << "("
           "  id integer primary key autoincrement, "
           "  feature_id char(64), "
@@ -460,8 +460,8 @@ RetCode SimpleDriver::delete_features_from_db(const std::vector<std::string>& fe
                                               const std::string& db_id,
                                               const std::string& shard_id) {
     try {
-        std::ostringstream ss("delete from ");
-        ss << feature_table_name(db_id);
+        std::stringstream ss;
+        ss << "delete from " << feature_table_name(db_id);
         ss << " where feature_id in (? ";
         for (size_t i = 1; i < feature_ids.size(); i++) {
             ss << ",? ";
@@ -494,8 +494,8 @@ RetCode SimpleDriver::insert_features_into_db(const std::vector<std::string>& fe
     try {
         int version = 10000; // FIXME
 
-        std::ostringstream ss("insert into ");
-        ss << feature_table_name(db_id);
+        std::stringstream ss;
+        ss << "insert into " << feature_table_name(db_id);
         ss << "(feature_id, shard_id, metadata, version) values (?, ?, ?, ?) ";
 
         for (size_t i = 1; i < feature_ids.size(); i++) {
@@ -532,19 +532,26 @@ std::vector<FeatureDbItem> SimpleDriver::list_features_from_db(int start, int li
     std::vector<FeatureDbItem> feature_ids;
 
     try {
-        std::ostringstream ss("select feature_id, metadata from ");
-        ss << feature_table_name(db_id);
+        std::stringstream ss;
+        ss << "select feature_id, metadata from " << feature_table_name(db_id);
         if (shard_id.size() > 0) {
-            ss << " where shard_id = " << shard_id;
+            ss << " where shard_id = ? limit ? offset ? ;";
+        } else {
+            ss << "                    limit ? offset ? ;";
         }
-        ss << " limit ? offset ? ";
-        ss << ";";
 
         std::string sql = ss.str();
+        spdlog::info("sql: {}", sql);
 
         SQLite::Statement query(*db, sql);
-        query.bind(1, limit);
-        query.bind(2, start);
+        if (shard_id.size() > 0) {
+            query.bind(1, shard_id);
+            query.bind(2, limit);
+            query.bind(3, start);
+        } else {
+            query.bind(1, limit);
+            query.bind(2, start);
+        }
 
         while (query.executeStep()) {
             // int id = query.getColumn(0);
@@ -575,17 +582,22 @@ uint64 SimpleDriver::count_features_in_db(const std::string& db_id, const std::s
     int count;
 
     try {
-        std::ostringstream ss("select count(*) from ");
-        ss << feature_table_name(db_id);
+        std::stringstream ss;
+        ss << "select count(*) from " << feature_table_name(db_id);
+
         if (shard_id.size() > 0) {
-            ss << "where shard_id = " << shard_id;
+            ss << " where shard_id = ? ;";
+        } else {
+            ss << "                    ;";
         }
-        ss << ";";
 
         std::string sql = ss.str();
-        spdlog::debug("sql: {}", sql);
+        spdlog::info("sql: {}", sql);
 
         SQLite::Statement query(*db, sql);
+        if (shard_id.size() > 0) {
+            query.bind(1, shard_id);
+        }
 
         query.executeStep();
         count = query.getColumn(0);
