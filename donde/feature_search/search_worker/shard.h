@@ -35,10 +35,13 @@ class Shard {
     virtual void Stop() = 0;
 
     // AddFeatures to this shard
-    virtual std::vector<std::string> AddFeatures(const std::vector<Feature>& fts) = 0;
+    virtual std::vector<std::string> AddFeatures(const std::vector<FeatureDbItem>& fts) = 0;
+
+    // RemoveFeatures from this shard
+    virtual RetCode RemoveFeatures(const std::vector<std::string>& feature_ids) = 0;
 
     // SearchFeature in this shard, delegate to worker client to do the actual search.
-    virtual std::vector<FeatureScore> SearchFeature(const Feature& query, int topk) = 0;
+    virtual std::vector<FeatureSearchItem> SearchFeature(const Feature& query, int topk) = 0;
 
     // Close this shard, cannot add features from this shard, but still can search.
     virtual RetCode Close() = 0;

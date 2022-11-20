@@ -27,6 +27,8 @@ class ShardManagerImpl : public ShardManager {
 
     RetCode CloseShard(std::string db_id, std::string shard_id) override;
 
+    Shard* FindShard(std::string db_id) override;
+
   private:
     std::unordered_map<std::string, std::vector<Shard*>> _db_shards;
 

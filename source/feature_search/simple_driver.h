@@ -64,17 +64,19 @@ class SimpleDriver : public Driver {
 
     std::string CloseShard(const std::string& db_id, const std::string& shard) override;
 
-    PageData<FeatureDbItemList> ListFeatures(const std::string& db_id, uint page,
-                                             uint perPage) override;
+    PageData<FeatureDbItemList> ListFeatures(uint page, uint perPage, const std::string& db_id,
+                                             const std::string& shard_id = "") override;
 
-    std::vector<std::string> AddFeatures(const std::string& db_id,
-                                         const std::vector<FeatureDbItem>& features) override;
+    std::vector<std::string> AddFeatures(const std::vector<FeatureDbItem>& features,
+                                         const std::string& db_id,
+                                         const std::string& shard_id) override;
 
-    std::vector<Feature> LoadFeatures(const std::string& db_id,
-                                      const std::vector<std::string>& feature_ids) override;
+    std::vector<Feature> LoadFeatures(const std::vector<std::string>& feature_ids,
+                                      const std::string& db_id,
+                                      const std::string& shard_id) override;
 
-    RetCode RemoveFeatures(const std::string& db_id,
-                           const std::vector<std::string>& feature_ids) override;
+    RetCode RemoveFeatures(const std::vector<std::string>& feature_ids, const std::string& db_id,
+                           const std::string& shard_id) override;
 
   private:
     std::filesystem::path _db_dir;
@@ -97,9 +99,9 @@ class SimpleDriver : public Driver {
     RetCode insert_into_user_dbs(const std::string& db_id, const std::string& name, uint64 capacity,
                                  const std::string& desc);
 
-    std::vector<DBItem> list_user_db_items(bool include_deleted = false);
+    std::vector<DBItem> list_user_dbs(bool include_deleted = false);
 
-    RetCode update_db_item(const DBItem& new_item);
+    RetCode update_user_db(const DBItem& new_item);
 
     RetCode delete_user_db(const std::string& db_id);
 
@@ -118,17 +120,21 @@ class SimpleDriver : public Driver {
 
     RetCode init_features_table_for_db(const std::string& db_id);
 
-    RetCode delete_features_from_db(const std::string& db_id,
-                                    const std::vector<std::string>& feature_ids);
+    RetCode insert_features_into_db(const std::vector<std::string>& feature_ids,
+                                    const std::vector<std::string>& metadatas,
+                                    const std::string& db_id, const std::string& shard_id);
 
-    std::vector<FeatureDbItem> list_features_from_db(const std::string& db_id, int start,
-                                                     int limit);
+    RetCode delete_features_from_db(const std::vector<std::string>& feature_ids,
+                                    const std::string& db_id, const std::string& shard_id = "");
 
-    RetCode insert_features_into_db(const std::string& db_id,
-                                    const std::vector<std::string>& feature_ids,
-                                    const std::vector<std::string>& metadatas);
+    std::vector<FeatureDbItem> list_features_from_db(int start, int limit, const std::string& db_id,
+                                                     const std::string& shard_id = "");
 
-    uint64 count_features_in_db(const std::string& db_id);
+    uint64 count_features_in_db(const std::string& db_id, const std::string& shard_id = "");
+
+    static inline std::string feature_table_name(const std::string& db_id) {
+        return "fetures_db_" + replace_underscore_for_uuid(db_id);
+    };
 };
 
 } // namespace feature_search

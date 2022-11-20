@@ -61,16 +61,16 @@ class CassandraDriver : public Driver {
     std::string CreateShard(const std::string& db_id, const DBShard& shard) override;
 
     PageData<FeatureDbItemList> ListFeatures(const std::string& db_id, uint page,
-                                             uint perPage) override;
+                                             uint perPage); // override;
 
     std::vector<std::string> AddFeatures(const std::string& db_id,
-                                         const std::vector<FeatureDbItem>& features) override;
+                                         const std::vector<FeatureDbItem>& features); // override;
 
     std::vector<Feature> LoadFeatures(const std::string& db_id,
-                                      const std::vector<std::string>& feature_ids) override;
+                                      const std::vector<std::string>& feature_ids); // override;
 
     RetCode RemoveFeatures(const std::string& db_id,
-                           const std::vector<std::string>& feature_ids) override;
+                           const std::vector<std::string>& feature_ids); // override;
 
   private:
     std::filesystem::path _db_dir;

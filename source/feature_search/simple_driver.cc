@@ -71,7 +71,7 @@ std::string SimpleDriver::CreateDB(const DBItem& info) {
 
 DBItem SimpleDriver::FindDB(const std::string& db_id) {
     if (_cached_db_items.size() == 0) {
-        _cached_db_items = list_user_db_items();
+        _cached_db_items = list_user_dbs();
     }
     for (auto& v : _cached_db_items) {
         if (v.db_id == db_id) {
@@ -83,7 +83,7 @@ DBItem SimpleDriver::FindDB(const std::string& db_id) {
 
 std::vector<DBItem> SimpleDriver::ListDBs() {
     if (_cached_db_items.size() == 0) {
-        _cached_db_items = list_user_db_items();
+        _cached_db_items = list_user_dbs();
     }
     return _cached_db_items;
 };
@@ -109,8 +109,9 @@ std::string SimpleDriver::CloseShard(const std::string& db_id, const std::string
     return {};
 };
 
-PageData<FeatureDbItemList> SimpleDriver::ListFeatures(const std::string& db_id, uint page,
-                                                       uint perPage) {
+PageData<FeatureDbItemList> SimpleDriver::ListFeatures(uint page, uint perPage,
+                                                       const std::string& db_id,
+                                                       const std::string& shard_id) {
     uint64 count = count_features_in_db(db_id);
     if (count <= 0) {
         spdlog::warn("FileSystemStorage::ListFeatures, count is {}", count);
@@ -119,7 +120,8 @@ PageData<FeatureDbItemList> SimpleDriver::ListFeatures(const std::string& db_id,
 
     uint64 totalPage = (count + perPage - 1) / perPage;
 
-    std::vector<FeatureDbItem> feature_ids = list_features_from_db(db_id, page * perPage, perPage);
+    std::vector<FeatureDbItem> feature_ids
+        = list_features_from_db(page * perPage, perPage, db_id, shard_id);
     spdlog::debug("feature_ids size: ", feature_ids.size());
 
     PageData<FeatureDbItemList> ret{uint64(page), uint64(perPage), totalPage, feature_ids};
@@ -134,8 +136,9 @@ RetCode SimpleDriver::Init(const std::vector<std::string>& initial_db_ids) {
     return RetCode::RET_OK;
 };
 
-std::vector<std::string> SimpleDriver::AddFeatures(const std::string& db_id,
-                                                   const std::vector<FeatureDbItem>& features) {
+std::vector<std::string> SimpleDriver::AddFeatures(const std::vector<FeatureDbItem>& features,
+                                                   const std::string& db_id,
+                                                   const std::string& shard_id) {
     int count = features.size();
     std::vector<std::string> feature_ids;
     std::vector<std::string> metadatas;
@@ -171,13 +174,14 @@ std::vector<std::string> SimpleDriver::AddFeatures(const std::string& db_id,
     }
 
     // insert feature to meta db.
-    insert_features_into_db(db_id, feature_ids, metadatas);
+    insert_features_into_db(feature_ids, metadatas, db_id, shard_id);
 
     return feature_ids;
 };
 
-std::vector<Feature> SimpleDriver::LoadFeatures(const std::string& db_id,
-                                                const std::vector<std::string>& feature_ids) {
+std::vector<Feature> SimpleDriver::LoadFeatures(const std::vector<std::string>& feature_ids,
+                                                const std::string& db_id,
+                                                const std::string& shard_id) {
     int count = feature_ids.size();
     std::vector<Feature> features;
 
@@ -208,8 +212,8 @@ std::vector<Feature> SimpleDriver::LoadFeatures(const std::string& db_id,
     return features;
 };
 
-RetCode SimpleDriver::RemoveFeatures(const std::string& db_id,
-                                     const std::vector<std::string>& feature_ids) {
+RetCode SimpleDriver::RemoveFeatures(const std::vector<std::string>& feature_ids,
+                                     const std::string& db_id, const std::string& shard_id) {
     if (feature_ids.size() == 0) {
         return RetCode::RET_OK;
     }
@@ -219,7 +223,7 @@ RetCode SimpleDriver::RemoveFeatures(const std::string& db_id,
         std::filesystem::remove(filepath);
     }
 
-    return delete_features_from_db(db_id, feature_ids);
+    return delete_features_from_db(feature_ids, db_id, shard_id);
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -294,7 +298,7 @@ RetCode SimpleDriver::insert_into_user_dbs(const std::string& db_id, const std::
     return RetCode::RET_OK;
 };
 
-std::vector<DBItem> SimpleDriver::list_user_db_items(bool include_deleted) {
+std::vector<DBItem> SimpleDriver::list_user_dbs(bool include_deleted) {
     std::vector<DBItem> dbs;
 
     try {
@@ -328,7 +332,7 @@ std::vector<DBItem> SimpleDriver::list_user_db_items(bool include_deleted) {
     return dbs;
 };
 
-RetCode SimpleDriver::update_db_item(const DBItem& new_item) {
+RetCode SimpleDriver::update_user_db(const DBItem& new_item) {
     try {
         std::string sql(
             "update dbs set name=?, capacity=?, used=?, description=? where db_id = ?;");
@@ -432,16 +436,18 @@ std::vector<DBShard> SimpleDriver::list_db_shards(const std::string& db_id) {
 ///
 
 RetCode SimpleDriver::init_features_table_for_db(const std::string& db_id) {
-    std::string sql = "create table if not exists features_db_{}("
-                      "id integer primary key autoincrement, "
-                      "feature_id char(64), "
-                      "metadata text, "
-                      "version int "
-                      ");";
-    sql = format(sql, replace_underscore_for_uuid(db_id));
+    std::ostringstream ss("create table if not exists ");
+    ss << feature_table_name(db_id);
+    ss << "("
+          "  id integer primary key autoincrement, "
+          "  feature_id char(64), "
+          "  shard_id char(64), "
+          "  metadata text, "
+          "  version int "
+          ");";
 
     try {
-        db->exec(sql);
+        db->exec(ss.str());
     } catch (std::exception& exc) {
         spdlog::error("cannot create table features_db_{}, exc: {}", db_id, exc.what());
         return RetCode::RET_ERR;
@@ -450,16 +456,19 @@ RetCode SimpleDriver::init_features_table_for_db(const std::string& db_id) {
     return RetCode::RET_OK;
 };
 
-RetCode SimpleDriver::delete_features_from_db(const std::string& db_id,
-                                              const std::vector<std::string>& feature_ids) {
+RetCode SimpleDriver::delete_features_from_db(const std::vector<std::string>& feature_ids,
+                                              const std::string& db_id,
+                                              const std::string& shard_id) {
     try {
-        std::string sql = "delete from features_db_{} where feature_id in (? ";
-        sql = format(sql, replace_underscore_for_uuid(db_id));
-
+        std::ostringstream ss("delete from ");
+        ss << feature_table_name(db_id);
+        ss << " where feature_id in (? ";
         for (size_t i = 1; i < feature_ids.size(); i++) {
-            sql += ",? ";
+            ss << ",? ";
         }
-        sql += ")";
+        ss << ")";
+
+        std::string sql = ss.str();
 
         SQLite::Statement query(*db, sql);
 
@@ -469,20 +478,69 @@ RetCode SimpleDriver::delete_features_from_db(const std::string& db_id,
 
         query.exec();
     } catch (std::exception& exc) {
-        spdlog::error("cannot delete from features table: {}", exc.what());
+        spdlog::error("cannot delete from features table {}: {}", feature_table_name(db_id),
+                      exc.what());
         return RetCode::RET_ERR;
     }
 
     return RetCode::RET_OK;
 }
 
-std::vector<FeatureDbItem> SimpleDriver::list_features_from_db(const std::string& db_id, int start,
-                                                               int limit) {
+RetCode SimpleDriver::insert_features_into_db(const std::vector<std::string>& feature_ids,
+                                              const std::vector<std::string>& metadatas,
+                                              const std::string& db_id,
+                                              const std::string& shard_id) {
+    // TODO: batch control
+    try {
+        int version = 10000; // FIXME
+
+        std::ostringstream ss("insert into ");
+        ss << feature_table_name(db_id);
+        ss << "(feature_id, shard_id, metadata, version) values (?, ?, ?, ?) ";
+
+        for (size_t i = 1; i < feature_ids.size(); i++) {
+            ss << ", (?, ?, ?, ?)";
+        }
+        ss << ";";
+
+        std::string sql = ss.str();
+
+        SQLite::Statement query(*db, sql);
+        for (size_t i = 0; i < feature_ids.size(); i++) {
+            auto feature_id = feature_ids[i];
+            auto metadata = metadatas[i];
+
+            query.bind(4 * i + 1, feature_id);
+            query.bind(4 * i + 2, shard_id);
+            query.bind(4 * i + 3, metadata);
+            query.bind(4 * i + 4, version);
+        }
+
+        query.exec();
+    } catch (std::exception& exc) {
+        spdlog::error("cannot insert into features table {}: {}", feature_table_name(db_id),
+                      exc.what());
+        return RetCode::RET_ERR;
+    }
+
+    return RetCode::RET_OK;
+};
+
+std::vector<FeatureDbItem> SimpleDriver::list_features_from_db(int start, int limit,
+                                                               const std::string& db_id,
+                                                               const std::string& shard_id) {
     std::vector<FeatureDbItem> feature_ids;
 
     try {
-        std::string sql("select feature_id, metadata from features_db_{} limit ? offset ?");
-        sql = format(sql, replace_underscore_for_uuid(db_id));
+        std::ostringstream ss("select feature_id, metadata from ");
+        ss << feature_table_name(db_id);
+        if (shard_id.size() > 0) {
+            ss << " where shard_id = " << shard_id;
+        }
+        ss << " limit ? offset ? ";
+        ss << ";";
+
+        std::string sql = ss.str();
 
         SQLite::Statement query(*db, sql);
         query.bind(1, limit);
@@ -505,54 +563,26 @@ std::vector<FeatureDbItem> SimpleDriver::list_features_from_db(const std::string
             });
         }
     } catch (std::exception& exc) {
-        spdlog::error("cannot select from features table: {}", exc.what());
+        spdlog::error("cannot select from features table {}: {}", feature_table_name(db_id),
+                      exc.what());
         return feature_ids;
     }
 
     return feature_ids;
 };
 
-RetCode SimpleDriver::insert_features_into_db(const std::string& db_id,
-                                              const std::vector<std::string>& feature_ids,
-                                              const std::vector<std::string>& metadatas) {
-    // TODO: batch control
-    try {
-        int version = 10000; // FIXME
-        std::string sql(
-            "insert into features_db_{}(feature_id, metadata, version) values (?, ?, ?)");
-        sql = format(sql, replace_underscore_for_uuid(db_id));
-
-        for (size_t i = 1; i < feature_ids.size(); i++) {
-            sql += ", (?, ?, ?)";
-        }
-        sql += ";";
-
-        SQLite::Statement query(*db, sql);
-        for (size_t i = 0; i < feature_ids.size(); i++) {
-            auto feature_id = feature_ids[i];
-            auto metadata = metadatas[i];
-
-            query.bind(3 * i + 1, feature_id);
-            query.bind(3 * i + 2, metadata);
-            query.bind(3 * i + 3, version);
-        }
-
-        query.exec();
-    } catch (std::exception& exc) {
-        spdlog::error("cannot insert into features table: {}", exc.what());
-        return RetCode::RET_ERR;
-    }
-
-    return RetCode::RET_OK;
-};
-
-uint64 SimpleDriver::count_features_in_db(const std::string& db_id) {
+uint64 SimpleDriver::count_features_in_db(const std::string& db_id, const std::string& shard_id) {
     int count;
 
     try {
-        std::string sql("select count(*) from features_db_{};");
-        sql = format(sql, replace_underscore_for_uuid(db_id));
+        std::ostringstream ss("select count(*) from ");
+        ss << feature_table_name(db_id);
+        if (shard_id.size() > 0) {
+            ss << "where shard_id = " << shard_id;
+        }
+        ss << ";";
 
+        std::string sql = ss.str();
         spdlog::debug("sql: {}", sql);
 
         SQLite::Statement query(*db, sql);
@@ -560,7 +590,8 @@ uint64 SimpleDriver::count_features_in_db(const std::string& db_id) {
         query.executeStep();
         count = query.getColumn(0);
     } catch (std::exception& exc) {
-        spdlog::error("cannot count from features table: {}", exc.what());
+        spdlog::error("cannot count from features table {}: {}", feature_table_name(db_id),
+                      exc.what());
         return -1;
     }
 

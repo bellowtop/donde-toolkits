@@ -124,7 +124,7 @@ TEST_F(SearchManager_SimpleDriver, DBlist) {
 }
 
 TEST_F(SearchManager_SimpleDriver, featureCrud) {
-    std::vector<std::string> feature_ids = store->AddFeatures(db_id, fts);
+    std::vector<std::string> feature_ids = store->AddFeatures(fts, db_id, "fix-me");
     EXPECT_EQ(feature_ids.size(), feature_count);
 
     // file exists
@@ -133,23 +133,23 @@ TEST_F(SearchManager_SimpleDriver, featureCrud) {
         EXPECT_EQ(std::filesystem::exists(p1), true);
     }
 
-    PageData<FeatureDbItemList> listed = store->ListFeatures(db_id, 0, 100);
+    PageData<FeatureDbItemList> listed = store->ListFeatures(0, 100, db_id, "fix-me");
     std::vector<std::string> listed_feature_ids = convert_to_feature_ids(listed.data);
     EXPECT_EQ(listed_feature_ids.size(), feature_ids.size());
     for (size_t i = 0; i < listed_feature_ids.size(); i++) {
         EXPECT_EQ(listed_feature_ids[i], feature_ids[i]);
     }
 
-    std::vector<Feature> loaded_features = store->LoadFeatures(db_id, listed_feature_ids);
+    std::vector<Feature> loaded_features = store->LoadFeatures(listed_feature_ids, db_id, "fix-me");
     for (size_t j = 0; j < loaded_features.size(); j++) {
         for (size_t i = 0; i < size_t(dim); i++) {
             EXPECT_EQ(fts[j].feature.raw[i], loaded_features[j].raw[i]);
         }
     }
 
-    store->RemoveFeatures(db_id, feature_ids);
+    store->RemoveFeatures(feature_ids, db_id, "fix-me");
 
-    listed = store->ListFeatures(db_id, 0, 10);
+    listed = store->ListFeatures(0, 10, db_id, "fix-me");
 
     // no features in db.
     EXPECT_EQ(listed.data.size(), 0);
@@ -162,18 +162,18 @@ TEST_F(SearchManager_SimpleDriver, featureCrud) {
 }
 
 TEST_F(SearchManager_SimpleDriver, Paging) {
-    std::vector<std::string> feature_ids = store->AddFeatures(db_id, fts);
+    std::vector<std::string> feature_ids = store->AddFeatures(fts, db_id, "fix-me");
     EXPECT_EQ(feature_ids.size(), feature_count);
 
     // add 5 more. so we have 105 features in db..
     auto more_fts = generate_features(5);
-    store->AddFeatures(db_id, more_fts);
+    store->AddFeatures(more_fts, db_id, "fix-me");
     feature_count += 5;
 
     int page = 0;
     int perPage = 10;
 
-    PageData<FeatureDbItemList> listed = store->ListFeatures(db_id, page, perPage);
+    PageData<FeatureDbItemList> listed = store->ListFeatures(page, perPage, db_id, "fix-me");
     EXPECT_EQ(listed.data.size(), perPage);
     EXPECT_EQ(listed.page, page);
     EXPECT_EQ(listed.perPage, perPage);
@@ -181,7 +181,7 @@ TEST_F(SearchManager_SimpleDriver, Paging) {
 
     page = 1;
 
-    listed = store->ListFeatures(db_id, page, perPage);
+    listed = store->ListFeatures(page, perPage, db_id, "fix-me");
     EXPECT_EQ(listed.data.size(), perPage);
     EXPECT_EQ(listed.page, page);
     EXPECT_EQ(listed.perPage, perPage);
@@ -190,7 +190,7 @@ TEST_F(SearchManager_SimpleDriver, Paging) {
     // large page, // total 105 fts, page 10(the last page) only get 5
     page = 10;
 
-    listed = store->ListFeatures(db_id, page, perPage);
+    listed = store->ListFeatures(page, perPage, db_id, "fix-me");
     EXPECT_EQ(listed.data.size(), 5);
     EXPECT_EQ(listed.page, page);
     EXPECT_EQ(listed.perPage, perPage);
@@ -198,7 +198,7 @@ TEST_F(SearchManager_SimpleDriver, Paging) {
 
     page = 11;
 
-    listed = store->ListFeatures(db_id, page, perPage);
+    listed = store->ListFeatures(page, perPage, db_id, "fix-me");
     EXPECT_EQ(listed.data.size(), 0);
     EXPECT_EQ(listed.page, page);
     EXPECT_EQ(listed.perPage, perPage);
@@ -206,7 +206,7 @@ TEST_F(SearchManager_SimpleDriver, Paging) {
 
     page = 100;
 
-    listed = store->ListFeatures(db_id, page, perPage);
+    listed = store->ListFeatures(page, perPage, db_id, "fix-me");
     EXPECT_EQ(listed.data.size(), 0);
     EXPECT_EQ(listed.page, page);
     EXPECT_EQ(listed.perPage, perPage);
@@ -216,7 +216,7 @@ TEST_F(SearchManager_SimpleDriver, Paging) {
     page = 0;
     perPage = 100;
 
-    listed = store->ListFeatures(db_id, page, perPage);
+    listed = store->ListFeatures(page, perPage, db_id, "fix-me");
     EXPECT_EQ(listed.data.size(), 100);
     EXPECT_EQ(listed.page, page);
     EXPECT_EQ(listed.perPage, perPage);
@@ -225,7 +225,7 @@ TEST_F(SearchManager_SimpleDriver, Paging) {
     page = 1;
     perPage = 100;
 
-    listed = store->ListFeatures(db_id, page, perPage);
+    listed = store->ListFeatures(page, perPage, db_id, "fix-me");
     EXPECT_EQ(listed.data.size(), 5);
     EXPECT_EQ(listed.page, page);
     EXPECT_EQ(listed.perPage, perPage);
@@ -235,7 +235,7 @@ TEST_F(SearchManager_SimpleDriver, Paging) {
     page = 0;
     perPage = 200;
 
-    listed = store->ListFeatures(db_id, page, perPage);
+    listed = store->ListFeatures(page, perPage, db_id, "fix-me");
     EXPECT_EQ(listed.data.size(), 105);
     EXPECT_EQ(listed.page, page);
     EXPECT_EQ(listed.perPage, perPage);

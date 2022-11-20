@@ -30,6 +30,16 @@ RetCode ShardManagerImpl::CloseShard(std::string db_id, std::string shard_id) {
     return {};
 };
 
+Shard* ShardManagerImpl::FindShard(std::string db_id) {
+    auto shards = ListShards(db_id);
+    for (auto& s : shards) {
+        if (!s->IsClosed()) {
+            return s;
+        }
+    }
+    return nullptr;
+};
+
 } // namespace search_worker
 } // namespace feature_search
 } // namespace donde

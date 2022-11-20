@@ -1,6 +1,8 @@
 #include "mem_shard_impl.h"
 
 #include "donde/definitions.h"
+#include "donde/feature_search/definitions.h"
+#include "source/feature_search/feature_topk_rank.h"
 
 #include <exception>
 #include <memory>
@@ -17,14 +19,16 @@ const int WAIT_MSG_INTERVAL_MS = 3000;
 /// Shard
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-MemoryShardImpl::MemoryShardImpl(ShardManager& manager, DBShard shard_info)
+MemoryShardImpl::MemoryShardImpl(ShardManager& manager, Driver& driver, DBShard shard_info)
     : Shard(manager, shard_info),
       _shard_info(shard_info),
       _shard_id(shard_info.shard_id),
       _db_id(shard_info.db_id),
       _shard_mgr(manager),
+      _driver(driver),
       _is_stopped(true) {
 
+    Load();
     Start();
 };
 
@@ -71,16 +75,15 @@ void MemoryShardImpl::Stop() {
     std::cout << "after join" << std::endl;
 };
 
-void MemoryShardImpl::Load(){
-
-};
+// Load features into this shard.
+void MemoryShardImpl::Load(){};
 
 //////////////////////////////////////////////////////////////////////////////////
 // Feature management
 //////////////////////////////////////////////////////////////////////////////////
 
 // AddFeatures to this shard, delegate to worker client to do the actual storage.
-std::vector<std::string> MemoryShardImpl::AddFeatures(const std::vector<Feature>& fts) {
+std::vector<std::string> MemoryShardImpl::AddFeatures(const std::vector<FeatureDbItem>& fts) {
     auto input = shardOp{
         .valueType = addFeaturesReqType,
         .valuePtr = std::shared_ptr<addFeaturesReq>(new addFeaturesReq{fts}),
@@ -93,8 +96,23 @@ std::vector<std::string> MemoryShardImpl::AddFeatures(const std::vector<Feature>
     return value->feature_ids;
 };
 
+// RemoveFeatures from this shard
+RetCode MemoryShardImpl::RemoveFeatures(const std::vector<std::string>& feature_ids) {
+    auto input = shardOp{
+        .valueType = removeFeaturesReqType,
+        .valuePtr = std::shared_ptr<removeFeaturesReq>(new removeFeaturesReq{feature_ids}),
+    };
+
+    auto msg = NewWorkMessage(input);
+    _channel->enqueueNotification(msg);
+    auto output = msg->waitResponse();
+    auto value = std::static_pointer_cast<removeFeaturesRsp>(output.valuePtr);
+
+    return RetCode::RET_OK;
+};
+
 // SearchFeature in this shard, delegate to worker client to do the actual search.
-std::vector<FeatureScore> MemoryShardImpl::SearchFeature(const Feature& query, int topk) {
+std::vector<FeatureSearchItem> MemoryShardImpl::SearchFeature(const Feature& query, int topk) {
     auto msg = NewWorkMessage(shardOp{
         .valueType = searchFeatureReqType,
         .valuePtr = std::shared_ptr<searchFeatureReq>(new searchFeatureReq{query, topk}),
@@ -167,15 +185,44 @@ shardOp MemoryShardImpl::do_add_features(const shardOp& input) {
     auto req = std::static_pointer_cast<addFeaturesReq>(input.valuePtr);
     auto rsp = std::make_shared<addFeaturesRsp>();
 
+    // TODO
+
     shardOp output{
         .valueType = addFeaturesRspType,
         .valuePtr = rsp,
     };
     return output;
 };
+
+// brute force search each feature in db.
 shardOp MemoryShardImpl::do_search_feature(const shardOp& input) {
     auto req = std::static_pointer_cast<searchFeatureReq>(input.valuePtr);
     auto rsp = std::make_shared<searchFeatureRsp>();
+
+    Feature& query = req->query;
+    int topk = req->topk;
+    const std::string& db_id = _shard_info.db_id;
+    const std::string& shard_id = _shard_info.shard_id;
+
+    FeatureTopkRanking rank(query, topk);
+
+    uint page = 0;
+    uint perPage = 10;
+    PageData<FeatureDbItemList> pageData = _driver.ListFeatures(page, perPage, db_id, shard_id);
+
+    while (pageData.data.size() != 0) {
+        std::vector<std::string> feature_ids = convert_to_feature_ids(pageData.data);
+        std::vector<Feature> fts = _driver.LoadFeatures(feature_ids, db_id, shard_id);
+
+        rank.FeedIn(fts);
+
+        // read next page, caution: copy assignment here!
+        pageData = _driver.ListFeatures(++page, perPage, db_id, shard_id);
+    }
+
+    std::vector<FeatureSearchItem> sorted = rank.SortOut();
+
+    rsp->fts.swap(sorted);
 
     shardOp output{
         .valueType = searchFeatureRspType,
@@ -187,6 +234,8 @@ shardOp MemoryShardImpl::do_search_feature(const shardOp& input) {
 shardOp MemoryShardImpl::do_close_shard(const shardOp& input) {
     auto req = std::static_pointer_cast<closeShardReq>(input.valuePtr);
     auto rsp = std::make_shared<closeShardRsp>();
+
+    // TODO
 
     shardOp output{
         .valueType = closeShardRspType,

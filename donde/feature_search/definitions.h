@@ -55,8 +55,15 @@ const std::string SEARCH_DRIVER_SIMPLE = "simple";
 const std::string SEARCH_DRIVER_CASSANDRA = "cassandra";
 
 struct FeatureSearchItem {
+    FeatureSearchItem(const Feature& t, float s) : target(t), score(s){};
     Feature target;
     float score;
+};
+
+struct FeatureSearchComp {
+    bool operator()(const FeatureSearchItem& lhs, const FeatureSearchItem& rhs) {
+        return lhs.score > rhs.score;
+    };
 };
 
 struct FeatureDbItem {

@@ -42,20 +42,22 @@ class Driver {
     virtual std::string CloseShard(const std::string& db_id, const std::string& shard_id) = 0;
 
     // Feature management
-    virtual PageData<FeatureDbItemList> ListFeatures(const std::string& db_id, uint start,
-                                                     uint limit)
+    virtual PageData<FeatureDbItemList> ListFeatures(uint page, uint perPage,
+                                                     const std::string& db_id,
+                                                     const std::string& shard_id = "")
         = 0;
 
-    virtual std::vector<std::string> AddFeatures(const std::string& db_id,
-                                                 const std::vector<FeatureDbItem>& features)
+    virtual std::vector<std::string> AddFeatures(const std::vector<FeatureDbItem>& features,
+                                                 const std::string& db_id,
+                                                 const std::string& shard_id)
         = 0;
 
-    virtual std::vector<Feature> LoadFeatures(const std::string& db_id,
-                                              const std::vector<std::string>& feature_ids)
+    virtual std::vector<Feature> LoadFeatures(const std::vector<std::string>& feature_ids,
+                                              const std::string& db_id, const std::string& shard_id)
         = 0;
 
-    virtual RetCode RemoveFeatures(const std::string& db_id,
-                                   const std::vector<std::string>& feature_ids)
+    virtual RetCode RemoveFeatures(const std::vector<std::string>& feature_ids,
+                                   const std::string& db_id, const std::string& shard_id = "")
         = 0;
 };
 
