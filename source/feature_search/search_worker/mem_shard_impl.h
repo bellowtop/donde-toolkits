@@ -20,8 +20,17 @@ namespace search_worker {
 
 class ShardManagerImpl;
 
+enum class ShardError {
+    OK,
+    FeatureNotLoaded,
+    ShardIfFull,
+};
+
 struct loadFeaturesReq {};
-struct loadFeaturesRsp {};
+struct loadFeaturesRsp {
+    ShardError error = ShardError::OK;
+    std::string err_msg;
+};
 
 struct addFeaturesReq {
     std::vector<FeatureDbItem> fts;
@@ -124,6 +133,8 @@ class MemoryShardImpl : public Shard {
 
     ShardManager& _shard_mgr;
     Driver& _driver;
+
+    std::unordered_map<std::string, Feature> _cached_fts;
 
     std::atomic<bool> _is_loaded;
     std::atomic<bool> _is_stopped;

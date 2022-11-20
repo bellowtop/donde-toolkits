@@ -8,6 +8,7 @@
 #include <memory>
 #include <mutex>
 #include <spdlog/spdlog.h>
+#include <unordered_map>
 
 namespace donde {
 namespace feature_search {
@@ -176,8 +177,10 @@ void MemoryShardImpl::loop() {
 
         case loadFeaturesReqType: {
             auto output = do_load_features(input);
-            // set a response and wait for a receipt, blocking call.
-            // blocking for at most 1s (default).
+            // set a response and wait for a receipt, blocking call (wait 1s).
+            // So that we can make sure the msg response is successfully consumed by user,
+            // because user will give us a receipt after consuming response.
+            // Then after pNf go out of scope, msg will be freed safely.
             msg->setResponse(output, true);
             break;
         }
@@ -216,9 +219,39 @@ shardOp MemoryShardImpl::do_load_features(const shardOp& input) {
     auto req = std::static_pointer_cast<loadFeaturesReq>(input.valuePtr);
     auto rsp = std::make_shared<loadFeaturesRsp>();
 
-    // TODO
+    ShardError error = ShardError::OK;
+    std::unordered_map<std::string, Feature> cached;
 
-    _is_loaded.store(true);
+    uint page = 0;
+    uint perPage = 10;
+    PageData<FeatureDbItemList> pageData = _driver.ListFeatures(page, perPage, _db_id, _shard_id);
+
+    while (pageData.data.size() > 0) {
+        std::vector<std::string> feature_ids = convert_to_feature_ids(pageData.data);
+        std::vector<Feature> fts = _driver.LoadFeatures(feature_ids, _db_id, _shard_id);
+
+        if (feature_ids.size() != fts.size()) {
+            spdlog::error("features are not loaded.");
+            error = ShardError::FeatureNotLoaded;
+            break;
+        }
+
+        // cached them!
+        for (size_t i = 0; i < feature_ids.size(); i++) {
+            cached[feature_ids[i]] = fts[i];
+        }
+
+        // read next page, caution: copy assignment here!
+        pageData = _driver.ListFeatures(++page, perPage, _db_id, _shard_id);
+    }
+
+    if (error != ShardError::OK) {
+        rsp->error = error;
+        rsp->err_msg = "cannot load features.";
+    } else {
+        _cached_fts.swap(cached);
+        _is_loaded.store(true);
+    }
 
     shardOp output{
         .valueType = loadFeaturesRspType,
@@ -258,25 +291,16 @@ shardOp MemoryShardImpl::do_search_feature(const shardOp& input) {
     auto req = std::static_pointer_cast<searchFeatureReq>(input.valuePtr);
     auto rsp = std::make_shared<searchFeatureRsp>();
 
-    Feature& query = req->query;
-    int topk = req->topk;
-    const std::string& db_id = _shard_info.db_id;
-    const std::string& shard_id = _shard_info.shard_id;
+    const Feature& query = req->query;
+    const int topk = req->topk;
 
     FeatureTopkRanking rank(query, topk);
 
-    uint page = 0;
-    uint perPage = 10;
-    PageData<FeatureDbItemList> pageData = _driver.ListFeatures(page, perPage, db_id, shard_id);
-
-    while (pageData.data.size() != 0) {
-        std::vector<std::string> feature_ids = convert_to_feature_ids(pageData.data);
-        std::vector<Feature> fts = _driver.LoadFeatures(feature_ids, db_id, shard_id);
-
-        rank.FeedIn(fts);
-
-        // read next page, caution: copy assignment here!
-        pageData = _driver.ListFeatures(++page, perPage, db_id, shard_id);
+    // searched in cache.
+    for (auto it = _cached_fts.begin(); it != _cached_fts.end(); it++) {
+        const std::string& feature_id = it->first;
+        const Feature& ft = it->second;
+        rank.FeedIn(ft);
     }
 
     std::vector<FeatureSearchItem> sorted = rank.SortOut();

@@ -31,17 +31,20 @@ class FeatureTopkRanking {
   public:
     FeatureTopkRanking(const Feature& query, int topk) : _query(query), _topk(topk){};
 
-    void FeedIn(const std::vector<Feature> fts) {
-        for (auto& ft : fts) {
-            float score = ft.compare(_query);
-            if (_min_heap.size() < _topk) {
-                _min_heap.emplace(ft, score);
-                continue;
-            }
-            if (_min_heap.top().score < score) {
-                _min_heap.pop();
-                _min_heap.emplace(ft, score);
-            }
+    void FeedIn(const Feature& ft) {
+        float score = ft.compare(_query);
+        if (_min_heap.size() < _topk) {
+            _min_heap.emplace(ft, score);
+        }
+        if (_min_heap.top().score < score) {
+            _min_heap.pop();
+            _min_heap.emplace(ft, score);
+        }
+    };
+
+    void FeedIn(const std::vector<Feature>& fts) {
+        for (const auto& ft : fts) {
+            FeedIn(ft);
         }
     };
 
