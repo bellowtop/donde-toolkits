@@ -119,7 +119,7 @@ ConcurrentProcessorImpl<T, typename std::enable_if_t<std::is_base_of_v<Worker, T
     spdlog::info("input.valueType : {}, valuePtr: {}", format_value_type(input.valueType),
                  input.valuePtr.get());
 
-    WorkMessage<Value>::Ptr msg = WorkMessage<Value>::Ptr(new WorkMessage(input, false));
+    WorkMessage<Value>::Ptr msg = WorkMessage<Value>::Ptr(new WorkMessage(input));
     _channel->enqueueNotification(msg);
     Value resp = msg->waitResponse();
     output = resp;

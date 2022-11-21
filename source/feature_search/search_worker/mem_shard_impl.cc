@@ -84,7 +84,9 @@ void MemoryShardImpl::Load() {
         .valuePtr = std::shared_ptr<loadFeaturesReq>(new loadFeaturesReq{}),
     };
 
-    auto msg = NewWorkMessage(input);
+    auto msg = WorkMessage<shardOp>::Ptr(new WorkMessage(input));
+    // auto msg = new WorkMessage(input);
+
     _channel->enqueueNotification(msg);
     auto output = msg->waitResponse();
     msg->giveReceipt();
@@ -103,12 +105,15 @@ std::vector<std::string> MemoryShardImpl::AddFeatures(const std::vector<FeatureD
         .valuePtr = std::shared_ptr<addFeaturesReq>(new addFeaturesReq{fts}),
     };
 
-    auto msg = NewWorkMessage(input);
+    auto msg = WorkMessage<shardOp>::Ptr(new WorkMessage(input));
+    // auto msg = new WorkMessage(input);
+
     _channel->enqueueNotification(msg);
     auto output = msg->waitResponse();
     msg->giveReceipt();
     auto value = std::static_pointer_cast<addFeaturesRsp>(output.valuePtr);
-    return value->feature_ids;
+
+    return std::move(value->feature_ids);
 };
 
 // RemoveFeatures from this shard
@@ -118,7 +123,9 @@ RetCode MemoryShardImpl::RemoveFeatures(const std::vector<std::string>& feature_
         .valuePtr = std::shared_ptr<removeFeaturesReq>(new removeFeaturesReq{feature_ids}),
     };
 
-    auto msg = NewWorkMessage(input);
+    auto msg = WorkMessage<shardOp>::Ptr(new WorkMessage(input));
+    // auto msg = new WorkMessage(input);
+
     _channel->enqueueNotification(msg);
     auto output = msg->waitResponse();
     msg->giveReceipt();
@@ -129,10 +136,14 @@ RetCode MemoryShardImpl::RemoveFeatures(const std::vector<std::string>& feature_
 
 // SearchFeature in this shard, delegate to worker client to do the actual search.
 std::vector<FeatureSearchItem> MemoryShardImpl::SearchFeature(const Feature& query, int topk) {
-    auto msg = NewWorkMessage(shardOp{
+    auto input = shardOp{
         .valueType = searchFeatureReqType,
         .valuePtr = std::shared_ptr<searchFeatureReq>(new searchFeatureReq{query, topk}),
-    });
+    };
+
+    auto msg = WorkMessage<shardOp>::Ptr(new WorkMessage(input));
+    // auto msg = new WorkMessage(input);
+
     _channel->enqueueNotification(msg);
     auto output = msg->waitResponse();
     msg->giveReceipt();
@@ -142,7 +153,13 @@ std::vector<FeatureSearchItem> MemoryShardImpl::SearchFeature(const Feature& que
 };
 
 RetCode MemoryShardImpl::Close() {
-    auto msg = NewWorkMessage(shardOp{closeShardReqType});
+    auto input = shardOp{
+        .valueType = closeShardReqType,
+    };
+
+    auto msg = WorkMessage<shardOp>::Ptr(new WorkMessage(input));
+    // auto msg = new WorkMessage(input);
+
     _channel->enqueueNotification(msg);
     auto output = msg->waitResponse();
     msg->giveReceipt();
@@ -168,8 +185,6 @@ void MemoryShardImpl::loop() {
             continue;
         }
 
-        // NOTICE: if pNF go out of scope, the `msg` will be freed!
-        // so if you need to use it, use it early!
         WorkMessage<shardOp>::Ptr msg = pNf.cast<WorkMessage<shardOp>>();
         auto input = msg->getRequest();
 
@@ -177,31 +192,27 @@ void MemoryShardImpl::loop() {
 
         case loadFeaturesReqType: {
             auto output = do_load_features(input);
-            // set a response and wait for a receipt, blocking call (wait 1s).
-            // So that we can make sure the msg response is successfully consumed by user,
-            // because user will give us a receipt after consuming response.
-            // Then after pNf go out of scope, msg will be freed safely.
-            msg->setResponse(output, true);
+            msg->setResponse(output);
             break;
         }
         case addFeaturesReqType: {
             auto output = do_add_features(input);
-            msg->setResponse(output, true);
+            msg->setResponse(output);
             break;
         }
         case removeFeaturesReqType: {
             auto output = do_remove_features(input);
-            msg->setResponse(output, true);
+            msg->setResponse(output);
             break;
         }
         case searchFeatureReqType: {
             auto output = do_search_feature(input);
-            msg->setResponse(output, true);
+            msg->setResponse(output);
             break;
         }
         case closeShardReqType: {
             auto output = do_close_shard(input);
-            msg->setResponse(output, true);
+            msg->setResponse(output);
             break;
         }
         default:

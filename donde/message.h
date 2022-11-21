@@ -42,7 +42,7 @@ class WorkMessage : public Notification {
   public:
     using Ptr = AutoPtr<WorkMessage>;
 
-    WorkMessage(V req, bool quit_flag);
+    WorkMessage(V req, bool quit_flag = false);
     bool isQuitMessage();
 
     V getRequest();
