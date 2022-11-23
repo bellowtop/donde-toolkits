@@ -3,6 +3,7 @@
 #include "api/feature_search_inner.grpc.pb.h"
 #include "api/feature_search_inner.pb.h"
 #include "donde/definitions.h"
+#include "donde/feature_search/definitions.h"
 #include "donde/feature_search/search_manager/api.h"
 #include "donde/utils.h"
 
@@ -49,8 +50,8 @@ class WorkerImpl : public Worker {
                                          const std::vector<Feature>& fts) override;
 
     // SearchFeature search query in this db, across all shards.
-    std::vector<FeatureScore> SearchFeature(const std::string& db_id, const Feature& query,
-                                            int topk) override;
+    std::vector<FeatureSearchItem> SearchFeature(const std::string& db_id, const Feature& query,
+                                                 int topk) override;
 
   private:
     void check_liveness_loop();

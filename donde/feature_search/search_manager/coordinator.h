@@ -40,8 +40,8 @@ class Coordinator {
         = 0;
 
     // SearchFeatures in this db.
-    virtual std::vector<FeatureScore> SearchFeature(const std::string& db_id, const Feature& query,
-                                                    int topk)
+    virtual std::vector<FeatureSearchItem> SearchFeature(const std::string& db_id, const Feature& query,
+                                                         int topk)
         = 0;
 };
 

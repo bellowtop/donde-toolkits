@@ -38,7 +38,7 @@ struct searchFeatureReq {
     int topk;
 };
 struct searchFeatureRsp {
-    std::vector<FeatureScore> fts;
+    std::vector<FeatureSearchItem> fts;
 };
 
 enum shardOpType {
@@ -77,7 +77,7 @@ class ShardImpl : public Shard {
     std::vector<std::string> AddFeatures(const std::vector<Feature>& fts) override;
 
     // SearchFeature in this shard, delegate to worker client to do the actual search.
-    std::vector<FeatureScore> SearchFeature(const Feature& query, int topk) override;
+    std::vector<FeatureSearchItem> SearchFeature(const Feature& query, int topk) override;
 
     RetCode Close() override;
 

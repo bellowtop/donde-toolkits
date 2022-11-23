@@ -1,8 +1,9 @@
+#include "source/feature_extract/pipeline/face_pipeline_impl.h"
+
 #include "Poco/Thread.h"
 #include "donde/definitions.h"
 #include "donde/feature_extract/processor.h"
 #include "nlohmann/json.hpp"
-#include "source/feature_extract/pipeline/face_pipeline_imp.h"
 #include "source/feature_extract/processor/concurrent_processor_impl.h"
 #include "source/feature_extract/processor/openvino_worker/workers_impl.h"
 #include "spdlog/spdlog.h"

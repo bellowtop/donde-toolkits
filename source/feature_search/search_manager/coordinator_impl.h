@@ -39,7 +39,7 @@ class CoordinatorImpl : public Coordinator {
     RetCode RemoveFeatures(const std::string& db_id, const std::vector<std::string>& feature_ids);
 
     // SearchFeatures in this db.
-    std::vector<FeatureScore> SearchFeature(const std::string& db_id, const Feature& query,
+    std::vector<FeatureSearchItem> SearchFeature(const std::string& db_id, const Feature& query,
                                             int topk);
 
   private:

@@ -55,6 +55,7 @@ const std::string SEARCH_DRIVER_SIMPLE = "simple";
 const std::string SEARCH_DRIVER_CASSANDRA = "cassandra";
 
 struct FeatureSearchItem {
+    FeatureSearchItem(Feature&& t, float s) : target(t), score(s){};
     FeatureSearchItem(const Feature& t, float s) : target(t), score(s){};
     Feature target;
     float score;

@@ -117,7 +117,7 @@ std::vector<std::string> ShardImpl::AddFeatures(const std::vector<Feature>& fts)
 };
 
 // SearchFeature in this shard, delegate to worker client to do the actual search.
-std::vector<FeatureScore> ShardImpl::SearchFeature(const Feature& query, int topk) {
+std::vector<FeatureSearchItem> ShardImpl::SearchFeature(const Feature& query, int topk) {
     if (!HasWorker()) {
         spdlog::error("shard has no worker, AssignWorker first.");
         return {};
@@ -235,6 +235,7 @@ shardOp ShardImpl::do_add_features(const shardOp& input) {
     };
     return output;
 };
+
 shardOp ShardImpl::do_search_feature(const shardOp& input) {
     auto req = std::static_pointer_cast<searchFeatureReq>(input.valuePtr);
     auto rsp = std::make_shared<searchFeatureRsp>();

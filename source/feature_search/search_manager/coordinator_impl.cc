@@ -2,6 +2,7 @@
 
 #include "donde/definitions.h"
 #include "fmt/format.h"
+#include "source/feature_search/feature_topk_rank.h"
 #include "source/feature_search/search_manager/shard_impl.h"
 #include "source/feature_search/search_manager/shard_manager_impl.h"
 #include "source/feature_search/search_manager/worker_impl.h"
@@ -75,39 +76,25 @@ RetCode CoordinatorImpl::RemoveFeatures(const std::string& db_id,
     return RetCode::RET_OK;
 };
 
-// SearchFeatures in this db.
-std::vector<FeatureScore> CoordinatorImpl::SearchFeature(const std::string& db_id,
-                                                         const Feature& query, int topk) {
-    // use min heap to sort topk
-    std::priority_queue<FeatureScore, std::vector<FeatureScore>, FeatureScoreComparator> min_heap;
-
+// SearchFeatures in this db. delegate to shards.
+std::vector<FeatureSearchItem> CoordinatorImpl::SearchFeature(const std::string& db_id,
+                                                              const Feature& query, int topk) {
     // enlarge search area
     int enlarge_topk = topk * 2;
+
+    FeatureTopkRanking rank(query, topk);
 
     auto shards = _shard_manager->ListShards(db_id);
 
     // TODO group shards to search at once.
-    // a db has many shards, we should not search one by one, as each search trigger worker
+    // a db has many shards, we should not search one by one, as each search establish a worker
     // connection.
     for (auto& shard : shards) {
         auto searched = shard->SearchFeature(query, enlarge_topk);
-        for (auto& ft_score : searched) {
-            if (min_heap.size() < topk) {
-                min_heap.push(ft_score);
-                continue;
-            }
-            if (min_heap.top().score < ft_score.score) {
-                min_heap.pop();
-                min_heap.push(ft_score);
-            }
-        }
+        rank.FeedIn(searched);
     }
 
-    std::vector<FeatureScore> ret;
-    while (!min_heap.empty()) {
-        ret.push_back(min_heap.top());
-        min_heap.pop();
-    }
+    std::vector<FeatureSearchItem> ret = rank.SortOut();
 
     return ret;
 };

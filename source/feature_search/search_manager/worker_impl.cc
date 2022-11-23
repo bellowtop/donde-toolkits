@@ -185,8 +185,8 @@ std::vector<std::string> WorkerImpl::AddFeatures(const std::string& db_id,
     return {};
 };
 
-std::vector<FeatureScore> WorkerImpl::SearchFeature(const std::string& db_id, const Feature& query,
-                                                    int topk) {
+std::vector<FeatureSearchItem> WorkerImpl::SearchFeature(const std::string& db_id,
+                                                         const Feature& query, int topk) {
 
     grpc::ClientContext ctx;
     SearchFeatureRequest request;
@@ -199,10 +199,16 @@ std::vector<FeatureScore> WorkerImpl::SearchFeature(const std::string& db_id, co
 
     auto status = _stub->SearchFeature(&ctx, request, &response);
     if (status.ok()) {
-        std::vector<FeatureScore> fts;
+        std::vector<FeatureSearchItem> fts;
         for (auto item : response.items()) {
-            auto ft = item.feature();
-            // TODO
+            com::sekirocc::common::FaceFeature one = item.feature();
+            const std::string& one_blob = one.blob();
+            donde::Feature ft(convertFeatureBlobToFloats(one_blob), std::string(one.model()),
+                              one.version());
+
+            float score = item.score();
+
+            fts.emplace_back(std::move(ft), score);
         }
         return fts;
     }

@@ -33,7 +33,7 @@ class Shard {
     virtual std::vector<std::string> AddFeatures(const std::vector<Feature>& fts) = 0;
 
     // SearchFeature in this shard, delegate to worker client to do the actual search.
-    virtual std::vector<FeatureScore> SearchFeature(const Feature& query, int topk) = 0;
+    virtual std::vector<FeatureSearchItem> SearchFeature(const Feature& query, int topk) = 0;
 
     virtual RetCode Close() = 0;
 

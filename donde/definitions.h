@@ -61,8 +61,8 @@ struct Feature {
 
     Feature() = default;
     Feature(const Feature& lhs) = default;
-    Feature& operator=(const Feature& lhs) = default;
     Feature(Feature&& lhs) = default;
+    Feature& operator=(const Feature& lhs) = default;
     Feature& operator=(Feature&& lhs) = default;
     ~Feature() = default;
 

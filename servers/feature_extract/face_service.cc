@@ -9,7 +9,6 @@
 #include "donde/definitions.h"
 #include "donde/utils.h"
 #include "nlohmann/json.hpp"
-#include "source/feature_extract/pipeline/face_pipeline.h"
 #include "source/feature_extract/processor/concurrent_processor_impl.h"
 #include "source/feature_extract/processor/openvino_worker/workers_impl.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
