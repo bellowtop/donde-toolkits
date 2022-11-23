@@ -32,6 +32,6 @@ class MockWorker : public Worker {
 
     // Search feature in the worker. worker can have multiple dbs, multiple shards.
     // only search in the requested db.
-    MOCK_METHOD(std::vector<FeatureScore>, SearchFeature,
+    MOCK_METHOD(std::vector<FeatureSearchItem>, SearchFeature,
                 (const std::string& db_id, const Feature& query, int topk));
 };

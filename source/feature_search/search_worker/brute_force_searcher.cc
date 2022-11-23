@@ -23,28 +23,28 @@ namespace feature_search {
 
 namespace search_worker {
 
-BruteForceSearcher::BruteForceSearcher(ShardManager* shard_manager, Driver* driver)
+BruteForceSearcher::BruteForceSearcher(ShardManager& shard_manager, Driver& driver)
     : Searcher(shard_manager), _shard_mgr(shard_manager), _driver(driver){};
 
 RetCode BruteForceSearcher::ServeShards(const std::vector<DBShard>& shard_infos) {
     for (auto& s : shard_infos) {
         // remove ShardImpl dependency ?
-        Shard* shard = new MemoryShardImpl(*_shard_mgr, *_driver, s);
-        _shard_mgr->ManageShard(s.db_id, shard);
+        Shard* shard = new MemoryShardImpl(_shard_mgr, _driver, s);
+        _shard_mgr.ManageShard(s.db_id, shard);
     }
     return RetCode::RET_OK;
 };
 
 RetCode BruteForceSearcher::CloseShards(const std::vector<DBShard>& shard_infos) {
     for (auto& s : shard_infos) {
-        _shard_mgr->CloseShard(s.db_id, s.shard_id);
+        _shard_mgr.CloseShard(s.db_id, s.shard_id);
     }
     return RetCode::RET_OK;
 };
 
 std::vector<FeatureSearchItem>
 BruteForceSearcher::SearchFeature(const std::string& db_id, const Feature& query, size_t topk) {
-    auto shards = _shard_mgr->ListShards(db_id);
+    auto shards = _shard_mgr.ListShards(db_id);
 
     FeatureTopkRanking rank(query, topk);
 
@@ -64,7 +64,7 @@ BruteForceSearcher::SearchFeature(const std::string& db_id, const Feature& query
 std::vector<std::string>
 BruteForceSearcher::AddFeatures(const std::string& db_id,
                                 const std::vector<FeatureDbItem>& features) {
-    Shard* shard = _shard_mgr->FindShard(db_id);
+    Shard* shard = _shard_mgr.FindShard(db_id);
     if (!shard) {
         spdlog::error("cannot find a writable shard for this db!");
         return {};
@@ -78,7 +78,7 @@ BruteForceSearcher::AddFeatures(const std::string& db_id,
 RetCode BruteForceSearcher::RemoveFeatures(const std::string& db_id,
                                            const std::vector<std::string>& feature_ids) {
 
-    Shard* shard = _shard_mgr->FindShard(db_id);
+    Shard* shard = _shard_mgr.FindShard(db_id);
     return shard->RemoveFeatures(feature_ids);
 };
 

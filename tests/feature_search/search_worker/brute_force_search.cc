@@ -61,7 +61,7 @@ class SearchManager_BruteForceSearch : public ::testing::Test {
         std::filesystem::remove_all("/tmp/test_store/");
     };
 
-    ShardManager* shard_mgr;
+    ShardManagerImpl* shard_mgr;
     SimpleDriver* store;
     const int feature_count = 100;
     const int dim = 512;
@@ -70,14 +70,14 @@ class SearchManager_BruteForceSearch : public ::testing::Test {
 };
 
 TEST_F(SearchManager_BruteForceSearch, BruteForceSearch) {
-    BruteForceSearcher search(shard_mgr, store);
+    BruteForceSearcher search(*shard_mgr, *store);
 
     std::vector<std::string> feature_ids = search.AddFeatures(db_id, fts);
     EXPECT_EQ(feature_ids.size(), feature_count);
 }
 
 TEST_F(SearchManager_BruteForceSearch, SearchTopkTeatures) {
-    BruteForceSearcher search(shard_mgr, store);
+    BruteForceSearcher search(*shard_mgr, *store);
 
     // preapre features in db.
     std::vector<std::string> feature_ids = search.AddFeatures(db_id, fts);

@@ -1,5 +1,6 @@
 #include "shard_manager_impl.h"
 
+#include "donde/definitions.h"
 #include "donde/utils.h"
 #include "source/feature_search/search_manager/shard_impl.h"
 
@@ -23,7 +24,27 @@ std::vector<Shard*> ShardManagerImpl::ListShards(std::string db_id) {
     return iter->second;
 };
 
-RetCode ShardManagerImpl::ManageShard(std::string db_id, Shard*) { return {}; };
+RetCode ShardManagerImpl::ManageShard(std::string db_id, Shard* shard) {
+    if (shard->GetShardInfo().db_id != db_id) {
+        spdlog::warn("shard info.db_id[{}] differ from input db_id[{}]",
+                     shard->GetShardInfo().db_id, db_id);
+        return RetCode::RET_ERR;
+    }
+
+    auto iter = _db_shards.find(db_id);
+    if (iter == _db_shards.end()) {
+        _db_shards[db_id] = std::vector<Shard*>();
+    }
+
+    for (auto& it : _db_shards[db_id]) {
+        if (it->GetShardID() == shard->GetShardID()) {
+            spdlog::warn("shard [{}] is already managed in db[{}]", shard->GetShardID(), db_id);
+            return RetCode::RET_OK;
+        }
+    };
+
+    return {};
+};
 
 RetCode ShardManagerImpl::CloseShard(std::string db_id, std::string shard_id) {
     _driver.CloseShard(db_id, shard_id);

@@ -24,8 +24,9 @@ namespace search_worker {
 class BruteForceSearcher : public Searcher {
 
   public:
-    // Searcher contructor, owns the input ShardManager* pointer and Driver* pointer.
-    BruteForceSearcher(ShardManager* shard_manager, Driver* driver);
+    // Searcher contructor, doesn't own ShardManager and Driver, but reference to them.
+    // The caller should clean ShardManager and Driver themself.
+    BruteForceSearcher(ShardManager& shard_manager, Driver& driver);
 
     ~BruteForceSearcher() = default;
 
@@ -65,8 +66,8 @@ class BruteForceSearcher : public Searcher {
 
   private:
     json _config;
-    std::shared_ptr<ShardManager> _shard_mgr;
-    std::shared_ptr<Driver> _driver;
+    ShardManager& _shard_mgr;
+    Driver& _driver;
 };
 
 } // namespace search_worker

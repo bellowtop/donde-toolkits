@@ -27,7 +27,7 @@ class Searcher {
   public:
     // Searcher contructor, owns the input ShardManager pointer.
     // By the way, this is just an api, the implementation should owns the pointer.
-    Searcher(ShardManager*){};
+    Searcher(ShardManager&){};
 
     virtual ~Searcher() = default;
 
