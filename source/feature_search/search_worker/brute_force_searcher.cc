@@ -45,6 +45,10 @@ RetCode BruteForceSearcher::CloseShards(const std::vector<DBShard>& shard_infos)
 std::vector<FeatureSearchItem>
 BruteForceSearcher::SearchFeature(const std::string& db_id, const Feature& query, size_t topk) {
     auto shards = _shard_mgr.ListShards(db_id);
+    if (shards.empty()) {
+        spdlog::error("search err: no shards in db[{}]", db_id);
+        return {};
+    }
 
     FeatureTopkRanking rank(query, topk);
 

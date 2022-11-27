@@ -19,7 +19,7 @@ ShardManagerImpl::ShardManagerImpl(Driver& driver) : ShardManager(driver), _driv
 std::vector<Shard*> ShardManagerImpl::ListShards(std::string db_id) {
     auto iter = _db_shards.find(db_id);
     if (iter == _db_shards.end()) {
-        throw "db_id not exists";
+        return {};
     }
     return iter->second;
 };
