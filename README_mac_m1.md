@@ -18,6 +18,7 @@ cd openvino         && git submodule update --init --recursive && cd ..
 cd openvino_contrib && git submodule update --init --recursive && cd ..
 
 mkdir openvino/build && cd openvino/build
+# IE_EXTRA_MODULES must be absolute path.
 cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_PYTHON=OFF -DIE_EXTRA_MODULES=~/openvino_contrib/modules/arm_plugin ..
 make -j8
 sudo make install
