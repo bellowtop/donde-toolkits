@@ -1,6 +1,6 @@
 #pragma once
 
-#include "donde/feature_search/search_worker/db_searcher.h"
+#include "donde/feature_search/search_worker/db_search_worker.h"
 #include "donde/feature_search/search_worker/shard.h"
 #include "donde/feature_search/search_worker/shard_manager.h"
 

@@ -5,7 +5,7 @@
 #include "source/feature_search/feature_topk_rank.h"
 #include "source/feature_search/search_manager/shard_impl.h"
 #include "source/feature_search/search_manager/shard_manager_impl.h"
-#include "source/feature_search/search_manager/worker_impl.h"
+#include "source/feature_search/search_manager/remote_worker_impl.h"
 #include "source/feature_search/simple_driver.h"
 
 #include <exception>
@@ -135,7 +135,7 @@ void CoordinatorImpl::initialize_workers() {
     for (auto& addr : _worker_addrs) {
         try {
             // may has exception, we handled bellow.
-            auto client = std::make_shared<WorkerImpl>(addr);
+            auto client = std::make_shared<RemoteWorkerImpl>(addr);
             _workers.push_back(client);
         } catch (const std::exception& exc) {
             _invalid_worker_addrs.push_back(addr);

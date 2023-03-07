@@ -22,14 +22,14 @@ namespace feature_search {
 
 namespace search_worker {
 
-class Searcher {
+class SearchWorker {
 
   public:
     // Searcher contructor, owns the input ShardManager pointer.
     // By the way, this is just an api, the implementation should owns the pointer.
-    Searcher(ShardManager&){};
+    SearchWorker(ShardManager&){};
 
-    virtual ~Searcher() = default;
+    virtual ~SearchWorker() = default;
 
     virtual RetCode Start() = 0;
 

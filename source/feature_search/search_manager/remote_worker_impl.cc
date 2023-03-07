@@ -1,4 +1,4 @@
-#include "worker_impl.h"
+#include "remote_worker_impl.h"
 
 #include "Poco/RunnableAdapter.h"
 #include "api/feature_search_inner.grpc.pb.h"
@@ -40,24 +40,25 @@ namespace donde {
 namespace feature_search {
 namespace search_manager {
 
-WorkerImpl::WorkerImpl(const std::string& addr) : _worker_id(generate_uuid()), _addr(addr) {
+RemoteWorkerImpl::RemoteWorkerImpl(const std::string& addr)
+    : _worker_id(generate_uuid()), _addr(addr) {
     auto ret = Connect();
 
     if (ret == RetCode::RET_OK) {
         // 1. get initial system info;
-        auto [status, response] = WorkerImpl::get_system_info(_stub.get(), 10);
+        auto [status, response] = RemoteWorkerImpl::get_system_info(_stub.get(), 10);
         if (status.ok()) {
             _worker_info = response.worker_info();
         }
 
         // 2. then check regulaly.
-        Poco::RunnableAdapter<WorkerImpl> ra(*this, &WorkerImpl::check_liveness_loop);
+        Poco::RunnableAdapter<RemoteWorkerImpl> ra(*this, &RemoteWorkerImpl::check_liveness_loop);
         _liveness_check_thread.start(ra);
     }
 };
 
 // Connect to remote addr, and regularly check liveness.
-RetCode WorkerImpl::Connect() {
+RetCode RemoteWorkerImpl::Connect() {
     spdlog::info("connected to remote worker");
 
     _conn = grpc::CreateChannel(_addr, grpc::InsecureChannelCredentials());
@@ -66,7 +67,7 @@ RetCode WorkerImpl::Connect() {
     return RetCode::RET_OK;
 };
 
-RetCode WorkerImpl::DisConnect() {
+RetCode RemoteWorkerImpl::DisConnect() {
     spdlog::info("disconnected to remote worker");
 
     stopped = true;
@@ -77,7 +78,7 @@ RetCode WorkerImpl::DisConnect() {
     return RetCode::RET_OK;
 };
 
-uint64 WorkerImpl::GetFreeSpace() {
+uint64 RemoteWorkerImpl::GetFreeSpace() {
     uint64 total_used = 0;
     for (auto it = _served_shards.begin(); it != _served_shards.end(); it++) {
         total_used += it->second.capacity;
@@ -89,7 +90,7 @@ uint64 WorkerImpl::GetFreeSpace() {
     return _worker_info.capacity() - total_used;
 };
 
-std::vector<DBShard> WorkerImpl::ListShards() {
+std::vector<DBShard> RemoteWorkerImpl::ListShards() {
     std::vector<DBShard> shards;
     for (auto it = _served_shards.begin(); it != _served_shards.end(); it++) {
         shards.push_back(it->second);
@@ -98,7 +99,7 @@ std::vector<DBShard> WorkerImpl::ListShards() {
 };
 
 // ServeShard let the worker serve this shard, for its features' CRUD
-RetCode WorkerImpl::ServeShard(const DBShard& shard_info) {
+RetCode RemoteWorkerImpl::ServeShard(const DBShard& shard_info) {
     auto found = _served_shards.find(shard_info.shard_id);
     if (found != _served_shards.end()) {
         spdlog::warn("shard {} is already served by this worker!", shard_info.shard_id);
@@ -128,7 +129,7 @@ RetCode WorkerImpl::ServeShard(const DBShard& shard_info) {
     return RetCode::RET_ERR;
 };
 
-RetCode WorkerImpl::CloseShard(const std::string& db_id, const std::string& shard_id) {
+RetCode RemoteWorkerImpl::CloseShard(const std::string& db_id, const std::string& shard_id) {
 
     grpc::ClientContext ctx;
     CloseDBShardsRequest request;
@@ -146,9 +147,9 @@ RetCode WorkerImpl::CloseShard(const std::string& db_id, const std::string& shar
 };
 
 // WorkerAPI implement
-std::vector<std::string> WorkerImpl::AddFeatures(const std::string& db_id,
-                                                 const std::string& shard_id,
-                                                 const std::vector<Feature>& fts) {
+std::vector<std::string> RemoteWorkerImpl::AddFeatures(const std::string& db_id,
+                                                       const std::string& shard_id,
+                                                       const std::vector<Feature>& fts) {
     auto found = _served_shards.find(shard_id);
     if (found == _served_shards.end()) {
         spdlog::info("shard {} is not served by this worker!", shard_id);
@@ -185,8 +186,8 @@ std::vector<std::string> WorkerImpl::AddFeatures(const std::string& db_id,
     return {};
 };
 
-std::vector<FeatureSearchItem> WorkerImpl::SearchFeature(const std::string& db_id,
-                                                         const Feature& query, int topk) {
+std::vector<FeatureSearchItem> RemoteWorkerImpl::SearchFeature(const std::string& db_id,
+                                                               const Feature& query, int topk) {
 
     grpc::ClientContext ctx;
     SearchFeatureRequest request;
@@ -216,7 +217,7 @@ std::vector<FeatureSearchItem> WorkerImpl::SearchFeature(const std::string& db_i
     return {};
 };
 
-void WorkerImpl::check_liveness_loop() {
+void RemoteWorkerImpl::check_liveness_loop() {
     while (true) {
         // use channel select?
         if (stopped) {
@@ -224,7 +225,7 @@ void WorkerImpl::check_liveness_loop() {
             break;
         }
 
-        auto [status, response] = WorkerImpl::get_system_info(_stub.get(), 10);
+        auto [status, response] = RemoteWorkerImpl::get_system_info(_stub.get(), 10);
 
         // if (status.error_code() == grpc::Status::CANCELLED.error_code()) {
         if (!status.ok()) {
@@ -240,8 +241,8 @@ void WorkerImpl::check_liveness_loop() {
     }
 }
 
-std::tuple<grpc::Status, GetSystemInfoResponse> WorkerImpl::get_system_info(WorkerStub* stub,
-                                                                            int timeout) {
+std::tuple<grpc::Status, GetSystemInfoResponse> RemoteWorkerImpl::get_system_info(WorkerStub* stub,
+                                                                                  int timeout) {
     grpc::ClientContext ctx;
 
     if (timeout > 0) {

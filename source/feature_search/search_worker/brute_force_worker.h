@@ -21,14 +21,14 @@ namespace feature_search {
 
 namespace search_worker {
 
-class BruteForceSearcher : public Searcher {
+class BruteForceWorker : public SearchWorker {
 
   public:
     // Searcher contructor, doesn't own ShardManager and Driver, but reference to them.
     // The caller should clean ShardManager and Driver themself.
-    BruteForceSearcher(ShardManager& shard_manager, Driver& driver);
+    BruteForceWorker(ShardManager& shard_manager, Driver& driver);
 
-    ~BruteForceSearcher() = default;
+    ~BruteForceWorker() = default;
 
     RetCode Start() override {
         spdlog::warn("Init is not implemented by BruteForceSearch");

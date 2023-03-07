@@ -1,4 +1,4 @@
-#include "brute_force_searcher.h"
+#include "brute_force_worker.h"
 
 #include "donde/definitions.h"
 #include "donde/feature_search/search_worker/shard.h"
@@ -23,10 +23,10 @@ namespace feature_search {
 
 namespace search_worker {
 
-BruteForceSearcher::BruteForceSearcher(ShardManager& shard_manager, Driver& driver)
-    : Searcher(shard_manager), _shard_mgr(shard_manager), _driver(driver){};
+BruteForceWorker::BruteForceWorker(ShardManager& shard_manager, Driver& driver)
+    : SearchWorker(shard_manager), _shard_mgr(shard_manager), _driver(driver){};
 
-RetCode BruteForceSearcher::ServeShards(const std::vector<DBShard>& shard_infos) {
+RetCode BruteForceWorker::ServeShards(const std::vector<DBShard>& shard_infos) {
     for (auto& s : shard_infos) {
         // remove ShardImpl dependency ?
         Shard* shard = new MemoryShardImpl(_shard_mgr, _driver, s);
@@ -35,15 +35,15 @@ RetCode BruteForceSearcher::ServeShards(const std::vector<DBShard>& shard_infos)
     return RetCode::RET_OK;
 };
 
-RetCode BruteForceSearcher::CloseShards(const std::vector<DBShard>& shard_infos) {
+RetCode BruteForceWorker::CloseShards(const std::vector<DBShard>& shard_infos) {
     for (auto& s : shard_infos) {
         _shard_mgr.CloseShard(s.db_id, s.shard_id);
     }
     return RetCode::RET_OK;
 };
 
-std::vector<FeatureSearchItem>
-BruteForceSearcher::SearchFeature(const std::string& db_id, const Feature& query, size_t topk) {
+std::vector<FeatureSearchItem> BruteForceWorker::SearchFeature(const std::string& db_id,
+                                                               const Feature& query, size_t topk) {
     auto shards = _shard_mgr.ListShards(db_id);
     if (shards.empty()) {
         spdlog::error("search err: no shards in db[{}]", db_id);
@@ -65,9 +65,8 @@ BruteForceSearcher::SearchFeature(const std::string& db_id, const Feature& query
     return ret;
 };
 
-std::vector<std::string>
-BruteForceSearcher::AddFeatures(const std::string& db_id,
-                                const std::vector<FeatureDbItem>& features) {
+std::vector<std::string> BruteForceWorker::AddFeatures(const std::string& db_id,
+                                                       const std::vector<FeatureDbItem>& features) {
     Shard* shard = _shard_mgr.FindShard(db_id);
     if (!shard) {
         spdlog::error("cannot find a writable shard for this db!");
@@ -79,8 +78,8 @@ BruteForceSearcher::AddFeatures(const std::string& db_id,
     return feature_ids;
 };
 
-RetCode BruteForceSearcher::RemoveFeatures(const std::string& db_id,
-                                           const std::vector<std::string>& feature_ids) {
+RetCode BruteForceWorker::RemoveFeatures(const std::string& db_id,
+                                         const std::vector<std::string>& feature_ids) {
 
     Shard* shard = _shard_mgr.FindShard(db_id);
     return shard->RemoveFeatures(feature_ids);

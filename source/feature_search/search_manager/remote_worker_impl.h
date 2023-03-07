@@ -23,10 +23,13 @@ namespace donde {
 namespace feature_search {
 namespace search_manager {
 
-class WorkerImpl : public Worker {
+
+// RemoteWorkerImpl represent a remote worker. it did manage shards metadata,
+// but every feature reqeust is delegated to a concret remote worker.
+class RemoteWorkerImpl : public Worker {
   public:
-    WorkerImpl(const std::string& addr);
-    virtual ~WorkerImpl() = default;
+    RemoteWorkerImpl(const std::string& addr);
+    virtual ~RemoteWorkerImpl() = default;
 
     // Connect to remote addr, and regularly check liveness.
     RetCode Connect();
