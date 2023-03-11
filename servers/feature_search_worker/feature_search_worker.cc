@@ -8,9 +8,10 @@
 #include "config.h"
 #include "donde/definitions.h"
 #include "donde/feature_search/api.h"
+#include "donde/feature_search/driver.h"
 #include "donde/utils.h"
 #include "nlohmann/json.hpp"
-#include "source/feature_search/search_worker/brute_force_searcher.h"
+#include "source/feature_search/search_worker/brute_force_worker.h"
 #include "source/feature_search/simple_driver.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
@@ -63,9 +64,9 @@ FeatureSearchWorkerImpl::FeatureSearchWorkerImpl(Config& server_config) : config
 
 FeatureSearchWorkerImpl::~FeatureSearchWorkerImpl(){};
 
-void FeatureSearchWorkerImpl::Start() { searcher->Start(); };
+void FeatureSearchWorkerImpl::Start() { worker->Start(); };
 
-void FeatureSearchWorkerImpl::Stop() { searcher->Stop(); };
+void FeatureSearchWorkerImpl::Stop() { worker->Stop(); };
 
 Status FeatureSearchWorkerImpl::ServeDBShards(ServerContext* context,
                                               const ServeDBShardsRequest* request,
@@ -80,7 +81,7 @@ Status FeatureSearchWorkerImpl::ServeDBShards(ServerContext* context,
             .is_closed = false,
         });
     };
-    searcher->ServeShards(shard_infos);
+    worker->ServeShards(shard_infos);
     return Status::OK;
 };
 
@@ -97,7 +98,7 @@ Status FeatureSearchWorkerImpl::CloseDBShards(ServerContext* context,
             .is_closed = false,
         });
     };
-    searcher->CloseShards(shard_infos);
+    worker->CloseShards(shard_infos);
     return Status::OK;
 };
 
@@ -109,7 +110,7 @@ Status FeatureSearchWorkerImpl::GetSystemInfo(ServerContext* context,
 
 Status FeatureSearchWorkerImpl::TrainIndex(ServerContext* context, const TrainIndexRequest* request,
                                            TrainIndexResponse* response) {
-    searcher->TrainIndex();
+    worker->TrainIndex();
     return Status::OK;
 };
 
@@ -134,7 +135,7 @@ Status FeatureSearchWorkerImpl::BatchAddFeatures(ServerContext* context,
         });
     }
 
-    std::vector<std::string> feature_ids = searcher->AddFeatures(db_id, fts);
+    std::vector<std::string> feature_ids = worker->AddFeatures(db_id, fts);
 
     for (auto& id : feature_ids) {
         response->add_feature_ids(id);
@@ -154,7 +155,7 @@ Status FeatureSearchWorkerImpl::BatchDeleteFeatures(ServerContext* context,
     auto db_id = request->db_id();
     // construct from iterator
     const std::vector<std::string> feature_ids{ids.begin(), ids.end()};
-    searcher->RemoveFeatures(db_id, feature_ids);
+    worker->RemoveFeatures(db_id, feature_ids);
 
     return Status::OK;
 };
@@ -171,7 +172,7 @@ Status FeatureSearchWorkerImpl::SearchFeature(ServerContext* context,
 
     // FIXME: only search first db now!!!
     std::vector<donde::feature_search::FeatureSearchItem> ret
-        = searcher->SearchFeature(db_ids.Get(0), query, topk);
+        = worker->SearchFeature(db_ids.Get(0), query, topk);
 
     for (const auto& feature_search_result : ret) {
         auto item = response->add_items();

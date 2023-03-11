@@ -6,6 +6,7 @@
 #include "api/feature_search_inner.grpc.pb.h"
 #include "config.h"
 #include "donde/feature_search/search_worker/api.h"
+#include "donde/feature_search/search_worker/db_search_worker.h"
 
 // #include "spdlog/spdlog.h"
 
@@ -70,7 +71,7 @@ class FeatureSearchWorkerImpl final : public FeatureSearchWorker::Service {
     std::vector<std::string> managed_dbs;
 
     Config& config;
-    std::shared_ptr<donde::feature_search::search_worker::Searcher> searcher;
+    std::shared_ptr<donde::feature_search::search_worker::SearchWorker> worker;
     std::shared_ptr<donde::feature_search::Driver> driver;
     // spdlog::Logger& logger;
 };

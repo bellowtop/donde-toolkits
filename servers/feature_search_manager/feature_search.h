@@ -8,7 +8,7 @@
 #include "donde/feature_search/api.h"
 #include "donde/feature_search/search_manager/api.h"
 #include "donde/feature_search/search_manager/coordinator.h"
-#include "source/feature_search/search_manager/worker_impl.h"
+#include "source/feature_search/search_manager/remote_worker_impl.h"
 
 // #include "spdlog/spdlog.h"
 
@@ -83,7 +83,7 @@ class FeatureSearchManagerImpl final : public FeatureSearchManager::Service {
     std::vector<std::string> db_ids;
 
     // worker_id => worker
-    std::unordered_map<std::string, donde::feature_search::search_manager::WorkerImpl*> workers;
+    std::unordered_map<std::string, donde::feature_search::search_manager::RemoteWorkerImpl*> workers;
 
     // worker_id => db_ids
     std::unordered_map<std::string, std::vector<std::string>> worker_dbs;
