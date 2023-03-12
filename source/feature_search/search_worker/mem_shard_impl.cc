@@ -91,6 +91,10 @@ void MemoryShardImpl::Load() {
     auto output = msg->waitResponse();
     msg->giveReceipt();
     auto value = std::static_pointer_cast<loadFeaturesRsp>(output.valuePtr);
+
+    if (value->error == ShardError::OK) {
+        _is_loaded.store(true);
+    }
     return;
 };
 
@@ -98,8 +102,17 @@ void MemoryShardImpl::Load() {
 // Feature management
 //////////////////////////////////////////////////////////////////////////////////
 
-// AddFeatures to this shard, delegate to worker client to do the actual storage.
+// AddFeatures to this shard
 std::vector<std::string> MemoryShardImpl::AddFeatures(const std::vector<FeatureDbItem>& fts) {
+    if (IsClosed()) {
+        spdlog::warn("shard is closed...");
+        return {};
+    }
+    if (!IsLoaded()) {
+        spdlog::warn("shard is not loaded...");
+        return {};
+    }
+
     auto input = shardOp{
         .valueType = addFeaturesReqType,
         .valuePtr = std::shared_ptr<addFeaturesReq>(new addFeaturesReq{fts}),
@@ -118,6 +131,15 @@ std::vector<std::string> MemoryShardImpl::AddFeatures(const std::vector<FeatureD
 
 // RemoveFeatures from this shard
 RetCode MemoryShardImpl::RemoveFeatures(const std::vector<std::string>& feature_ids) {
+    if (IsClosed()) {
+        spdlog::warn("shard is closed...");
+        return {};
+    }
+    if (!IsLoaded()) {
+        spdlog::warn("shard is not loaded...");
+        return {};
+    }
+
     auto input = shardOp{
         .valueType = removeFeaturesReqType,
         .valuePtr = std::shared_ptr<removeFeaturesReq>(new removeFeaturesReq{feature_ids}),
@@ -136,6 +158,11 @@ RetCode MemoryShardImpl::RemoveFeatures(const std::vector<std::string>& feature_
 
 // SearchFeature in this shard, delegate to worker client to do the actual search.
 std::vector<FeatureSearchItem> MemoryShardImpl::SearchFeature(const Feature& query, int topk) {
+    if (!IsLoaded()) {
+        spdlog::warn("shard is not loaded...");
+        return {};
+    }
+
     auto input = shardOp{
         .valueType = searchFeatureReqType,
         .valuePtr = std::shared_ptr<searchFeatureReq>(new searchFeatureReq{query, topk}),
@@ -153,6 +180,11 @@ std::vector<FeatureSearchItem> MemoryShardImpl::SearchFeature(const Feature& que
 };
 
 RetCode MemoryShardImpl::Close() {
+    if (IsClosed()) {
+        spdlog::warn("shard is already closed...");
+        return RET_OK;
+    }
+
     auto input = shardOp{
         .valueType = closeShardReqType,
     };
@@ -247,7 +279,7 @@ shardOp MemoryShardImpl::do_load_features(const shardOp& input) {
             break;
         }
 
-        // cached them!
+        // cached them in memory! that's why we are called 'MemoryShardImpl'
         for (size_t i = 0; i < feature_ids.size(); i++) {
             cached[feature_ids[i]] = fts[i];
         }
@@ -275,7 +307,10 @@ shardOp MemoryShardImpl::do_add_features(const shardOp& input) {
     auto req = std::static_pointer_cast<addFeaturesReq>(input.valuePtr);
     auto rsp = std::make_shared<addFeaturesRsp>();
 
-    // TODO
+    _driver.AddFeatures(req->fts, _db_id, _shard_id);
+    for (auto& ft : req->fts) {
+        _cached_fts[ft.feature_id] = ft.feature;
+    }
 
     shardOp output{
         .valueType = addFeaturesRspType,
@@ -288,7 +323,10 @@ shardOp MemoryShardImpl::do_remove_features(const shardOp& input) {
     auto req = std::static_pointer_cast<removeFeaturesReq>(input.valuePtr);
     auto rsp = std::make_shared<removeFeaturesRsp>();
 
-    // TODO
+    _driver.RemoveFeatures(req->feature_ids, _db_id);
+    for (auto& feature_id : req->feature_ids) {
+        _cached_fts.erase(feature_id);
+    }
 
     shardOp output{
         .valueType = removeFeaturesRspType,

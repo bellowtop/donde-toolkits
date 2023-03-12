@@ -42,6 +42,7 @@ RetCode ShardManagerImpl::ManageShard(std::string db_id, Shard* shard) {
             return RetCode::RET_OK;
         }
     };
+    _db_shards[db_id].push_back(shard);
 
     return {};
 };

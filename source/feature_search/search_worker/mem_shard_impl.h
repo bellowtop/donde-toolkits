@@ -105,6 +105,9 @@ class MemoryShardImpl : public Shard {
     // IsClosed return true if shard is closed.
     bool IsClosed() override { return _shard_info.is_closed; };
 
+    // IsClosed return true if shard is closed.
+    bool IsLoaded() { return _is_loaded.load(); };
+
     // IsStopped return true if shard loop is stopped. a stopped shard means it will not respond to
     // any api calls (add/search etc.)
     bool IsStopped() override { return _is_stopped.load(); };
