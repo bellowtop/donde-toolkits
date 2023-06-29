@@ -23,7 +23,7 @@ using Poco::Notification;
 
 using namespace Poco;
 
-namespace donde {
+namespace donde_toolkits {
 
 namespace feature_extract {
 
@@ -220,4 +220,4 @@ RetCode LandmarksWorker::process(const DetectResult& detect_result, LandmarksRes
 }; // namespace openvino_worker
 
 } // namespace feature_extract
-} // namespace donde
+} // namespace donde_toolkits

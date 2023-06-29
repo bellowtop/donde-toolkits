@@ -8,8 +8,8 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-using namespace donde;
-using namespace donde::feature_extract;
+using namespace donde_toolkits;
+using namespace donde_toolkits::feature_extract;
 
 class MockProcessor : public Processor {
 

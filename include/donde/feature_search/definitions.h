@@ -3,7 +3,7 @@
 #include "donde/definitions.h"
 #include "nlohmann/json.hpp"
 
-namespace donde {
+namespace donde_toolkits {
 
 namespace feature_search {
 
@@ -85,4 +85,4 @@ inline std::vector<std::string> convert_to_feature_ids(const FeatureDbItemList& 
 
 } // namespace feature_search
 
-} // namespace donde
+} // namespace donde_toolkits

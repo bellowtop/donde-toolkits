@@ -10,7 +10,7 @@
 #include <spdlog/spdlog.h>
 #include <unordered_map>
 
-namespace donde {
+namespace donde_toolkits {
 namespace feature_search {
 namespace search_worker {
 
@@ -378,4 +378,4 @@ shardOp MemoryShardImpl::do_close_shard(const shardOp& input) {
 
 } // namespace search_worker
 } // namespace feature_search
-} // namespace donde
+} // namespace donde_toolkits

@@ -12,7 +12,7 @@
 #include <queue>
 #include <spdlog/spdlog.h>
 
-namespace donde {
+namespace donde_toolkits {
 namespace feature_search {
 namespace search_manager {
 
@@ -138,4 +138,4 @@ void CoordinatorImpl::deinitialize_workers(){};
 
 } // namespace search_manager
 } // namespace feature_search
-} // namespace donde
+} // namespace donde_toolkits

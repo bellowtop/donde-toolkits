@@ -5,9 +5,9 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-using namespace donde;
-using namespace donde::feature_search::search_manager;
-using namespace donde::feature_search;
+using namespace donde_toolkits;
+using namespace donde_toolkits::feature_search::search_manager;
+using namespace donde_toolkits::feature_search;
 
 class MockWorker : public Worker {
 

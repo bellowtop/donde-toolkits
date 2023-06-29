@@ -23,7 +23,7 @@ using Poco::Notification;
 using Poco::NotificationQueue;
 
 using namespace Poco;
-namespace donde {
+namespace donde_toolkits {
 
 namespace feature_extract {
 
@@ -200,4 +200,4 @@ RetCode FeatureWorker::process(const AlignerResult& aligner_result, FeatureResul
 } // namespace openvino_worker
 
 } // namespace feature_extract
-} // namespace donde
+} // namespace donde_toolkits

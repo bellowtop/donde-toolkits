@@ -17,7 +17,7 @@ using namespace std;
 
 using json = nlohmann::json;
 
-namespace donde {
+namespace donde_toolkits {
 
 namespace feature_search {
 
@@ -89,4 +89,4 @@ RetCode BruteForceWorker::RemoveFeatures(const std::string& db_id,
 
 } // namespace feature_search
 
-} // namespace donde
+} // namespace donde_toolkits

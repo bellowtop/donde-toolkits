@@ -6,7 +6,7 @@
 
 #include <spdlog/spdlog.h>
 
-namespace donde {
+namespace donde_toolkits {
 namespace feature_search {
 namespace search_worker {
 
@@ -64,4 +64,4 @@ Shard* ShardManagerImpl::FindShard(std::string db_id) {
 
 } // namespace search_worker
 } // namespace feature_search
-} // namespace donde
+} // namespace donde_toolkits

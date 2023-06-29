@@ -12,7 +12,7 @@
 
 using namespace std;
 
-namespace donde {
+namespace donde_toolkits {
 
 namespace feature_search {
 
@@ -37,4 +37,4 @@ class ShardManager {
 
 } // namespace search_worker
 } // namespace feature_search
-} // namespace donde
+} // namespace donde_toolkits
