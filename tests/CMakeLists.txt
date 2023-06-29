@@ -18,11 +18,11 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
 
 endif()
 
-project(FaceRecognitionTests LANGUAGES CXX)
+project(DondeToolkitsTests LANGUAGES CXX)
 
 
 include(../cmake/CPM_0.35.1.cmake)
-CPMAddPackage(NAME FeatureLibraries SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..)
+CPMAddPackage(NAME DondeToolkits SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..)
 
 
 if (NOT DEFINED CONAN_ALREADY_SETUP)
@@ -45,10 +45,12 @@ file(GLOB_RECURSE headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
 file(GLOB_RECURSE sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/*.cc)
 add_executable(${PROJECT_NAME} ${headers} ${sources})
 
-# target_include_directories(${PROJECT_NAME}
-#   PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/../include>
-#          # $<INSTALL_INTERFACE:../include/${PROJECT_NAME}-${PROJECT_VERSION}>
-# )
+target_include_directories(${PROJECT_NAME}
+  PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/../include>
+  			 $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/../src>
+  			 $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/..>
+         # $<INSTALL_INTERFACE:../include/${PROJECT_NAME}-${PROJECT_VERSION}>
+)
 
 target_link_libraries(${PROJECT_NAME}
 	CONAN_PKG::grpc
@@ -64,8 +66,8 @@ target_link_libraries(${PROJECT_NAME}
 	CONAN_PKG::toml11
 	CONAN_PKG::gtest
 	CONAN_PKG::trompeloeil
-
-	Donde
+	
+	DondeToolkits
 	)
 
 # enable compiler warnings

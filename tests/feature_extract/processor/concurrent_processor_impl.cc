@@ -1,9 +1,9 @@
-#include "source/feature_extract/processor/concurrent_processor_impl.h"
+#include "feature_extract/processor/concurrent_processor_impl.h"
 
 #include "donde/definitions.h"
 #include "donde/feature_extract/worker.h"
 #include "donde/message.h"
-#include "source/feature_extract/processor/worker_base_impl.h"
+#include "feature_extract/processor/worker_base_impl.h"
 #include "tests/feature_extract/mock_processor.h"
 
 #include <Poco/NotificationQueue.h>

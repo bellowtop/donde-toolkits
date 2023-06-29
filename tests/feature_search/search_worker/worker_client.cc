@@ -1,7 +1,6 @@
 
 #include "donde/definitions.h"
 #include "donde/utils.h"
-#include "source/feature_search/search_manager/worker_impl.h"
 
 #include <chrono>
 #include <filesystem>

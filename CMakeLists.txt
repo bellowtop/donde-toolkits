@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD 17)
 # set(CMAKE_C_COMPILER    /opt/homebrew/opt/llvm/bin/clang )
 # set(CMAKE_CXX_COMPILER  /opt/homebrew/opt/llvm/bin/clang++ )
 
-project(Donde LANGUAGES CXX)
+project(DondeToolkits LANGUAGES CXX)
 
 if (NOT DEFINED CONAN_ALREADY_SETUP)
   include(build/conanbuildinfo.cmake)
@@ -39,16 +39,16 @@ endif()
 
 
 # ---- Create library ----
-file(GLOB_RECURSE sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/source/*.cc)
-file(GLOB_RECURSE headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/source/*.h)
+file(GLOB_RECURSE sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cc)
+file(GLOB_RECURSE headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
 
-file(GLOB_RECURSE donde CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/donde/*)
-file(GLOB_RECURSE api CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/api/*)
+file(GLOB_RECURSE includes CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/include/*)
 
-add_library(${PROJECT_NAME} ${sources} ${headers} ${donde} ${api})
+add_library(${PROJECT_NAME} ${sources} ${headers} ${includes})
 
 target_include_directories(${PROJECT_NAME}
-  PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
+  PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+  			 $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>
          # $<INSTALL_INTERFACE:include/${PROJECT_NAME}-${PROJECT_VERSION}>
 )
 

@@ -20,41 +20,20 @@ all: check conan build
 
 
 conan:
-	conan install --build=missing --profile conan/conanprofile  -if build ./conan
-
+	conan install --build=missing --profile conan/conanprofile.m1  -if build ./conan
 
 build-pre: conan
-	cmake -S servers -B build/servers
-	cmake -S tests   -B build/tests
-	cmake            -B build
+	cmake -B build
+	cmake -S tests -B build/tests
 
-build-proto:
-	cd proto && ./build_proto.sh
-
-build-server:
-	cmake --build build/servers -- -j 8
+build: build-pre
+	cmake --build build      -- -j 8
 
 build-test:
-	cmake --build build/tests   -- -j 8
-
-build-lib:
-	cmake --build build         -- -j 8
-
-build-all: build-pre build-lib build-servers build-tests
-
-
-run-server:
-	install_name_tool -add_rpath /usr/local/runtime/lib/arm64/Release/ ./build/servers/bin/FaceRecognitionServer || true
-	./build/servers/bin/FaceRecognitionServer --config_path ./contrib/server.json
+	cmake --build build/tests -- -j 8
 
 run-test:
-	./build/tests/bin/FaceRecognitionTests
-
-image:
-	docker build $(IMAGE_FLAGS) -f ./Dockerfile -t face-recognition-service:$(VERSION)-$(BUILD) .
-
-push: image
-	docker push face-recognition-service:$(VERSION)-$(BUILD)
+	./build/tests/bin/DondeToolkitsTests
 
 .PHONY: clean all build check image
 
