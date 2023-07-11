@@ -2,9 +2,9 @@
 
 #include "donde/definitions.h"
 #include "donde/utils.h"
+#include "feature_extract/mock_processor.h"
 #include "feature_extract/processor/concurrent_processor_impl.h"
 #include "feature_extract/processor/openvino_worker/workers_impl.h"
-#include "tests/feature_extract/mock_processor.h"
 
 #include <Poco/Logger.h>
 #include <filesystem>

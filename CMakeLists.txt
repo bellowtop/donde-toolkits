@@ -1,12 +1,5 @@
 cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_CXX_STANDARD 17)
-
-
-
-# # use llvm clang, not the apple clang
-# set(CMAKE_C_COMPILER    /opt/homebrew/opt/llvm/bin/clang )
-# set(CMAKE_CXX_COMPILER  /opt/homebrew/opt/llvm/bin/clang++ )
 
 project(DondeToolkits LANGUAGES CXX)
 
@@ -21,6 +14,7 @@ endif()
 # ----- openvino library ----
 # install openvino distribution
 if(APPLE)
+  # please refer to README_mac_m1.md for openvino install instructions. it has extra steps for openvino running in mac m1.
   set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}, "/usr/local/runtime/cmake")
   find_package(OpenVINO REQUIRED COMPONENTS Runtime)
 elseif(UNIX AND NOT APPLE)
@@ -45,12 +39,47 @@ file(GLOB_RECURSE headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
 file(GLOB_RECURSE includes CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/include/*)
 
 add_library(${PROJECT_NAME} ${sources} ${headers} ${includes})
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 
-target_include_directories(${PROJECT_NAME}
-  PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
-  			 $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>
-         # $<INSTALL_INTERFACE:include/${PROJECT_NAME}-${PROJECT_VERSION}>
-)
+
+
+#
+# Set the build/user include directories
+#
+
+# Allow usage of header files in the `src` directory, but only for utilities
+if (${PROJECT_NAME}_BUILD_HEADERS_ONLY)
+  message(">>>> build header only")
+    target_include_directories(
+            ${PROJECT_NAME}
+            INTERFACE
+            $<INSTALL_INTERFACE:include>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    )
+else ()
+  message(">>>> build something else: ${PROJECT_NAME}, ${CMAKE_CURRENT_SOURCE_DIR}/src")
+    target_include_directories(
+            ${PROJECT_NAME}
+            PUBLIC
+            $<INSTALL_INTERFACE:include>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+	    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+    )
+    if (${PROJECT_NAME}_BUILD_EXECUTABLE AND ${PROJECT_NAME}_ENABLE_UNIT_TESTING)
+      message(">>>> build exec and ut")
+        target_include_directories(
+                ${PROJECT_NAME}_LIB
+                PUBLIC
+                $<INSTALL_INTERFACE:include>
+                $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+        )
+    endif ()
+endif ()
+
+
+
+
 
 # string(TOLOWER ${PROJECT_NAME}/version.h VERSION_HEADER_LOCATION)
 
@@ -68,3 +97,10 @@ target_link_libraries(${PROJECT_NAME}
 	openvino::runtime
 	# faiss
 	)
+
+
+if (${PROJECT_NAME}_ENABLE_UNIT_TESTING)
+    enable_testing()
+    message(STATUS "Build unit tests for the project. Tests should always be found in the test folder\n")
+    add_subdirectory(tests)
+endif ()

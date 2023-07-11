@@ -56,28 +56,33 @@ check supported devices.
 It will install dynamic libraries to `/usr/local/runtime/lib/arm64/Release`
 
 link it to system lib dir
+
 ```
 sudo ln -s /usr/local/runtime/lib/arm64/Release/libopenvino.2230.dylib /usr/local/lib/
 ```
 
-now we can add run path to the our server binary.
+## TBB
 
 ```
-cd face-recognition-service
-
-# run server
-./build/server/bin/FaceRecognitionServer --config_path ./contrib/server.json
-
-# run test
-./build/test/bin/FaceRecognitionTests
+ brew install tbb
+ sudo ln -s /opt/homebrew/Cellar/tbb/2021.9.0/lib/libtbb.dylib /usr/local/lib
+ sudo ln -s /opt/homebrew/Cellar/tbb/2021.9.0/lib/libtbb.12.dylib /usr/local/lib
 ```
-
 
 ## Conan
 
 ```
-export CC=/opt/homebrew/opt/llvm/bin/clang ; export CXX=/opt/homebrew/opt/llvm/bin/clang++
-
 conan install --build=missing --profile conan/conanprofile.m1  -if build ./conan
+```
 
+now we can run tests
+
+```
+cd donde-toolkits
+
+cmake -B build -DDondeToolkits_ENABLE_UNIT_TESTING=true
+cmake --build build  -- -j 8
+
+# run test
+./build/test/bin/FaceRecognitionTests
 ```
