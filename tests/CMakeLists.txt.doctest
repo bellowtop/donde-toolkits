@@ -44,8 +44,6 @@ target_include_directories(${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME}
-	CONAN_PKG::grpc
-	CONAN_PKG::protobuf
 	CONAN_PKG::fmt
 	CONAN_PKG::opencv
 	CONAN_PKG::poco

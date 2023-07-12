@@ -5,10 +5,6 @@ cxxopts/2.2.1
 poco/1.12.2
 zlib/1.2.12
 
-grpc/1.48.0
-googleapis/cci.20220711
-grpc-proto/cci.20220627
-protobuf/3.21.4
 libuuid/1.0.3
 
 msgpack/3.3.0
@@ -17,11 +13,8 @@ sqlitecpp/3.2.0
 
 cassandra-cpp-driver/2.15.3
 
-# ffmpeg/4.3.2
-
 toml11/3.7.1
 nlohmann_json/3.10.5
-opencv/4.5.5
 doctest/2.4.11
 
 gtest/cci.20210126
@@ -45,31 +38,3 @@ poco:enable_redis=False
 poco:enable_crypto=False
 poco:enable_jwt=False
 poco:enable_netssl=False
-
-opencv:with_ffmpeg=False
-
-# ffmpeg:with_appkit=False
-# ffmpeg:with_asm=False
-# ffmpeg:with_audiotoolbox=False
-# ffmpeg:with_avfoundation=False
-# ffmpeg:with_bzip2=False
-# ffmpeg:with_coreimage=False
-# ffmpeg:with_freetype=False
-# ffmpeg:with_libfdk_aac=False
-# ffmpeg:with_libiconv=False
-# ffmpeg:with_libmp3lame=False
-# ffmpeg:with_libvpx=False
-# ffmpeg:with_libwebp=False
-# ffmpeg:with_libx264=False
-# ffmpeg:with_libx265=False
-# ffmpeg:with_lzma=False
-# ffmpeg:with_openh264=False
-# ffmpeg:with_openjpeg=False
-# ffmpeg:with_opus=False
-# ffmpeg:with_programs=False
-# ffmpeg:with_sdl=False
-# ffmpeg:with_ssl=False
-# ffmpeg:with_videotoolbox=False
-# ffmpeg:with_vorbis=False
-# ffmpeg:with_zeromq=False
-# ffmpeg:with_zlib=False
