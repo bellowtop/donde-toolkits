@@ -1,13 +1,10 @@
-#include "shard_manager_impl.h"
+#include "donde/feature_search/search_manager/shard_manager_impl.h"
 
-#include "donde/utils.h"
-#include "feature_search/search_manager/shard_impl.h"
+#include "donde/feature_search/search_manager/shard_impl.h"
 
 #include <spdlog/spdlog.h>
 
-namespace donde_toolkits {
-namespace feature_search {
-namespace search_manager {
+namespace donde_toolkits ::feature_search ::search_manager {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// ShardManager
@@ -113,6 +110,4 @@ RetCode ShardManagerImpl::load_db_shards() {
     return {};
 };
 
-} // namespace search_manager
-} // namespace feature_search
-} // namespace donde_toolkits
+} // namespace donde_toolkits::feature_search::search_manager

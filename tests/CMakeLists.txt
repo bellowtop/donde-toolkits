@@ -30,6 +30,13 @@ file(GLOB_RECURSE sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/*.cc)
 add_executable(${PROJECT_NAME} ${headers} ${sources})
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 
+# make sure to include the conans headers BEFORE system headers(the brew headers)
+target_include_directories(${PROJECT_NAME}
+    BEFORE
+    PRIVATE
+    ${CONAN_INCLUDE_DIRS}
+)
+
 target_link_libraries(${PROJECT_NAME}
   PUBLIC
   ${${CMAKE_PROJECT_NAME}_TEST_LIB}

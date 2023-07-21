@@ -1,10 +1,10 @@
-#include "feature_extract/pipeline/face_pipeline_impl.h"
+#include "donde/feature_extract/face_pipeline_impl.h"
 
+#include "../mock_processor.h"
 #include "donde/definitions.h"
+#include "donde/feature_extract/concurrent_processor_impl.h"
+#include "donde/feature_extract/worker_openvino_impl.h"
 #include "donde/utils.h"
-#include "feature_extract/mock_processor.h"
-#include "feature_extract/processor/concurrent_processor_impl.h"
-#include "feature_extract/processor/openvino_worker/workers_impl.h"
 
 #include <Poco/Logger.h>
 #include <filesystem>

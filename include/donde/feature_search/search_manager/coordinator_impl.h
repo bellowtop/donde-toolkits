@@ -1,9 +1,10 @@
 #pragma once
 
 #include "config.h"
-#include "donde/feature_search/api.h"
-#include "donde/feature_search/search_manager/api.h"
-#include "feature_search/cassandra_driver.h"
+#include "donde/feature_search/driver.h"
+#include "donde/feature_search/search_manager/coordinator.h"
+#include "donde/feature_search/search_manager/shard.h"
+#include "donde/feature_search/search_manager/worker.h"
 
 // #include "spdlog/spdlog.h"
 
@@ -40,7 +41,7 @@ class CoordinatorImpl : public Coordinator {
 
     // SearchFeatures in this db.
     std::vector<FeatureSearchItem> SearchFeature(const std::string& db_id, const Feature& query,
-                                            int topk);
+                                                 int topk);
 
   private:
     void initialize_workers();

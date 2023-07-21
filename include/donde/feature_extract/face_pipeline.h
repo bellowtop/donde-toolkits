@@ -12,9 +12,7 @@ using namespace std;
 
 using json = nlohmann::json;
 
-namespace donde_toolkits {
-
-namespace feature_extract {
+namespace donde_toolkits::feature_extract {
 
 class FacePipeline {
   public:
@@ -44,6 +42,4 @@ class FacePipeline {
         = 0;
 };
 
-} // namespace feature_extract
-
-} // namespace donde_toolkits
+} // namespace donde_toolkits::feature_extract

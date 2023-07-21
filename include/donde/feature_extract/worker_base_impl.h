@@ -24,9 +24,7 @@ using namespace std;
 
 using json = nlohmann::json;
 
-namespace donde_toolkits {
-
-namespace feature_extract {
+namespace donde_toolkits::feature_extract {
 
 // dummy worker impl
 class WorkerBaseImpl : public Worker {
@@ -62,5 +60,4 @@ class WorkerBaseImpl : public Worker {
     std::shared_ptr<spdlog::logger> _logger;
 };
 
-} // namespace feature_extract
-} // namespace donde_toolkits
+} // namespace donde_toolkits::feature_extract

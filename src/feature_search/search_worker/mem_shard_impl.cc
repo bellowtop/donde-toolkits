@@ -1,8 +1,8 @@
-#include "mem_shard_impl.h"
+#include "donde/feature_search/search_worker/mem_shard_impl.h"
 
 #include "donde/definitions.h"
 #include "donde/feature_search/definitions.h"
-#include "feature_search/feature_topk_rank.h"
+#include "donde/feature_search/feature_topk_rank.h"
 
 #include <exception>
 #include <memory>
@@ -10,9 +10,7 @@
 #include <spdlog/spdlog.h>
 #include <unordered_map>
 
-namespace donde_toolkits {
-namespace feature_search {
-namespace search_worker {
+namespace donde_toolkits ::feature_search ::search_worker {
 
 const int WAIT_MSG_INTERVAL_MS = 3000;
 
@@ -376,6 +374,4 @@ shardOp MemoryShardImpl::do_close_shard(const shardOp& input) {
     return output;
 };
 
-} // namespace search_worker
-} // namespace feature_search
-} // namespace donde_toolkits
+} // namespace donde_toolkits::feature_search::search_worker

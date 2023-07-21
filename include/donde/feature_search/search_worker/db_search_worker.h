@@ -2,11 +2,9 @@
 
 #include "donde/definitions.h"
 #include "donde/feature_search/definitions.h"
-#include "donde/feature_search/driver.h"
 #include "shard_manager.h"
 
 // #include "faiss/Index2Layer.h"
-#include "nlohmann/json.hpp"
 
 #include <map>
 #include <memory>
@@ -16,11 +14,7 @@ using namespace std;
 
 using json = nlohmann::json;
 
-namespace donde_toolkits {
-
-namespace feature_search {
-
-namespace search_worker {
+namespace donde_toolkits ::feature_search ::search_worker {
 
 class SearchWorker {
 
@@ -63,6 +57,4 @@ class SearchWorker {
         = 0;
 };
 
-} // namespace search_worker
-} // namespace feature_search
-} // namespace donde_toolkits
+} // namespace donde_toolkits::feature_search::search_worker

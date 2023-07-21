@@ -16,9 +16,7 @@ using namespace std;
 using Poco::Runnable;
 using json = nlohmann::json;
 
-namespace donde_toolkits {
-
-namespace feature_extract {
+namespace donde_toolkits::feature_extract {
 
 class Worker : public Runnable {
   public:
@@ -32,6 +30,4 @@ class Worker : public Runnable {
 };
 ;
 
-} // namespace feature_extract
-
-} // namespace donde_toolkits
+} // namespace donde_toolkits::feature_extract

@@ -1,10 +1,9 @@
-#include "brute_force_worker.h"
+#include "donde/feature_search/search_worker/brute_force_worker.h"
 
 #include "donde/definitions.h"
+#include "donde/feature_search/feature_topk_rank.h"
+#include "donde/feature_search/search_worker/mem_shard_impl.h"
 #include "donde/feature_search/search_worker/shard.h"
-#include "mem_shard_impl.h"
-#include "nlohmann/json.hpp"
-#include "feature_search/feature_topk_rank.h"
 
 #include <algorithm>
 #include <functional>
@@ -17,11 +16,7 @@ using namespace std;
 
 using json = nlohmann::json;
 
-namespace donde_toolkits {
-
-namespace feature_search {
-
-namespace search_worker {
+namespace donde_toolkits ::feature_search ::search_worker {
 
 BruteForceWorker::BruteForceWorker(ShardManager& shard_manager, Driver& driver)
     : SearchWorker(shard_manager), _shard_mgr(shard_manager), _driver(driver){};
@@ -85,8 +80,4 @@ RetCode BruteForceWorker::RemoveFeatures(const std::string& db_id,
     return shard->RemoveFeatures(feature_ids);
 };
 
-} // namespace search_worker
-
-} // namespace feature_search
-
-} // namespace donde_toolkits
+} // namespace donde_toolkits::feature_search::search_worker

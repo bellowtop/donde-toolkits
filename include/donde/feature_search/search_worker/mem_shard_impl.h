@@ -1,9 +1,9 @@
 #pragma once
 
-#include "donde/feature_search/api.h"
-#include "donde/feature_search/search_worker/api.h"
+#include "donde/feature_search/definitions.h"
+#include "donde/feature_search/driver.h"
+#include "donde/feature_search/search_worker/shard.h"
 #include "donde/message.h"
-#include "donde/utils.h"
 
 #include <Poco/Thread.h>
 #include <memory>
@@ -14,9 +14,7 @@
 
 using namespace std;
 
-namespace donde_toolkits {
-namespace feature_search {
-namespace search_worker {
+namespace donde_toolkits ::feature_search ::search_worker {
 
 class ShardManagerImpl;
 
@@ -146,6 +144,4 @@ class MemoryShardImpl : public Shard {
     std::mutex _thread_mu;
 };
 
-} // namespace search_worker
-} // namespace feature_search
-} // namespace donde_toolkits
+} // namespace donde_toolkits::feature_search::search_worker

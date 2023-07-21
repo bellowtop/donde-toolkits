@@ -1,7 +1,6 @@
 #pragma once
 
 #include "donde/definitions.h"
-#include "donde/feature_search/api.h"
 #include "donde/feature_search/definitions.h"
 
 // #include "spdlog/spdlog.h"
@@ -11,11 +10,7 @@
 
 using namespace std;
 
-namespace donde_toolkits {
-
-namespace feature_search {
-
-namespace search_worker {
+namespace donde_toolkits ::feature_search ::search_worker {
 
 class ShardManager;
 
@@ -58,6 +53,4 @@ class Shard {
     virtual DBShard GetShardInfo() = 0;
 };
 
-} // namespace search_worker
-} // namespace feature_search
-} // namespace donde_toolkits
+} // namespace donde_toolkits::feature_search::search_worker

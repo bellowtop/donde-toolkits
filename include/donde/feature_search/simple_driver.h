@@ -1,6 +1,6 @@
-#include "SQLiteCpp/SQLiteCpp.h"
 #include "donde/definitions.h"
-#include "donde/feature_search/api.h"
+#include "donde/feature_search/definitions.h"
+#include "donde/feature_search/driver.h"
 #include "donde/utils.h"
 #include "fmt/format.h"
 #include "nlohmann/json.hpp"
@@ -26,27 +26,25 @@ using namespace std;
 
 using json = nlohmann::json;
 
-namespace donde_toolkits {
-
-namespace feature_search {
+namespace donde_toolkits ::feature_search {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// CassandraDriver, use cassandra keyspace to store feature blob.
-// ids,
+// SimpleDriver, use filesystem to store feature files, use sqlite3 to store feature ids,
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-class CassandraDriver : public Driver {
+class SimpleDriver : public Driver {
 
   public:
-    CassandraDriver(std::string addr);
+    SimpleDriver(std::string db_dirpath);
 
     // the sqlite3 db ptr will auto release when destruct.
-    ~CassandraDriver() = default;
+    ~SimpleDriver() = default;
 
     RetCode Init(const std::vector<std::string>& initial_db_ids) override;
 
+    // DB management
     std::string CreateDB(const DBItem& info) override;
 
     DBItem FindDB(const std::string& db_id) override;
@@ -60,17 +58,23 @@ class CassandraDriver : public Driver {
 
     std::string CreateShard(const std::string& db_id, const DBShard& shard) override;
 
-    PageData<FeatureDbItemList> ListFeatures(const std::string& db_id, uint page,
-                                             uint perPage); // override;
+    RetCode UpdateShard(const std::string& db_id, const DBShard& shard) override;
 
-    std::vector<std::string> AddFeatures(const std::string& db_id,
-                                         const std::vector<FeatureDbItem>& features); // override;
+    std::string CloseShard(const std::string& db_id, const std::string& shard) override;
 
-    std::vector<Feature> LoadFeatures(const std::string& db_id,
-                                      const std::vector<std::string>& feature_ids); // override;
+    PageData<FeatureDbItemList> ListFeatures(uint page, uint perPage, const std::string& db_id,
+                                             const std::string& shard_id = "") override;
 
-    RetCode RemoveFeatures(const std::string& db_id,
-                           const std::vector<std::string>& feature_ids); // override;
+    std::vector<std::string> AddFeatures(const std::vector<FeatureDbItem>& features,
+                                         const std::string& db_id,
+                                         const std::string& shard_id) override;
+
+    std::vector<Feature> LoadFeatures(const std::vector<std::string>& feature_ids,
+                                      const std::string& db_id,
+                                      const std::string& shard_id) override;
+
+    RetCode RemoveFeatures(const std::vector<std::string>& feature_ids, const std::string& db_id,
+                           const std::string& shard_id) override;
 
   private:
     std::filesystem::path _db_dir;
@@ -93,9 +97,9 @@ class CassandraDriver : public Driver {
     RetCode insert_into_user_dbs(const std::string& db_id, const std::string& name, uint64 capacity,
                                  const std::string& desc);
 
-    std::vector<DBItem> list_user_db_items(bool include_deleted = false);
+    std::vector<DBItem> list_user_dbs(bool include_deleted = false);
 
-    RetCode update_db_item(const DBItem& new_item);
+    RetCode update_user_db(const DBItem& new_item);
 
     RetCode delete_user_db(const std::string& db_id);
 
@@ -107,25 +111,28 @@ class CassandraDriver : public Driver {
                                   uint64 capacity);
 
     std::vector<DBShard> list_db_shards(const std::string& db_id);
+
     ///
     /// Features management
     ///
 
     RetCode init_features_table_for_db(const std::string& db_id);
 
-    RetCode delete_features_from_db(const std::string& db_id,
-                                    const std::vector<std::string>& feature_ids);
+    RetCode insert_features_into_db(const std::vector<std::string>& feature_ids,
+                                    const std::vector<std::string>& metadatas,
+                                    const std::string& db_id, const std::string& shard_id);
 
-    std::vector<FeatureDbItem> list_features_from_db(const std::string& db_id, int start,
-                                                     int limit);
+    RetCode delete_features_from_db(const std::vector<std::string>& feature_ids,
+                                    const std::string& db_id, const std::string& shard_id = "");
 
-    RetCode insert_features_into_db(const std::string& db_id,
-                                    const std::vector<std::string>& feature_ids,
-                                    const std::vector<std::string>& metadatas);
+    std::vector<FeatureDbItem> list_features_from_db(int start, int limit, const std::string& db_id,
+                                                     const std::string& shard_id = "");
 
-    uint64 count_features_in_db(const std::string& db_id);
+    uint64 count_features_in_db(const std::string& db_id, const std::string& shard_id = "");
+
+    static inline std::string feature_table_name(const std::string& db_id) {
+        return "fetures_db_" + replace_underscore_for_uuid(db_id);
+    };
 };
 
-} // namespace feature_search
-
-} // namespace donde_toolkits
+} // namespace donde_toolkits::feature_search

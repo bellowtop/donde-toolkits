@@ -1,9 +1,6 @@
 #include "donde/definitions.h"
-#include "donde/feature_search/api.h"
-#include "donde/feature_search/search_worker/api.h"
-#include "donde/feature_search/search_worker/shard.h"
-#include "donde/utils.h"
-#include "nlohmann/json.hpp"
+#include "donde/feature_search/driver.h"
+#include "donde/feature_search/search_worker/db_search_worker.h"
 
 #include <algorithm>
 #include <functional>
@@ -15,11 +12,7 @@ using namespace std;
 
 using json = nlohmann::json;
 
-namespace donde_toolkits {
-
-namespace feature_search {
-
-namespace search_worker {
+namespace donde_toolkits ::feature_search ::search_worker {
 
 class BruteForceWorker : public SearchWorker {
 
@@ -70,8 +63,4 @@ class BruteForceWorker : public SearchWorker {
     Driver& _driver;
 };
 
-} // namespace search_worker
-
-} // namespace feature_search
-
-} // namespace donde_toolkits
+} // namespace donde_toolkits::feature_search::search_worker

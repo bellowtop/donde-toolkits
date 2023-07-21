@@ -1,4 +1,4 @@
-#include "shard_impl.h"
+#include "donde/feature_search/search_manager/shard_impl.h"
 
 #include "donde/definitions.h"
 
@@ -7,9 +7,7 @@
 #include <mutex>
 #include <spdlog/spdlog.h>
 
-namespace donde_toolkits {
-namespace feature_search {
-namespace search_manager {
+namespace donde_toolkits ::feature_search ::search_manager {
 
 const int WAIT_MSG_INTERVAL_MS = 3000;
 
@@ -272,6 +270,4 @@ Shard* ShardFactoryImpl::CreateShard(ShardManager* mgr, DBShard shard_info) {
     return new ShardImpl(mgr, shard_info);
 };
 
-} // namespace search_manager
-} // namespace feature_search
-} // namespace donde_toolkits
+} // namespace donde_toolkits::feature_search::search_manager

@@ -25,9 +25,7 @@ using namespace std;
 
 using json = nlohmann::json;
 
-namespace donde_toolkits {
-
-namespace feature_extract {
+namespace donde_toolkits ::feature_extract {
 
 class Worker;
 
@@ -147,5 +145,4 @@ ConcurrentProcessorImpl<T, typename std::enable_if_t<std::is_base_of_v<Worker, T
     return _name;
 }
 
-} // namespace feature_extract
-} // namespace donde_toolkits
+} // namespace donde_toolkits::feature_extract

@@ -1,10 +1,5 @@
-#include "SQLiteCpp/SQLiteCpp.h"
 #include "donde/definitions.h"
-#include "donde/feature_search/api.h"
 #include "donde/feature_search/definitions.h"
-#include "donde/utils.h"
-#include "fmt/format.h"
-#include "nlohmann/json.hpp"
 
 #include <exception>
 #include <filesystem>
@@ -17,6 +12,7 @@
 #include <msgpack.hpp>
 #include <nlohmann/json_fwd.hpp>
 #include <opencv2/core/hal/interface.h>
+#include <queue>
 #include <sqlite3.h>
 #include <sstream>
 #include <stdexcept>
