@@ -20,13 +20,13 @@ using Poco::Notification;
 
 using nlohmann::json;
 
-using donde::Feature;
-using donde::Frame;
-using donde::Value;
-using donde::ValueFeature;
-using donde::ValueFrame;
-using donde::feature_extract::ConcurrentProcessorImpl;
-using donde::feature_extract::WorkerBaseImpl;
+using donde_toolkits::Feature;
+using donde_toolkits::Frame;
+using donde_toolkits::Value;
+using donde_toolkits::ValueFeature;
+using donde_toolkits::ValueFrame;
+using donde_toolkits::feature_extract::ConcurrentProcessorImpl;
+using donde_toolkits::feature_extract::WorkerBaseImpl;
 
 TEST(FeatureExtract, ConcurrentProcessorHasConcurrentWorkers) {
     json conf = R"(

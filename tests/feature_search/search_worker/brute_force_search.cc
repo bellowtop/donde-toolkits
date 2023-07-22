@@ -18,17 +18,17 @@ using namespace std;
 
 using nlohmann::json;
 
-using donde::feature_search::DBItem;
-using donde::feature_search::FeatureDbItem;
-using donde::feature_search::FeatureSearchItem;
-using donde::feature_search::SimpleDriver;
+using donde_toolkits::feature_search::DBItem;
+using donde_toolkits::feature_search::FeatureDbItem;
+using donde_toolkits::feature_search::FeatureSearchItem;
+using donde_toolkits::feature_search::SimpleDriver;
 
-using donde::feature_search::search_worker::BruteForceWorker;
-using donde::feature_search::search_worker::ShardManager;
-using donde::feature_search::search_worker::ShardManagerImpl;
+using donde_toolkits::feature_search::search_worker::BruteForceWorker;
+using donde_toolkits::feature_search::search_worker::ShardManager;
+using donde_toolkits::feature_search::search_worker::ShardManagerImpl;
 
-using donde::Feature;
-using donde::gen_feature_dim;
+using donde_toolkits::Feature;
+using donde_toolkits::gen_feature_dim;
 
 namespace {
 

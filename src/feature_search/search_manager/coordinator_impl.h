@@ -12,7 +12,7 @@
 
 using namespace std;
 
-namespace donde {
+namespace donde_toolkits {
 namespace feature_search {
 namespace search_manager {
 
@@ -65,4 +65,4 @@ class CoordinatorImpl : public Coordinator {
 
 } // namespace search_manager
 } // namespace feature_search
-} // namespace donde
+} // namespace donde_toolkits

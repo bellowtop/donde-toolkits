@@ -29,7 +29,7 @@ using json = nlohmann::json;
 
 using fmt::format;
 
-namespace donde {
+namespace donde_toolkits {
 
 namespace feature_search {
 
@@ -612,4 +612,4 @@ uint64 SimpleDriver::count_features_in_db(const std::string& db_id, const std::s
 
 } // namespace feature_search
 
-} // namespace donde
+} // namespace donde_toolkits

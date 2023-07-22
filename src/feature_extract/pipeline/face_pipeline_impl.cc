@@ -15,7 +15,7 @@
 #include <opencv2/opencv.hpp>
 
 using namespace std;
-using namespace donde::feature_extract::openvino_worker;
+using namespace donde_toolkits::feature_extract::openvino_worker;
 
 using json = nlohmann::json;
 
@@ -44,7 +44,7 @@ using json = nlohmann::json;
        }
    }
  */
-namespace donde {
+namespace donde_toolkits {
 
 namespace feature_extract {
 
@@ -191,4 +191,4 @@ FacePipelineImpl::Extract(std::shared_ptr<AlignerResult> aligner_result) {
 }
 
 } // namespace feature_extract
-} // namespace donde
+} // namespace donde_toolkits

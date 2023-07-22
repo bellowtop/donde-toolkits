@@ -24,7 +24,7 @@ using Poco::NotificationQueue;
 
 using namespace Poco;
 
-namespace donde {
+namespace donde_toolkits {
 
 namespace feature_extract {
 
@@ -235,4 +235,4 @@ RetCode DetectorWorker::process(const cv::Mat& img, DetectResult& result) {
 } // namespace openvino_worker
 
 } // namespace feature_extract
-} // namespace donde
+} // namespace donde_toolkits

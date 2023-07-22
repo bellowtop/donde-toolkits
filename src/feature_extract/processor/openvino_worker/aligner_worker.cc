@@ -28,7 +28,7 @@ using Poco::Notification;
 using Poco::NotificationQueue;
 
 using namespace Poco;
-namespace donde {
+namespace donde_toolkits {
 
 namespace feature_extract {
 namespace openvino_worker {
@@ -138,4 +138,4 @@ cv::Mat AlignerWorker::align_face(const cv::Mat& face_image,
 } // namespace openvino_worker
 
 } // namespace feature_extract
-} // namespace donde
+} // namespace donde_toolkits

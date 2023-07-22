@@ -7,7 +7,7 @@
 #include <mutex>
 #include <spdlog/spdlog.h>
 
-namespace donde {
+namespace donde_toolkits {
 namespace feature_search {
 namespace search_manager {
 
@@ -274,4 +274,4 @@ Shard* ShardFactoryImpl::CreateShard(ShardManager* mgr, DBShard shard_info) {
 
 } // namespace search_manager
 } // namespace feature_search
-} // namespace donde
+} // namespace donde_toolkits

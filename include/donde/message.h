@@ -28,7 +28,7 @@ using namespace std;
 
 using json = nlohmann::json;
 
-namespace donde {
+namespace donde_toolkits {
 
 enum ChanError { OK, ErrFull, ErrEmpty, ErrClosed };
 
@@ -106,4 +106,4 @@ void WorkMessage<V>::setResponse(V resp, bool wait_receipt, int wait_receipt_ms)
     }
 }
 
-} // namespace donde
+} // namespace donde_toolkits

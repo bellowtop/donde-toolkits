@@ -22,10 +22,10 @@
 #include <stdexcept>
 using namespace std;
 
-using donde::feature_search::FeatureSearchComp;
-using donde::feature_search::FeatureSearchItem;
+using donde_toolkits::feature_search::FeatureSearchComp;
+using donde_toolkits::feature_search::FeatureSearchItem;
 
-namespace donde {
+namespace donde_toolkits {
 
 class FeatureTopkRanking {
   public:
@@ -83,4 +83,4 @@ class FeatureTopkRanking {
         _min_heap;
 };
 
-} // namespace donde
+} // namespace donde_toolkits

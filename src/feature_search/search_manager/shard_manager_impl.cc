@@ -5,7 +5,7 @@
 
 #include <spdlog/spdlog.h>
 
-namespace donde {
+namespace donde_toolkits {
 namespace feature_search {
 namespace search_manager {
 
@@ -115,4 +115,4 @@ RetCode ShardManagerImpl::load_db_shards() {
 
 } // namespace search_manager
 } // namespace feature_search
-} // namespace donde
+} // namespace donde_toolkits

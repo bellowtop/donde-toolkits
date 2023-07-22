@@ -21,7 +21,7 @@ using json = nlohmann::json;
 
 using namespace Poco;
 
-namespace donde {
+namespace donde_toolkits {
 
 namespace feature_extract {
 
@@ -147,4 +147,4 @@ class FeatureWorker : public WorkerBaseImpl {
 }; // namespace openvino_worker
 
 } // namespace feature_extract
-} // namespace donde
+} // namespace donde_toolkits

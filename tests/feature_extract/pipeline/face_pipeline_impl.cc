@@ -20,23 +20,23 @@
 #include <string>
 
 using namespace std;
-using namespace donde::feature_extract;
+using namespace donde_toolkits::feature_extract;
 
-using donde::AlignerResult;
-using donde::DetectResult;
-using donde::FaceDetection;
-using donde::Feature;
-using donde::FeatureResult;
-using donde::Frame;
-using donde::LandmarksResult;
+using donde_toolkits::AlignerResult;
+using donde_toolkits::DetectResult;
+using donde_toolkits::FaceDetection;
+using donde_toolkits::Feature;
+using donde_toolkits::FeatureResult;
+using donde_toolkits::Frame;
+using donde_toolkits::LandmarksResult;
 
 using nlohmann::json;
 
-using donde::feature_extract::ConcurrentProcessorImpl;
-using donde::feature_extract::openvino_worker::AlignerWorker;
-using donde::feature_extract::openvino_worker::DetectorWorker;
-using donde::feature_extract::openvino_worker::FeatureWorker;
-using donde::feature_extract::openvino_worker::LandmarksWorker;
+using donde_toolkits::feature_extract::ConcurrentProcessorImpl;
+using donde_toolkits::feature_extract::openvino_worker::AlignerWorker;
+using donde_toolkits::feature_extract::openvino_worker::DetectorWorker;
+using donde_toolkits::feature_extract::openvino_worker::FeatureWorker;
+using donde_toolkits::feature_extract::openvino_worker::LandmarksWorker;
 
 using testing::Return;
 
@@ -255,7 +255,7 @@ TEST(FeatureExtract, FacePipelineExtractFaceFeatureFromImageFile) {
     std::shared_ptr<FeatureResult> feature_result = pipeline.Extract(aligner_result);
 
     {
-        for (donde::Feature& ft : feature_result->face_features) {
+        for (donde_toolkits::Feature& ft : feature_result->face_features) {
             std::cout << "face_feature:\n\t";
             for (float& f : ft.raw)
                 std::cout << f << " ";

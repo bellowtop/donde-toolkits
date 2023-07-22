@@ -25,8 +25,8 @@ using namespace std;
 
 using nlohmann::json;
 
-using namespace donde::feature_search;
-using namespace donde::feature_search::search_manager;
+using namespace donde_toolkits::feature_search;
+using namespace donde_toolkits::feature_search::search_manager;
 
 using testing::NiceMock;
 

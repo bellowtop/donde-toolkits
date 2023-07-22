@@ -20,7 +20,7 @@
 
 using namespace std;
 
-namespace donde {
+namespace donde_toolkits {
 
 enum RetCode { RET_OK, RET_ERR };
 
@@ -167,4 +167,4 @@ struct Value {
     std::shared_ptr<void> valuePtr;
 };
 
-} // namespace donde
+} // namespace donde_toolkits
