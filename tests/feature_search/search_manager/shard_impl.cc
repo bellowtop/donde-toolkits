@@ -5,8 +5,8 @@
 #include "donde/feature_search/definitions.h"
 #include "donde/feature_search/search_manager/shard_manager.h"
 #include "donde/utils.h"
-#include "tests/feature_search/mock_shard_manager.h"
-#include "tests/feature_search/mock_worker.h"
+#include "feature_search/mock_shard_manager.h"
+#include "feature_search/mock_worker.h"
 
 #include <chrono>
 #include <cstdlib>

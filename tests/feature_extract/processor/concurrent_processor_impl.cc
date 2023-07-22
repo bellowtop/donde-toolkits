@@ -3,8 +3,8 @@
 #include "donde/definitions.h"
 #include "donde/feature_extract/worker.h"
 #include "donde/message.h"
+#include "feature_extract/mock_processor.h"
 #include "feature_extract/processor/worker_base_impl.h"
-#include "tests/feature_extract/mock_processor.h"
 
 #include <Poco/NotificationQueue.h>
 #include <chrono>
