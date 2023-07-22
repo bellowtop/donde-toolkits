@@ -1,13 +1,12 @@
-# Donde server
+# Donde toolkits
 
-It's a group project, consist of different services, such as face feature extraction and searching and clustering service. Built with openvino and faiss[todo] [wip].
+It's a group of AI/CV related toolkits, including face feature extraction, feature searching and clustering service. Built with openvino and faiss[todo] [wip].
 
 Currently developed with macOS, llvm-clang
 
 
 ## Features
 
-- [Modern CMake practices](https://pabloariasal.github.io/2018/02/19/its-time-to-do-cmake-right/)
 - Openvino inference
 - Full pipeline detect/landmarks/align/extract
 - Feature search service with simple store
@@ -15,9 +14,7 @@ Currently developed with macOS, llvm-clang
 - Feature clustering with faiss
 - Master/Workers architecture, Poco messaging
 - Conan to manage dependencies
-- Protobuf proto & GRPC server
-- GRPC gateway to provide http api
-- Fine tests (important!)
+- Tests coverage
 
 ## Dependencies
 
@@ -36,13 +33,11 @@ openvino, you need to install(download from openvino website) it first. other de
 ## Project layout
 
 
-* `library` contains the main library `FeatureLibraries` for other feature related services, such as extract service, search service. this is the main engine.
+* `include` contains main api headers, define what `DondeToolkits` is. include common abstract definitions for feature extract, search, video process etc.
 
-* `proto` contains protobuf definitions for common api, and grpc services definitions. servers are typically implementations of these grpc services.
+* `src` contains implementations for api headers, and contains related header definition for those implementations.
 
-* `servers` has source codes to build various standalone server binaries. such as `feature_extract` `feature_search` `feature_search_worker`. servers has dependency to library and proto
-
-* `tests` contains tests, they test the `FeatureLibraries` library. tests has dependency to library.
+* `test` contains tests, they test the `DondeToolkits` library. tests depend to library.
 
 
 ## Usage
@@ -53,6 +48,9 @@ openvino, you need to install(download from openvino website) it first. other de
 #### Install openvino distribution
 
 https://www.intel.com/content/www/us/en/developer/tools/openvino-toolkit/download.html
+
+##### For mac m1
+for mac m1 users, please refer to `README_mac_m1.md` for instructions on how to install openvino with an arm device.
 
 ```
 #double check your openvino install location, modify CMakeLists.txt if needed
@@ -70,7 +68,7 @@ source /opt/intel/openvino_2022/setupvars.sh
 ```
 
 
-#### Install llvm clang
+#### Install llvm clang (deprecated)
 
 The project can be built use llvm clang (version 14), not use apple clang
 
@@ -87,109 +85,20 @@ export CC=/usr/local/opt/llvm/bin/clang ; export CXX=/usr/local/opt/llvm/bin/cla
 #### Build conan dependency packages
 
 ```bash
-conan install --build=missing --profile conan/conanprofile  -if build ./conan
+mkdir -p build
+conan install --build=missing --profile conan/conanprofile.m1  -if build ./conan
 ```
 
-#### Build server binary
-
+#### Build toolkits with testings
 
 ```bash
 
-cmake -S server -B build/server
+cmake -B build -DDondeToolkits_ENABLE_UNIT_TESTING=true
+cmake --build build -- -j 8
 
-cmake --build build/server
-
-#make sure export some openvino runtime variable path before running.
-#source / opt / intel / openvino_2022 / setupvars.sh
-
-#run the service
-./build/server/bin/FaceRecognitionServer
-
-#with config path
-./build/server/bin/FaceRecognitionServer --config_path server/examples/server.json
+# run tests
+./build/bin/DondeToolkitsTests
 ```
-
-
-
-### Use Makefile
-
-Makefile wraps `cmake` instructions together.
-
-```
-#prepare all those build dirs
-make build-pre
-
-#build and run server
-make build-server
-make run-server
-
-#build and run test
-make build-test
-make run-test
-
-#build lib only
-make build-lib
-```
-
-
-
-
-### Build proto
-
-```
-cd server/protos
-
-#build protobuf definitions of grpc and service
-./build_proto.sh
-
-#build grpc - gateway, for rest - api[optional]
-./build_gateway.sh
-
-```
-
-
-## Xcode
-
-```
-mkdir -p xcode/server
-cd xcode/server
-cmake -G Xcode ../../server
-```
-
-then use xcode to open `FaceRecognitionServer.xcodeproj`, try build and run.
-
-
-
-### Known Issues
-Q:
-CMake generate failed with message `xcode-select: error: tool 'xcodebuild' requires Xcode, but active developer directory '/Library/Developer/CommandLineTools' is a command line tools instance`
-
-A:
-Run `sudo xcode-select -s /Applications/Xcode.app/Contents/Developer`, see also `https://github.com/nodejs/node-gyp/issues/569`.
-
-
-Q:
-Build failed with message `"Protobuf requires at least C++11."`
-
-A:
-Navigate to `TARGETS -> API`, find `Apple Clang - Language - C++`, change `C++ Language Dialect` to `C++17[-std=c++17]`
-
-
-Q:
-Run failed with message `dyld[4593]: Library not loaded: @rpath/libopenvinod.dylib`
-
-A:
-
-It's because we need `source /opt/intel/openvino_2022/setupvars.sh`, but xcode doesn't know that.
-Edit `FaceRecognitionServer` scheme, add environment variable `DYLD_LIBRARY_PATH`, value `/opt/intel/openvino_2022/runtime/3rdparty/tbb/lib::/opt/intel/openvino_2022/runtime/lib/intel64/Release:/opt/intel/openvino_2022/runtime/lib/intel64/Debug`
-
-
-A2:
-```
-for i in `ls /opt/intel/openvino_2022/runtime/lib/intel64/Debug/`; do sudo ln -s /opt/intel/openvino_2022/runtime/lib/intel64/Debug/$i /usr/local/lib; done
-for i in `ls /opt/intel/openvino_2022/runtime/3rdparty/tbb/lib/`; do sudo ln -s /opt/intel/openvino_2022.1.0.643/runtime/3rdparty/tbb/lib/$i /usr/local/lib; done
-```
-
 
 ## Mac M1
 
