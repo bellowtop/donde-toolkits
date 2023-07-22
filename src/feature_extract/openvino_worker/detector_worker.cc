@@ -3,11 +3,11 @@
 #include "Poco/Notification.h"
 #include "Poco/NotificationQueue.h"
 #include "donde/definitions.h"
+#include "donde/feature_extract/worker_openvino_impl.h"
 #include "donde/message.h"
 #include "donde/utils.h"
 #include "opencv2/opencv.hpp"
 #include "openvino/openvino.hpp"
-#include "feature_extract/processor/openvino_worker/workers_impl.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
 
@@ -24,11 +24,7 @@ using Poco::NotificationQueue;
 
 using namespace Poco;
 
-namespace donde_toolkits {
-
-namespace feature_extract {
-
-namespace openvino_worker {
+namespace donde_toolkits ::feature_extract ::openvino_worker {
 
 DetectorWorker::DetectorWorker(std::shared_ptr<MsgChannel> ch) : WorkerBaseImpl(ch) {}
 
@@ -232,7 +228,5 @@ RetCode DetectorWorker::process(const cv::Mat& img, DetectResult& result) {
 
     return RetCode::RET_OK;
 }
-} // namespace openvino_worker
 
-} // namespace feature_extract
-} // namespace donde_toolkits
+} // namespace donde_toolkits::feature_extract::openvino_worker

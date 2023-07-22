@@ -1,9 +1,10 @@
 #pragma once
 
 #include "donde/definitions.h"
-#include "donde/feature_search/api.h"
-#include "donde/feature_search/search_manager/api.h"
-#include "donde/utils.h"
+#include "donde/feature_search/driver.h"
+#include "donde/feature_search/search_manager/shard.h"
+#include "donde/feature_search/search_manager/shard_factory.h"
+#include "donde/feature_search/search_manager/shard_manager.h"
 
 #include <string>
 #include <unordered_map>
@@ -11,9 +12,7 @@
 
 using namespace std;
 
-namespace donde_toolkits {
-namespace feature_search {
-namespace search_manager {
+namespace donde_toolkits ::feature_search ::search_manager {
 
 class ShardManagerImpl : public ShardManager {
 
@@ -48,6 +47,4 @@ class ShardManagerImpl : public ShardManager {
     std::shared_ptr<ShardFactory> _shard_factory;
 };
 
-} // namespace search_manager
-} // namespace feature_search
-} // namespace donde_toolkits
+} // namespace donde_toolkits::feature_search::search_manager

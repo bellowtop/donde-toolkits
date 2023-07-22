@@ -1,22 +1,14 @@
 #pragma once
 
 #include "donde/definitions.h"
-#include "donde/feature_search/api.h"
 #include "donde/feature_search/driver.h"
 #include "donde/feature_search/search_worker/shard.h"
-
-// #include "spdlog/spdlog.h"
 
 #include <iostream>
 #include <unordered_map>
 
 using namespace std;
-
-namespace donde_toolkits {
-
-namespace feature_search {
-
-namespace search_worker {
+namespace donde_toolkits ::feature_search ::search_worker {
 
 class ShardManager {
 
@@ -33,8 +25,5 @@ class ShardManager {
 
     virtual Shard* FindShard(std::string db_id) = 0;
 };
-;
 
-} // namespace search_worker
-} // namespace feature_search
-} // namespace donde_toolkits
+} // namespace donde_toolkits::feature_search::search_worker

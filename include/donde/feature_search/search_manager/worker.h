@@ -1,9 +1,7 @@
 #pragma once
 
 #include "donde/definitions.h"
-#include "donde/feature_search/api.h"
-
-// #include "spdlog/spdlog.h"
+#include "donde/feature_search/definitions.h"
 
 #include <iostream>
 #include <unordered_map>

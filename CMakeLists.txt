@@ -10,17 +10,6 @@ if (NOT DEFINED CONAN_ALREADY_SETUP)
 endif()
 
 
-# ----- openvino library ----
-# install openvino distribution
-if(APPLE)
-  # please refer to README_mac_m1.md for openvino install instructions. it has extra steps for openvino running in mac m1.
-  list(APPEND CMAKE_PREFIX_PATH "/usr/local/runtime/cmake")
-  list(APPEND CMAKE_PREFIX_PATH "/opt/homebrew/opt/opencv/lib/cmake")
-  find_package(OpenVINO REQUIRED COMPONENTS Runtime)
-elseif(UNIX AND NOT APPLE)
-  set(OpenVINO_DIR "/opt/l_openvino_toolkit_ubuntu20_2022.2.0.7713.af16ea1d79a_x86_64/runtime/cmake")
-endif()
-
 
 # faiss
 # find_package(faiss CONFIG REQUIRED)
@@ -51,7 +40,6 @@ target_link_libraries(${PROJECT_NAME}
     CONAN_PKG::libuuid
     CONAN_PKG::nlohmann_json
     CONAN_PKG::cassandra-cpp-driver
-    openvino::runtime
 )
 target_include_directories(${PROJECT_NAME}
     BEFORE
@@ -68,12 +56,17 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 ##
 # Find FFmpeg include directories and link libraries.
 # Find OpenCV
+# Find OpenVino
 ##
 find_package(FFMPEG REQUIRED)
 find_package(OpenCV REQUIRED CONFIG)
+find_package(OpenVINO REQUIRED COMPONENTS Runtime)
+message("OpenVINO_FOUND: ${OpenVINO_FOUND}")
+message("OpenVINO_Runtime_FOUND: ${OpenVINO_Runtime_FOUND}")
 target_link_libraries(${PROJECT_NAME}
     ${FFMPEG_LIBRARIES}
     ${OpenCV_LIBS}
+    openvino::runtime
 )
 target_include_directories(${PROJECT_NAME}
     # these are system headers, managed by homebrew
@@ -108,7 +101,6 @@ else ()
 	PUBLIC
 	$<INSTALL_INTERFACE:include>
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
     )
 
   if (${PROJECT_NAME}_BUILD_EXECUTABLE AND ${PROJECT_NAME}_ENABLE_UNIT_TESTING)
@@ -116,7 +108,6 @@ else ()
 	  PUBLIC
 	  $<INSTALL_INTERFACE:include>
 	  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-	  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
       )
   endif ()
 endif ()

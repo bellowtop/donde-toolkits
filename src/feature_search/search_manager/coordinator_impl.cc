@@ -1,20 +1,21 @@
-#include "coordinator_impl.h"
+#include "donde/feature_search/search_manager/coordinator_impl.h"
 
 #include "donde/definitions.h"
+#include "donde/feature_search/feature_topk_rank.h"
+#include "donde/feature_search/search_manager/shard.h"
+#include "donde/feature_search/search_manager/shard_impl.h"
+#include "donde/feature_search/search_manager/shard_manager_impl.h"
+#include "donde/feature_search/simple_driver.h"
 #include "fmt/format.h"
-#include "feature_search/feature_topk_rank.h"
-#include "feature_search/search_manager/shard_impl.h"
-#include "feature_search/search_manager/shard_manager_impl.h"
-#include "feature_search/simple_driver.h"
 
 #include <exception>
 #include <memory>
 #include <queue>
 #include <spdlog/spdlog.h>
 
-namespace donde_toolkits {
-namespace feature_search {
-namespace search_manager {
+using namespace fmt;
+
+namespace donde_toolkits ::feature_search ::search_manager {
 
 CoordinatorImpl::CoordinatorImpl(const json& coor_config) : config(coor_config) {
     if (!coor_config.contains("workers")) {
@@ -130,12 +131,10 @@ void CoordinatorImpl::assign_worker_for_shards() {
     }
 };
 
-void CoordinatorImpl::initialize_workers() {
-    
+void CoordinatorImpl::initialize_workers(){
+
 };
 
 void CoordinatorImpl::deinitialize_workers(){};
 
-} // namespace search_manager
-} // namespace feature_search
-} // namespace donde_toolkits
+} // namespace donde_toolkits::feature_search::search_manager

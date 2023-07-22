@@ -47,10 +47,17 @@ openvino, you need to install(download from openvino website) it first. other de
 
 #### Install openvino distribution
 
-https://www.intel.com/content/www/us/en/developer/tools/openvino-toolkit/download.html
 
-##### For mac m1
-for mac m1 users, please refer to `README_mac_m1.md` for instructions on how to install openvino with an arm device.
+#### Install dependencies
+
+```
+brew install openvino
+brew install opencv
+```
+
+#### For linux
+
+please refer to `https://www.intel.com/content/www/us/en/developer/tools/openvino-toolkit/download.html`
 
 ```
 #double check your openvino install location, modify CMakeLists.txt if needed
@@ -67,20 +74,6 @@ source venv3.8/bin/activate
 source /opt/intel/openvino_2022/setupvars.sh
 ```
 
-
-#### Install llvm clang (deprecated)
-
-The project can be built use llvm clang (version 14), not use apple clang
-
-```
-brew install llvm
-
-/usr/local/opt/llvm/bin/clang --version
-Homebrew clang version 14.0.6
-
-#explict set CC and CXX, for sure
-export CC=/usr/local/opt/llvm/bin/clang ; export CXX=/usr/local/opt/llvm/bin/clang++
-```
 
 #### Build conan dependency packages
 

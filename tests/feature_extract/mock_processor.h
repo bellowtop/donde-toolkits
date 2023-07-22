@@ -1,9 +1,9 @@
 #pragma once
 
+#include "donde/feature_extract/concurrent_processor_impl.h"
 #include "donde/feature_extract/processor.h"
 #include "donde/feature_extract/worker.h"
-#include "feature_extract/processor/concurrent_processor_impl.h"
-#include "feature_extract/processor/worker_base_impl.h"
+#include "donde/feature_extract/worker_base_impl.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>

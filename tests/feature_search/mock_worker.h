@@ -1,5 +1,3 @@
-#include "donde/feature_search/api.h"
-#include "donde/feature_search/definitions.h"
 #include "donde/feature_search/search_manager/worker.h"
 
 #include <gmock/gmock.h>

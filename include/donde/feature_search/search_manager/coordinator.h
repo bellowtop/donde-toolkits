@@ -1,7 +1,8 @@
 #pragma once
 
+#include "coordinator.h"
 #include "donde/definitions.h"
-#include "donde/feature_search/api.h"
+#include "donde/feature_search/definitions.h"
 
 // #include "spdlog/spdlog.h"
 
@@ -40,8 +41,8 @@ class Coordinator {
         = 0;
 
     // SearchFeatures in this db.
-    virtual std::vector<FeatureSearchItem> SearchFeature(const std::string& db_id, const Feature& query,
-                                                         int topk)
+    virtual std::vector<FeatureSearchItem> SearchFeature(const std::string& db_id,
+                                                         const Feature& query, int topk)
         = 0;
 };
 

@@ -10,7 +10,7 @@
 #include "donde/message.h"
 #include "nlohmann/json.hpp"
 #include "openvino/openvino.hpp"
-#include "feature_extract/processor/worker_base_impl.h"
+#include "worker_base_impl.h"
 
 #include <iostream>
 #include <memory>
@@ -21,11 +21,7 @@ using json = nlohmann::json;
 
 using namespace Poco;
 
-namespace donde_toolkits {
-
-namespace feature_extract {
-
-namespace openvino_worker {
+namespace donde_toolkits ::feature_extract ::openvino_worker {
 
 class DetectorWorker : public WorkerBaseImpl {
   public:
@@ -144,7 +140,5 @@ class FeatureWorker : public WorkerBaseImpl {
 //   private:
 // };
 //
-}; // namespace openvino_worker
 
-} // namespace feature_extract
-} // namespace donde_toolkits
+} // namespace donde_toolkits::feature_extract::openvino_worker

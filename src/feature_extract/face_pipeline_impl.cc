@@ -1,11 +1,10 @@
-#include "feature_extract/pipeline/face_pipeline_impl.h"
+#include "donde/feature_extract/face_pipeline_impl.h"
 
-#include "Poco/Thread.h"
 #include "donde/definitions.h"
+#include "donde/feature_extract/concurrent_processor_impl.h"
 #include "donde/feature_extract/processor.h"
+#include "donde/feature_extract/worker_openvino_impl.h"
 #include "nlohmann/json.hpp"
-#include "feature_extract/processor/concurrent_processor_impl.h"
-#include "feature_extract/processor/openvino_worker/workers_impl.h"
 #include "spdlog/spdlog.h"
 
 #include <cstdint>
@@ -15,6 +14,7 @@
 #include <opencv2/opencv.hpp>
 
 using namespace std;
+
 using namespace donde_toolkits::feature_extract::openvino_worker;
 
 using json = nlohmann::json;
@@ -44,9 +44,8 @@ using json = nlohmann::json;
        }
    }
  */
-namespace donde_toolkits {
 
-namespace feature_extract {
+namespace donde_toolkits ::feature_extract {
 
 FacePipelineImpl::FacePipelineImpl(const json& conf) : _config(conf) {}
 
@@ -190,5 +189,4 @@ FacePipelineImpl::Extract(std::shared_ptr<AlignerResult> aligner_result) {
     return std::static_pointer_cast<FeatureResult>(output.valuePtr);
 }
 
-} // namespace feature_extract
-} // namespace donde_toolkits
+} // namespace donde_toolkits::feature_extract

@@ -1,8 +1,4 @@
-#include "simple_driver.h"
-
-#include "SQLiteCpp/SQLiteCpp.h"
-#include "fmt/format.h"
-#include "nlohmann/json.hpp"
+#include "donde/feature_search/simple_driver.h"
 
 #include <SQLiteCpp/Database.h>
 #include <SQLiteCpp/Statement.h>
@@ -27,11 +23,7 @@ using namespace std;
 
 using json = nlohmann::json;
 
-using fmt::format;
-
-namespace donde_toolkits {
-
-namespace feature_search {
+namespace donde_toolkits ::feature_search {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -610,6 +602,4 @@ uint64 SimpleDriver::count_features_in_db(const std::string& db_id, const std::s
     return count;
 };
 
-} // namespace feature_search
-
-} // namespace donde_toolkits
+} // namespace donde_toolkits::feature_search

@@ -1,7 +1,6 @@
-#include "cassandra_driver.h"
+#include "donde/feature_search/cassandra_driver.h"
 
-#include "SQLiteCpp/SQLiteCpp.h"
-#include "fmt/format.h"
+#include "donde/utils.h"
 #include "nlohmann/json.hpp"
 
 #include <SQLiteCpp/Database.h>
@@ -29,9 +28,7 @@ using json = nlohmann::json;
 
 using fmt::format;
 
-namespace donde_toolkits {
-
-namespace feature_search {
+namespace donde_toolkits ::feature_search {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -544,5 +541,4 @@ uint64 CassandraDriver::count_features_in_db(const std::string& db_id) {
     return count;
 };
 
-} // namespace feature_search
-} // namespace donde_toolkits
+} // namespace donde_toolkits::feature_search

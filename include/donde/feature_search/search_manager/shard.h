@@ -1,7 +1,8 @@
 #pragma once
 
 #include "donde/definitions.h"
-#include "donde/feature_search/api.h"
+#include "donde/feature_search/definitions.h"
+#include "donde/feature_search/search_manager/worker.h"
 
 // #include "spdlog/spdlog.h"
 
@@ -16,7 +17,6 @@ namespace feature_search {
 
 namespace search_manager {
 
-class Worker;
 class ShardManager;
 class Shard {
 

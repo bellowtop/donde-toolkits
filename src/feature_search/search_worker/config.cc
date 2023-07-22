@@ -1,4 +1,4 @@
-#include "config.h"
+#include "donde/feature_search/search_worker/config.h"
 
 #include "nlohmann/json.hpp"
 
@@ -8,9 +8,7 @@
 
 using json = nlohmann::json;
 
-namespace donde_toolkits {
-namespace feature_search {
-namespace search_worker {
+namespace donde_toolkits ::feature_search ::search_worker {
 
 std::string Config::_config_filepath = "";
 
@@ -21,6 +19,4 @@ Config Config::getInstance() {
     return inst;
 };
 
-} // namespace search_worker
-} // namespace feature_search
-} // namespace donde_toolkits
+} // namespace donde_toolkits::feature_search::search_worker

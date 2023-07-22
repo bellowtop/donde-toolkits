@@ -14,9 +14,7 @@ using namespace std;
 
 using json = nlohmann::json;
 
-namespace donde_toolkits {
-
-namespace feature_extract {
+namespace donde_toolkits ::feature_extract {
 
 class Processor {
 
@@ -33,6 +31,4 @@ class Processor {
     virtual std::string GetName() = 0;
 };
 
-} // namespace feature_extract
-
-} // namespace donde_toolkits
+} // namespace donde_toolkits::feature_extract

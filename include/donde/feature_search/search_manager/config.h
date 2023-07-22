@@ -8,9 +8,7 @@
 
 using json = nlohmann::json;
 
-namespace donde_toolkits {
-namespace feature_search {
-namespace search_manager {
+namespace donde_toolkits::feature_search::search_manager {
 
 class Config {
   public:
@@ -46,6 +44,4 @@ class Config {
     json _search_manager_config;
     json _search_worker_config;
 };
-} // namespace search_manager
-} // namespace feature_search
-} // namespace donde_toolkits
+} // namespace donde_toolkits::feature_search::search_manager

@@ -1,10 +1,10 @@
 #include "donde/definitions.h"
 #include "donde/feature_search/definitions.h"
+#include "donde/feature_search/search_worker/brute_force_worker.h"
 #include "donde/feature_search/search_worker/shard.h"
+#include "donde/feature_search/search_worker/shard_manager_impl.h"
+#include "donde/feature_search/simple_driver.h"
 #include "donde/utils.h"
-#include "feature_search/search_worker/brute_force_worker.h"
-#include "feature_search/search_worker/shard_manager_impl.h"
-#include "feature_search/simple_driver.h"
 
 #include <cstdlib>
 #include <filesystem>
