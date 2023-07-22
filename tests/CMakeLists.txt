@@ -35,6 +35,7 @@ target_link_libraries(${PROJECT_NAME}
   ${${CMAKE_PROJECT_NAME}_TEST_LIB}
   CONAN_PKG::gtest
 )
+message("linked ${CMAKE_PROJECT_NAME}_TEST_LIB: ${${CMAKE_PROJECT_NAME}_TEST_LIB}")
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 # enable compiler warnings
