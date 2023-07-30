@@ -6,6 +6,8 @@ extern "C" {
 
 #include "processor.h"
 
+#include <functional>
+
 namespace donde_toolkits ::video_process {
 
 // maybe we can have more frame methods here,
@@ -21,10 +23,9 @@ class FFmpegVideoFrame {
     AVFrame* av_frame;
 };
 
-using FFmpegVideoFrameProcessor = std::function<bool(const FFmpegVideoFrame* f)>;
-
 // borrow the frame pointer. donot own it. donot free it.
-// using VideoFrameProcessor = bool (*)(const AVFrame *f);
+// using VideoFrameProcessor = bool (*)(const FFmpegVideoFrame *f);
+using FFmpegVideoFrameProcessor = std::function<bool(const FFmpegVideoFrame* f)>;
 
 class FFmpegVideoProcessorImpl;
 
