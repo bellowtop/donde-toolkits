@@ -6,11 +6,6 @@ extern "C" {
 
 #include "processor.h"
 
-#include <condition_variable>
-#include <memory>
-#include <string>
-#include <thread>
-
 namespace donde_toolkits ::video_process {
 
 // maybe we can have more frame methods here,

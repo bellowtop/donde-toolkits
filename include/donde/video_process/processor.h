@@ -1,10 +1,5 @@
 #pragma once
 
-#include <condition_variable>
-#include <memory>
-#include <string>
-#include <thread>
-
 namespace donde_toolkits ::video_process {
 
 class VideoProcessor {
