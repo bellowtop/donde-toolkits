@@ -2,7 +2,7 @@
 
 #include "donde/video_process/ffmpeg_processor_impl.h"
 
-namespace donde_toolkits ::feature_extract {
+namespace donde_toolkits ::video_process {
 
 FFmpegVideoProcessor::FFmpegVideoProcessor(const std::string& filepath)
     : impl(new FFmpegVideoProcessorImpl(filepath)) {}
@@ -23,4 +23,4 @@ bool FFmpegVideoProcessor::Resume() { return impl->Resume(); };
 
 bool FFmpegVideoProcessor::Stop() { return impl->Stop(); };
 
-} // namespace donde_toolkits::feature_extract
+} // namespace donde_toolkits::video_process

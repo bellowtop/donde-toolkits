@@ -15,7 +15,7 @@ extern "C" {
 #include <string>
 #include <thread>
 
-namespace donde_toolkits ::feature_extract {
+namespace donde_toolkits ::video_process {
 
 class FFmpegVideoProcessorImpl {
   public:
@@ -71,4 +71,4 @@ class FFmpegVideoProcessorImpl {
     Channel<AVFrame*> frame_ch_;
 };
 
-} // namespace donde_toolkits::feature_extract
+} // namespace donde_toolkits::video_process

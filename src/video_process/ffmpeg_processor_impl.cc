@@ -19,7 +19,7 @@ extern "C" {
 
 #include "donde/video_process/ffmpeg_processor_impl.h"
 
-namespace donde_toolkits ::feature_extract {
+namespace donde_toolkits ::video_process {
 
 FFmpegVideoProcessorImpl::FFmpegVideoProcessorImpl(const std::string& filepath)
     : filepath{filepath}, packet_ch_{10}, frame_ch_{10} {
@@ -253,4 +253,4 @@ void FFmpegVideoProcessorImpl::process_video_frame_() {
     }
 }
 
-} // namespace donde_toolkits::feature_extract
+} // namespace donde_toolkits::video_process

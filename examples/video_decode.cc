@@ -4,9 +4,9 @@
 #include <iostream>
 #include <thread>
 
-using donde_toolkits::feature_extract::FFmpegVideoFrame;
-using donde_toolkits::feature_extract::FFmpegVideoFrameProcessor;
-using donde_toolkits::feature_extract::FFmpegVideoProcessor;
+using donde_toolkits::video_process::FFmpegVideoFrame;
+using donde_toolkits::video_process::FFmpegVideoFrameProcessor;
+using donde_toolkits::video_process::FFmpegVideoProcessor;
 
 bool callback(const FFmpegVideoFrame* frame) {
     std::cout << "process frame." << std::endl;

@@ -11,9 +11,9 @@ extern "C" {
 #include <string>
 #include <thread>
 
-namespace donde_toolkits ::feature_extract {
+namespace donde_toolkits ::video_process {
 
-class FFmpegVideoFrame : public VideoFrame {
+class FFmpegVideoFrame {
   public:
     FFmpegVideoFrame(AVFrame* f) : av_frame(f){};
     void* getFrame() { return av_frame; }
@@ -48,4 +48,4 @@ class FFmpegVideoProcessor : public VideoProcessor {
     std::unique_ptr<FFmpegVideoProcessorImpl> impl;
 };
 
-} // namespace donde_toolkits::feature_extract
+} // namespace donde_toolkits::video_process
