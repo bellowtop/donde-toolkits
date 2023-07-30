@@ -86,11 +86,21 @@ conan install --build=missing --profile conan/conanprofile.m1  -if build ./conan
 
 ```bash
 
-cmake -B build -DDondeToolkits_ENABLE_UNIT_TESTING=true
-cmake --build build -- -j 8
+cmake -B build -DDondeToolkits_ENABLE_UNIT_TESTING=true -DDondeToolkits_ENABLE_EXAMPLES=true
+cmake --build build
+```
 
+```
 # run tests
 ./build/bin/DondeToolkitsTests
+```
+
+```
+# run examples
+./build/bin/video_decode <mp4-file>
+
+such as:
+./build/bin/video_decode /tmp/Iron_Man-Trailer_HD.mp4
 ```
 
 ## Mac M1

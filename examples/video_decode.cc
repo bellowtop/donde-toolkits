@@ -13,8 +13,8 @@ bool callback(const FFmpegVideoFrame* frame) {
     return true;
 };
 
-int main() {
-    FFmpegVideoProcessor v("/tmp/Iron_Man-Trailer_HD.mp4");
+int main(int argc, char** argv) {
+    FFmpegVideoProcessor v(argv[1]);
     FFmpegVideoFrameProcessor p(callback);
     v.Register(p);
     v.Process();
