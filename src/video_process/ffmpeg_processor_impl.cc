@@ -233,6 +233,7 @@ void FFmpegVideoProcessorImpl::decode_video_frame_() {
 }
 
 void FFmpegVideoProcessorImpl::process_video_frame_() {
+    long frame_id = 0;
     while (true) {
         if (quit_) {
             break;
@@ -246,7 +247,7 @@ void FFmpegVideoProcessorImpl::process_video_frame_() {
         // std::cout << "frame channel size: " << frame_ch_.size() << std::endl;
 
         if (frame_processor != nullptr) {
-            frame_processor(std::make_unique<FFmpegVideoFrame>(f).get());
+            frame_processor(std::make_unique<FFmpegVideoFrame>(++frame_id, f).get());
         }
 
         av_frame_free(&f);

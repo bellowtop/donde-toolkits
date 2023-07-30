@@ -9,7 +9,7 @@ using donde_toolkits::video_process::FFmpegVideoFrameProcessor;
 using donde_toolkits::video_process::FFmpegVideoProcessor;
 
 bool callback(const FFmpegVideoFrame* frame) {
-    std::cout << "process frame." << std::endl;
+    std::cout << "process frame " << frame->getFrameId() << std::endl;
     return true;
 };
 

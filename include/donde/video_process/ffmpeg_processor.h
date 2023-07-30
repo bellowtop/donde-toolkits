@@ -15,11 +15,14 @@ namespace donde_toolkits ::video_process {
 // remove dependency for AVFrame
 class FFmpegVideoFrame {
   public:
-    FFmpegVideoFrame(AVFrame* f) : av_frame(f){};
-    void* getFrame() { return av_frame; }
+    FFmpegVideoFrame(long frame_id, AVFrame* f) : id(frame_id), av_frame(f){};
+    const void* getFrame() const { return av_frame; }
+    long getFrameId() const { return id; }
+
     ~FFmpegVideoFrame(){};
 
   private:
+    long id;
     AVFrame* av_frame;
 };
 
