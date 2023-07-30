@@ -71,7 +71,7 @@ target_link_libraries(${PROJECT_NAME}
 target_include_directories(${PROJECT_NAME}
     # these are system headers, managed by homebrew
     SYSTEM
-    PRIVATE
+    PUBLIC
     ${FFMPEG_INCLUDE_DIRS}
     ${OpenCV_INCLUDE_DIRS}
 )

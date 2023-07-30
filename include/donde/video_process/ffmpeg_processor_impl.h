@@ -8,35 +8,31 @@ extern "C" {
 }
 
 #include "channel.h"
+#include "ffmpeg_processor.h"
 
 #include <condition_variable>
 #include <memory>
 #include <string>
 #include <thread>
 
-namespace donde_toolkits {
+namespace donde_toolkits ::feature_extract {
 
-namespace feature_extract {
-
-// borrow the frame pointer. donot own it. donot free it.
-// using FrameProcessor = bool (*)(const AVFrame *f);
-using FrameProcessor = std::function<bool(const AVFrame* frame)>;
-
-class VideoContext {
+class FFmpegVideoProcessorImpl {
   public:
-    VideoContext(const std::string& filepath);
+    FFmpegVideoProcessorImpl(const std::string& filepath);
 
     bool Process();
-    bool Register(const FrameProcessor& p);
+    bool Register(const FFmpegVideoFrameProcessor& p);
 
     bool Pause();
+    bool IsPaused();
     bool Resume();
 
     bool Stop();
 
     SwsContext* GetSwsContext() const { return sws_context_; };
 
-    ~VideoContext();
+    ~FFmpegVideoProcessorImpl();
 
   private:
     bool open_context();
@@ -67,7 +63,7 @@ class VideoContext {
     std::thread process_thread_;
 
     size_t frame_count = 0;
-    FrameProcessor frame_processor;
+    FFmpegVideoFrameProcessor frame_processor;
 
     // used to send demuxed packet
     Channel<AVPacket*> packet_ch_;
@@ -75,6 +71,4 @@ class VideoContext {
     Channel<AVFrame*> frame_ch_;
 };
 
-} // namespace feature_extract
-
-} // namespace donde_toolkits
+} // namespace donde_toolkits::feature_extract

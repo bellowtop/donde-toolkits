@@ -17,20 +17,18 @@ extern "C" {
 #include <libavutil/imgutils.h>
 }
 
-#include "donde/video_process/video_context.h"
+#include "donde/video_process/ffmpeg_processor_impl.h"
 
-namespace donde_toolkits {
+namespace donde_toolkits ::feature_extract {
 
-namespace feature_extract {
-
-VideoContext::VideoContext(const std::string& filepath)
+FFmpegVideoProcessorImpl::FFmpegVideoProcessorImpl(const std::string& filepath)
     : filepath{filepath}, packet_ch_{10}, frame_ch_{10} {
     open_context();
 }
 
-VideoContext::~VideoContext() {}
+FFmpegVideoProcessorImpl::~FFmpegVideoProcessorImpl() {}
 
-bool VideoContext::open_context() {
+bool FFmpegVideoProcessorImpl::open_context() {
     int ret = avformat_open_input(&format_context_, filepath.c_str(), nullptr, nullptr);
     if (ret < 0) {
         std::cout << "cannot open input video file: " << filepath << std::endl;
@@ -93,20 +91,25 @@ bool VideoContext::open_context() {
     return true;
 }
 
-bool VideoContext::Pause() {
+bool FFmpegVideoProcessorImpl::Pause() {
     std::lock_guard<std::mutex> lk(demux_mu_);
     pause_ = true;
     return true;
 }
 
-bool VideoContext::Resume() {
+bool FFmpegVideoProcessorImpl::IsPaused() {
+    std::lock_guard<std::mutex> lk(demux_mu_);
+    return pause_;
+}
+
+bool FFmpegVideoProcessorImpl::Resume() {
     std::lock_guard<std::mutex> lk(demux_mu_);
     pause_ = false;
     demux_cv_.notify_all();
     return true;
 }
 
-bool VideoContext::Stop() {
+bool FFmpegVideoProcessorImpl::Stop() {
     demux_thread_.join();
     // decode_thread_.join();
     // process_thread_.join();
@@ -114,12 +117,12 @@ bool VideoContext::Stop() {
     return true;
 }
 
-bool VideoContext::Register(const FrameProcessor& p) {
+bool FFmpegVideoProcessorImpl::Register(const FFmpegVideoFrameProcessor& p) {
     frame_processor = p;
     return true;
 }
 
-bool VideoContext::Process() {
+bool FFmpegVideoProcessorImpl::Process() {
     demux_thread_ = std::thread([&] { demux_video_packet_(); });
     decode_thread_ = std::thread([&] { decode_video_frame_(); });
     process_thread_ = std::thread([&] { process_video_frame_(); });
@@ -129,7 +132,7 @@ bool VideoContext::Process() {
 //
 // inner threads
 //
-void VideoContext::demux_video_packet_() {
+void FFmpegVideoProcessorImpl::demux_video_packet_() {
 
     AVPacket* packet = av_packet_alloc();
     if (packet == nullptr) {
@@ -167,7 +170,7 @@ void VideoContext::demux_video_packet_() {
 
             // std::this_thread::sleep_for(std::chrono::milliseconds(40));
 
-            // pause every 100 frames.
+            // DEBUG: pause every 100 frames.
             if (frame_count % 100 == 0) {
                 pause_ = true;
                 std::cout << "pause at " << frame_count << " frames. " << std::endl;
@@ -181,7 +184,7 @@ void VideoContext::demux_video_packet_() {
     av_packet_free(&packet);
 }
 
-void VideoContext::decode_video_frame_() {
+void FFmpegVideoProcessorImpl::decode_video_frame_() {
     // has no ref-count at first.
     AVFrame* frame = av_frame_alloc();
     DEFER(av_frame_free(&frame))
@@ -229,7 +232,7 @@ void VideoContext::decode_video_frame_() {
     }
 }
 
-void VideoContext::process_video_frame_() {
+void FFmpegVideoProcessorImpl::process_video_frame_() {
     while (true) {
         if (quit_) {
             break;
@@ -243,13 +246,11 @@ void VideoContext::process_video_frame_() {
         // std::cout << "frame channel size: " << frame_ch_.size() << std::endl;
 
         if (frame_processor != nullptr) {
-            frame_processor(f);
+            frame_processor(std::make_unique<FFmpegVideoFrame>(f).get());
         }
 
         av_frame_free(&f);
     }
 }
 
-} // namespace feature_extract
-
-} // namespace donde_toolkits
+} // namespace donde_toolkits::feature_extract
