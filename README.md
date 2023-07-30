@@ -53,6 +53,7 @@ openvino, you need to install(download from openvino website) it first. other de
 ```
 brew install openvino
 brew install opencv
+brew install ffmpeg
 ```
 
 #### For linux
