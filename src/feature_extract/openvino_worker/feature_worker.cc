@@ -136,7 +136,7 @@ void FeatureWorker::run() {
         std::shared_ptr<FeatureResult> result = std::make_shared<FeatureResult>();
 
         RetCode ret = process(*aligner_result, *result);
-        _logger->debug("process ret: {}", ret);
+        _logger->debug("process ret: {}", int(ret));
 
         Value output{ValueFeatureResult, result};
         msg->setResponse(output);
