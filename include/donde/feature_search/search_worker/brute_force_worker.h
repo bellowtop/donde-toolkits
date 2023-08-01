@@ -1,3 +1,5 @@
+#pragma once
+
 #include "donde/definitions.h"
 #include "donde/feature_search/driver.h"
 #include "donde/feature_search/search_worker/db_search_worker.h"
