@@ -30,8 +30,6 @@ class FFmpegVideoProcessorImpl {
 
     bool Stop();
 
-    SwsContext* GetSwsContext() const { return sws_context_; };
-
     ~FFmpegVideoProcessorImpl();
 
   private:

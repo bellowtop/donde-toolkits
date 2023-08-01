@@ -1,3 +1,8 @@
+
+#ifndef SPDLOG_FMT_EXTERNAL
+#    define SPDLOG_FMT_EXTERNAL
+#endif
+
 #include "donde/video_process/ffmpeg_processor.h"
 
 #include <chrono>

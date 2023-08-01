@@ -142,7 +142,7 @@ void LandmarksWorker::run() {
         std::shared_ptr<LandmarksResult> result = std::make_shared<LandmarksResult>();
 
         RetCode ret = process(*detect_result, *result);
-        _logger->debug("process ret: {}", ret);
+        _logger->debug("process ret: {}", int(ret));
 
         Value output{ValueLandmarksResult, result};
         msg->setResponse(output);

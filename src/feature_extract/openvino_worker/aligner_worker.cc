@@ -69,7 +69,7 @@ void AlignerWorker::run() {
         std::shared_ptr<AlignerResult> result = std::make_shared<AlignerResult>();
 
         RetCode ret = process(*landmarks_result, *result);
-        _logger->debug("process ret: {}", ret);
+        _logger->debug("process ret: {}", int(ret));
 
         Value output{ValueAlignerResult, result};
         msg->setResponse(output);

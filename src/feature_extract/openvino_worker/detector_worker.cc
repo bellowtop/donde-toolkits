@@ -150,7 +150,7 @@ void DetectorWorker::run() {
         Value input = msg->getRequest();
         if (input.valueType != ValueFrame) {
             _logger->error("DetectorWorker input value is not a frame! wrong valueType: {}",
-                           input.valueType);
+                           int(input.valueType));
             continue;
         }
         std::shared_ptr<Frame> f = std::static_pointer_cast<Frame>(input.valuePtr);
@@ -160,7 +160,7 @@ void DetectorWorker::run() {
         result->frame = f;
 
         RetCode ret = process(f->image, *result);
-        _logger->debug("process ret: {}", ret);
+        _logger->debug("process ret: {}", int(ret));
 
         Value output{ValueDetectResult, result};
         msg->setResponse(output);

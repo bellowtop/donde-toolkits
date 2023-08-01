@@ -128,7 +128,7 @@ std::shared_ptr<DetectResult> FacePipelineImpl::Detect(std::shared_ptr<Frame> fr
     Value output;
 
     RetCode ret = _detectorProcessor->Process(input, output);
-    spdlog::info("FacePipelineImpl::Detect ret: {}", ret);
+    spdlog::info("FacePipelineImpl::Detect ret: {}", int(ret));
 
     if (output.valueType != ValueDetectResult) {
         spdlog::error("Detect output is not ValueDetectResult, return empty result");
@@ -145,7 +145,7 @@ FacePipelineImpl::Landmarks(std::shared_ptr<DetectResult> detect_result) {
     Value output;
 
     RetCode ret = _landmarksProcessor->Process(input, output);
-    spdlog::info("FacePipelineImpl::Landmarks ret: {}", ret);
+    spdlog::info("FacePipelineImpl::Landmarks ret: {}", int(ret));
 
     if (output.valueType != ValueLandmarksResult) {
         spdlog::error("Landmarks output is not ValueLandmarksResult, return empty result");
@@ -162,7 +162,7 @@ FacePipelineImpl::Align(std::shared_ptr<LandmarksResult> landmarks_result) {
     Value output;
 
     RetCode ret = _alignerProcessor->Process(input, output);
-    spdlog::info("FacePipelineImpl::Align ret: {}", ret);
+    spdlog::info("FacePipelineImpl::Align ret: {}", int(ret));
 
     if (output.valueType != ValueAlignerResult) {
         spdlog::error("Align output is not ValueAlignerResult, return empty result");
@@ -179,7 +179,7 @@ FacePipelineImpl::Extract(std::shared_ptr<AlignerResult> aligner_result) {
     Value output;
 
     RetCode ret = _featureProcessor->Process(input, output);
-    spdlog::info("FacePipelineImpl::Extract ret: {}", ret);
+    spdlog::info("FacePipelineImpl::Extract ret: {}", int(ret));
 
     if (output.valueType != ValueFeatureResult) {
         spdlog::error("Align output is not ValueFeatureResult, return empty result");

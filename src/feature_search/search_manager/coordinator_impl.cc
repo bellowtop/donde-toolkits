@@ -49,6 +49,8 @@ void CoordinatorImpl::Start() {
 
 void CoordinatorImpl::Stop() { deinitialize_workers(); };
 
+std::vector<DBItem> CoordinatorImpl::ListUserDBs() { return {}; };
+
 // AddFeatures to this db, we need find proper shard to store these fts.
 std::vector<std::string> CoordinatorImpl::AddFeatures(const std::string& db_id,
                                                       const std::vector<Feature>& fts) {
