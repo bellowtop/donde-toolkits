@@ -142,6 +142,31 @@ endif ()
 
 
 
+set(COMBINED_LIB ${CMAKE_BINARY_DIR}/libcombi.a)
+add_custom_target(combined
+    COMMAND ar -x $<TARGET_FILE:${PROJECT_NAME}>
+    COMMAND ar -x $<TARGET_FILE:cppchannel>
+    COMMAND ar -qcs ${COMBINED_LIB} *.o
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    DEPENDS ${PROJECT_NAME} cppchannel
+)
+add_library(${PROJECT_NAME}Full
+    STATIC
+    IMPORTED
+    GLOBAL
+)
+add_dependencies(${PROJECT_NAME}Full
+    combined
+)
+set_target_properties(${PROJECT_NAME}Full
+    PROPERTIES
+    IMPORTED_LOCATION
+    ${COMBINED_LIB}
+)
+set(PROJECT_NAME ${PROJECT_NAME}Full)
+
+
+
 ##########################################
 ### cmake install
 ##########################################
