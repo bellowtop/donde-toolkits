@@ -1,13 +1,7 @@
 #pragma once
 
-#include "Poco/Event.h"
-#include "Poco/Notification.h"
-#include "Poco/NotificationQueue.h"
 #include "Poco/Runnable.h"
-#include "Poco/Thread.h"
-#include "Poco/ThreadPool.h"
 #include "donde/definitions.h"
-#include "donde/feature_extract/worker.h"
 #include "donde/message.h"
 #include "nlohmann/json.hpp"
 #include "spdlog/sinks/stdout_color_sinks.h"
@@ -17,14 +11,23 @@
 #include <memory>
 #include <type_traits>
 
-using Poco::NotificationQueue;
-
-using namespace Poco;
 using namespace std;
 
+using Poco::Runnable;
 using json = nlohmann::json;
 
 namespace donde_toolkits::feature_extract {
+
+class Worker : public Runnable {
+  public:
+    virtual ~Worker() = default;
+
+    virtual RetCode Init(json conf, int id, std::string device_id) = 0;
+
+    virtual std::string GetName() = 0;
+
+    virtual void run() = 0;
+};
 
 // dummy worker impl
 class WorkerBaseImpl : public Worker {

@@ -2,7 +2,6 @@
 
 #include "donde/definitions.h"
 #include "donde/feature_extract/processor.h"
-// #include "faiss/Index2Layer.h"
 #include "nlohmann/json.hpp"
 
 #include <map>
@@ -12,11 +11,11 @@ using namespace std;
 
 using json = nlohmann::json;
 
-namespace donde_toolkits::feature_extract {
+namespace donde_toolkits ::feature_extract {
 
-class FacePipeline {
+class FacePipelineInterface {
   public:
-    virtual ~FacePipeline() = default;
+    virtual ~FacePipelineInterface() = default;
 
     virtual const json& GetConfig() = 0;
 
@@ -40,6 +39,38 @@ class FacePipeline {
 
     virtual std::shared_ptr<FeatureResult> Extract(std::shared_ptr<AlignerResult> aligner_result)
         = 0;
+};
+
+// forward declearation.
+class FacePipelineImpl;
+class FacePipeline : public FacePipelineInterface {
+  public:
+    FacePipeline(const json& config);
+    // this dtor declaration is necessary. and its implementation
+    // must be placed in face_pipeline.cc, because we use pimpl with std::unique_ptr
+    ~FacePipeline();
+
+    const json& GetConfig() override;
+
+    RetCode Init(Processor* detector, Processor* landmarks, Processor* aligner,
+                 Processor* feature) override;
+
+    RetCode Terminate() override;
+
+    std::shared_ptr<Frame> Decode(const vector<uint8_t>& image_data) override;
+
+    std::shared_ptr<DetectResult> Detect(const std::shared_ptr<Frame> frame) override;
+
+    std::shared_ptr<LandmarksResult>
+    Landmarks(const std::shared_ptr<DetectResult> detect_result) override;
+
+    std::shared_ptr<AlignerResult>
+    Align(const std::shared_ptr<LandmarksResult> landmarks_result) override;
+
+    std::shared_ptr<FeatureResult> Extract(std::shared_ptr<AlignerResult> aligner_result) override;
+
+  public:
+    std::unique_ptr<FacePipelineImpl> pimp;
 };
 
 } // namespace donde_toolkits::feature_extract

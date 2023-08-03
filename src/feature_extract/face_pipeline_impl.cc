@@ -1,10 +1,10 @@
-#include "donde/feature_extract/face_pipeline_impl.h"
+#include "face_pipeline_impl.h"
 
+#include "concurrent_processor.h"
 #include "donde/definitions.h"
-#include "donde/feature_extract/concurrent_processor_impl.h"
 #include "donde/feature_extract/processor.h"
-#include "donde/feature_extract/worker_openvino_impl.h"
 #include "nlohmann/json.hpp"
+#include "openvino_worker/worker_openvino.h"
 #include "spdlog/spdlog.h"
 
 #include <cstdint>

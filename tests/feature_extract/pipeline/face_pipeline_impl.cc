@@ -1,10 +1,9 @@
-#include "donde/feature_extract/face_pipeline_impl.h"
-
 #include "../mock_processor.h"
 #include "donde/definitions.h"
-#include "donde/feature_extract/concurrent_processor_impl.h"
-#include "donde/feature_extract/worker_openvino_impl.h"
+#include "donde/feature_extract/face_pipeline.h"
 #include "donde/utils.h"
+#include "src/feature_extract/concurrent_processor.h"
+#include "src/feature_extract/openvino_worker/worker_openvino.h"
 
 #include <Poco/Logger.h>
 #include <filesystem>
@@ -32,7 +31,7 @@ using donde_toolkits::LandmarksResult;
 
 using nlohmann::json;
 
-using donde_toolkits::feature_extract::ConcurrentProcessorImpl;
+using donde_toolkits::feature_extract::ConcurrentProcessor;
 using donde_toolkits::feature_extract::openvino_worker::AlignerWorker;
 using donde_toolkits::feature_extract::openvino_worker::DetectorWorker;
 using donde_toolkits::feature_extract::openvino_worker::FeatureWorker;
@@ -55,10 +54,10 @@ TEST(FeatureExtract, FacePipelineCanDecodeImageBinaryToFrame) {
 
 )"_json;
 
-    FacePipelineImpl pipeline{conf};
+    FacePipeline pipeline{conf};
 
     // pipeline is responsible to release
-    auto detector = new ConcurrentProcessorImpl<DetectorWorker>();
+    auto detector = new ConcurrentProcessor<DetectorWorker>();
 
     pipeline.Init(detector, nullptr, nullptr, nullptr);
 
@@ -131,10 +130,10 @@ TEST(FeatureExtract, FacePipelineCanDetectLandmarksFromDetectResult) {
 )"_json;
 
     // pipeline is responsible to release
-    auto landmarks = new ConcurrentProcessorImpl<LandmarksWorker>();
-    auto aligner = new ConcurrentProcessorImpl<AlignerWorker>();
+    auto landmarks = new ConcurrentProcessor<LandmarksWorker>();
+    auto aligner = new ConcurrentProcessor<AlignerWorker>();
 
-    FacePipelineImpl pipeline{conf};
+    FacePipeline pipeline{conf};
     pipeline.Init(nullptr, landmarks, aligner, nullptr);
 
     std::string warmup_image = "./contrib/data/test_image_5_person.jpeg";
@@ -202,12 +201,12 @@ TEST(FeatureExtract, FacePipelineExtractFaceFeatureFromImageFile) {
 )"_json;
 
     // pipeline is responsible to release
-    auto detector = new ConcurrentProcessorImpl<DetectorWorker>();
-    auto landmarks = new ConcurrentProcessorImpl<LandmarksWorker>();
-    auto aligner = new ConcurrentProcessorImpl<AlignerWorker>();
-    auto feature = new ConcurrentProcessorImpl<FeatureWorker>();
+    auto detector = new ConcurrentProcessor<DetectorWorker>();
+    auto landmarks = new ConcurrentProcessor<LandmarksWorker>();
+    auto aligner = new ConcurrentProcessor<AlignerWorker>();
+    auto feature = new ConcurrentProcessor<FeatureWorker>();
 
-    FacePipelineImpl pipeline{conf};
+    FacePipeline pipeline{conf};
     pipeline.Init(detector, landmarks, aligner, feature);
 
     std::string img_path = "./contrib/data/test_image_5_person.jpeg";
@@ -295,7 +294,7 @@ TEST(FeatureExtract, FacePipelineCanReleaseProcessorsLifecycle) {
     EXPECT_CALL(*detector, Die);
 
     {
-        FacePipelineImpl pipeline{conf};
+        FacePipeline pipeline{conf};
         pipeline.Init(detector, nullptr, nullptr, nullptr);
         std::shared_ptr<Frame> frame;
         std::shared_ptr<DetectResult> out = pipeline.Detect(frame);

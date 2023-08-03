@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../worker.h"
 #include "Poco/Event.h"
 #include "Poco/Notification.h"
 #include "Poco/NotificationQueue.h"
@@ -10,7 +11,6 @@
 #include "donde/message.h"
 #include "nlohmann/json.hpp"
 #include "openvino/openvino.hpp"
-#include "worker_base_impl.h"
 
 #include <iostream>
 #include <memory>

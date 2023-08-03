@@ -1,10 +1,8 @@
-#include "donde/feature_extract/concurrent_processor_impl.h"
-
 #include "../mock_processor.h"
 #include "donde/definitions.h"
-#include "donde/feature_extract/worker.h"
-#include "donde/feature_extract/worker_base_impl.h"
 #include "donde/message.h"
+#include "src/feature_extract/concurrent_processor.h"
+#include "src/feature_extract/worker.h"
 
 #include <Poco/NotificationQueue.h>
 #include <chrono>
@@ -25,7 +23,7 @@ using donde_toolkits::Frame;
 using donde_toolkits::Value;
 using donde_toolkits::ValueFeature;
 using donde_toolkits::ValueFrame;
-using donde_toolkits::feature_extract::ConcurrentProcessorImpl;
+using donde_toolkits::feature_extract::ConcurrentProcessor;
 using donde_toolkits::feature_extract::WorkerBaseImpl;
 
 TEST(FeatureExtract, ConcurrentProcessorHasConcurrentWorkers) {
@@ -49,7 +47,7 @@ TEST(FeatureExtract, ConcurrentProcessorHasConcurrentWorkers) {
         void run() override { run_count++; };
     };
 
-    ConcurrentProcessorImpl<DummyWorker> processor;
+    ConcurrentProcessor<DummyWorker> processor;
     processor.Init(conf["dummy"]);
 
     // wait all workers up, as workers are add to processor's execution-pool
@@ -118,7 +116,7 @@ TEST(FeatureExtract, ConcurrentProcessorComunicateWithWorkerUsingChannel) {
   }
 })"_json;
 
-    ConcurrentProcessorImpl<DummyWorker> processor;
+    ConcurrentProcessor<DummyWorker> processor;
     processor.Init(conf["dummy"]);
 
     std::shared_ptr<Frame> f = std::make_shared<Frame>();
