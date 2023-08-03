@@ -1,6 +1,7 @@
 #pragma once
 
 #ifndef SPDLOG_FMT_EXTERNAL
+
 #    define SPDLOG_FMT_EXTERNAL
 #endif
 
@@ -17,12 +18,14 @@
 #include <msgpack/adaptor/define_decl.hpp>
 #include <opencv2/core/mat.hpp>
 #include <opencv2/core/types.hpp>
+#include <opencv2/opencv.hpp>
 #include <ostream>
 #include <sstream>
 #include <string>
 #include <vector>
 
 using namespace std;
+using namespace cv;
 
 namespace donde_toolkits {
 

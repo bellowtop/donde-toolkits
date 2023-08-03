@@ -1,8 +1,8 @@
 #pragma once
 
 #include "donde/definitions.h"
-#include "donde/feature_extract/processor.h"
 #include "nlohmann/json.hpp"
+#include "processor.h"
 
 #include <map>
 

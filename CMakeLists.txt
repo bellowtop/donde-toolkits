@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 project(DondeToolkits VERSION 0.0.1 LANGUAGES CXX)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 if (NOT DEFINED CONAN_ALREADY_SETUP)
   include(build/conanbuildinfo.cmake)
