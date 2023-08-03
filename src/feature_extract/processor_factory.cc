@@ -19,9 +19,11 @@ using donde_toolkits::feature_extract::openvino_worker::LandmarksWorker;
 
 namespace donde_toolkits ::feature_extract {
 
-Processor* ProcessorFactory::createDetector(const json& conf) { return {}; };
-Processor* ProcessorFactory::createLandmarks(const json& conf) { return {}; };
-Processor* ProcessorFactory::createAligner(const json& conf) { return {}; };
-Processor* ProcessorFactory::createFeature(const json& conf) { return {}; };
+Processor* ProcessorFactory::createDetector() { return new ConcurrentProcessor<DetectorWorker>(); };
+Processor* ProcessorFactory::createLandmarks() {
+    return new ConcurrentProcessor<LandmarksWorker>();
+};
+Processor* ProcessorFactory::createAligner() { return new ConcurrentProcessor<AlignerWorker>(); };
+Processor* ProcessorFactory::createFeature() { return new ConcurrentProcessor<FeatureWorker>(); };
 
 } // namespace donde_toolkits::feature_extract

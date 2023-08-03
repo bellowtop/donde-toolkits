@@ -16,10 +16,10 @@ class ProcessorFactory {
 
   public:
     ~ProcessorFactory() = default;
-    static Processor* createDetector(const json& conf);
-    static Processor* createLandmarks(const json& conf);
-    static Processor* createAligner(const json& conf);
-    static Processor* createFeature(const json& conf);
+    static Processor* createDetector();
+    static Processor* createLandmarks();
+    static Processor* createAligner();
+    static Processor* createFeature();
 };
 
 } // namespace donde_toolkits::feature_extract
