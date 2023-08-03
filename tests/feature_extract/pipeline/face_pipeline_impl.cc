@@ -3,7 +3,7 @@
 #include "donde/feature_extract/face_pipeline.h"
 #include "donde/utils.h"
 #include "src/feature_extract/concurrent_processor.h"
-#include "src/feature_extract/openvino_worker/worker_openvino.h"
+#include "src/feature_extract/openvino_worker/openvino_worker.h"
 
 #include <Poco/Logger.h>
 #include <filesystem>

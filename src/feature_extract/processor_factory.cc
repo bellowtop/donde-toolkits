@@ -1,7 +1,7 @@
 #include "donde/feature_extract/processor_factory.h"
 
 #include "concurrent_processor.h"
-#include "openvino_worker/worker_openvino.h"
+#include "openvino_worker/openvino_worker.h"
 
 #include <iostream>
 #include <memory>

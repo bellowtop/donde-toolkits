@@ -1,12 +1,7 @@
 #pragma once
 
 #include "../worker.h"
-#include "Poco/Event.h"
-#include "Poco/Notification.h"
 #include "Poco/NotificationQueue.h"
-#include "Poco/Runnable.h"
-#include "Poco/Thread.h"
-#include "Poco/ThreadPool.h"
 #include "donde/definitions.h"
 #include "donde/message.h"
 #include "nlohmann/json.hpp"

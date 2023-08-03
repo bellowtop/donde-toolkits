@@ -4,7 +4,7 @@
 #include "donde/definitions.h"
 #include "donde/feature_extract/processor.h"
 #include "face_pipeline_impl.h"
-#include "openvino_worker/worker_openvino.h"
+#include "openvino_worker/openvino_worker.h"
 
 #include <cstdint>
 #include <memory>

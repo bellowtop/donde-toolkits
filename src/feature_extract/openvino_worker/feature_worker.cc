@@ -3,7 +3,7 @@
 #include "Poco/Notification.h"
 #include "Poco/NotificationQueue.h"
 #include "donde/definitions.h"
-#include "worker_openvino.h"
+#include "openvino_worker.h"
 #include "donde/message.h"
 #include "donde/utils.h"
 #include "opencv2/opencv.hpp"

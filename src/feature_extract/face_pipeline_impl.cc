@@ -4,7 +4,7 @@
 #include "donde/definitions.h"
 #include "donde/feature_extract/processor.h"
 #include "nlohmann/json.hpp"
-#include "openvino_worker/worker_openvino.h"
+#include "openvino_worker/openvino_worker.h"
 #include "spdlog/spdlog.h"
 
 #include <cstdint>
