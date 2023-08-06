@@ -1,12 +1,13 @@
-#include "donde/feature_search/search_manager/coordinator_impl.h"
+#include "coordinator_impl.h"
 
 #include "donde/definitions.h"
 #include "donde/feature_search/feature_topk_rank.h"
-#include "donde/feature_search/search_manager/shard.h"
-#include "donde/feature_search/search_manager/shard_impl.h"
-#include "donde/feature_search/search_manager/shard_manager_impl.h"
+#include "donde/feature_search/search_manager/coordinator.h"
 #include "donde/feature_search/simple_driver.h"
 #include "fmt/format.h"
+#include "shard.h"
+#include "shard_impl.h"
+#include "shard_manager_impl.h"
 
 #include <exception>
 #include <memory>

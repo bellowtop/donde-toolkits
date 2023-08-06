@@ -1,4 +1,5 @@
-#include "donde/feature_search/search_manager/shard_impl.h"
+#include "shard_manager.h"
+#include "shard_impl.h"
 
 #include "donde/definitions.h"
 

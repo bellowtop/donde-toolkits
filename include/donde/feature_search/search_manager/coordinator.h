@@ -1,27 +1,25 @@
 #pragma once
 
-#include "coordinator.h"
-#include "donde/definitions.h"
-#include "donde/feature_search/definitions.h"
-
 // #include "spdlog/spdlog.h"
+#include "donde/feature_search/definitions.h"
+#include "nlohmann/json.hpp"
 
+#include <algorithm>
 #include <iostream>
 #include <unordered_map>
 
 using namespace std;
 
-namespace donde_toolkits {
+using json = nlohmann::json;
 
-namespace feature_search {
+namespace donde_toolkits ::feature_search ::search_manager {
 
-namespace search_manager {
+class Worker;
+using WorkerPtr = shared_ptr<Worker>;
 
 // Coordinator & Reducer
-class Coordinator {
+class CoordinatorInterface {
   public:
-    virtual ~Coordinator() = default;
-
     virtual void Start() = 0;
 
     virtual void Stop() = 0;
@@ -46,6 +44,33 @@ class Coordinator {
         = 0;
 };
 
-} // namespace search_manager
-} // namespace feature_search
-} // namespace donde_toolkits
+class CoordinatorImpl;
+class Coordinator : public CoordinatorInterface {
+  public:
+    Coordinator(const json& coor_config);
+    // this dtor declaration is necessary. and its implementation
+    // must be placed in .cc file, because we use pimpl with std::unique_ptr
+    ~Coordinator();
+
+    void Start();
+
+    void Stop();
+
+    // std::vector<WorkerPtr> ListWorkers();
+
+    std::vector<DBItem> ListUserDBs();
+
+    // AddFeatures to this db, we need find proper shard to store these fts.
+    std::vector<std::string> AddFeatures(const std::string& db_id, const std::vector<Feature>& fts);
+
+    // RemoveFeatures from this db
+    RetCode RemoveFeatures(const std::string& db_id, const std::vector<std::string>& feature_ids);
+
+    // SearchFeatures in this db.
+    std::vector<FeatureSearchItem> SearchFeature(const std::string& db_id, const Feature& query,
+                                                 int topk);
+
+    std::unique_ptr<CoordinatorImpl> pimpl;
+};
+
+} // namespace donde_toolkits::feature_search::search_manager

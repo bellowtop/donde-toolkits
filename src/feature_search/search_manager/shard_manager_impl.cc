@@ -1,6 +1,6 @@
-#include "donde/feature_search/search_manager/shard_manager_impl.h"
+#include "shard_manager_impl.h"
 
-#include "donde/feature_search/search_manager/shard_impl.h"
+#include "shard_impl.h"
 
 #include <spdlog/spdlog.h>
 
