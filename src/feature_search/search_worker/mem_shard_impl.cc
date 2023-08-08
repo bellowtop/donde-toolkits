@@ -1,4 +1,4 @@
-#include "donde/feature_search/search_worker/mem_shard_impl.h"
+#include "mem_shard_impl.h"
 
 #include "donde/definitions.h"
 #include "donde/feature_search/definitions.h"

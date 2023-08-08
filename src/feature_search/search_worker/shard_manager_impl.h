@@ -2,8 +2,8 @@
 
 #include "donde/definitions.h"
 #include "donde/feature_search/driver.h"
-#include "donde/feature_search/search_worker/shard.h"
-#include "donde/feature_search/search_worker/shard_manager.h"
+#include "shard.h"
+#include "shard_manager.h"
 
 #include <string>
 #include <unordered_map>

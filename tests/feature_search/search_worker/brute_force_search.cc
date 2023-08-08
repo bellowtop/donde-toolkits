@@ -1,10 +1,10 @@
 #include "donde/definitions.h"
 #include "donde/feature_search/definitions.h"
 #include "donde/feature_search/search_worker/brute_force_worker.h"
-#include "donde/feature_search/search_worker/shard.h"
-#include "donde/feature_search/search_worker/shard_manager_impl.h"
 #include "donde/feature_search/simple_driver.h"
 #include "donde/utils.h"
+#include "src/feature_search/search_worker/shard.h"
+#include "src/feature_search/search_worker/shard_manager_impl.h"
 
 #include <cstdlib>
 #include <filesystem>
@@ -51,8 +51,6 @@ class SearchManager_BruteForceSearch : public ::testing::Test {
             .description = "this is a test db",
         };
 
-        shard_mgr = new ShardManagerImpl(*store);
-
         db_id = store->CreateDB(db1);
     };
 
@@ -61,7 +59,6 @@ class SearchManager_BruteForceSearch : public ::testing::Test {
         std::filesystem::remove_all("/tmp/test_store/");
     };
 
-    ShardManagerImpl* shard_mgr;
     SimpleDriver* store;
     const int feature_count = 100;
     const int dim = 512;
@@ -70,14 +67,14 @@ class SearchManager_BruteForceSearch : public ::testing::Test {
 };
 
 TEST_F(SearchManager_BruteForceSearch, BruteForceSearch) {
-    BruteForceWorker search(*shard_mgr, *store);
+    BruteForceWorker search(*store);
 
     std::vector<std::string> feature_ids = search.AddFeatures(db_id, fts);
     EXPECT_EQ(feature_ids.size(), feature_count);
 }
 
 TEST_F(SearchManager_BruteForceSearch, SearchTopkTeatures) {
-    BruteForceWorker search(*shard_mgr, *store);
+    BruteForceWorker search(*store);
 
     // preapre features in db.
     std::vector<std::string> feature_ids = search.AddFeatures(db_id, fts);

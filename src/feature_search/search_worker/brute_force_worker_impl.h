@@ -1,8 +1,8 @@
 #pragma once
 
-#include "db_search_worker.h"
 #include "donde/definitions.h"
 #include "donde/feature_search/driver.h"
+#include "donde/feature_search/search_worker/db_search_worker.h"
 
 #include <algorithm>
 #include <functional>
@@ -16,15 +16,15 @@ using json = nlohmann::json;
 
 namespace donde_toolkits ::feature_search ::search_worker {
 
-class BruteForceWorkerImpl;
-class BruteForceWorker : public ISearchWorker {
+class ShardManager;
+class BruteForceWorkerImpl : public ISearchWorker {
 
   public:
     // Searcher contructor, doesn't own ShardManager and Driver, but reference to them.
     // The caller should clean ShardManager and Driver themself.
-    BruteForceWorker(Driver& driver);
+    BruteForceWorkerImpl(Driver& driver);
 
-    ~BruteForceWorker();
+    ~BruteForceWorkerImpl();
 
     RetCode Start() override {
         spdlog::warn("Init is not implemented by BruteForceSearch");
@@ -60,7 +60,10 @@ class BruteForceWorker : public ISearchWorker {
     RetCode RemoveFeatures(const std::string& db_id,
                            const std::vector<std::string>& feature_ids) override;
 
-    std::unique_ptr<BruteForceWorkerImpl> pimpl;
+  private:
+    json _config;
+    std::unique_ptr<ShardManager> _shard_mgr;
+    Driver& _driver;
 };
 
 } // namespace donde_toolkits::feature_search::search_worker

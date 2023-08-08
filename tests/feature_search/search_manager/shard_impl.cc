@@ -1,11 +1,11 @@
-#include "donde/feature_search/search_manager/shard_impl.h"
+#include "src/feature_search/search_manager/shard_impl.h"
 
 #include "../mock_shard_manager.h"
 #include "../mock_worker.h"
 #include "donde/definitions.h"
 #include "donde/feature_search/definitions.h"
-#include "donde/feature_search/search_manager/shard_manager.h"
 #include "donde/utils.h"
+#include "src/feature_search/search_manager/shard_manager.h"
 
 #include <chrono>
 #include <cstdlib>

@@ -2,7 +2,7 @@
 
 #include "donde/definitions.h"
 #include "donde/feature_search/driver.h"
-#include "donde/feature_search/search_worker/shard.h"
+#include "shard.h"
 
 #include <iostream>
 #include <unordered_map>

@@ -2,8 +2,8 @@
 
 #include "donde/feature_search/definitions.h"
 #include "donde/feature_search/driver.h"
-#include "donde/feature_search/search_worker/shard.h"
 #include "donde/message.h"
+#include "shard.h"
 
 #include <Poco/Thread.h>
 #include <memory>

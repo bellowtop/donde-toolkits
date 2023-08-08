@@ -2,7 +2,6 @@
 
 #include "donde/definitions.h"
 #include "donde/feature_search/definitions.h"
-#include "shard_manager.h"
 
 // #include "faiss/Index2Layer.h"
 
@@ -16,14 +15,14 @@ using json = nlohmann::json;
 
 namespace donde_toolkits ::feature_search ::search_worker {
 
-class SearchWorker {
+class ISearchWorker {
 
   public:
     // Searcher contructor, owns the input ShardManager pointer.
     // By the way, this is just an api, the implementation should owns the pointer.
-    SearchWorker(ShardManager&){};
+    ISearchWorker(){};
 
-    virtual ~SearchWorker() = default;
+    virtual ~ISearchWorker() = default;
 
     virtual RetCode Start() = 0;
 
