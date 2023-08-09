@@ -18,7 +18,11 @@ class Worker;
 using WorkerPtr = shared_ptr<Worker>;
 
 // Coordinator & Reducer
-class CoordinatorInterface {
+// Coordinator & Reducer, responsible for:
+// 1. init shard_manager to manage shards, shards are sharded by date/region/feature-id
+// 2. make connection to workers, assign shards to these workers.
+// 3. mapping user db to shards.
+class ICoordinator {
   public:
     virtual void Start() = 0;
 
@@ -45,7 +49,7 @@ class CoordinatorInterface {
 };
 
 class CoordinatorImpl;
-class Coordinator : public CoordinatorInterface {
+class Coordinator : public ICoordinator {
   public:
     Coordinator(const json& coor_config);
     // this dtor declaration is necessary. and its implementation

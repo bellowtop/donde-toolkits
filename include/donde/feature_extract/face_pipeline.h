@@ -13,9 +13,9 @@ using json = nlohmann::json;
 
 namespace donde_toolkits ::feature_extract {
 
-class FacePipelineInterface {
+class IFacePipeline {
   public:
-    virtual ~FacePipelineInterface() = default;
+    virtual ~IFacePipeline() = default;
 
     virtual const json& GetConfig() = 0;
 
@@ -43,7 +43,7 @@ class FacePipelineInterface {
 
 // forward declearation.
 class FacePipelineImpl;
-class FacePipeline : public FacePipelineInterface {
+class FacePipeline : public IFacePipeline {
   public:
     FacePipeline(const json& config);
     // this dtor declaration is necessary. and its implementation
