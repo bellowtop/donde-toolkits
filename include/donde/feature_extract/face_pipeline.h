@@ -70,7 +70,7 @@ class FacePipeline : public IFacePipeline {
     std::shared_ptr<FeatureResult> Extract(std::shared_ptr<AlignerResult> aligner_result) override;
 
   public:
-    std::unique_ptr<FacePipelineImpl> pimp;
+    std::unique_ptr<FacePipelineImpl> pimpl;
 };
 
 } // namespace donde_toolkits::feature_extract

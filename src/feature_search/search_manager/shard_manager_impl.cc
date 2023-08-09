@@ -10,7 +10,7 @@ namespace donde_toolkits ::feature_search ::search_manager {
 /// ShardManager
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ShardManagerImpl::ShardManagerImpl(Driver& driver, ShardFactory* factory)
+ShardManagerImpl::ShardManagerImpl(Driver& driver, ShardFactory& factory)
     : _driver(driver), _shard_factory(factory) {
     load_db_shards();
 };
@@ -98,7 +98,7 @@ RetCode ShardManagerImpl::load_db_shards() {
         std::vector<Shard*> shards;
         std::vector<DBShard> shard_infos = _driver.ListShards(db.db_id);
         for (auto& shard_info : shard_infos) {
-            shards.push_back(_shard_factory->CreateShard(this, shard_info));
+            shards.push_back(_shard_factory.CreateShard(this, shard_info));
 
             // this will be more efficient?
             // _db_shards[db.db_id].push_back(new Shard{this, shard_info});

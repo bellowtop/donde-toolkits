@@ -3,6 +3,7 @@
 #include "donde/feature_search/driver.h"
 #include "donde/feature_search/search_manager/coordinator.h"
 #include "shard.h"
+#include "shard_factory.h"
 #include "worker.h"
 
 // #include "spdlog/spdlog.h"
@@ -56,6 +57,8 @@ class CoordinatorImpl {
     std::vector<WorkerPtr> _workers;
 
     shared_ptr<Driver> _driver;
+
+    std::shared_ptr<ShardFactory> _shard_factory;
 
     std::shared_ptr<ShardManager> _shard_manager;
 

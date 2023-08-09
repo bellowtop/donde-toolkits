@@ -4,10 +4,6 @@
 #include "donde/definitions.h"
 #include "donde/feature_search/feature_topk_rank.h"
 #include "donde/feature_search/simple_driver.h"
-#include "fmt/format.h"
-#include "shard.h"
-#include "shard_impl.h"
-#include "shard_manager_impl.h"
 
 #include <exception>
 #include <memory>

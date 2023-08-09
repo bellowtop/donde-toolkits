@@ -17,7 +17,7 @@ namespace donde_toolkits ::feature_search ::search_manager {
 class ShardManagerImpl : public ShardManager {
 
   public:
-    ShardManagerImpl(Driver& driver, ShardFactory* factory);
+    ShardManagerImpl(Driver& driver, ShardFactory& factory);
     ~ShardManagerImpl() = default;
 
     std::tuple<Shard*, bool> FindOrCreateWritableShard(std::string db_id,
@@ -44,7 +44,7 @@ class ShardManagerImpl : public ShardManager {
     std::unordered_map<std::string, DBItem> _user_dbs;
 
     Driver& _driver;
-    std::shared_ptr<ShardFactory> _shard_factory;
+    ShardFactory& _shard_factory;
 };
 
 } // namespace donde_toolkits::feature_search::search_manager

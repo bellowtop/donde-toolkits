@@ -30,11 +30,9 @@ CoordinatorImpl::CoordinatorImpl(const json& coor_config) : config(coor_config) 
         throw fmt::format("driver {} is not supported.", driver_type);
     }
 
-    // if (driver_type == SEARCH_DRIVER_CASSANDRA) {
     _driver = std::make_shared<SimpleDriver>((std::string)coor_config["cassandra"]["addr"]);
-    // }
-
-    _shard_manager = std::make_shared<ShardManagerImpl>(*(_driver.get()), new ShardFactoryImpl());
+    _shard_factory = std::make_shared<ShardFactoryImpl>();
+    _shard_manager = std::make_shared<ShardManagerImpl>(*_driver, *_shard_factory);
 
     _worker_addrs = (std::vector<std::string>)coor_config["workers"];
 };
@@ -42,9 +40,7 @@ CoordinatorImpl::CoordinatorImpl(const json& coor_config) : config(coor_config) 
 CoordinatorImpl::~CoordinatorImpl(){};
 
 void CoordinatorImpl::Start() {
-
     initialize_workers();
-
     assign_worker_for_shards();
 };
 
