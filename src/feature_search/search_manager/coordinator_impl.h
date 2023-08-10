@@ -2,9 +2,10 @@
 
 #include "donde/feature_search/driver.h"
 #include "donde/feature_search/search_manager/coordinator.h"
+#include "donde/feature_search/search_manager/worker.h"
+#include "donde/feature_search/search_manager/worker_manager.h"
 #include "shard.h"
 #include "shard_factory.h"
-#include "worker.h"
 
 // #include "spdlog/spdlog.h"
 
@@ -48,6 +49,9 @@ class CoordinatorImpl {
     void assign_worker_for_shards();
     Worker* find_worker_for_shard(Shard* shard);
 
+    std::unordered_map<std::string, std::string> load_workers_from_db();
+    void load_shards_from_db();
+
   private:
     const json& config;
 
@@ -61,6 +65,8 @@ class CoordinatorImpl {
     std::shared_ptr<ShardFactory> _shard_factory;
 
     std::shared_ptr<ShardManager> _shard_manager;
+
+    std::shared_ptr<IWorkerManager> _worker_manager;
 
     // spdlog::Logger& logger;
 };

@@ -2,8 +2,8 @@
 
 #include "donde/definitions.h"
 #include "donde/feature_search/definitions.h"
+#include "donde/feature_search/search_manager/worker.h"
 #include "shard.h"
-#include "worker.h"
 
 // #include "spdlog/spdlog.h"
 

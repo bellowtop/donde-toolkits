@@ -8,11 +8,14 @@
 #include "shard.h"
 #include "shard_impl.h"
 #include "shard_manager_impl.h"
+#include "worker_manager_impl.h"
 
 #include <exception>
 #include <memory>
 #include <queue>
 #include <spdlog/spdlog.h>
+#include <string>
+#include <unordered_map>
 
 using namespace fmt;
 
@@ -33,6 +36,7 @@ CoordinatorImpl::CoordinatorImpl(const json& coor_config) : config(coor_config) 
     _driver = std::make_shared<SimpleDriver>((std::string)coor_config["cassandra"]["addr"]);
     _shard_factory = std::make_shared<ShardFactoryImpl>();
     _shard_manager = std::make_shared<ShardManagerImpl>(*_driver, *_shard_factory);
+    _worker_manager = std::make_shared<WorkerManagerImpl>();
 
     _worker_addrs = (std::vector<std::string>)coor_config["workers"];
 };
@@ -40,7 +44,11 @@ CoordinatorImpl::CoordinatorImpl(const json& coor_config) : config(coor_config) 
 CoordinatorImpl::~CoordinatorImpl(){};
 
 void CoordinatorImpl::Start() {
-    initialize_workers();
+    std::unordered_map<std::string, std::string> workers = load_workers_from_db();
+    _worker_manager->LoadKnownWorkers(workers);
+
+    load_shards_from_db();
+
     assign_worker_for_shards();
 };
 
