@@ -16,6 +16,21 @@ namespace donde_toolkits {
 
 namespace feature_search {
 
+// Driver contains all databases infomation for feature search.
+// User features are stored in UserDBs
+// Each UserDB may have several Shards, sharding based on shard size & shard time period
+// Each Shard is bound with one Worker, only when the worker comes online, the shard then can be
+// accessed(eg read/write)
+//
+// Note that Shards are logic management unit for feature operations,
+// the underlying features are still stored in one big table.
+//
+// tables:
+//    user_dbs(db_id, name, size, description, created_at, user_identifier)
+//    shards(shard_id, db_id, worker_id, created_at, size, used, free)
+//    workers(worker_id, address, max_capacity)
+//    features(feature_id, feature, shard_id)
+
 class Driver {
 
   public:
@@ -31,6 +46,13 @@ class Driver {
     virtual std::vector<DBItem> ListDBs() = 0;
 
     virtual RetCode DeleteDB(std::string db_id) = 0;
+
+    // Worker Management
+    virtual std::vector<WorkerItem> ListWorkers() = 0;
+
+    virtual void CreateWorker(const std::string& worker_id, const WorkerItem& worker) = 0;
+
+    virtual void UpdateWorker(const std::string& worker_id, const WorkerItem& worker) = 0;
 
     // Shard Management
     virtual std::vector<DBShard> ListShards(const std::string& db_id) = 0;

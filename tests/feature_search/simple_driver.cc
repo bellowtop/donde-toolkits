@@ -38,7 +38,7 @@ class SearchManager_SimpleDriver : public ::testing::Test {
 
         db1 = DBItem{
             .name = "test-db1",
-            .capacity = 1024,
+            .size = 1024,
             .description = "this is a test db",
         };
 
@@ -77,7 +77,7 @@ TEST_F(SearchManager_SimpleDriver, DBCreateGet) {
     EXPECT_EQ(db_id, got.db_id);
     EXPECT_EQ(db1.name, got.name);
     EXPECT_EQ(db1.description, got.description);
-    EXPECT_EQ(db1.capacity, got.capacity);
+    EXPECT_EQ(db1.size, got.size);
 }
 
 TEST_F(SearchManager_SimpleDriver, DBCreateDelete) {
@@ -86,7 +86,7 @@ TEST_F(SearchManager_SimpleDriver, DBCreateDelete) {
     DBItem got2 = store->FindDB(db_id);
     EXPECT_EQ(got2.db_id, "");
     EXPECT_EQ(got2.name, "");
-    EXPECT_EQ(got2.capacity, 0);
+    EXPECT_EQ(got2.size, 0);
 }
 
 TEST_F(SearchManager_SimpleDriver, DBlist) {
@@ -94,17 +94,17 @@ TEST_F(SearchManager_SimpleDriver, DBlist) {
 
     DBItem db1{
         .name = "test-db1",
-        .capacity = 1024,
+        .size = 1024,
         .description = "this is a test db1",
     };
     DBItem db2{
         .name = "test-db2",
-        .capacity = 1024 * 1024,
+        .size = 1024 * 1024,
         .description = "this is a test db2",
     };
     DBItem db3{
         .name = "test-db3",
-        .capacity = 1024 * 1024 * 1024,
+        .size = 1024 * 1024 * 1024,
         .description = "this is a test db3",
     };
 

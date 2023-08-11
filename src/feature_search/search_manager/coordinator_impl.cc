@@ -36,7 +36,7 @@ CoordinatorImpl::CoordinatorImpl(const json& coor_config) : config(coor_config) 
     _driver = std::make_shared<SimpleDriver>((std::string)coor_config["cassandra"]["addr"]);
     _shard_factory = std::make_shared<ShardFactoryImpl>();
     _shard_manager = std::make_shared<ShardManagerImpl>(*_driver, *_shard_factory);
-    _worker_manager = std::make_shared<WorkerManagerImpl>();
+    _worker_manager = std::make_shared<WorkerManagerImpl>(*_driver);
 
     _worker_addrs = (std::vector<std::string>)coor_config["workers"];
 };
@@ -44,10 +44,7 @@ CoordinatorImpl::CoordinatorImpl(const json& coor_config) : config(coor_config) 
 CoordinatorImpl::~CoordinatorImpl(){};
 
 void CoordinatorImpl::Start() {
-    std::unordered_map<std::string, std::string> workers = load_workers_from_db();
-    _worker_manager->LoadKnownWorkers(workers);
-
-    load_shards_from_db();
+    // _worker_manager->LoadKnownWorkers();
 
     assign_worker_for_shards();
 };
@@ -63,7 +60,7 @@ std::vector<std::string> CoordinatorImpl::AddFeatures(const std::string& db_id,
 
     // if newly created shard, it doesn't have a worker.
     if (new_created) {
-        Worker* worker = find_worker_for_shard(shard);
+        Worker* worker = _worker_manager->FindWritableWorker();
         if (worker == nullptr) {
             spdlog::error("cannot find a worker for shard: {}", shard->GetShardID());
             return {};
@@ -106,27 +103,13 @@ std::vector<FeatureSearchItem> CoordinatorImpl::SearchFeature(const std::string&
     return ret;
 };
 
-Worker* CoordinatorImpl::find_worker_for_shard(Shard* shard) {
-    int64 free_space = INT_MIN;
-    Worker* selected;
-
-    for (auto& worker : _workers) {
-        if (worker->GetFreeSpace() > free_space) {
-            selected = worker.get();
-            free_space = worker->GetFreeSpace();
-        }
-    }
-
-    return selected;
-};
-
 void CoordinatorImpl::assign_worker_for_shards() {
     std::vector<DBItem> dbs = _shard_manager->ListUserDBs();
 
     for (auto& db : dbs) {
         auto shards = _shard_manager->ListShards(db.db_id);
         for (auto& shard : shards) {
-            Worker* worker = find_worker_for_shard(shard);
+            Worker* worker = _worker_manager->FindWritableWorker();
             if (worker == nullptr) {
                 spdlog::error("cannot find a worker for shard: {}", shard->GetShardID());
                 continue;
@@ -138,10 +121,6 @@ void CoordinatorImpl::assign_worker_for_shards() {
     }
 };
 
-void CoordinatorImpl::initialize_workers(){
-
-};
-
-void CoordinatorImpl::deinitialize_workers(){};
+void CoordinatorImpl::load_user_dbs() { _db_items = _driver->ListDBs(); }
 
 } // namespace donde_toolkits::feature_search::search_manager

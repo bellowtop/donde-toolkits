@@ -45,4 +45,6 @@ class Shard {
     virtual DBShard GetShardInfo() = 0;
 };
 
+using ShardPtr = std::shared_ptr<Shard>;
+
 } // namespace donde_toolkits::feature_search::search_manager

@@ -3,6 +3,8 @@
 #include "donde/definitions.h"
 #include "nlohmann/json.hpp"
 
+#include <opencv2/core/hal/interface.h>
+
 namespace donde_toolkits {
 
 namespace feature_search {
@@ -31,9 +33,14 @@ struct PageData {
 struct DBItem {
     std::string db_id;
     std::string name;
-    uint64 capacity;
-    uint64 used;
+    uint64 size;
     std::string description;
+};
+
+struct WorkerItem {
+    std::string worker_id;
+    std::string address;
+    uint64 max_capacity;
 };
 
 const size_t DEFAULT_SHARD_CAPACITY = 1024 * 1024 * 1024;
@@ -41,6 +48,7 @@ const size_t DEFAULT_SHARD_CAPACITY = 1024 * 1024 * 1024;
 struct DBShard {
     std::string db_id;
     std::string shard_id;
+    std::string worker_id;
     uint64 capacity;
     uint64 used;
     bool is_closed;

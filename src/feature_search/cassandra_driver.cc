@@ -60,7 +60,7 @@ std::string CassandraDriver::CreateDB(const DBItem& info) {
     _cached_db_items = {};
 
     std::string db_id = generate_uuid();
-    insert_into_user_dbs(db_id, info.name, info.capacity, info.description);
+    insert_into_user_dbs(db_id, info.name, info.size, info.description);
     init_features_table_for_db(db_id);
 
     return db_id;
@@ -290,7 +290,7 @@ std::vector<DBItem> CassandraDriver::list_user_db_items(bool include_deleted) {
             dbs.push_back(DBItem{
                 .db_id = db_id,
                 .name = name,
-                .capacity = capacity,
+                .size = capacity,
                 .description = description,
             });
         }
@@ -304,14 +304,12 @@ std::vector<DBItem> CassandraDriver::list_user_db_items(bool include_deleted) {
 
 RetCode CassandraDriver::update_db_item(const DBItem& new_item) {
     try {
-        std::string sql(
-            "update dbs set name=?, capacity=?, used=?, description=? where db_id = ?;");
+        std::string sql("update dbs set name=?, size=?, description=? where db_id = ?;");
 
         SQLite::Statement query(*db, sql);
         query.bind(1, new_item.name);
-        query.bind(2, int64(new_item.capacity));
-        query.bind(3, int64(new_item.used));
-        query.bind(4, new_item.description);
+        query.bind(2, int64(new_item.size));
+        query.bind(3, new_item.description);
 
         query.exec();
 

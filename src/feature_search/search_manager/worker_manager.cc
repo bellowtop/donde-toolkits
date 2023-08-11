@@ -13,11 +13,9 @@ using namespace std;
 
 namespace donde_toolkits ::feature_search ::search_manager {
 
-WorkerManager::WorkerManager() : pimpl(std::make_unique<WorkerManagerImpl>()){};
+WorkerManager::WorkerManager(Driver& driver) : pimpl(std::make_unique<WorkerManagerImpl>(driver)){};
 WorkerManager::~WorkerManager(){};
-std::shared_ptr<Worker> WorkerManager::FindWritableWorker() { return pimpl->FindWritableWorker(); };
-void WorkerManager::AttachWorker(std::shared_ptr<Worker> worker) {
-    return pimpl->AttachWorker(worker);
-};
+Worker* WorkerManager::FindWritableWorker() { return pimpl->FindWritableWorker(); };
+void WorkerManager::AttachWorker(Worker* worker) { return pimpl->AttachWorker(worker); };
 
 } // namespace donde_toolkits::feature_search::search_manager

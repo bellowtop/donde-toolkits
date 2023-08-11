@@ -12,6 +12,9 @@ namespace donde_toolkits ::feature_search ::search_manager {
 
 class Worker {
   public:
+    // NOTE: we leave a blank implementation here, for MockWorker
+    virtual ~Worker(){};
+
     virtual std::string GetWorkerID() = 0;
 
     virtual uint64 GetFreeSpace() = 0;

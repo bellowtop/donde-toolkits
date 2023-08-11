@@ -55,7 +55,7 @@ std::string SimpleDriver::CreateDB(const DBItem& info) {
     _cached_db_items = {};
 
     std::string db_id = generate_uuid();
-    insert_into_user_dbs(db_id, info.name, info.capacity, info.description);
+    insert_into_user_dbs(db_id, info.name, info.size, info.description);
     init_features_table_for_db(db_id);
 
     return db_id;
@@ -89,6 +89,14 @@ RetCode SimpleDriver::DeleteDB(std::string db_id) {
     return RetCode::RET_OK;
 };
 
+// Worker management
+std::vector<WorkerItem> SimpleDriver::ListWorkers() { return {}; };
+
+void SimpleDriver::CreateWorker(const std::string& worker_id, const WorkerItem& worker){};
+
+void SimpleDriver::UpdateWorker(const std::string& worker_id, const WorkerItem& worker){};
+
+// Shard management
 std::vector<DBShard> SimpleDriver::ListShards(const std::string& db_id) { return {}; };
 
 std::string SimpleDriver::CreateShard(const std::string& db_id, const DBShard& shard) {
@@ -229,7 +237,7 @@ RetCode SimpleDriver::init_user_db_table() {
                       "id integer primary key autoincrement, "
                       "db_id char(64), "
                       "name char(64), "
-                      "capacity integer, "
+                      "size integer, "
                       "description text, "
                       "is_deleted boolean, "
                       "created_at datetime, "
@@ -264,9 +272,9 @@ RetCode SimpleDriver::init_user_db_table() {
 };
 
 RetCode SimpleDriver::insert_into_user_dbs(const std::string& db_id, const std::string& name,
-                                           uint64 capacity, const std::string& desc) {
+                                           uint64 size, const std::string& desc) {
     try {
-        std::string sql("insert into dbs(db_id, name, capacity, description, is_deleted, "
+        std::string sql("insert into dbs(db_id, name, size, description, is_deleted, "
                         "created_at) values (?, ?, ?, ?, ?, ?);");
 
         time_t now = time(nullptr);
@@ -275,7 +283,7 @@ RetCode SimpleDriver::insert_into_user_dbs(const std::string& db_id, const std::
 
         query.bind(1, db_id);
         query.bind(2, name);
-        query.bind(3, int64(capacity));
+        query.bind(3, int64(size));
         query.bind(4, desc);
 
         query.bind(5, false);
@@ -294,7 +302,7 @@ std::vector<DBItem> SimpleDriver::list_user_dbs(bool include_deleted) {
     std::vector<DBItem> dbs;
 
     try {
-        std::string sql("select db_id, name, capacity, description from dbs ");
+        std::string sql("select db_id, name, size, description from dbs ");
         if (!include_deleted) {
             sql += "where is_deleted = false";
         }
@@ -306,13 +314,13 @@ std::vector<DBItem> SimpleDriver::list_user_dbs(bool include_deleted) {
             std::string name = query.getColumn(1).getText();
             // type convert, int64 => uint64, because we are sure that capacity will not
             // exceed int64, so that's fine
-            uint64 capacity = query.getColumn(2).getInt64();
+            uint64 size = query.getColumn(2).getInt64();
             std::string description = query.getColumn(3).getText();
 
             dbs.push_back(DBItem{
                 .db_id = db_id,
                 .name = name,
-                .capacity = capacity,
+                .size = size,
                 .description = description,
             });
         }
@@ -326,14 +334,12 @@ std::vector<DBItem> SimpleDriver::list_user_dbs(bool include_deleted) {
 
 RetCode SimpleDriver::update_user_db(const DBItem& new_item) {
     try {
-        std::string sql(
-            "update dbs set name=?, capacity=?, used=?, description=? where db_id = ?;");
+        std::string sql("update dbs set name=?, size=?, description=? where db_id = ?;");
 
         SQLite::Statement query(*db, sql);
         query.bind(1, new_item.name);
-        query.bind(2, int64(new_item.capacity));
-        query.bind(3, int64(new_item.used));
-        query.bind(4, new_item.description);
+        query.bind(2, int64(new_item.size));
+        query.bind(3, new_item.description);
 
         query.exec();
 

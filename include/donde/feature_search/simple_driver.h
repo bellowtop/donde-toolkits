@@ -53,6 +53,13 @@ class SimpleDriver : public Driver {
 
     RetCode DeleteDB(std::string db_id) override;
 
+    // Worker management
+    std::vector<WorkerItem> ListWorkers() override;
+
+    void CreateWorker(const std::string& worker_id, const WorkerItem& worker) override;
+
+    void UpdateWorker(const std::string& worker_id, const WorkerItem& worker) override;
+
     // Shard management
     std::vector<DBShard> ListShards(const std::string& db_id) override;
 

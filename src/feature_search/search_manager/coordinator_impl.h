@@ -17,7 +17,7 @@ using namespace std;
 
 namespace donde_toolkits ::feature_search ::search_manager {
 
-using WorkerPtr = shared_ptr<Worker>;
+using WorkerPtr = std::shared_ptr<Worker>;
 
 // Coordinator & Reducer
 class CoordinatorImpl {
@@ -47,18 +47,18 @@ class CoordinatorImpl {
     void initialize_workers();
     void deinitialize_workers();
     void assign_worker_for_shards();
-    Worker* find_worker_for_shard(Shard* shard);
 
-    std::unordered_map<std::string, std::string> load_workers_from_db();
-    void load_shards_from_db();
+    void load_user_dbs();
 
   private:
     const json& config;
 
+    std::vector<DBItem> _db_items;
+
     std::vector<std::string> _worker_addrs;
     std::vector<std::string> _invalid_worker_addrs;
 
-    std::vector<WorkerPtr> _workers;
+    std::unordered_map<std::string, std::string> _managed_workers;
 
     shared_ptr<Driver> _driver;
 
