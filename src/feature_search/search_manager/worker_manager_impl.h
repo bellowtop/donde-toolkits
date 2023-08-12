@@ -19,14 +19,17 @@ class WorkerManagerImpl : public IWorkerManager {
     WorkerManagerImpl(Driver& driver);
     ~WorkerManagerImpl();
 
+    void Stop() override;
+
     Worker* FindWritableWorker() override;
 
     // AttachWorker pass in a worker poiter, then we own this worker
-    void AttachWorker(Worker* worker) override;
+    void AttachNewWorker(Worker* worker) override;
+    bool AllWorkersOnline() override;
 
     // Connect to these workers, attach them in our online_workers if they are online
     // or we can only wait for workers to come up...
-    void LoadKnownWorkers(std::unordered_map<std::string, std::string> known_workers) override;
+    void LoadKnownWorkers() override;
 
   private:
     void ping_workers();

@@ -36,18 +36,15 @@ CoordinatorImpl::CoordinatorImpl(const json& coor_config) : config(coor_config) 
     _driver = std::make_shared<SimpleDriver>((std::string)coor_config["cassandra"]["addr"]);
     _shard_factory = std::make_shared<ShardFactoryImpl>();
     _shard_manager = std::make_shared<ShardManagerImpl>(*_driver, *_shard_factory);
-    _worker_manager = std::make_shared<WorkerManagerImpl>(*_driver);
 
-    _worker_addrs = (std::vector<std::string>)coor_config["workers"];
+    _worker_manager = std::make_shared<WorkerManagerImpl>(*_driver);
+    _worker_ready_thread
+        = std::thread(&CoordinatorImpl::check_worker_manager_ready, std::ref(*this));
 };
 
 CoordinatorImpl::~CoordinatorImpl(){};
 
-void CoordinatorImpl::Start() {
-    // _worker_manager->LoadKnownWorkers();
-
-    assign_worker_for_shards();
-};
+void CoordinatorImpl::Start() { assign_worker_for_shards(); };
 
 void CoordinatorImpl::Stop() { deinitialize_workers(); };
 

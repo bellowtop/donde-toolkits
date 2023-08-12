@@ -10,7 +10,9 @@
 // #include "spdlog/spdlog.h"
 
 #include <algorithm>
+#include <cstdio>
 #include <iostream>
+#include <thread>
 #include <unordered_map>
 
 using namespace std;
@@ -67,6 +69,19 @@ class CoordinatorImpl {
     std::shared_ptr<ShardManager> _shard_manager;
 
     std::shared_ptr<IWorkerManager> _worker_manager;
+    std::thread _worker_ready_thread;
+    bool _worker_manager_ready = false;
+    void check_worker_manager_ready() {
+        while (true) {
+            bool ok = _worker_manager->AllWorkersOnline();
+            if (ok) {
+                _worker_manager_ready = true;
+                return;
+            }
+            std::cout << "worker manager still no ready..." << std::endl;
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+        }
+    }
 
     // spdlog::Logger& logger;
 };

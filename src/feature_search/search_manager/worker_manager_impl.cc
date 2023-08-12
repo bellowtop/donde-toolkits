@@ -7,6 +7,7 @@
 #include "donde/feature_search/search_manager/worker_manager.h"
 
 #include <_types/_uint64_t.h>
+#include <arm/types.h>
 #include <cassert>
 #include <chrono>
 #include <iostream>
@@ -27,11 +28,13 @@ WorkerManagerImpl::WorkerManagerImpl(Driver& driver) : _driver(driver) {
     _ping_thread = std::thread(&WorkerManagerImpl::ping_workers, std::ref(*this));
 };
 
-WorkerManagerImpl::~WorkerManagerImpl() {
+WorkerManagerImpl::~WorkerManagerImpl() {}
+
+void WorkerManagerImpl::Stop() {
+    stopped = true;
     for (const auto& it : _online_workers) {
         it.second->~Worker();
     }
-    stopped = true;
     if (_ping_thread.joinable()) {
         _ping_thread.join();
     }
@@ -53,25 +56,29 @@ Worker* WorkerManagerImpl::FindWritableWorker() {
     return _online_workers[id];
 };
 
-void WorkerManagerImpl::AttachWorker(Worker* worker) {
+void WorkerManagerImpl::AttachNewWorker(Worker* worker) {
     assert(worker != nullptr);
-
     std::string id = worker->GetWorkerID();
-    auto found = _online_workers.find(id);
-    if (found != _online_workers.end()) {
-        _online_workers.insert({id, worker});
+
+    auto found_offline = _offline_workers.find(id);
+    if (found_offline != _offline_workers.end()) {
+        std::cout << "an previously offline worker " << id << " now comes attched!" << std::endl;
         _offline_workers.erase(id);
+    }
+
+    auto found_online = _online_workers.find(id);
+    if (found_online != _online_workers.end()) {
+        _online_workers.insert({id, worker});
+        std::cout << "worker " << id << " comes online: " << std::endl;
+
     } else {
         std::cerr << "already attached worker: " << id << std::endl;
     }
 };
+bool WorkerManagerImpl::AllWorkersOnline() { return _offline_workers.empty(); }
 
-void WorkerManagerImpl::LoadKnownWorkers(
-    std::unordered_map<std::string, std::string> known_workers) {
-    for (auto& it : known_workers) {
-        // _offline_workers.insert({it.first, it.second});
-    }
-};
+// Lazy implementation: wait workers come up by themselves
+void WorkerManagerImpl::LoadKnownWorkers(){};
 
 void WorkerManagerImpl::ping_workers() {
     while (true) {
@@ -81,8 +88,8 @@ void WorkerManagerImpl::ping_workers() {
         if (!_offline_workers.empty()) {
             auto item = _offline_workers.begin();
             const std::string& id = item->first;
-            // const std::string& address = item->second;
-            // std::cout << "ping worker " << id << " with address: " << address << std::endl;
+            const WorkerItem& worker = item->second;
+            std::cout << "ping worker " << id << " with address: " << worker.address << std::endl;
             std::this_thread::sleep_for(std::chrono::seconds(1));
         }
     }

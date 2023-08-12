@@ -1,7 +1,5 @@
 #pragma once
 
-#include "donde/definitions.h"
-#include "donde/feature_search/definitions.h"
 #include "donde/feature_search/driver.h"
 #include "worker.h"
 
@@ -15,11 +13,15 @@ namespace donde_toolkits ::feature_search ::search_manager {
 
 class IWorkerManager {
   public:
+    virtual void Stop() = 0;
+
     virtual Worker* FindWritableWorker() = 0;
 
-    virtual void AttachWorker(Worker* worker) = 0;
+    virtual void AttachNewWorker(Worker* worker) = 0;
 
-    virtual void LoadKnownWorkers(std::unordered_map<std::string, std::string> known_workers);
+    virtual bool AllWorkersOnline() = 0;
+
+    virtual void LoadKnownWorkers();
 };
 
 class WorkerManagerImpl;
@@ -28,8 +30,12 @@ class WorkerManager : public IWorkerManager {
     WorkerManager(Driver& driver);
     ~WorkerManager();
 
+    void Stop() override;
+
     Worker* FindWritableWorker() override;
-    void AttachWorker(Worker* worker) override;
+    void AttachNewWorker(Worker* worker) override;
+    void LoadKnownWorkers() override;
+    bool AllWorkersOnline() override;
 
     std::unique_ptr<WorkerManagerImpl> pimpl;
 };
