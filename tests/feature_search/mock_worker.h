@@ -1,4 +1,5 @@
-#include "donde/feature_search/search_manager/worker.h"
+#include "donde/feature_search/shard.h"
+#include "donde/feature_search/worker.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -18,7 +19,7 @@ class MockWorker : public Worker {
     MOCK_METHOD(std::vector<DBShard>, ListShards, ());
 
     // ServeShard let the worker serve this shard, for its features' CRUD
-    MOCK_METHOD(RetCode, ServeShard, (const DBShard& shard_info));
+    MOCK_METHOD(RetCode, ServeShard, (Shard & shard));
 
     // CloseShard close db_id/shard_id.
     MOCK_METHOD(RetCode, CloseShard, (const std::string& db_id, const std::string& shard_id));

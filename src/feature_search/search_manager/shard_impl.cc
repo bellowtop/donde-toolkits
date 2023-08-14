@@ -1,7 +1,7 @@
-#include "shard_manager.h"
 #include "shard_impl.h"
 
 #include "donde/definitions.h"
+#include "shard_manager.h"
 
 #include <exception>
 #include <memory>
@@ -205,8 +205,6 @@ void ShardImpl::loop() {
 shardOp ShardImpl::do_assign_worker(const shardOp& input) {
     auto req = std::static_pointer_cast<assignWorkerReq>(input.valuePtr);
     auto rsp = std::make_shared<assignWorkerRsp>();
-
-    _worker->ServeShard(_shard_info);
 
     shardOp output{
         .valueType = addFeaturesRspType,

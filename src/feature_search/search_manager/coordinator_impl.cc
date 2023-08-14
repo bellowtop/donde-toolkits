@@ -3,9 +3,10 @@
 #include "donde/definitions.h"
 #include "donde/feature_search/feature_topk_rank.h"
 #include "donde/feature_search/search_manager/coordinator.h"
+#include "donde/feature_search/shard.h"
 #include "donde/feature_search/simple_driver.h"
+#include "donde/feature_search/worker.h"
 #include "fmt/format.h"
-#include "shard.h"
 #include "shard_impl.h"
 #include "shard_manager_impl.h"
 #include "worker_manager_impl.h"
@@ -62,9 +63,7 @@ std::vector<std::string> CoordinatorImpl::AddFeatures(const std::string& db_id,
             spdlog::error("cannot find a worker for shard: {}", shard->GetShardID());
             return {};
         }
-        _shard_manager->AssignWorkerToShard(shard, worker);
-        // shard->AssignWorker(worker);
-        // worker->ServeShard(shard->GetShardInfo());
+        worker->ServeShard(*shard);
     }
 
     return shard->AddFeatures(fts);
@@ -111,9 +110,7 @@ void CoordinatorImpl::assign_worker_for_shards() {
                 spdlog::error("cannot find a worker for shard: {}", shard->GetShardID());
                 continue;
             }
-            _shard_manager->AssignWorkerToShard(shard, worker);
-            // shard->AssignWorker(worker);
-            // worker->ServeShard(shard->GetShardInfo());
+            worker->ServeShard(*shard);
         }
     }
 };

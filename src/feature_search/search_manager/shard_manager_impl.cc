@@ -51,11 +51,6 @@ std::tuple<Shard*, bool> ShardManagerImpl::FindOrCreateWritableShard(std::string
     return {shard, true};
 };
 
-RetCode ShardManagerImpl::AssignWorkerToShard(Shard* shard, Worker* worker) {
-    shard->AssignWorker(worker);
-    return RetCode::RET_OK;
-};
-
 std::vector<DBItem> ShardManagerImpl::ListUserDBs() {
     std::vector<DBItem> dbs;
 

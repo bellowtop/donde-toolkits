@@ -2,6 +2,7 @@
 
 #include "donde/definitions.h"
 #include "donde/feature_search/definitions.h"
+#include "donde/feature_search/shard.h"
 
 #include <iostream>
 #include <unordered_map>
@@ -23,7 +24,7 @@ class Worker {
     virtual std::vector<DBShard> ListShards() = 0;
 
     // ServeShard let the worker serve this shard, for its features' CRUD
-    virtual RetCode ServeShard(const DBShard& shard_info) = 0;
+    virtual RetCode ServeShard(Shard& shard) = 0;
 
     // CloseShard close db_id/shard_id.
     virtual RetCode CloseShard(const std::string& db_id, const std::string& shard_id) = 0;

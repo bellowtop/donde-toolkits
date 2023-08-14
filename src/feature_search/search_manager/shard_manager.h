@@ -2,8 +2,8 @@
 
 #include "donde/definitions.h"
 #include "donde/feature_search/definitions.h"
-#include "donde/feature_search/search_manager/worker.h"
-#include "shard.h"
+#include "donde/feature_search/shard.h"
+#include "donde/feature_search/worker.h"
 
 // #include "spdlog/spdlog.h"
 
@@ -19,8 +19,6 @@ class ShardManager {
 
     virtual std::tuple<Shard*, bool> FindOrCreateWritableShard(std::string db_id, uint64 fts_count)
         = 0;
-
-    virtual RetCode AssignWorkerToShard(Shard* shard, Worker* worker) = 0;
 
     virtual std::vector<DBItem> ListUserDBs() = 0;
 

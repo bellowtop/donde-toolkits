@@ -1,10 +1,11 @@
 #pragma once
 
 #include "donde/feature_search/definitions.h"
-#include "shard.h"
+#include "donde/feature_search/shard.h"
+#include "donde/feature_search/worker.h"
+#include "donde/message.h"
 #include "shard_factory.h"
 #include "shard_manager.h"
-#include "donde/message.h"
 
 #include <Poco/Thread.h>
 #include <memory>

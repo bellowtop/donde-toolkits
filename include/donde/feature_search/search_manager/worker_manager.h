@@ -1,7 +1,7 @@
 #pragma once
 
 #include "donde/feature_search/driver.h"
-#include "worker.h"
+#include "donde/feature_search/worker.h"
 
 #include <iostream>
 #include <memory>

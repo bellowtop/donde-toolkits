@@ -2,7 +2,7 @@
 
 #include "donde/definitions.h"
 #include "donde/feature_search/driver.h"
-#include "shard.h"
+#include "donde/feature_search/shard.h"
 #include "shard_factory.h"
 #include "shard_manager.h"
 
@@ -22,8 +22,6 @@ class ShardManagerImpl : public ShardManager {
 
     std::tuple<Shard*, bool> FindOrCreateWritableShard(std::string db_id,
                                                        uint64 fts_count) override;
-
-    RetCode AssignWorkerToShard(Shard* shard, Worker* worker) override;
 
     std::vector<DBItem> ListUserDBs() override;
 

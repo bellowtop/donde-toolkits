@@ -2,7 +2,6 @@
 
 #include "donde/definitions.h"
 #include "donde/feature_search/definitions.h"
-#include "donde/feature_search/search_manager/worker.h"
 
 // #include "spdlog/spdlog.h"
 
@@ -11,6 +10,7 @@
 
 namespace donde_toolkits ::feature_search ::search_manager {
 
+class Worker;
 class ShardManager;
 class Shard {
 

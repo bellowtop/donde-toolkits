@@ -2,9 +2,9 @@
 
 #include "donde/feature_search/driver.h"
 #include "donde/feature_search/search_manager/coordinator.h"
-#include "donde/feature_search/search_manager/worker.h"
 #include "donde/feature_search/search_manager/worker_manager.h"
-#include "shard.h"
+#include "donde/feature_search/shard.h"
+#include "donde/feature_search/worker.h"
 #include "shard_factory.h"
 
 // #include "spdlog/spdlog.h"

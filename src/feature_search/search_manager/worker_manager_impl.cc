@@ -3,8 +3,8 @@
 #include "donde/definitions.h"
 #include "donde/feature_search/definitions.h"
 #include "donde/feature_search/driver.h"
-#include "donde/feature_search/search_manager/worker.h"
 #include "donde/feature_search/search_manager/worker_manager.h"
+#include "donde/feature_search/worker.h"
 
 #include <_types/_uint64_t.h>
 #include <arm/types.h>
@@ -77,7 +77,7 @@ void WorkerManagerImpl::AttachNewWorker(Worker* worker) {
 };
 bool WorkerManagerImpl::AllWorkersOnline() { return _offline_workers.empty(); }
 
-// Lazy implementation: wait workers come up by themselves
+// Lazy boy's implementation: wait workers come up by themselves
 void WorkerManagerImpl::LoadKnownWorkers(){};
 
 void WorkerManagerImpl::ping_workers() {

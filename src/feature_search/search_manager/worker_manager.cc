@@ -1,6 +1,6 @@
 #include "donde/feature_search/search_manager/worker_manager.h"
 
-#include "donde/feature_search/search_manager/worker.h"
+#include "donde/feature_search/worker.h"
 #include "worker_manager_impl.h"
 
 #include <iostream>
