@@ -127,28 +127,31 @@ TEST_F(TestShardImpl, CanCloseShard) {
 
     // let the loop run...
     std::this_thread::sleep_for(std::chrono::seconds(1));
-}
-TEST_F(TestShardImpl, CanAssignWorker) {
-    DBShard shard_info;
-
-    MockShardManager mMgr;
-    ShardImpl impl(&mMgr, shard_info);
-
-    // 1. no worker yet, so api return err.
-    EXPECT_EQ(impl.HasWorker(), false);
-    EXPECT_EQ(impl.Close(), RetCode::RET_ERR);
-
-    MockWorker mWorker;
-    EXPECT_CALL(mWorker, GetWorkerID);
-    EXPECT_CALL(mWorker, ServeShard);
-
-    impl.AssignWorker(&mWorker);
-
-    // let the loop run...
-    std::this_thread::sleep_for(std::chrono::seconds(1));
-
-    EXPECT_EQ(impl.HasWorker(), true);
 };
+
+// // AssignWorker is not called procative, but is reactive to worker.ServeShard.
+// // i.e. worker has the initiative.
+// TEST_F(TestShardImpl, CanAssignWorker) {
+//     DBShard shard_info;
+
+//     MockShardManager mMgr;
+//     ShardImpl impl(&mMgr, shard_info);
+
+//     // 1. no worker yet, so api return err.
+//     EXPECT_EQ(impl.HasWorker(), false);
+//     EXPECT_EQ(impl.Close(), RetCode::RET_ERR);
+
+//     MockWorker mWorker;
+//     EXPECT_CALL(mWorker, GetWorkerID);
+//     EXPECT_CALL(mWorker, ServeShard);
+
+//     impl.AssignWorker(&mWorker);
+
+//     // let the loop run...
+//     std::this_thread::sleep_for(std::chrono::seconds(1));
+
+//     EXPECT_EQ(impl.HasWorker(), true);
+// };
 
 TEST_F(TestShardImpl, CanAddFeatures) {
     DBShard shard_info;
