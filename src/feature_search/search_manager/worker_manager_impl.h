@@ -27,6 +27,10 @@ class WorkerManagerImpl : public IWorkerManager {
     void AttachNewWorker(Worker* worker) override;
     bool AllWorkersOnline() override;
 
+    Worker* GetWorkerByID(const std::string& worker_id) override;
+
+    std::vector<Worker*> ListWorkers(bool include_offline = false) override;
+
     // Connect to these workers, attach them in our online_workers if they are online
     // or we can only wait for workers to come up...
     void LoadKnownWorkers() override;

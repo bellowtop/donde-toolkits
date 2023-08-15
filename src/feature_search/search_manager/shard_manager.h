@@ -20,7 +20,7 @@ class ShardManager {
     virtual std::tuple<Shard*, bool> FindOrCreateWritableShard(std::string db_id, uint64 fts_count)
         = 0;
 
-    virtual std::vector<DBItem> ListUserDBs() = 0;
+    virtual void LoadShards(std::string db_id) = 0;
 
     virtual std::vector<Shard*> ListShards(std::string db_id) = 0;
 

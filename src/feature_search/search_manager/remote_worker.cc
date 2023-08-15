@@ -10,6 +10,10 @@ RemoteWorker::~RemoteWorker(){};
 
 std::string RemoteWorker::GetWorkerID() { return pimpl->GetWorkerID(); };
 
+std::string RemoteWorker::GetAddress() { return pimpl->GetAddress(); };
+
+bool RemoteWorker::Ready() { return pimpl->Ready(); };
+
 uint64 RemoteWorker::GetFreeSpace() { return pimpl->GetFreeSpace(); };
 
 // ListShards report all shards this worker is serving.

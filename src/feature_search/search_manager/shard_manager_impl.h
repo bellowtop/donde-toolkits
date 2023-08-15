@@ -23,7 +23,8 @@ class ShardManagerImpl : public ShardManager {
     std::tuple<Shard*, bool> FindOrCreateWritableShard(std::string db_id,
                                                        uint64 fts_count) override;
 
-    std::vector<DBItem> ListUserDBs() override;
+    // LoadShards from driver
+    void LoadShards(std::string db_id) override;
 
     std::vector<Shard*> ListShards(std::string db_id) override;
 

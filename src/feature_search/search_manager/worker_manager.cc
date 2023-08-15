@@ -6,6 +6,7 @@
 #include <iostream>
 #include <memory>
 #include <unordered_map>
+#include <vector>
 
 using namespace std;
 
@@ -17,6 +18,9 @@ Worker* WorkerManager::FindWritableWorker() { return pimpl->FindWritableWorker()
 void WorkerManager::Stop() { return pimpl->Stop(); };
 void WorkerManager::AttachNewWorker(Worker* worker) { return pimpl->AttachNewWorker(worker); };
 void WorkerManager::LoadKnownWorkers() { pimpl->LoadKnownWorkers(); };
+std::vector<Worker*> WorkerManager::ListWorkers(bool include_offline) {
+    return pimpl->ListWorkers(include_offline);
+};
 bool WorkerManager::AllWorkersOnline() { return pimpl->AllWorkersOnline(); };
 
 } // namespace donde_toolkits::feature_search::search_manager

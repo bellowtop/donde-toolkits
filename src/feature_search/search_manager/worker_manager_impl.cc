@@ -77,6 +77,11 @@ void WorkerManagerImpl::AttachNewWorker(Worker* worker) {
 };
 bool WorkerManagerImpl::AllWorkersOnline() { return _offline_workers.empty(); }
 
+// TODO
+Worker* WorkerManagerImpl::GetWorkerByID(const std::string& worker_id) { return {}; };
+
+std::vector<Worker*> WorkerManagerImpl::ListWorkers(bool include_offline) { return {}; };
+
 // Lazy boy's implementation: wait workers come up by themselves
 void WorkerManagerImpl::LoadKnownWorkers(){};
 

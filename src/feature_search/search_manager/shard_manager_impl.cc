@@ -51,14 +51,12 @@ std::tuple<Shard*, bool> ShardManagerImpl::FindOrCreateWritableShard(std::string
     return {shard, true};
 };
 
-std::vector<DBItem> ShardManagerImpl::ListUserDBs() {
-    std::vector<DBItem> dbs;
-
-    for (auto it = _user_dbs.begin(); it != _user_dbs.end(); it++) {
-        dbs.push_back(it->second);
+void ShardManagerImpl::LoadShards(std::string db_id) {
+    std::vector<Shard*> shards;
+    std::vector<DBShard> shard_infos = _driver.ListShards(db_id);
+    for (auto& shard_info : shard_infos) {
+        _db_shards[db_id].push_back(_shard_factory.CreateShard(this, shard_info));
     }
-
-    return dbs;
 };
 
 std::vector<Shard*> ShardManagerImpl::ListShards(std::string db_id) {

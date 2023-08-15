@@ -18,6 +18,10 @@ class Worker {
 
     virtual std::string GetWorkerID() = 0;
 
+    virtual std::string GetAddress() = 0;
+
+    virtual bool Ready() = 0;
+
     virtual uint64 GetFreeSpace() = 0;
 
     // ListShards report all shards this worker is serving.

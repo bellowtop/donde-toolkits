@@ -13,6 +13,10 @@ class MockWorker : public Worker {
   public:
     MOCK_METHOD(std::string, GetWorkerID, ());
 
+    MOCK_METHOD(std::string, GetAddress, ());
+
+    MOCK_METHOD(bool, Ready, ());
+
     MOCK_METHOD(uint64, GetFreeSpace, ());
 
     // ListShards report all shards this worker is serving.

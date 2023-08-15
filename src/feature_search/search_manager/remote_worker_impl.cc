@@ -7,6 +7,10 @@ RemoteWorkerImpl::~RemoteWorkerImpl(){};
 
 std::string RemoteWorkerImpl::GetWorkerID() { return {}; };
 
+std::string GetAddress() { return {}; };
+
+bool RemoteWorkerImpl::Ready() { return false; };
+
 uint64 RemoteWorkerImpl::GetFreeSpace() { return {}; };
 
 // ListShards report all shards this worker is serving.

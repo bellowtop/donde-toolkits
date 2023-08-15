@@ -18,6 +18,8 @@ class MockShardManager : public ShardManager {
 
     MOCK_METHOD(std::vector<DBItem>, ListUserDBs, ());
 
+    MOCK_METHOD(void, LoadShards, (std::string db_id));
+
     MOCK_METHOD(std::vector<Shard*>, ListShards, (std::string db_id));
 
     MOCK_METHOD(RetCode, CloseShard, (std::string db_id, std::string shard_id));

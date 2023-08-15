@@ -66,6 +66,10 @@ class ShardImpl : public Shard {
     ~ShardImpl();
 
     void Start() override;
+
+    // Stop the shard from serving, cut off any new shard operations.
+    // if there are still some operations in msg queue,
+    // those items will be drained. i.e. wait for them to finish.
     void Stop() override;
 
     // Assign a worker for this shard.
@@ -77,6 +81,9 @@ class ShardImpl : public Shard {
     // SearchFeature in this shard, delegate to worker client to do the actual search.
     std::vector<FeatureSearchItem> SearchFeature(const Feature& query, int topk) override;
 
+    // Open the shard for writing operation
+    RetCode Open() override;
+    // Close the shard for writing, but reading is still permited
     RetCode Close() override;
 
     // check the shard has been assigned worker or not.
@@ -112,6 +119,8 @@ class ShardImpl : public Shard {
     ShardManager* _shard_mgr = nullptr;
 
     std::atomic<bool> _is_stopped;
+    std::atomic<bool> _is_closed;
+
     std::shared_ptr<MsgChannel> _channel;
     std::shared_ptr<std::thread> _loop_thread;
     std::mutex _thread_mu;

@@ -11,6 +11,9 @@ class RemoteWorkerImpl : public Worker {
     ~RemoteWorkerImpl();
 
     std::string GetWorkerID() override;
+    std::string GetAddress() override;
+
+    bool Ready() override;
 
     uint64 GetFreeSpace() override;
 

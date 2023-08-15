@@ -16,6 +16,10 @@ class RemoteWorker : public Worker {
 
     std::string GetWorkerID() override;
 
+    std::string GetAddress() override;
+
+    bool Ready() override;
+
     uint64 GetFreeSpace() override;
 
     // ListShards report all shards this worker is serving.

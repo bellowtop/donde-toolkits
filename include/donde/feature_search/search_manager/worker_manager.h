@@ -17,9 +17,13 @@ class IWorkerManager {
 
     virtual Worker* FindWritableWorker() = 0;
 
+    virtual Worker* GetWorkerByID(const std::string& worker_id) = 0;
+
     virtual void AttachNewWorker(Worker* worker) = 0;
 
     virtual bool AllWorkersOnline() = 0;
+
+    virtual std::vector<Worker*> ListWorkers(bool include_offline = false) = 0;
 
     virtual void LoadKnownWorkers();
 };
@@ -35,6 +39,7 @@ class WorkerManager : public IWorkerManager {
     Worker* FindWritableWorker() override;
     void AttachNewWorker(Worker* worker) override;
     void LoadKnownWorkers() override;
+    std::vector<Worker*> ListWorkers(bool include_offline = false) override;
     bool AllWorkersOnline() override;
 
     std::unique_ptr<WorkerManagerImpl> pimpl;

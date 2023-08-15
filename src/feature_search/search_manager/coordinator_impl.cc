@@ -1,6 +1,7 @@
 #include "coordinator_impl.h"
 
 #include "donde/definitions.h"
+#include "donde/feature_search/definitions.h"
 #include "donde/feature_search/feature_topk_rank.h"
 #include "donde/feature_search/search_manager/coordinator.h"
 #include "donde/feature_search/shard.h"
@@ -39,13 +40,35 @@ CoordinatorImpl::CoordinatorImpl(const json& coor_config) : config(coor_config) 
     _shard_manager = std::make_shared<ShardManagerImpl>(*_driver, *_shard_factory);
 
     _worker_manager = std::make_shared<WorkerManagerImpl>(*_driver);
-    _worker_ready_thread
-        = std::thread(&CoordinatorImpl::check_worker_manager_ready, std::ref(*this));
+
+    // check worker_maanger is ready in the background.
+    std::thread([&]() mutable {
+        while (true) {
+            auto workers = _worker_manager->ListWorkers(true);
+            bool all_ready = true;
+            for (const auto& w : workers) {
+                if (!w->Ready()) {
+                    all_ready = false;
+                    break;
+                }
+            }
+            if (all_ready) {
+                std::cout << "worker manager is ready!" << std::endl;
+                _worker_manager_ready.store(true);
+                return;
+            }
+            std::cout << "worker manager still no ready..." << std::endl;
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+        }
+    }).detach();
 };
 
 CoordinatorImpl::~CoordinatorImpl(){};
 
-void CoordinatorImpl::Start() { assign_worker_for_shards(); };
+void CoordinatorImpl::Start() {
+    load_user_dbs();
+    load_known_shards();
+};
 
 void CoordinatorImpl::Stop() { deinitialize_workers(); };
 
@@ -99,22 +122,39 @@ std::vector<FeatureSearchItem> CoordinatorImpl::SearchFeature(const std::string&
     return ret;
 };
 
-void CoordinatorImpl::assign_worker_for_shards() {
-    std::vector<DBItem> dbs = _shard_manager->ListUserDBs();
+void CoordinatorImpl::load_user_dbs() { _db_items = _driver->ListDBs(); }
 
-    for (auto& db : dbs) {
+void CoordinatorImpl::load_known_shards() {
+    std::vector<Shard*> known_shards;
+    for (auto& db : _db_items) {
         auto shards = _shard_manager->ListShards(db.db_id);
-        for (auto& shard : shards) {
-            Worker* worker = _worker_manager->FindWritableWorker();
+        known_shards.insert(known_shards.end(), shards.begin(), shards.end());
+    }
+
+    // start a new thread to check.
+    // note we capture the vector by reference.
+    std::thread async_check_known_shards([&]() mutable {
+        for (auto it = known_shards.begin(); it != known_shards.end(); it++) {
+            auto shard = *it;
+            Worker* worker = _worker_manager->GetWorkerByID(shard->GetShardInfo().worker_id);
             if (worker == nullptr) {
                 spdlog::error("cannot find a worker for shard: {}", shard->GetShardID());
                 continue;
             }
+            if (!worker->Ready()) {
+                spdlog::error("worker: {} addr: {} is not ready.", worker->GetWorkerID(),
+                              worker->GetAddress());
+                continue;
+            }
+            // bidirectional bound.
             worker->ServeShard(*shard);
+            shard->AssignWorker(worker);
+            known_shards.erase(it);
         }
-    }
+    });
+    // as the operation is not heavy loaded, just detach it, let it running foever
+    // (it will stop by itself.)
+    async_check_known_shards.detach();
 };
-
-void CoordinatorImpl::load_user_dbs() { _db_items = _driver->ListDBs(); }
 
 } // namespace donde_toolkits::feature_search::search_manager

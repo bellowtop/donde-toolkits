@@ -29,6 +29,7 @@ class Shard {
     // SearchFeature in this shard, delegate to worker client to do the actual search.
     virtual std::vector<FeatureSearchItem> SearchFeature(const Feature& query, int topk) = 0;
 
+    virtual RetCode Open() = 0;
     virtual RetCode Close() = 0;
 
     // check the shard has been assigned worker or not.
