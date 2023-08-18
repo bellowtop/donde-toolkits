@@ -5,6 +5,7 @@
 #include "donde/feature_search/driver.h"
 #include "donde/feature_search/search_manager/worker_manager.h"
 #include "donde/feature_search/worker.h"
+#include "remote_worker_impl.h"
 
 #include <_types/_uint64_t.h>
 #include <arm/types.h>
@@ -23,7 +24,7 @@ namespace donde_toolkits ::feature_search ::search_manager {
 WorkerManagerImpl::WorkerManagerImpl(Driver& driver) : _driver(driver) {
     auto workers_in_db = _driver.ListWorkers();
     for (auto& worker : workers_in_db) {
-        _offline_workers.insert({worker.worker_id, worker});
+        _known_workers.insert({worker.worker_id, worker});
     }
     _ping_thread = std::thread(&WorkerManagerImpl::ping_workers, std::ref(*this));
 };
@@ -56,26 +57,17 @@ Worker* WorkerManagerImpl::FindWritableWorker() {
     return _online_workers[id];
 };
 
-void WorkerManagerImpl::AttachNewWorker(Worker* worker) {
-    assert(worker != nullptr);
-    std::string id = worker->GetWorkerID();
+void WorkerManagerImpl::AttachNewWorker(WorkerItem worker_item) {
+    std::string id = worker_item.worker_id;
 
-    auto found_offline = _offline_workers.find(id);
-    if (found_offline != _offline_workers.end()) {
-        std::cout << "an previously offline worker " << id << " now comes attched!" << std::endl;
-        _offline_workers.erase(id);
+    auto found_offline = _known_workers.find(id);
+    if (found_offline != _known_workers.end()) {
+        std::cerr << "this worker " << id << " is already known." << std::endl;
+        return;
     }
 
-    auto found_online = _online_workers.find(id);
-    if (found_online != _online_workers.end()) {
-        _online_workers.insert({id, worker});
-        std::cout << "worker " << id << " comes online: " << std::endl;
-
-    } else {
-        std::cerr << "already attached worker: " << id << std::endl;
-    }
+    _known_workers.insert({id, worker_item});
 };
-bool WorkerManagerImpl::AllWorkersOnline() { return _offline_workers.empty(); }
 
 // TODO
 Worker* WorkerManagerImpl::GetWorkerByID(const std::string& worker_id) { return {}; };
@@ -90,11 +82,17 @@ void WorkerManagerImpl::ping_workers() {
         if (stopped) {
             break;
         }
-        if (!_offline_workers.empty()) {
-            auto item = _offline_workers.begin();
+        if (!_known_workers.empty()) {
+            auto item = _known_workers.begin();
             const std::string& id = item->first;
             const WorkerItem& worker = item->second;
             std::cout << "ping worker " << id << " with address: " << worker.address << std::endl;
+            // if ping success
+            bool success = false;
+            if (success) {
+                _known_workers.erase(id);
+                _online_workers.insert({id, new RemoteWorkerImpl()});
+            }
             std::this_thread::sleep_for(std::chrono::seconds(1));
         }
     }

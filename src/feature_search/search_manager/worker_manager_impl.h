@@ -23,9 +23,8 @@ class WorkerManagerImpl : public IWorkerManager {
 
     Worker* FindWritableWorker() override;
 
-    // AttachWorker pass in a worker poiter, then we own this worker
-    void AttachNewWorker(Worker* worker) override;
-    bool AllWorkersOnline() override;
+    // AttachNewWorker
+    void AttachNewWorker(WorkerItem worker_item) override;
 
     Worker* GetWorkerByID(const std::string& worker_id) override;
 
@@ -44,7 +43,7 @@ class WorkerManagerImpl : public IWorkerManager {
     // id -> Worker*
     std::unordered_map<std::string, Worker*> _online_workers;
     // id -> address
-    std::unordered_map<std::string, WorkerItem> _offline_workers;
+    std::unordered_map<std::string, WorkerItem> _known_workers;
 
     std::thread _ping_thread;
     bool stopped = false;

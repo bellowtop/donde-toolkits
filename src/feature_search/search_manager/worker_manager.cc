@@ -16,11 +16,12 @@ WorkerManager::WorkerManager(Driver& driver) : pimpl(std::make_unique<WorkerMana
 WorkerManager::~WorkerManager(){};
 Worker* WorkerManager::FindWritableWorker() { return pimpl->FindWritableWorker(); };
 void WorkerManager::Stop() { return pimpl->Stop(); };
-void WorkerManager::AttachNewWorker(Worker* worker) { return pimpl->AttachNewWorker(worker); };
+void WorkerManager::AttachNewWorker(WorkerItem worker_item) {
+    return pimpl->AttachNewWorker(worker_item);
+};
 void WorkerManager::LoadKnownWorkers() { pimpl->LoadKnownWorkers(); };
 std::vector<Worker*> WorkerManager::ListWorkers(bool include_offline) {
     return pimpl->ListWorkers(include_offline);
 };
-bool WorkerManager::AllWorkersOnline() { return pimpl->AllWorkersOnline(); };
 
 } // namespace donde_toolkits::feature_search::search_manager

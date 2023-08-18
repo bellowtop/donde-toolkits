@@ -40,7 +40,6 @@ CoordinatorImpl::CoordinatorImpl(const json& coor_config) : config(coor_config) 
     _shard_manager = std::make_shared<ShardManagerImpl>(*_driver, *_shard_factory);
 
     _worker_manager = std::make_shared<WorkerManagerImpl>(*_driver);
-
     // check worker_maanger is ready in the background.
     std::thread([&]() mutable {
         while (true) {
