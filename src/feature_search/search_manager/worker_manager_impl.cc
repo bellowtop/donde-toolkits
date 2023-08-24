@@ -21,7 +21,8 @@ using namespace std;
 
 namespace donde_toolkits ::feature_search ::search_manager {
 
-WorkerManagerImpl::WorkerManagerImpl(Driver& driver) : _driver(driver) {
+WorkerManagerImpl::WorkerManagerImpl(Driver& driver, WorkerFactory& factory)
+    : _driver(driver), _factory(factory) {
     auto workers_in_db = _driver.ListWorkers();
     for (auto& worker : workers_in_db) {
         _known_workers.insert({worker.worker_id, worker});
@@ -34,7 +35,8 @@ WorkerManagerImpl::~WorkerManagerImpl() {}
 void WorkerManagerImpl::Stop() {
     stopped = true;
     for (const auto& it : _online_workers) {
-        it.second->~Worker();
+        // free Worker*, they are created by factory
+        delete it.second;
     }
     if (_ping_thread.joinable()) {
         _ping_thread.join();
@@ -88,10 +90,10 @@ void WorkerManagerImpl::ping_workers() {
             const WorkerItem& worker = item->second;
             std::cout << "ping worker " << id << " with address: " << worker.address << std::endl;
             // if ping success
-            bool success = false;
-            if (success) {
+            if (_factory.ProbeWorker(worker.address)) {
                 _known_workers.erase(id);
-                _online_workers.insert({id, new RemoteWorkerImpl()});
+                _online_workers.insert(
+                    {id, _factory.CreateWorker(worker.worker_id, worker.address)});
             }
             std::this_thread::sleep_for(std::chrono::seconds(1));
         }

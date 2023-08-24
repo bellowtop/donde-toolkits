@@ -16,7 +16,7 @@ namespace donde_toolkits ::feature_search ::search_manager {
 
 class WorkerManagerImpl : public IWorkerManager {
   public:
-    WorkerManagerImpl(Driver& driver);
+    WorkerManagerImpl(Driver& driver, WorkerFactory& factory);
     ~WorkerManagerImpl();
 
     void Stop() override;
@@ -39,6 +39,7 @@ class WorkerManagerImpl : public IWorkerManager {
 
   private:
     Driver& _driver;
+    WorkerFactory& _factory;
 
     // id -> Worker*
     std::unordered_map<std::string, Worker*> _online_workers;

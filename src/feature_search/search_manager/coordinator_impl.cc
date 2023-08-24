@@ -4,6 +4,7 @@
 #include "donde/feature_search/definitions.h"
 #include "donde/feature_search/feature_topk_rank.h"
 #include "donde/feature_search/search_manager/coordinator.h"
+#include "donde/feature_search/search_manager/worker_factory.h"
 #include "donde/feature_search/shard.h"
 #include "donde/feature_search/simple_driver.h"
 #include "donde/feature_search/worker.h"
@@ -39,7 +40,10 @@ CoordinatorImpl::CoordinatorImpl(const json& coor_config) : config(coor_config) 
     _shard_factory = std::make_shared<ShardFactoryImpl>();
     _shard_manager = std::make_shared<ShardManagerImpl>(*_driver, *_shard_factory);
 
-    _worker_manager = std::make_shared<WorkerManagerImpl>(*_driver);
+    // TODO, how to set worker factory & manager?
+    // _worker_factory = std::make_shared<WorkerFactory>();
+    // _worker_manager = std::make_shared<WorkerManagerImpl>(*_driver, *_worker_factory);
+
     // check worker_maanger is ready in the background.
     std::thread([&]() mutable {
         while (true) {

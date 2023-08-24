@@ -1,6 +1,7 @@
 #pragma once
 
 #include "donde/feature_search/driver.h"
+#include "donde/feature_search/search_manager/worker_factory.h"
 #include "donde/feature_search/worker.h"
 
 #include <iostream>
@@ -29,7 +30,7 @@ class IWorkerManager {
 class WorkerManagerImpl;
 class WorkerManager : public IWorkerManager {
   public:
-    WorkerManager(Driver& driver);
+    WorkerManager(Driver& driver, WorkerFactory& factory);
     ~WorkerManager();
 
     void Stop() override;

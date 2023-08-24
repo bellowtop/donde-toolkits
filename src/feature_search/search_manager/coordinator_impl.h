@@ -2,6 +2,7 @@
 
 #include "donde/feature_search/driver.h"
 #include "donde/feature_search/search_manager/coordinator.h"
+#include "donde/feature_search/search_manager/worker_factory.h"
 #include "donde/feature_search/search_manager/worker_manager.h"
 #include "donde/feature_search/shard.h"
 #include "donde/feature_search/worker.h"
@@ -68,6 +69,8 @@ class CoordinatorImpl {
     std::shared_ptr<ShardFactory> _shard_factory;
 
     std::shared_ptr<ShardManager> _shard_manager;
+
+    std::shared_ptr<WorkerFactory> _worker_factory;
 
     std::shared_ptr<IWorkerManager> _worker_manager;
     std::atomic<bool> _worker_manager_ready = false;
