@@ -16,7 +16,7 @@ namespace donde_toolkits ::feature_search ::search_manager {
 
 class WorkerManagerImpl : public IWorkerManager {
   public:
-    WorkerManagerImpl(Driver& driver, WorkerFactory& factory);
+    WorkerManagerImpl(Driver& driver);
     ~WorkerManagerImpl();
 
     void Stop() override;
@@ -34,12 +34,13 @@ class WorkerManagerImpl : public IWorkerManager {
     // or we can only wait for workers to come up...
     void LoadKnownWorkers() override;
 
+    void StartProbeWorkersInBackground(const WorkerFactory& factory) override;
+
   private:
-    void ping_workers();
+    void ping_workers(const WorkerFactory& factory);
 
   private:
     Driver& _driver;
-    WorkerFactory& _factory;
 
     // id -> Worker*
     std::unordered_map<std::string, Worker*> _online_workers;

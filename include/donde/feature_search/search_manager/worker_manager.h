@@ -24,7 +24,9 @@ class IWorkerManager {
 
     virtual std::vector<Worker*> ListWorkers(bool include_offline = false) = 0;
 
-    virtual void LoadKnownWorkers();
+    virtual void LoadKnownWorkers() = 0;
+
+    virtual void StartProbeWorkersInBackground(const WorkerFactory& factory) = 0;
 };
 
 class WorkerManagerImpl;
@@ -38,6 +40,7 @@ class WorkerManager : public IWorkerManager {
     Worker* FindWritableWorker() override;
     void AttachNewWorker(WorkerItem worker_item) override;
     void LoadKnownWorkers() override;
+    void StartProbeWorkersInBackground(const WorkerFactory& factory) override;
     std::vector<Worker*> ListWorkers(bool include_offline = false) override;
 
     std::unique_ptr<WorkerManagerImpl> pimpl;

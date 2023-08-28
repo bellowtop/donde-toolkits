@@ -42,7 +42,7 @@ CoordinatorImpl::CoordinatorImpl(const json& coor_config) : config(coor_config) 
 
     // TODO, how to set worker factory & manager?
     // _worker_factory = std::make_shared<WorkerFactory>();
-    // _worker_manager = std::make_shared<WorkerManagerImpl>(*_driver, *_worker_factory);
+    _worker_manager = std::make_shared<WorkerManagerImpl>(*_driver);
 
     // check worker_maanger is ready in the background.
     std::thread([&]() mutable {
@@ -74,6 +74,10 @@ void CoordinatorImpl::Start() {
 };
 
 void CoordinatorImpl::Stop() { deinitialize_workers(); };
+
+void CoordinatorImpl::ProbeWorkers(const WorkerFactory& factory) {
+    _worker_manager->StartProbeWorkersInBackground(factory);
+};
 
 std::vector<DBItem> CoordinatorImpl::ListUserDBs() { return {}; };
 

@@ -21,16 +21,18 @@ using namespace std;
 
 namespace donde_toolkits ::feature_search ::search_manager {
 
-WorkerManagerImpl::WorkerManagerImpl(Driver& driver, WorkerFactory& factory)
-    : _driver(driver), _factory(factory) {
+WorkerManagerImpl::WorkerManagerImpl(Driver& driver) : _driver(driver) {
     auto workers_in_db = _driver.ListWorkers();
     for (auto& worker : workers_in_db) {
         _known_workers.insert({worker.worker_id, worker});
     }
-    _ping_thread = std::thread(&WorkerManagerImpl::ping_workers, std::ref(*this));
 };
 
 WorkerManagerImpl::~WorkerManagerImpl() {}
+
+void WorkerManagerImpl::StartProbeWorkersInBackground(const WorkerFactory& factory) {
+    _ping_thread = std::thread(&WorkerManagerImpl::ping_workers, std::ref(*this), factory);
+}
 
 void WorkerManagerImpl::Stop() {
     stopped = true;
@@ -79,7 +81,7 @@ std::vector<Worker*> WorkerManagerImpl::ListWorkers(bool include_offline) { retu
 // Lazy boy's implementation: wait workers come up by themselves
 void WorkerManagerImpl::LoadKnownWorkers(){};
 
-void WorkerManagerImpl::ping_workers() {
+void WorkerManagerImpl::ping_workers(const WorkerFactory& factory) {
     while (true) {
         if (stopped) {
             break;
@@ -90,10 +92,10 @@ void WorkerManagerImpl::ping_workers() {
             const WorkerItem& worker = item->second;
             std::cout << "ping worker " << id << " with address: " << worker.address << std::endl;
             // if ping success
-            if (_factory.ProbeWorker(worker.address)) {
+            if (factory.ProbeWorker(worker.address)) {
                 _known_workers.erase(id);
                 _online_workers.insert(
-                    {id, _factory.CreateWorker(worker.worker_id, worker.address)});
+                    {id, factory.CreateWorker(worker.worker_id, worker.address)});
             }
             std::this_thread::sleep_for(std::chrono::seconds(1));
         }

@@ -23,6 +23,10 @@ void Coordinator::Start() { return pimpl->Start(); };
 
 void Coordinator::Stop() { return pimpl->Stop(); };
 
+void Coordinator::ProbeWorkers(const WorkerFactory& factory) {
+    return pimpl->ProbeWorkers(factory);
+};
+
 std::vector<DBItem> Coordinator::ListUserDBs() { return pimpl->ListUserDBs(); };
 
 // AddFeatures to this db, we need find proper shard to store these fts.

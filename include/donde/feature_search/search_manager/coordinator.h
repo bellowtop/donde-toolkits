@@ -2,6 +2,7 @@
 
 // #include "spdlog/spdlog.h"
 #include "donde/feature_search/definitions.h"
+#include "donde/feature_search/search_manager/worker_factory.h"
 #include "nlohmann/json.hpp"
 
 #include <algorithm>
@@ -27,6 +28,8 @@ class ICoordinator {
     virtual void Start() = 0;
 
     virtual void Stop() = 0;
+
+    virtual void ProbeWorkers(const WorkerFactory& factory) = 0;
 
     // std::vector<WorkerPtr> ListWorkers() = 0;
 
@@ -56,23 +59,27 @@ class Coordinator : public ICoordinator {
     // must be placed in .cc file, because we use pimpl with std::unique_ptr
     ~Coordinator();
 
-    void Start();
+    void Start() override;
 
-    void Stop();
+    void Stop() override;
 
-    // std::vector<WorkerPtr> ListWorkers();
+    void ProbeWorkers(const WorkerFactory& factory) override;
 
-    std::vector<DBItem> ListUserDBs();
+    // std::vector<WorkerPtr> ListWorkers() override;
+
+    std::vector<DBItem> ListUserDBs() override;
 
     // AddFeatures to this db, we need find proper shard to store these fts.
-    std::vector<std::string> AddFeatures(const std::string& db_id, const std::vector<Feature>& fts);
+    std::vector<std::string> AddFeatures(const std::string& db_id,
+                                         const std::vector<Feature>& fts) override;
 
     // RemoveFeatures from this db
-    RetCode RemoveFeatures(const std::string& db_id, const std::vector<std::string>& feature_ids);
+    RetCode RemoveFeatures(const std::string& db_id,
+                           const std::vector<std::string>& feature_ids) override;
 
     // SearchFeatures in this db.
     std::vector<FeatureSearchItem> SearchFeature(const std::string& db_id, const Feature& query,
-                                                 int topk);
+                                                 int topk) override;
 
     std::unique_ptr<CoordinatorImpl> pimpl;
 };

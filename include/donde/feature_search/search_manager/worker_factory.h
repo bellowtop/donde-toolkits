@@ -9,12 +9,17 @@ using namespace std;
 
 namespace donde_toolkits ::feature_search ::search_manager {
 
+// It's an interface, for the sake of compiling, we have default implements here.
+// User should inherit this class.
 class WorkerFactory {
   public:
-    virtual ~WorkerFactory() = default;
-    virtual Worker* CreateWorker(const std::string& worker_id, const std::string& worker_address)
-        = 0;
-    virtual bool ProbeWorker(const std::string& worker_address) = 0;
+    /*virtual*/ static Worker* CreateWorker(const std::string& worker_id,
+                                            const std::string& worker_address) {
+        throw "not implement";
+    };
+    /*virtual*/ static bool ProbeWorker(const std::string& worker_address) {
+        throw "not implement";
+    };
 };
 
 } // namespace donde_toolkits::feature_search::search_manager

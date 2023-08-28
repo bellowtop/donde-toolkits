@@ -24,28 +24,36 @@ namespace donde_toolkits ::feature_search ::search_manager {
 using WorkerPtr = std::shared_ptr<Worker>;
 
 // Coordinator & Reducer
-class CoordinatorImpl {
+class CoordinatorImpl : public ICoordinator {
   public:
     CoordinatorImpl(const json& coor_config);
     ~CoordinatorImpl();
 
-    void Start();
+    void Start() override;
 
-    void Stop();
+    void Stop() override;
+
+    // ProbeWorkers is a background task, probe each known workers,
+    // check if they are up and alive, if one is alive, then factory should create
+    // a `worker` impl to interact with it.
+    // User must call this method to build connections with known  workers.
+    void ProbeWorkers(const WorkerFactory& factory) override;
 
     // std::vector<WorkerPtr> ListWorkers();
 
-    std::vector<DBItem> ListUserDBs();
+    std::vector<DBItem> ListUserDBs() override;
 
     // AddFeatures to this db, we need find proper shard to store these fts.
-    std::vector<std::string> AddFeatures(const std::string& db_id, const std::vector<Feature>& fts);
+    std::vector<std::string> AddFeatures(const std::string& db_id,
+                                         const std::vector<Feature>& fts) override;
 
     // RemoveFeatures from this db
-    RetCode RemoveFeatures(const std::string& db_id, const std::vector<std::string>& feature_ids);
+    RetCode RemoveFeatures(const std::string& db_id,
+                           const std::vector<std::string>& feature_ids) override;
 
     // SearchFeatures in this db.
     std::vector<FeatureSearchItem> SearchFeature(const std::string& db_id, const Feature& query,
-                                                 int topk);
+                                                 int topk) override;
 
   private:
     void initialize_workers();
