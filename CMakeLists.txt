@@ -3,11 +3,15 @@ cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 project(DondeToolkits VERSION 0.0.1 LANGUAGES CXX)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-if (NOT DEFINED CONAN_ALREADY_SETUP)
-  include(build/conanbuildinfo.cmake)
-  conan_basic_setup(TARGETS)
-  set(CONAN_ALREADY_SETUP true)
-endif()
+set(CMAKE_C_COMPILER "C:/mingw64/bin/gcc.exe")
+set(CMAKE_CXX_COMPILER "C:/mingw64/bin/g++.exe")
+
+
+# if (NOT DEFINED CONAN_ALREADY_SETUP)
+#   include(cmake-build-debug/conanbuildinfo.cmake)
+#   conan_basic_setup(TARGETS)
+#   set(CONAN_ALREADY_SETUP true)
+# endif()
 
 
 
@@ -20,6 +24,8 @@ endif()
 # endif()
 
 
+# set(CMAKE_PREFIX_PATH "cmake-build-debug" ${CMAKE_PREFIX_PATH})
+find_package(fmt REQUIRED)
 
 
 # ---- Create library ----
@@ -32,14 +38,15 @@ target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
-    CONAN_PKG::fmt
-    CONAN_PKG::spdlog
-    CONAN_PKG::poco
-    CONAN_PKG::msgpack
-    CONAN_PKG::sqlitecpp
-    CONAN_PKG::libuuid
-    CONAN_PKG::nlohmann_json
-    CONAN_PKG::cassandra-cpp-driver
+    fmt::fmt
+    spdlog::spdlog
+    poco::poco
+    #### msgpack::msgpack
+    sqlitecpp::sqlitecpp
+    stduuid::stduuid
+    #### libuuid::libuuid
+    nlohmann_json::nlohmann_json
+    cassandra-cpp-driver::cassandra-cpp-driver
 )
 target_include_directories(${PROJECT_NAME}
     BEFORE
@@ -58,6 +65,9 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 # Find OpenCV
 # Find OpenVino
 ##
+set(CMAKE_PREFIX_PATH "C:\\Users\\nicke\\Downloads\\libraries\\opencv4" ${CMAKE_PREFIX_PATH})
+set(CMAKE_PREFIX_PATH "C:\\Users\\nicke\\Downloads\\libraries\\w_openvino_toolkit_windows_2023.0.2.11065.e662b1a3301_x86_64\\runtime" ${CMAKE_PREFIX_PATH})
+
 find_package(FFMPEG REQUIRED)
 find_package(OpenCV REQUIRED CONFIG)
 find_package(OpenVINO REQUIRED COMPONENTS Runtime)

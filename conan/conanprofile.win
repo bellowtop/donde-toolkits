@@ -1,0 +1,14 @@
+[settings]
+os=Windows
+arch=x86_64
+compiler=gcc
+compiler.version=13
+compiler.libcxx=libstdc++11
+build_type=Release
+
+[buildenv]
+CC=C:/mingw64/bin/gcc.exe
+CXX=C:/mingw64/bin/g++.exe
+
+[conf]
+tools.cmake.cmaketoolchain:generator=MinGW Makefiles

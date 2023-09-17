@@ -14,7 +14,7 @@
 #include <iterator>
 #include <map>
 #include <memory>
-#include <msgpack.hpp>
+//// #include <msgpack.hpp>
 #include <nlohmann/json_fwd.hpp>
 #include <opencv2/core/hal/interface.h>
 #include <sqlite3.h>
@@ -141,11 +141,11 @@ std::vector<std::string> CassandraDriver::AddFeatures(const std::string& db_id,
         try {
             std::ofstream file(filepath, std::ios::binary | std::ios::out);
             std::stringstream ss;
-            msgpack::pack(ss, ft);
+            //// msgpack::pack(ss, ft);
 
-            // write to file
-            std::string data(ss.str());
-            file << data;
+            //// // write to file
+            //// std::string data(ss.str());
+            //// file << data;
 
             json j(item.metadata); // must use (), while not {}
             std::string meta_str{j.dump()};
@@ -184,11 +184,11 @@ std::vector<Feature> CassandraDriver::LoadFeatures(const std::string& db_id,
 
             // std::cout << "filepath: " << filepath << std::endl;
             // std::cout << "data.size(): " << data.size() << std::endl;
-            auto oh = msgpack::unpack(data.data(), data.size());
-            Feature ft = oh.get().as<Feature>();
-            // ft.debugPrint();
+            //// auto oh = msgpack::unpack(data.data(), data.size());
+            //// Feature ft = oh.get().as<Feature>();
+            //// // ft.debugPrint();
 
-            features.push_back(ft);
+            //// features.push_back(ft);
         } catch (const std::exception& exc) {
             spdlog::error("cannot load feature, feature_path: {}, exc: {}", filepath.string(),
                           exc.what());

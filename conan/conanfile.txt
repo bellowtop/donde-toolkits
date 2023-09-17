@@ -1,16 +1,15 @@
 [requires]
-openssl/1.1.1l
+openssl/3.1.2
 cxxopts/2.2.1
-poco/1.12.2
-zlib/1.2.12
+poco/1.12.4
 
-libuuid/1.0.3
+stduuid/1.2.3
 
-msgpack/3.3.0
+# msgpack/3.3.0
 sqlitecpp/3.2.0
 
 
-cassandra-cpp-driver/2.15.3
+cassandra-cpp-driver/2.17.0
 
 toml11/3.7.1
 nlohmann_json/3.10.5
@@ -24,16 +23,20 @@ trompeloeil/42
 spdlog/1.12.0
 
 [generators]
-cmake
+CMakeDeps
+CMakeToolchain
 
 [options]
-poco:enable_data=False
-poco:enable_activerecord=False
-poco:enable_data_mysql=False
-poco:enable_data_odbc=False
-poco:enable_data_postgresql=False
-poco:enable_data_sqlite=False
-poco:enable_redis=False
-poco:enable_crypto=False
-poco:enable_jwt=False
-poco:enable_netssl=False
+poco/*:enable_net=False
+poco/*:enable_data=False
+poco/*:enable_mongodb=False
+poco/*:enable_activerecord=False
+poco/*:enable_data_mysql=False
+poco/*:enable_data_odbc=False
+poco/*:enable_data_postgresql=False
+poco/*:enable_data_sqlite=False
+poco/*:enable_redis=False
+poco/*:enable_crypto=False
+poco/*:enable_jwt=False
+poco/*:enable_netssl=False
+cassandra-cpp-driver/*:with_openssl=False

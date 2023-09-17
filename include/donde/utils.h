@@ -2,7 +2,10 @@
 #include "donde/definitions.h"
 #include "opencv2/opencv.hpp"
 #include "openvino/openvino.hpp"
-#include "uuid/uuid.h"
+
+////#include "uuid/uuid.h"
+#define UUID_SYSTEM_GENERATOR
+#include "uuid.h"
 
 // #include <google/protobuf/map.h>
 #include <iostream>
@@ -77,12 +80,14 @@ inline void drawRectangleInImage(const std::string& image_path, const std::vecto
 }
 
 inline std::string generate_uuid() {
-    std::string ret;
-    ret.resize(36); // 16 bytes => 32 hex ascii chars represent, then 4 seperators.
+    //// std::string ret;
+    //// ret.resize(36); // 16 bytes => 32 hex ascii chars represent, then 4 seperators.
 
-    uuid_t uuid;
-    uuid_generate(uuid);
-    uuid_unparse_lower(uuid, ret.data());
+    //// uuid_t uuid;
+    //// uuid_generate(uuid);
+    //// uuid_unparse_lower(uuid, ret.data());
+
+    std::string ret = uuids::to_string (uuids::uuid_system_generator{}());
 
     return ret;
 }

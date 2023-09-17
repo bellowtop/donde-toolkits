@@ -14,8 +14,8 @@
 #include <iterator>
 #include <map>
 #include <memory>
-#include <msgpack.hpp>
-#include <msgpack/adaptor/define_decl.hpp>
+//// #include <msgpack.hpp>
+//// #include <msgpack/adaptor/define_decl.hpp>
 #include <opencv2/core/mat.hpp>
 #include <opencv2/core/types.hpp>
 #include <opencv2/opencv.hpp>
@@ -114,7 +114,7 @@ struct Feature {
     };
 
     // message pack
-    MSGPACK_DEFINE(model, version, dimension, raw)
+    //// MSGPACK_DEFINE(model, version, dimension, raw)
 };
 
 struct FeatureScore {
