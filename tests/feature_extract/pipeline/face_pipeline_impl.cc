@@ -18,7 +18,7 @@
 #include <opencv2/imgproc.hpp>
 #include <string>
 
-using namespace std;
+
 using namespace donde_toolkits::feature_extract;
 
 using donde_toolkits::AlignerResult;

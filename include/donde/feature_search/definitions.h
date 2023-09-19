@@ -54,7 +54,7 @@ struct DBShard {
     bool is_closed;
 };
 
-using DBItemPtr = shared_ptr<DBItem>;
+using DBItemPtr = std::shared_ptr<DBItem>;
 
 const std::string SEARCH_ENGINE_BRUTE_FORCE = "brute_force";
 const std::string SEARCH_ENGINE_FAISS = "faiss";
@@ -78,7 +78,7 @@ struct FeatureSearchComp {
 struct FeatureDbItem {
     std::string feature_id;
     Feature feature;
-    std::map<string, string> metadata;
+    std::map<std::string, std::string> metadata;
 };
 
 using FeatureDbItemList = std::vector<FeatureDbItem>;

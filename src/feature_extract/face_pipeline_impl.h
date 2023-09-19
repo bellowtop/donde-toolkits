@@ -8,7 +8,7 @@
 #include <map>
 
 using namespace Poco;
-using namespace std;
+
 
 using json = nlohmann::json;
 
@@ -24,7 +24,7 @@ class FacePipelineImpl {
 
     RetCode Terminate();
 
-    std::shared_ptr<Frame> Decode(const vector<uint8_t>& image_data);
+    std::shared_ptr<Frame> Decode(const std::vector<uint8_t>& image_data);
 
     std::shared_ptr<DetectResult> Detect(const std::shared_ptr<Frame> frame);
 

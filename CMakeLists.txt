@@ -3,9 +3,6 @@ cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 project(DondeToolkits VERSION 0.0.1 LANGUAGES CXX)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CMAKE_C_COMPILER "C:/mingw64/bin/gcc.exe")
-set(CMAKE_CXX_COMPILER "C:/mingw64/bin/g++.exe")
-
 
 # if (NOT DEFINED CONAN_ALREADY_SETUP)
 #   include(cmake-build-debug/conanbuildinfo.cmake)
@@ -24,8 +21,14 @@ set(CMAKE_CXX_COMPILER "C:/mingw64/bin/g++.exe")
 # endif()
 
 
-# set(CMAKE_PREFIX_PATH "cmake-build-debug" ${CMAKE_PREFIX_PATH})
+set(CMAKE_PREFIX_PATH "build" ${CMAKE_PREFIX_PATH})
 find_package(fmt REQUIRED)
+find_package(spdlog REQUIRED)
+find_package(poco REQUIRED)
+find_package(sqlitecpp REQUIRED)
+find_package(stduuid REQUIRED)
+find_package(nlohmann_json REQUIRED)
+find_package(cassandra-cpp-driver REQUIRED)
 
 
 # ---- Create library ----
@@ -40,9 +43,9 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
     fmt::fmt
     spdlog::spdlog
-    poco::poco
+    Poco::Poco
     #### msgpack::msgpack
-    sqlitecpp::sqlitecpp
+    SQLiteCpp
     stduuid::stduuid
     #### libuuid::libuuid
     nlohmann_json::nlohmann_json
@@ -69,6 +72,9 @@ set(CMAKE_PREFIX_PATH "C:\\Users\\nicke\\Downloads\\libraries\\opencv4" ${CMAKE_
 set(CMAKE_PREFIX_PATH "C:\\Users\\nicke\\Downloads\\libraries\\w_openvino_toolkit_windows_2023.0.2.11065.e662b1a3301_x86_64\\runtime" ${CMAKE_PREFIX_PATH})
 
 find_package(FFMPEG REQUIRED)
+message("FFMPEG_LIBRARIES: ${FFMPEG_LIBRARIES}")
+message("FFMPEG_INCLUDE_DIRS: ${FFMPEG_INCLUDE_DIRS}")
+
 find_package(OpenCV REQUIRED CONFIG)
 find_package(OpenVINO REQUIRED COMPONENTS Runtime)
 message("OpenVINO_FOUND: ${OpenVINO_FOUND}")

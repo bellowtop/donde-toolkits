@@ -11,7 +11,7 @@
 #include <nlohmann/json.hpp>
 #include <ostream>
 
-using namespace std;
+
 
 using nlohmann::json;
 
@@ -54,7 +54,7 @@ class SearchManager_SimpleDriver : public ::testing::Test {
         std::vector<FeatureDbItem> ret;
         for (int i = 0; i < feature_count; i++) {
             auto ft = gen_feature_dim<512>();
-            std::map<string, string> meta{{"keya", "valueb"}};
+            std::map<std::string, std::string> meta{{"keya", "valueb"}};
             ret.push_back(FeatureDbItem{
                 .feature = ft,
                 .metadata = meta,

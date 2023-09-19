@@ -8,7 +8,7 @@
 #include <unordered_map>
 #include <vector>
 
-using namespace std;
+
 
 namespace donde_toolkits ::feature_search ::search_manager {
 

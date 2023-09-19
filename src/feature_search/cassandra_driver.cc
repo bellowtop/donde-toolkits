@@ -17,12 +17,10 @@
 //// #include <msgpack.hpp>
 #include <nlohmann/json_fwd.hpp>
 #include <opencv2/core/hal/interface.h>
-#include <sqlite3.h>
 #include <sstream>
 #include <stdexcept>
 #include <typeinfo>
 
-using namespace std;
 
 using json = nlohmann::json;
 
@@ -42,7 +40,7 @@ CassandraDriver::CassandraDriver(std::string db_dirpath)
     std::filesystem::create_directories(_data_dir);
     std::filesystem::create_directories(_meta_dir);
 
-    std::string db_filepath = _meta_dir / "sqlite3.db";
+    std::string db_filepath = (_meta_dir / "sqlite3.db").string();
 
     try {
         db = std::make_unique<SQLite::Database>(db_filepath,
@@ -469,7 +467,7 @@ std::vector<FeatureDbItem> CassandraDriver::list_features_from_db(const std::str
 
             json j(json::parse(meta_str));
 
-            std::map<string, string> meta_map = j;
+            std::map<std::string, std::string> meta_map = j;
 
             feature_ids.push_back(FeatureDbItem{
                 .feature_id = feature_id,

@@ -17,7 +17,7 @@
 #include <thread>
 #include <unordered_map>
 
-using namespace std;
+
 
 namespace donde_toolkits ::feature_search ::search_manager {
 
@@ -72,7 +72,7 @@ class CoordinatorImpl : public ICoordinator {
 
     std::unordered_map<std::string, std::string> _managed_workers;
 
-    shared_ptr<Driver> _driver;
+    std::shared_ptr<Driver> _driver;
 
     std::shared_ptr<ShardFactory> _shard_factory;
 

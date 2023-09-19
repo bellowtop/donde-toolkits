@@ -17,7 +17,7 @@ using Poco::NotificationQueue;
 using Poco::ThreadPool;
 
 using namespace Poco;
-using namespace std;
+
 
 using json = nlohmann::json;
 

@@ -7,7 +7,7 @@
 #include <iostream>
 #include <unordered_map>
 
-using namespace std;
+
 
 namespace donde_toolkits ::feature_search ::search_manager {
 
@@ -46,6 +46,6 @@ class Worker {
         = 0;
 };
 
-using WorkerPtr = shared_ptr<Worker>;
+using WorkerPtr = std::shared_ptr<Worker>;
 
 } // namespace donde_toolkits::feature_search::search_manager

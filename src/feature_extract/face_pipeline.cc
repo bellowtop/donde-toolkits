@@ -12,7 +12,7 @@
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/opencv.hpp>
 
-using namespace std;
+
 
 using namespace donde_toolkits::feature_extract::openvino_worker;
 
@@ -58,7 +58,7 @@ RetCode FacePipeline::Terminate() { return pimpl->Terminate(); }
 
 const json& FacePipeline::GetConfig() { return pimpl->GetConfig(); };
 
-std::shared_ptr<Frame> FacePipeline::Decode(const vector<uint8_t>& image_data) {
+std::shared_ptr<Frame> FacePipeline::Decode(const std::vector<uint8_t>& image_data) {
     return pimpl->Decode(image_data);
 }
 

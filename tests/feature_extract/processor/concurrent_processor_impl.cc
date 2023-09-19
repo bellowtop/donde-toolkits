@@ -11,7 +11,7 @@
 #include <nlohmann/json.hpp>
 #include <thread>
 
-using namespace std;
+
 using namespace Poco;
 
 using Poco::Notification;

@@ -7,8 +7,6 @@
 #include "donde/feature_search/worker.h"
 #include "remote_worker_impl.h"
 
-#include <_types/_uint64_t.h>
-#include <arm/types.h>
 #include <cassert>
 #include <chrono>
 #include <iostream>
@@ -17,7 +15,7 @@
 #include <thread>
 #include <unordered_map>
 
-using namespace std;
+
 
 namespace donde_toolkits ::feature_search ::search_manager {
 

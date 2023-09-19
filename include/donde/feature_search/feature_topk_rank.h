@@ -13,10 +13,10 @@
 #include <nlohmann/json_fwd.hpp>
 #include <opencv2/core/hal/interface.h>
 #include <queue>
-#include <sqlite3.h>
+
 #include <sstream>
 #include <stdexcept>
-using namespace std;
+
 
 using donde_toolkits::feature_search::FeatureSearchComp;
 using donde_toolkits::feature_search::FeatureSearchItem;

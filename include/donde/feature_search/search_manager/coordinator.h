@@ -9,14 +9,14 @@
 #include <iostream>
 #include <unordered_map>
 
-using namespace std;
+
 
 using json = nlohmann::json;
 
 namespace donde_toolkits ::feature_search ::search_manager {
 
 class Worker;
-using WorkerPtr = shared_ptr<Worker>;
+using WorkerPtr = std::shared_ptr<Worker>;
 
 // Coordinator & Reducer
 // Coordinator & Reducer, responsible for:

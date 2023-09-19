@@ -15,11 +15,10 @@
 //// #include <msgpack.hpp>
 #include <nlohmann/json_fwd.hpp>
 #include <opencv2/core/hal/interface.h>
-#include <sqlite3.h>
 #include <sstream>
 #include <stdexcept>
 
-using namespace std;
+
 
 using json = nlohmann::json;
 
