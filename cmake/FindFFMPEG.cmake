@@ -12,17 +12,22 @@
 # Will be set to FALSE in case one of the required components is not found.
 ##
 set(${FFMPEG_FOUND} TRUE)
+set(CMAKE_PREFIX_PATH "C:\\Users\\nicke\\Downloads\\libraries\\ffmpeg-master-latest-win64-gpl-shared" ${CMAKE_PREFIX_PATH})
 
 ##
 # Find libavcodec.
 ##
-find_path(AVCODEC_INCLUDE_DIR libavcodec/avcodec.h)
-find_library(AVCODEC_LIBRARY avcodec)
+find_path(AVCODEC_INCLUDE_DIR libavcodec/avcodec.h
+        PATHS ${FFMPEG_HOME_DIR})
+find_library(AVCODEC_LIBRARY avcodec
+        PATHS ${FFMPEG_HOME_DIR}
+)
 
 ##
 # Add in libavcodec if found.
 ##
 if (AVCODEC_INCLUDE_DIR AND AVCODEC_LIBRARY)
+    message("FOUND AVCODEC")
     list(APPEND FFMPEG_INCLUDE_DIRS ${AVCODEC_INCLUDE_DIR})
     list(APPEND FFMPEG_LIBRARIES ${AVCODEC_LIBRARY})
 else()

@@ -7,6 +7,8 @@ extern "C" {
 #include "processor.h"
 
 #include <functional>
+#include <string>
+#include <memory>
 
 namespace donde_toolkits ::video_process {
 

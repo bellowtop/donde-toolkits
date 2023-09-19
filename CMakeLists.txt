@@ -68,7 +68,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 # Find OpenCV
 # Find OpenVino
 ##
-set(CMAKE_PREFIX_PATH "C:\\Users\\nicke\\Downloads\\libraries\\opencv4" ${CMAKE_PREFIX_PATH})
+set(CMAKE_PREFIX_PATH "C:\\Users\\nicke\\Downloads\\libraries\\opencv4.8" ${CMAKE_PREFIX_PATH})
 set(CMAKE_PREFIX_PATH "C:\\Users\\nicke\\Downloads\\libraries\\w_openvino_toolkit_windows_2023.0.2.11065.e662b1a3301_x86_64\\runtime" ${CMAKE_PREFIX_PATH})
 
 find_package(FFMPEG REQUIRED)
@@ -76,6 +76,8 @@ message("FFMPEG_LIBRARIES: ${FFMPEG_LIBRARIES}")
 message("FFMPEG_INCLUDE_DIRS: ${FFMPEG_INCLUDE_DIRS}")
 
 find_package(OpenCV REQUIRED CONFIG)
+message("OpenCV_FOUND: ${OpenCV_FOUND}")
+message("OpenCV_LIBS: ${OpenCV_LIBS}")
 find_package(OpenVINO REQUIRED COMPONENTS Runtime)
 message("OpenVINO_FOUND: ${OpenVINO_FOUND}")
 message("OpenVINO_Runtime_FOUND: ${OpenVINO_Runtime_FOUND}")
