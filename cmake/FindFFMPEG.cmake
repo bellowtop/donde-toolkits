@@ -12,7 +12,6 @@
 # Will be set to FALSE in case one of the required components is not found.
 ##
 set(${FFMPEG_FOUND} TRUE)
-set(CMAKE_PREFIX_PATH "C:\\Users\\nicke\\Downloads\\libraries\\ffmpeg-master-latest-win64-gpl-shared" ${CMAKE_PREFIX_PATH})
 
 ##
 # Find libavcodec.

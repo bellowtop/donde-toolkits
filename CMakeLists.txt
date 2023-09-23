@@ -24,8 +24,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_PREFIX_PATH "build" ${CMAKE_PREFIX_PATH})
 find_package(fmt REQUIRED)
 find_package(spdlog REQUIRED)
-find_package(poco REQUIRED)
-find_package(sqlitecpp REQUIRED)
+find_package(Poco REQUIRED)
+find_package(SQLiteCpp REQUIRED)
 find_package(stduuid REQUIRED)
 find_package(nlohmann_json REQUIRED)
 find_package(cassandra-cpp-driver REQUIRED)
@@ -68,8 +68,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 # Find OpenCV
 # Find OpenVino
 ##
-set(CMAKE_PREFIX_PATH "C:\\Users\\nicke\\Downloads\\libraries\\opencv4.8" ${CMAKE_PREFIX_PATH})
-set(CMAKE_PREFIX_PATH "C:\\Users\\nicke\\Downloads\\libraries\\w_openvino_toolkit_windows_2023.0.2.11065.e662b1a3301_x86_64\\runtime" ${CMAKE_PREFIX_PATH})
 
 find_package(FFMPEG REQUIRED)
 message("FFMPEG_LIBRARIES: ${FFMPEG_LIBRARIES}")

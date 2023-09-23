@@ -1,7 +1,9 @@
 [requires]
+zlib/1.2.13
 openssl/3.1.2
 cxxopts/2.2.1
 poco/1.12.4
+
 
 stduuid/1.2.3
 
@@ -27,7 +29,6 @@ CMakeDeps
 CMakeToolchain
 
 [options]
-poco/*:enable_net=False
 poco/*:enable_data=False
 poco/*:enable_mongodb=False
 poco/*:enable_activerecord=False
@@ -36,7 +37,5 @@ poco/*:enable_data_odbc=False
 poco/*:enable_data_postgresql=False
 poco/*:enable_data_sqlite=False
 poco/*:enable_redis=False
-poco/*:enable_crypto=False
 poco/*:enable_jwt=False
-poco/*:enable_netssl=False
 cassandra-cpp-driver/*:with_openssl=False
