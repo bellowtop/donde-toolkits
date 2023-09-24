@@ -1,12 +1,25 @@
-# Install openvino
+# Install ffmpeg opencv
 
 
 ```
-cd /opt
-wget https://storage.openvinotoolkit.org/repositories/openvino/packages/2022.2/linux/l_openvino_toolkit_ubuntu20_2022.2.0.7713.af16ea1d79a_x86_64.tgz .
+sudo apt install libopencv-dev
+sudo apt install ffmpeg
+sudo apt install uuid-dev
+```
 
-# uncompress here
-tar zxvf l_openvino*.tgz
+# Install openvino
+
+```
+# SEE https://docs.openvino.ai/2023.1/openvino_docs_install_guides_installing_openvino_apt.html
+
+wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
+sudo apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
+sudo apt-get install gnupg
+cat /etc/lsb-release
+echo "deb https://apt.repos.intel.com/openvino/2023 ubuntu22 main" | sudo tee /etc/apt/sources.list.d/intel-openvino-2023.list
+sudo apt update
+apt-cache search openvino
+sudo apt install openvino
 ```
 
 this version of openvino depends on `tbb.so.2` which is part of `tbb2020`, so download it too.

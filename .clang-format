@@ -17,4 +17,3 @@
   BreakBeforeBinaryOperators: All
   BreakBeforeTernaryOperators: 'true'
   NamespaceIndentation: None
-...

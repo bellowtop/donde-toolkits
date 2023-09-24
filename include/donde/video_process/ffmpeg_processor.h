@@ -40,7 +40,7 @@ class FFmpegVideoProcessor : public VideoProcessor {
 
     bool Process();
     bool Register(const FFmpegVideoFrameProcessor& p);
-
+    void ScaleFrame(const AVFrame* originalFrame, AVFrame* destFrame) const;
     bool Pause();
     bool IsPaused();
     bool Resume();

@@ -15,6 +15,10 @@ bool FFmpegVideoProcessor::Register(const FFmpegVideoFrameProcessor& p) {
     return impl->Register(p);
 }
 
+void FFmpegVideoProcessor::ScaleFrame(const AVFrame* originalFrame, AVFrame* destFrame) const {
+    impl->ScaleFrame(originalFrame, destFrame);
+}
+
 bool FFmpegVideoProcessor::Pause() { return impl->Pause(); };
 
 bool FFmpegVideoProcessor::IsPaused() { return impl->IsPaused(); };

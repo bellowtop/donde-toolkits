@@ -16,17 +16,15 @@ extern "C" {
 #include <libavutil/imgutils.h>
 }
 
-
 #ifdef av_err2str
-#undef av_err2str
-#include <string>
+#    undef av_err2str
+#    include <string>
 av_always_inline std::string av_err2string(int errnum) {
     char str[AV_ERROR_MAX_STRING_SIZE];
     return av_make_error_string(str, AV_ERROR_MAX_STRING_SIZE, errnum);
 }
-#define av_err2str(err) av_err2string(err).c_str()
-#endif  // av_err2str
-
+#    define av_err2str(err) av_err2string(err).c_str()
+#endif // av_err2str
 
 #include "donde/video_process/ffmpeg_processor_impl.h"
 
@@ -140,6 +138,17 @@ bool FFmpegVideoProcessorImpl::Process() {
     return true;
 }
 
+void FFmpegVideoProcessorImpl::ScaleFrame(const AVFrame* originalFrame, AVFrame* destFrame) const {
+    destFrame->pts = originalFrame->pts;
+    destFrame->key_frame = originalFrame->key_frame;
+    destFrame->coded_picture_number = originalFrame->coded_picture_number;
+    destFrame->display_picture_number = originalFrame->display_picture_number;
+    destFrame->width = originalFrame->width;
+    destFrame->height = originalFrame->height;
+    sws_scale(sws_context_, originalFrame->data, originalFrame->linesize, 0, originalFrame->height,
+              destFrame->data, destFrame->linesize);
+}
+
 //
 // inner threads
 //
@@ -179,7 +188,7 @@ void FFmpegVideoProcessorImpl::demux_video_packet_() {
 
             // std::cout << "packet channel size: " << packet_ch_.size() << std::endl;
 
-            // std::this_thread::sleep_for(std::chrono::milliseconds(40));
+            std::this_thread::sleep_for(std::chrono::milliseconds(40));
 
             // DEBUG: pause every 100 frames.
             if (frame_count % 100 == 0) {
