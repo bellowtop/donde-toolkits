@@ -190,11 +190,11 @@ void FFmpegVideoProcessorImpl::demux_video_packet_() {
 
             std::this_thread::sleep_for(std::chrono::milliseconds(40));
 
-            // DEBUG: pause every 100 frames.
-            if (frame_count % 100 == 0) {
-                pause_ = true;
-                std::cout << "pause at " << frame_count << " frames. " << std::endl;
-            }
+            // // DEBUG: pause every 100 frames.
+            // if (frame_count % 100 == 0) {
+            //     pause_ = true;
+            //     std::cout << "pause at " << frame_count << " frames. " << std::endl;
+            // }
         } else {
             // unref explicitly, not really needed, because av_read_frame will unref it anyway.
             av_packet_unref(packet);
