@@ -1,17 +1,13 @@
 [requires]
+fmt/10.1.1
+pcre2/10.42
 zlib/1.2.13
-openssl/3.1.2
+openssl/3.1.3
 cxxopts/2.2.1
 poco/1.12.4
 
-
-stduuid/1.2.3
-
 # msgpack/3.3.0
 sqlitecpp/3.2.0
-
-
-cassandra-cpp-driver/2.17.0
 
 toml11/3.7.1
 nlohmann_json/3.10.5
@@ -29,6 +25,8 @@ CMakeDeps
 CMakeToolchain
 
 [options]
+poco/*:enable_net=False
+poco/*:enable_netssl=False
 poco/*:enable_data=False
 poco/*:enable_mongodb=False
 poco/*:enable_activerecord=False
@@ -38,4 +36,4 @@ poco/*:enable_data_postgresql=False
 poco/*:enable_data_sqlite=False
 poco/*:enable_redis=False
 poco/*:enable_jwt=False
-cassandra-cpp-driver/*:with_openssl=False
+

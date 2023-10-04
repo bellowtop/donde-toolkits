@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 project(DondeToolkits VERSION 0.0.1 LANGUAGES CXX)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+message("CMAKE_C_COMPILER: ${CMAKE_C_COMPILER}")
+message("CMAKE_CXX_COMPILER: ${CMAKE_CXX_COMPILER}")
 
 # if (NOT DEFINED CONAN_ALREADY_SETUP)
 #   include(cmake-build-debug/conanbuildinfo.cmake)
@@ -21,14 +23,13 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # endif()
 
 
-set(CMAKE_PREFIX_PATH "build" ${CMAKE_PREFIX_PATH})
+
+## set(CMAKE_PREFIX_PATH "build" ${CMAKE_PREFIX_PATH})
 find_package(fmt REQUIRED)
 find_package(spdlog REQUIRED)
 find_package(Poco REQUIRED)
 find_package(SQLiteCpp REQUIRED)
-find_package(stduuid REQUIRED)
 find_package(nlohmann_json REQUIRED)
-find_package(cassandra-cpp-driver REQUIRED)
 
 
 # ---- Create library ----
@@ -37,7 +38,6 @@ file(GLOB_RECURSE sources_h CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.
 file(GLOB_RECURSE headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/include/*)
 
 add_library(${PROJECT_NAME} ${sources} ${sources_h} ${headers})
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
@@ -46,15 +46,7 @@ target_link_libraries(${PROJECT_NAME}
     Poco::Poco
     #### msgpack::msgpack
     SQLiteCpp
-    stduuid::stduuid
-    #### libuuid::libuuid
     nlohmann_json::nlohmann_json
-    cassandra-cpp-driver::cassandra-cpp-driver
-)
-target_include_directories(${PROJECT_NAME}
-    BEFORE
-    PRIVATE
-    ${CONAN_INCLUDE_DIRS}
 )
 
 
@@ -76,6 +68,7 @@ message("FFMPEG_INCLUDE_DIRS: ${FFMPEG_INCLUDE_DIRS}")
 find_package(OpenCV REQUIRED CONFIG)
 message("OpenCV_FOUND: ${OpenCV_FOUND}")
 message("OpenCV_LIBS: ${OpenCV_LIBS}")
+
 find_package(OpenVINO REQUIRED COMPONENTS Runtime)
 message("OpenVINO_FOUND: ${OpenVINO_FOUND}")
 message("OpenVINO_Runtime_FOUND: ${OpenVINO_Runtime_FOUND}")

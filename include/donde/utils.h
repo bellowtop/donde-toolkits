@@ -1,17 +1,18 @@
 #pragma once
 #include "donde/definitions.h"
+#include "donde/uuid.h"
 #include "opencv2/opencv.hpp"
 #include "openvino/openvino.hpp"
 
-////#include "uuid/uuid.h"
-#define UUID_SYSTEM_GENERATOR
-#include "uuid.h"
 
 // #include <google/protobuf/map.h>
 #include <iostream>
 #include <opencv2/core/types.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgcodecs.hpp>
+
+
+
 
 namespace donde_toolkits {
 
@@ -80,16 +81,7 @@ inline void drawRectangleInImage(const std::string& image_path, const std::vecto
 }
 
 inline std::string generate_uuid() {
-    //// std::string ret;
-    //// ret.resize(36); // 16 bytes => 32 hex ascii chars represent, then 4 seperators.
-
-    //// uuid_t uuid;
-    //// uuid_generate(uuid);
-    //// uuid_unparse_lower(uuid, ret.data());
-
-    std::string ret = uuids::to_string (uuids::uuid_system_generator{}());
-
-    return ret;
+    return uuid::generate_uuid_v4();
 }
 
 inline std::string replace_underscore_for_uuid(const std::string& u) {
