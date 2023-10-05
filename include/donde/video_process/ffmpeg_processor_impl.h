@@ -43,6 +43,8 @@ class FFmpegVideoProcessorImpl {
     void decode_video_frame_();
     void process_video_frame_();
 
+    void monitor();
+
   private:
     std::string filepath;
 
@@ -63,6 +65,15 @@ class FFmpegVideoProcessorImpl {
     std::thread demux_thread_;
     std::thread decode_thread_;
     std::thread process_thread_;
+    std::thread monitor_thread_;
+
+    bool started_ = false;
+    bool start_over_ = false;
+
+    bool is_demuxing_ = false;
+    bool is_decoding_ = false;
+    bool is_processing_ = false;
+    ProcessOptions processor_opts_;
 
     size_t frame_count = 0;
     FFmpegVideoFrameProcessor frame_processor;

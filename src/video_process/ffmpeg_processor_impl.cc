@@ -1,3 +1,4 @@
+#include "channel.h"
 #include "donde/defer.h"
 
 #include <chrono>
@@ -23,12 +24,16 @@ namespace donde_toolkits ::video_process {
 
 FFmpegVideoProcessorImpl::FFmpegVideoProcessorImpl(const std::string& filepath)
     : filepath{filepath}, packet_ch_{10}, frame_ch_{10} {
-    open_context();
+    monitor_thread_ = std::thread([&] { monitor(); });
 }
 
 FFmpegVideoProcessorImpl::~FFmpegVideoProcessorImpl() {}
 
 bool FFmpegVideoProcessorImpl::open_context() {
+    if (format_context_) {
+        avformat_close_input(&format_context_);
+    }
+
     int ret = avformat_open_input(&format_context_, filepath.c_str(), nullptr, nullptr);
     if (ret < 0) {
         std::cout << "cannot open input video file: " << filepath << std::endl;
@@ -73,10 +78,18 @@ bool FFmpegVideoProcessorImpl::open_context() {
         return false;
     }
 
+    if (codec_context_) {
+        avcodec_close(codec_context_);
+    }
+
     ret = avcodec_open2(codec_context_, avcodec, nullptr);
     if (ret < 0) {
         std::cout << "cannot avcodec_open2, ret: " << av_err2str(ret) << std::endl;
         return false;
+    }
+
+    if (sws_context_) {
+        sws_freeContext(sws_context_);
     }
 
     sws_context_
@@ -123,13 +136,19 @@ bool FFmpegVideoProcessorImpl::Register(const FFmpegVideoFrameProcessor& p) {
 }
 
 bool FFmpegVideoProcessorImpl::Process(const ProcessOptions& opts) {
+    processor_opts_ = opts;
     decode_fps_ = opts.decode_fps;
     warm_up_frames_ = opts.warm_up_frames;
     skip_frames_ = opts.skip_frames;
+    start_over_ = opts.loop_forever;
+
+    open_context();
 
     demux_thread_ = std::thread([&] { demux_video_packet_(); });
     decode_thread_ = std::thread([&] { decode_video_frame_(); });
     process_thread_ = std::thread([&] { process_video_frame_(); });
+
+    started_ = true;
     return true;
 }
 
@@ -161,6 +180,8 @@ void FFmpegVideoProcessorImpl::demux_video_packet_() {
     }
     int sleep_ms = 1000 / decode_fps_;
 
+    is_demuxing_ = true;
+
     while (true) {
         std::unique_lock<std::mutex> lk(demux_mu_);
 
@@ -177,6 +198,8 @@ void FFmpegVideoProcessorImpl::demux_video_packet_() {
             std::cerr << "cannot read frame from context, ret: " << av_err2str(ret) << std::endl;
             break;
         }
+        DEFER(av_packet_unref(packet));
+
         if (packet->stream_index == video_stream_index_) {
             frame_count++;
             // create a new clone packet and make ref to src packet.
@@ -198,9 +221,12 @@ void FFmpegVideoProcessorImpl::demux_video_packet_() {
             // }
         } else {
             // unref explicitly, not really needed, because av_read_frame will unref it anyway.
-            av_packet_unref(packet);
+            // av_packet_unref(packet);
         }
     }
+
+    packet_ch_.close();
+    is_demuxing_ = false;
 
     av_packet_free(&packet);
 }
@@ -211,14 +237,21 @@ void FFmpegVideoProcessorImpl::decode_video_frame_() {
     DEFER(av_frame_free(&frame))
     // std::shared_ptr<bool> defer(nullptr, [&](bool *) {  });
 
+    is_decoding_ = true;
+
     while (true) {
         // copy out AVPacket from queue
         AVPacket* packet;
-        bool succ = packet_ch_ >> packet;
-        if (!succ) {
-            std::cerr << "cannot output from packet channel" << std::endl;
+        auto status = packet_ch_.try_output(packet);
+        if (status == CHANNEL_CLOSED) {
+            std::cerr << "cannot output from packet channel, closed" << std::endl;
             break;
+        } else if (status == CHANNEL_NOT_READY) {
+            // FIXME sleep ? block ?
+            // std::cerr << "cannot output from packet channel, not ready" << std::endl;
+            continue;
         }
+
         DEFER(av_packet_unref(packet));
 
         int ret = avcodec_send_packet(codec_context_, packet);
@@ -251,20 +284,35 @@ void FFmpegVideoProcessorImpl::decode_video_frame_() {
             // std::cout << "frame channel size: " << frame_ch_.size() << std::endl;
         }
     }
+
+    frame_ch_.close();
+    is_decoding_ = false;
 }
 
 void FFmpegVideoProcessorImpl::process_video_frame_() {
     long frame_id = 0;
+
+    is_processing_ = false;
+
     while (true) {
         if (quit_) {
             break;
         }
 
         AVFrame* f;
-        bool succ = frame_ch_ >> f;
-        if (!succ) {
-            std::cerr << "cannot output from frame channel" << std::endl;
+
+        auto status = frame_ch_.try_output(f);
+        if (status == CHANNEL_CLOSED) {
+            std::cerr << "cannot output from frame channel, closed" << std::endl;
+            break;
+        } else if (status == CHANNEL_NOT_READY) {
+            // FIXME sleep ? block ?
+            // std::cerr << "cannot output from frame channel, not ready" << std::endl;
+            continue;
         }
+
+        DEFER(av_frame_free(&f));
+
         // std::cout << "frame channel size: " << frame_ch_.size() << std::endl;
         //
         if (frame_id <= warm_up_frames_) {
@@ -279,8 +327,38 @@ void FFmpegVideoProcessorImpl::process_video_frame_() {
         if (frame_processor != nullptr) {
             frame_processor(std::make_unique<FFmpegVideoFrame>(++frame_id, f).get());
         }
+    }
 
-        av_frame_free(&f);
+    is_processing_ = false;
+}
+
+void FFmpegVideoProcessorImpl::monitor() {
+    while (true) {
+        if (quit_) {
+            break;
+        }
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        std::cout << "started_: " << started_ << ", is_demuxing_: " << is_demuxing_
+                  << ", is_decoding_: " << is_decoding_ << ", is_processing_: " << is_processing_
+                  << std::endl;
+
+        if (started_ && !is_demuxing_ && !is_decoding_ && !is_processing_) {
+            if (demux_thread_.joinable()) demux_thread_.join();
+            if (decode_thread_.joinable()) decode_thread_.join();
+            if (process_thread_.joinable()) process_thread_.join();
+
+            if (start_over_) {
+                std::cout << " start over processor " << std::endl;
+
+                packet_ch_ =Channel<AVPacket*>(10);
+                frame_ch_ =Channel<AVFrame*>(10);
+
+                Process(processor_opts_);
+            } else {
+                break;
+            }
+        }
     }
 }
 

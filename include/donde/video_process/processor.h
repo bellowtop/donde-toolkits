@@ -6,6 +6,7 @@ struct ProcessOptions {
     int warm_up_frames;
     int skip_frames;
     int decode_fps;
+    bool loop_forever;
 };
 
 class VideoProcessor {
