@@ -21,7 +21,7 @@ class FFmpegVideoProcessorImpl {
   public:
     FFmpegVideoProcessorImpl(const std::string& filepath);
 
-    bool Process();
+    bool Process(const ProcessOptions& opts);
     bool Register(const FFmpegVideoFrameProcessor& p);
 
     void ScaleFrame(const AVFrame* originalFrame, AVFrame * destFrame) const;
@@ -66,6 +66,10 @@ class FFmpegVideoProcessorImpl {
 
     size_t frame_count = 0;
     FFmpegVideoFrameProcessor frame_processor;
+
+    int decode_fps_ = 25;
+    int warm_up_frames_ = 0;
+    int skip_frames_ = 1;
 
     // used to send demuxed packet
     Channel<AVPacket*> packet_ch_;

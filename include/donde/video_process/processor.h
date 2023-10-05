@@ -2,9 +2,15 @@
 
 namespace donde_toolkits ::video_process {
 
+struct ProcessOptions {
+    int warm_up_frames;
+    int skip_frames;
+    int decode_fps;
+};
+
 class VideoProcessor {
   public:
-    virtual bool Process() = 0;
+    virtual bool Process(const ProcessOptions& opts) = 0;
 
     virtual bool Pause() = 0;
 
@@ -12,5 +18,6 @@ class VideoProcessor {
 
     virtual bool Stop() = 0;
 };
+
 
 } // namespace donde_toolkits::video_process

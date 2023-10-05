@@ -16,17 +16,8 @@ extern "C" {
 #include <libavutil/imgutils.h>
 }
 
-#ifdef av_err2str
-#    undef av_err2str
-#    include <string>
-av_always_inline std::string av_err2string(int errnum) {
-    char str[AV_ERROR_MAX_STRING_SIZE];
-    return av_make_error_string(str, AV_ERROR_MAX_STRING_SIZE, errnum);
-}
-#    define av_err2str(err) av_err2string(err).c_str()
-#endif // av_err2str
-
 #include "donde/video_process/ffmpeg_processor_impl.h"
+#include "donde/video_process/utils.h"
 
 namespace donde_toolkits ::video_process {
 
@@ -90,7 +81,7 @@ bool FFmpegVideoProcessorImpl::open_context() {
 
     sws_context_
         = sws_getContext(codec_context_->width, codec_context_->height, codec_context_->pix_fmt,
-                         codec_context_->width, codec_context_->height, AV_PIX_FMT_YUV420P,
+                         codec_context_->width, codec_context_->height, AV_PIX_FMT_BGR24,
                          SWS_BILINEAR, nullptr, nullptr, nullptr);
     if (sws_context_ == nullptr) {
         std::cout << "cannot get sws context" << std::endl;
@@ -131,7 +122,11 @@ bool FFmpegVideoProcessorImpl::Register(const FFmpegVideoFrameProcessor& p) {
     return true;
 }
 
-bool FFmpegVideoProcessorImpl::Process() {
+bool FFmpegVideoProcessorImpl::Process(const ProcessOptions& opts) {
+    decode_fps_ = opts.decode_fps;
+    warm_up_frames_ = opts.warm_up_frames;
+    skip_frames_ = opts.skip_frames;
+
     demux_thread_ = std::thread([&] { demux_video_packet_(); });
     decode_thread_ = std::thread([&] { decode_video_frame_(); });
     process_thread_ = std::thread([&] { process_video_frame_(); });
@@ -159,6 +154,12 @@ void FFmpegVideoProcessorImpl::demux_video_packet_() {
         std::cerr << "cannot allocate packet" << std::endl;
         return;
     }
+
+    // default fps is 25, but may speed up by client.
+    if (decode_fps_ == 0) {
+        decode_fps_ = 25;
+    }
+    int sleep_ms = 1000 / decode_fps_;
 
     while (true) {
         std::unique_lock<std::mutex> lk(demux_mu_);
@@ -188,7 +189,7 @@ void FFmpegVideoProcessorImpl::demux_video_packet_() {
 
             // std::cout << "packet channel size: " << packet_ch_.size() << std::endl;
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(40));
+            std::this_thread::sleep_for(std::chrono::milliseconds(sleep_ms));
 
             // // DEBUG: pause every 100 frames.
             // if (frame_count % 100 == 0) {
@@ -265,6 +266,15 @@ void FFmpegVideoProcessorImpl::process_video_frame_() {
             std::cerr << "cannot output from frame channel" << std::endl;
         }
         // std::cout << "frame channel size: " << frame_ch_.size() << std::endl;
+        //
+        if (frame_id <= warm_up_frames_) {
+            frame_id++;
+            continue;
+        }
+        if (frame_id % skip_frames_ != 0) {
+            frame_id++;
+            continue;
+        }
 
         if (frame_processor != nullptr) {
             frame_processor(std::make_unique<FFmpegVideoFrame>(++frame_id, f).get());
