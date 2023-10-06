@@ -194,7 +194,7 @@ RetCode DetectorWorker::process(const cv::Mat& img, DetectResult& result) {
     _infer_request->infer();
 
     const ov::Tensor output_tensor = _infer_request->get_output_tensor();
-    debugOutputTensor(output_tensor);
+    // debugOutputTensor(output_tensor);
 
     const float* tensor_data = output_tensor.data<float>();
     std::vector<FaceDetection> detected;

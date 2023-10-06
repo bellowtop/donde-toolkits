@@ -128,7 +128,7 @@ std::shared_ptr<DetectResult> FacePipelineImpl::Detect(std::shared_ptr<Frame> fr
     Value output;
 
     RetCode ret = _detectorProcessor->Process(input, output);
-    spdlog::info("FacePipelineImpl::Detect ret: {}", int(ret));
+    // spdlog::info("FacePipelineImpl::Detect ret: {}", int(ret));
 
     if (output.valueType != ValueDetectResult) {
         spdlog::error("Detect output is not ValueDetectResult, return empty result");
