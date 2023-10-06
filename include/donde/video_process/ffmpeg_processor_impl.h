@@ -19,9 +19,12 @@ namespace donde_toolkits ::video_process {
 
 class FFmpegVideoProcessorImpl {
   public:
-    FFmpegVideoProcessorImpl(const std::string& filepath);
+    FFmpegVideoProcessorImpl();
 
-    VideoStreamInfo Process(const ProcessOptions& opts);
+    VideoStreamInfo OpenVideoContext(const std::string& filepath);
+
+    void Process(const ProcessOptions& opts);
+
     bool Register(const FFmpegVideoFrameProcessor& p);
 
     void ScaleFrame(const AVFrame* originalFrame, AVFrame * destFrame) const;
@@ -46,7 +49,7 @@ class FFmpegVideoProcessorImpl {
     void monitor();
 
   private:
-    std::string filepath;
+    std::string video_filepath_;
 
     AVFormatContext* format_context_ = nullptr;
     AVCodecContext* codec_context_ = nullptr;

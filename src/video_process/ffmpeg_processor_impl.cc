@@ -22,28 +22,27 @@ extern "C" {
 
 namespace donde_toolkits ::video_process {
 
-FFmpegVideoProcessorImpl::FFmpegVideoProcessorImpl(const std::string& filepath)
-    : filepath{filepath}, packet_ch_{10}, frame_ch_{10} {
+FFmpegVideoProcessorImpl::FFmpegVideoProcessorImpl() : packet_ch_{10}, frame_ch_{10} {
     monitor_thread_ = std::thread([&] { monitor(); });
 }
 
 FFmpegVideoProcessorImpl::~FFmpegVideoProcessorImpl() {}
 
 bool FFmpegVideoProcessorImpl::open_context() {
-    int ret = avformat_open_input(&format_context_, filepath.c_str(), nullptr, nullptr);
+    int ret = avformat_open_input(&format_context_, video_filepath_.c_str(), nullptr, nullptr);
     if (ret < 0) {
-        std::cout << "cannot open input video file: " << filepath << std::endl;
+        std::cout << "cannot open input video file: " << video_filepath_ << std::endl;
         return false;
     }
 
     ret = avformat_find_stream_info(format_context_, nullptr);
     if (ret < 0) {
-        std::cout << "cannot find stream info: " << filepath << std::endl;
+        std::cout << "cannot find stream info: " << video_filepath_ << std::endl;
         return false;
     }
 
     // for debug only.
-    av_dump_format(format_context_, 0, filepath.c_str(), 0);
+    av_dump_format(format_context_, 0, video_filepath_.c_str(), 0);
 
     for (int i = 0; i < format_context_->nb_streams; i++) {
         if (format_context_->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_VIDEO
@@ -111,6 +110,12 @@ bool FFmpegVideoProcessorImpl::Resume() {
 }
 
 bool FFmpegVideoProcessorImpl::Stop() {
+    quit_ = true;
+    if (pause_) {
+        pause_ = false;
+        demux_cv_.notify_all();
+    }
+
     demux_thread_.join();
     // decode_thread_.join();
     // process_thread_.join();
@@ -123,36 +128,40 @@ bool FFmpegVideoProcessorImpl::Register(const FFmpegVideoFrameProcessor& p) {
     return true;
 }
 
-VideoStreamInfo FFmpegVideoProcessorImpl::Process(const ProcessOptions& opts) {
-    processor_opts_ = opts;
-    decode_fps_ = opts.decode_fps;
-    warm_up_frames_ = opts.warm_up_frames;
-    skip_frames_ = opts.skip_frames;
-    start_over_ = opts.loop_forever;
+VideoStreamInfo FFmpegVideoProcessorImpl::OpenVideoContext(const std::string& filepath) {
+    video_filepath_ = filepath;
 
     bool succ = open_context();
     if (!succ) {
         return VideoStreamInfo{.open_success = false};
     }
 
-    demux_thread_ = std::thread([&] { demux_video_packet_(); });
-    decode_thread_ = std::thread([&] { decode_video_frame_(); });
-    process_thread_ = std::thread([&] { process_video_frame_(); });
-
-    started_ = true;
-
     // video stream information, from open_context we get correct video_stream.
     auto video_stream = format_context_->streams[video_stream_index_];
     int64_t nb_frames = video_stream->nb_frames;
     int64_t duration_s = video_stream->duration / av_q2d(video_stream->time_base);
 
-    VideoStreamInfo stream_infomation {
+    VideoStreamInfo stream_infomation{
         .open_success = true,
         .nb_frames = nb_frames,
         .duration_s = duration_s,
     };
 
     return stream_infomation;
+}
+
+void FFmpegVideoProcessorImpl::Process(const ProcessOptions& opts) {
+    processor_opts_ = opts;
+    decode_fps_ = opts.decode_fps;
+    warm_up_frames_ = opts.warm_up_frames;
+    skip_frames_ = opts.skip_frames;
+    start_over_ = opts.loop_forever;
+
+    demux_thread_ = std::thread([&] { demux_video_packet_(); });
+    decode_thread_ = std::thread([&] { decode_video_frame_(); });
+    process_thread_ = std::thread([&] { process_video_frame_(); });
+
+    started_ = true;
 }
 
 void FFmpegVideoProcessorImpl::ScaleFrame(const AVFrame* originalFrame, AVFrame* destFrame) const {
@@ -371,6 +380,8 @@ void FFmpegVideoProcessorImpl::monitor() {
                 if (sws_context_) {
                     sws_freeContext(sws_context_);
                 }
+
+                OpenVideoContext(video_filepath_);
 
                 Process(processor_opts_);
 

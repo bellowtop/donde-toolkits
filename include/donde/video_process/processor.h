@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
 
 namespace donde_toolkits ::video_process {
 
@@ -19,7 +20,10 @@ struct VideoStreamInfo {
 
 class VideoProcessor {
   public:
-    virtual VideoStreamInfo Process(const ProcessOptions& opts) = 0;
+
+    virtual VideoStreamInfo OpenVideoContext(const std::string& filepath) = 0;
+
+    virtual void Process(const ProcessOptions& opts) = 0;
 
     virtual bool Pause() = 0;
 

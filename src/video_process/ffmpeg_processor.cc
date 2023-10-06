@@ -4,12 +4,15 @@
 
 namespace donde_toolkits ::video_process {
 
-FFmpegVideoProcessor::FFmpegVideoProcessor(const std::string& filepath)
-    : impl(new FFmpegVideoProcessorImpl(filepath)) {}
+FFmpegVideoProcessor::FFmpegVideoProcessor() : impl(new FFmpegVideoProcessorImpl()) {}
 
 FFmpegVideoProcessor::~FFmpegVideoProcessor(){};
 
-VideoStreamInfo FFmpegVideoProcessor::Process(const ProcessOptions& opts) { return impl->Process(opts); };
+VideoStreamInfo FFmpegVideoProcessor::OpenVideoContext(const std::string& filepath) {
+    return impl->OpenVideoContext(filepath);
+};
+
+void FFmpegVideoProcessor::Process(const ProcessOptions& opts) { impl->Process(opts); };
 
 bool FFmpegVideoProcessor::Register(const FFmpegVideoFrameProcessor& p) {
     return impl->Register(p);

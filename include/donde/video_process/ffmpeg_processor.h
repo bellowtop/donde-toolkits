@@ -36,9 +36,11 @@ class FFmpegVideoProcessorImpl;
 
 class FFmpegVideoProcessor : public VideoProcessor {
   public:
-    FFmpegVideoProcessor(const std::string& filepath);
+    FFmpegVideoProcessor();
 
-    VideoStreamInfo Process(const ProcessOptions& opts);
+    VideoStreamInfo OpenVideoContext(const std::string& filepath);
+    void Process(const ProcessOptions& opts);
+
     bool Register(const FFmpegVideoFrameProcessor& p);
     void ScaleFrame(const AVFrame* originalFrame, AVFrame* destFrame) const;
     bool Pause();
