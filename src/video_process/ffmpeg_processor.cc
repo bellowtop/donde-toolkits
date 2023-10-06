@@ -9,7 +9,7 @@ FFmpegVideoProcessor::FFmpegVideoProcessor(const std::string& filepath)
 
 FFmpegVideoProcessor::~FFmpegVideoProcessor(){};
 
-bool FFmpegVideoProcessor::Process(const ProcessOptions& opts) { return impl->Process(opts); };
+VideoStreamInfo FFmpegVideoProcessor::Process(const ProcessOptions& opts) { return impl->Process(opts); };
 
 bool FFmpegVideoProcessor::Register(const FFmpegVideoFrameProcessor& p) {
     return impl->Register(p);

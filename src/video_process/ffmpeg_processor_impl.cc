@@ -30,10 +30,6 @@ FFmpegVideoProcessorImpl::FFmpegVideoProcessorImpl(const std::string& filepath)
 FFmpegVideoProcessorImpl::~FFmpegVideoProcessorImpl() {}
 
 bool FFmpegVideoProcessorImpl::open_context() {
-    if (format_context_) {
-        avformat_close_input(&format_context_);
-    }
-
     int ret = avformat_open_input(&format_context_, filepath.c_str(), nullptr, nullptr);
     if (ret < 0) {
         std::cout << "cannot open input video file: " << filepath << std::endl;
@@ -78,18 +74,10 @@ bool FFmpegVideoProcessorImpl::open_context() {
         return false;
     }
 
-    if (codec_context_) {
-        avcodec_close(codec_context_);
-    }
-
     ret = avcodec_open2(codec_context_, avcodec, nullptr);
     if (ret < 0) {
         std::cout << "cannot avcodec_open2, ret: " << av_err2str(ret) << std::endl;
         return false;
-    }
-
-    if (sws_context_) {
-        sws_freeContext(sws_context_);
     }
 
     sws_context_
@@ -131,25 +119,40 @@ bool FFmpegVideoProcessorImpl::Stop() {
 }
 
 bool FFmpegVideoProcessorImpl::Register(const FFmpegVideoFrameProcessor& p) {
-    frame_processor = p;
+    frame_processor_ = p;
     return true;
 }
 
-bool FFmpegVideoProcessorImpl::Process(const ProcessOptions& opts) {
+VideoStreamInfo FFmpegVideoProcessorImpl::Process(const ProcessOptions& opts) {
     processor_opts_ = opts;
     decode_fps_ = opts.decode_fps;
     warm_up_frames_ = opts.warm_up_frames;
     skip_frames_ = opts.skip_frames;
     start_over_ = opts.loop_forever;
 
-    open_context();
+    bool succ = open_context();
+    if (!succ) {
+        return VideoStreamInfo{.open_success = false};
+    }
 
     demux_thread_ = std::thread([&] { demux_video_packet_(); });
     decode_thread_ = std::thread([&] { decode_video_frame_(); });
     process_thread_ = std::thread([&] { process_video_frame_(); });
 
     started_ = true;
-    return true;
+
+    // video stream information, from open_context we get correct video_stream.
+    auto video_stream = format_context_->streams[video_stream_index_];
+    int64_t nb_frames = video_stream->nb_frames;
+    int64_t duration_s = video_stream->duration / av_q2d(video_stream->time_base);
+
+    VideoStreamInfo stream_infomation {
+        .open_success = true,
+        .nb_frames = nb_frames,
+        .duration_s = duration_s,
+    };
+
+    return stream_infomation;
 }
 
 void FFmpegVideoProcessorImpl::ScaleFrame(const AVFrame* originalFrame, AVFrame* destFrame) const {
@@ -324,8 +327,8 @@ void FFmpegVideoProcessorImpl::process_video_frame_() {
             continue;
         }
 
-        if (frame_processor != nullptr) {
-            frame_processor(std::make_unique<FFmpegVideoFrame>(++frame_id, f).get());
+        if (frame_processor_ != nullptr) {
+            frame_processor_(std::make_unique<FFmpegVideoFrame>(++frame_id, f).get());
         }
     }
 
@@ -344,17 +347,33 @@ void FFmpegVideoProcessorImpl::monitor() {
                   << std::endl;
 
         if (started_ && !is_demuxing_ && !is_decoding_ && !is_processing_) {
-            if (demux_thread_.joinable()) demux_thread_.join();
-            if (decode_thread_.joinable()) decode_thread_.join();
-            if (process_thread_.joinable()) process_thread_.join();
+            if (demux_thread_.joinable())
+                demux_thread_.join();
+            if (decode_thread_.joinable())
+                decode_thread_.join();
+            if (process_thread_.joinable())
+                process_thread_.join();
 
             if (start_over_) {
                 std::cout << " start over processor " << std::endl;
 
-                packet_ch_ =Channel<AVPacket*>(10);
-                frame_ch_ =Channel<AVFrame*>(10);
+                packet_ch_ = Channel<AVPacket*>(10);
+                frame_ch_ = Channel<AVFrame*>(10);
+
+                if (format_context_) {
+                    avformat_close_input(&format_context_);
+                }
+
+                if (codec_context_) {
+                    avcodec_close(codec_context_);
+                }
+
+                if (sws_context_) {
+                    sws_freeContext(sws_context_);
+                }
 
                 Process(processor_opts_);
+
             } else {
                 break;
             }

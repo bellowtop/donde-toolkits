@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 namespace donde_toolkits ::video_process {
 
 struct ProcessOptions {
@@ -9,9 +11,15 @@ struct ProcessOptions {
     bool loop_forever;
 };
 
+struct VideoStreamInfo {
+    bool open_success;
+    int64_t nb_frames;
+    int64_t duration_s;
+};
+
 class VideoProcessor {
   public:
-    virtual bool Process(const ProcessOptions& opts) = 0;
+    virtual VideoStreamInfo Process(const ProcessOptions& opts) = 0;
 
     virtual bool Pause() = 0;
 
