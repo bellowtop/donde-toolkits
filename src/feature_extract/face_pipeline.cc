@@ -62,6 +62,11 @@ std::shared_ptr<Frame> FacePipeline::Decode(const std::vector<uint8_t>& image_da
     return pimpl->Decode(image_data);
 }
 
+std::shared_ptr<DetectResult> FacePipeline::Detect(const cv::Mat& mat) {
+    auto frame = std::make_shared<Frame>(mat);
+    return pimpl->Detect(frame);
+}
+
 std::shared_ptr<DetectResult> FacePipeline::Detect(std::shared_ptr<Frame> frame) {
     return pimpl->Detect(frame);
 }

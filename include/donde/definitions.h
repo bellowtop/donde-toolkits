@@ -31,7 +31,7 @@ enum RetCode { RET_OK, RET_ERR };
 
 struct Frame {
     Frame(){};
-    Frame(const cv::Mat& img) : image(img.clone()){};
+    Frame(const cv::Mat& img) : image(img){};
     cv::Mat image;
 };
 

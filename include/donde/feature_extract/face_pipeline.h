@@ -1,7 +1,6 @@
 #pragma once
 
 #include "donde/definitions.h"
-#include "nlohmann/json.hpp"
 #include "processor.h"
 
 #include <map>
@@ -27,8 +26,10 @@ class IFacePipeline {
 
     virtual RetCode Terminate() = 0;
 
+
     virtual std::shared_ptr<Frame> Decode(const std::vector<uint8_t>& image_data) = 0;
 
+    virtual std::shared_ptr<DetectResult> Detect(const cv::Mat& mat) = 0;
     virtual std::shared_ptr<DetectResult> Detect(const std::shared_ptr<Frame> frame) = 0;
 
     virtual std::shared_ptr<LandmarksResult>
@@ -57,6 +58,7 @@ class FacePipeline : public IFacePipeline {
 
     RetCode Terminate() override;
 
+    std::shared_ptr<DetectResult> Detect(const cv::Mat& mat) override;
     std::shared_ptr<Frame> Decode(const std::vector<uint8_t>& image_data) override;
 
     std::shared_ptr<DetectResult> Detect(const std::shared_ptr<Frame> frame) override;
