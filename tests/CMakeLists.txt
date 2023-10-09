@@ -30,18 +30,23 @@ file(GLOB_RECURSE sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/*.cc)
 add_executable(${PROJECT_NAME} ${headers} ${sources})
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 
-# make sure to include the conans headers BEFORE system headers(the brew headers)
-target_include_directories(${PROJECT_NAME}
-    BEFORE
-    PRIVATE
-    ${CONAN_INCLUDE_DIRS}
-)
+find_package(GTest REQUIRED)
+
+message("find GTest")
 
 target_link_libraries(${PROJECT_NAME}
   PUBLIC
   ${${CMAKE_PROJECT_NAME}_TEST_LIB}
-  CONAN_PKG::gtest
+  GTest::GTest
+  fmt::fmt
+  spdlog::spdlog
+  Poco::Poco
+  SQLiteCpp
+  nlohmann_json::nlohmann_json
 )
+
+
+
 message("linked ${CMAKE_PROJECT_NAME}_TEST_LIB: ${${CMAKE_PROJECT_NAME}_TEST_LIB}")
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})

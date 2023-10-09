@@ -1,7 +1,6 @@
 #pragma once
 
 #include "donde/feature_extract/processor.h"
-#include "src/feature_extract/concurrent_processor.h"
 #include "src/feature_extract/worker.h"
 
 #include <gmock/gmock.h>
