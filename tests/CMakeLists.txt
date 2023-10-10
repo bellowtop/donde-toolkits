@@ -37,7 +37,7 @@ message("find GTest")
 target_link_libraries(${PROJECT_NAME}
   PUBLIC
   ${${CMAKE_PROJECT_NAME}_TEST_LIB}
-  GTest::GTest
+  gtest::gtest
   fmt::fmt
   spdlog::spdlog
   Poco::Poco

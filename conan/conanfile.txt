@@ -13,7 +13,7 @@ toml11/3.7.1
 nlohmann_json/3.10.5
 doctest/2.4.11
 
-gtest/cci.20210126
+gtest/1.14.0
 
 
 trompeloeil/42
@@ -36,4 +36,3 @@ poco/*:enable_data_postgresql=False
 poco/*:enable_data_sqlite=False
 poco/*:enable_redis=False
 poco/*:enable_jwt=False
-
