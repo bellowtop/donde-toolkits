@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdint.h>
 #ifndef SPDLOG_FMT_EXTERNAL
 
 #    define SPDLOG_FMT_EXTERNAL
@@ -23,7 +24,6 @@
 #include <sstream>
 #include <string>
 #include <vector>
-
 
 namespace donde_toolkits {
 
@@ -59,6 +59,14 @@ struct Feature {
     std::string model;
     int version;
     int dimension;
+
+    // 4 bytes in header,
+    //   (16 bits for version, max value 131072),
+    //   (10 bits for dimension, max value 2048, well, that's a huge dimension for feature)
+    //   (6  bits for reserved.)
+    // note body size can be calculated from dimension
+    static std::array<uint8_t, 4> SerializeHeader(const Feature& ft);
+    static std::vector<uint8_t> SerializeBody(const Feature& ft);
 
     Feature(std::vector<float>&& data) : raw{data}, dimension(data.size()){};
     Feature(std::vector<float>&& data, std::string&& model, int version)
