@@ -117,7 +117,7 @@ struct Feature {
 };
 
 using FeatureSerializeHeader = std::array<uint8_t, 4>;
-using FeatureSerializeBody = std::array<uint8_t, 4> std::vector<uint8_t>;
+using FeatureSerializeBody = std::vector<uint8_t>;
 
 // 4 bytes in header,
 //   (16 bits for version, max value 131072),
