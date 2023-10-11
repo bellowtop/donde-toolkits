@@ -1,5 +1,6 @@
 #pragma once
 
+#include <_types/_uint8_t.h>
 #include <stdint.h>
 #ifndef SPDLOG_FMT_EXTERNAL
 
@@ -60,14 +61,6 @@ struct Feature {
     int version;
     int dimension;
 
-    // 4 bytes in header,
-    //   (16 bits for version, max value 131072),
-    //   (10 bits for dimension, max value 2048, well, that's a huge dimension for feature)
-    //   (6  bits for reserved.)
-    // note body size can be calculated from dimension
-    static std::array<uint8_t, 4> SerializeHeader(const Feature& ft);
-    static std::vector<uint8_t> SerializeBody(const Feature& ft);
-
     Feature(std::vector<float>&& data) : raw{data}, dimension(data.size()){};
     Feature(std::vector<float>&& data, std::string&& model, int version)
         : raw{data}, model{model}, version{version}, dimension(data.size()){};
@@ -122,6 +115,21 @@ struct Feature {
     // message pack
     //// MSGPACK_DEFINE(model, version, dimension, raw)
 };
+
+using FeatureSerializeHeader = std::array<uint8_t, 4>;
+using FeatureSerializeBody = std::array<uint8_t, 4> std::vector<uint8_t>;
+
+// 4 bytes in header,
+//   (16 bits for version, max value 131072),
+//   (10 bits for dimension, max value 2048, well, that's a huge dimension for feature)
+//   (6  bits for reserved.)
+// note body size can be calculated from dimension
+static void SerializeHeader(const Feature& ft, const FeatureSerializeHeader& header);
+// vector size: dimension * 4 bytes (each float has 4 bytes.)
+static void SerializeBody(const Feature& ft, const FeatureSerializeBody& body);
+
+static void DeserializeHeader(const FeatureSerializeHeader& header, const Feature& ft);
+static void DeserializeBody(const FeatureSerializeBody& body, const Feature& ft);
 
 struct FeatureScore {
     Feature feature;
