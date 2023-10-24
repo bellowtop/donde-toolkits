@@ -27,7 +27,7 @@ class FFmpegVideoProcessorImpl {
 
     bool Register(const FFmpegVideoFrameProcessor& p);
 
-    void ScaleFrame(const AVFrame* originalFrame, AVFrame * destFrame) const;
+    void ScaleFrame(const AVFrame* originalFrame, AVFrame* destFrame) const;
 
     bool Pause();
     bool IsPaused();
@@ -79,7 +79,7 @@ class FFmpegVideoProcessorImpl {
     ProcessOptions processor_opts_;
 
     size_t frame_count = 0;
-    FFmpegVideoFrameProcessor frame_processor_;
+    std::vector<FFmpegVideoFrameProcessor> frame_processor_list_;
 
     int decode_fps_ = 25;
     int warm_up_frames_ = 0;

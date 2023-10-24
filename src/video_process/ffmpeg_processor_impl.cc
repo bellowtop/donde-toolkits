@@ -124,7 +124,7 @@ bool FFmpegVideoProcessorImpl::Stop() {
 }
 
 bool FFmpegVideoProcessorImpl::Register(const FFmpegVideoFrameProcessor& p) {
-    frame_processor_ = p;
+    frame_processor_list_.push_back(p);
     return true;
 }
 
@@ -336,8 +336,8 @@ void FFmpegVideoProcessorImpl::process_video_frame_() {
             continue;
         }
 
-        if (frame_processor_ != nullptr) {
-            frame_processor_(std::make_unique<FFmpegVideoFrame>(++frame_id, f).get());
+        for (const auto& func : frame_processor_list_) {
+            func(std::make_unique<FFmpegVideoFrame>(++frame_id, f).get());
         }
     }
 
