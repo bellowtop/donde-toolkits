@@ -1,6 +1,7 @@
-#include "channel.h"
 #include "donde/defer.h"
+#include "msd/channel.hpp"
 
+#include <Poco/Notification.h>
 #include <chrono>
 #include <iostream>
 #include <memory>
@@ -22,8 +23,8 @@ extern "C" {
 
 namespace donde_toolkits ::video_process {
 
-FFmpegVideoProcessorImpl::FFmpegVideoProcessorImpl() : packet_ch_{10}, frame_ch_{10} {
-    monitor_thread_ = std::thread([&] { monitor(); });
+FFmpegVideoProcessorImpl::FFmpegVideoProcessorImpl() {
+    // monitor_thread_ = std::thread([&] { monitor(); });
 }
 
 FFmpegVideoProcessorImpl::~FFmpegVideoProcessorImpl() {}
@@ -92,19 +93,27 @@ bool FFmpegVideoProcessorImpl::open_context() {
 }
 
 bool FFmpegVideoProcessorImpl::Pause() {
-    std::lock_guard<std::mutex> lk(demux_mu_);
-    pause_ = true;
+    {
+        std::lock_guard<std::mutex> lk(demux_mu_);
+        pause_ = true;
+    }
     return true;
 }
 
 bool FFmpegVideoProcessorImpl::IsPaused() {
-    std::lock_guard<std::mutex> lk(demux_mu_);
-    return pause_;
+    bool ret;
+    {
+        std::lock_guard<std::mutex> lk(demux_mu_);
+        ret = pause_;
+    }
+    return ret;
 }
 
 bool FFmpegVideoProcessorImpl::Resume() {
-    std::lock_guard<std::mutex> lk(demux_mu_);
-    pause_ = false;
+    {
+        std::lock_guard<std::mutex> lk(demux_mu_);
+        pause_ = false;
+    }
     demux_cv_.notify_all();
     return true;
 }
@@ -139,7 +148,7 @@ VideoStreamInfo FFmpegVideoProcessorImpl::OpenVideoContext(const std::string& fi
     // video stream information, from open_context we get correct video_stream.
     auto video_stream = format_context_->streams[video_stream_index_];
     int64_t nb_frames = video_stream->nb_frames;
-    int64_t duration_s = video_stream->duration / av_q2d(video_stream->time_base);
+    int64_t duration_s = video_stream->duration * av_q2d(video_stream->time_base);
 
     VideoStreamInfo stream_infomation{
         .open_success = true,
@@ -195,10 +204,11 @@ void FFmpegVideoProcessorImpl::demux_video_packet_() {
     is_demuxing_ = true;
 
     while (true) {
-        std::unique_lock<std::mutex> lk(demux_mu_);
-
-        if (pause_) {
-            demux_cv_.wait(lk, [&] { return pause_ == false; });
+        {
+            std::unique_lock<std::mutex> lk(demux_mu_);
+            if (pause_) {
+                demux_cv_.wait(lk, [&] { return pause_ == false; });
+            }
         }
 
         if (quit_) {
@@ -216,11 +226,7 @@ void FFmpegVideoProcessorImpl::demux_video_packet_() {
             frame_count++;
             // create a new clone packet and make ref to src packet.
             AVPacket* cloned = av_packet_clone(packet);
-            bool succ = packet_ch_ << cloned;
-            if (!succ) {
-                std::cerr << "cannot input to packet" << std::endl;
-                av_packet_unref(cloned);
-            }
+            packet_ch_ << cloned;
 
             // std::cout << "packet channel size: " << packet_ch_.size() << std::endl;
 
@@ -254,16 +260,7 @@ void FFmpegVideoProcessorImpl::decode_video_frame_() {
     while (true) {
         // copy out AVPacket from queue
         AVPacket* packet;
-        auto status = packet_ch_.try_output(packet);
-        if (status == CHANNEL_CLOSED) {
-            std::cerr << "cannot output from packet channel, closed" << std::endl;
-            break;
-        } else if (status == CHANNEL_NOT_READY) {
-            // FIXME sleep ? block ?
-            // std::cerr << "cannot output from packet channel, not ready" << std::endl;
-            continue;
-        }
-
+        packet_ch_ >> packet;
         DEFER(av_packet_unref(packet));
 
         int ret = avcodec_send_packet(codec_context_, packet);
@@ -288,11 +285,7 @@ void FFmpegVideoProcessorImpl::decode_video_frame_() {
             // will alloc and ref-count a new frame.
             // make the original frame ref-count + 1
             // do we have to unref the original frame? no.
-            bool succ = frame_ch_ << av_frame_clone(frame);
-            if (!succ) {
-                std::cerr << "cannot input to frame channel" << std::endl;
-                break;
-            }
+            frame_ch_ << av_frame_clone(frame);
             // std::cout << "frame channel size: " << frame_ch_.size() << std::endl;
         }
     }
@@ -312,21 +305,9 @@ void FFmpegVideoProcessorImpl::process_video_frame_() {
         }
 
         AVFrame* f;
-
-        auto status = frame_ch_.try_output(f);
-        if (status == CHANNEL_CLOSED) {
-            std::cerr << "cannot output from frame channel, closed" << std::endl;
-            break;
-        } else if (status == CHANNEL_NOT_READY) {
-            // FIXME sleep ? block ?
-            // std::cerr << "cannot output from frame channel, not ready" << std::endl;
-            continue;
-        }
-
+        frame_ch_ >> f;
         DEFER(av_frame_free(&f));
 
-        // std::cout << "frame channel size: " << frame_ch_.size() << std::endl;
-        //
         if (frame_id <= warm_up_frames_) {
             frame_id++;
             continue;
@@ -365,9 +346,6 @@ void FFmpegVideoProcessorImpl::monitor() {
 
             if (start_over_) {
                 std::cout << " start over processor " << std::endl;
-
-                packet_ch_ = Channel<AVPacket*>(10);
-                frame_ch_ = Channel<AVFrame*>(10);
 
                 if (format_context_) {
                     avformat_close_input(&format_context_);

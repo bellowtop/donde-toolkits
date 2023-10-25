@@ -32,6 +32,8 @@ find_package(SQLiteCpp REQUIRED)
 find_package(nlohmann_json REQUIRED)
 
 
+
+
 # ---- Create library ----
 file(GLOB_RECURSE sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cc)
 file(GLOB_RECURSE sources_h CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
@@ -48,6 +50,26 @@ target_link_libraries(${PROJECT_NAME}
     SQLiteCpp
     nlohmann_json::nlohmann_json
 )
+
+##
+# 3rdparty
+##
+# add_subdirectory(3rdparty/cppchannel)
+# target_link_libraries(${PROJECT_NAME}
+#     PRIVATE
+#     cppchannel
+# )
+# target_include_directories(${PROJECT_NAME}
+#     PRIVATE
+#     ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/cppchannel
+# )
+
+add_subdirectory(3rdparty/cpp-channel)
+target_include_directories(${PROJECT_NAME}
+    PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/cpp-channel/include
+)
+
 
 
 ## ffmpeg
@@ -90,19 +112,6 @@ target_include_directories(${PROJECT_NAME}
     PUBLIC
     ${FFMPEG_INCLUDE_DIRS}
     ${OpenCV_INCLUDE_DIRS}
-)
-
-##
-# 3rdparty
-##
-add_subdirectory(3rdparty/cppchannel)
-target_link_libraries(${PROJECT_NAME}
-    PRIVATE
-    cppchannel
-)
-target_include_directories(${PROJECT_NAME}
-    PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/cppchannel
 )
 
 #

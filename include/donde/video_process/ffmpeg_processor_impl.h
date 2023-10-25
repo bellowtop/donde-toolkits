@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Poco/Notification.h>
 extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
@@ -7,8 +8,8 @@ extern "C" {
 #include <libswscale/swscale.h>
 }
 
-#include "channel.h"
 #include "ffmpeg_processor.h"
+#include "msd/channel.hpp"
 
 #include <condition_variable>
 #include <memory>
@@ -85,10 +86,10 @@ class FFmpegVideoProcessorImpl {
     int warm_up_frames_ = 0;
     int skip_frames_ = 1;
 
-    // used to send demuxed packet
-    Channel<AVPacket*> packet_ch_;
-    // used to send decoded frame
-    Channel<AVFrame*> frame_ch_;
+    // used to send demuxed packet, un-buffered
+    msd::channel<AVPacket*> packet_ch_{1};
+    // used to send decoded frame, un-buffered
+    msd::channel<AVFrame*> frame_ch_{1};
 };
 
 } // namespace donde_toolkits::video_process

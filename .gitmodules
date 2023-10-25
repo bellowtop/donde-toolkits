@@ -1,0 +1,3 @@
+[submodule "3rdparty/cpp-channel"]
+	path = 3rdparty/cpp-channel
+	url = https://github.com/andreiavrammsd/cpp-channel.git
