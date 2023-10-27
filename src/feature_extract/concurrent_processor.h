@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Poco/Notification.h"
-#include "Poco/NotificationQueue.h"
 #include "Poco/ThreadPool.h"
 #include "donde/definitions.h"
 #include "donde/feature_extract/processor.h"
@@ -13,11 +11,9 @@
 #include <memory>
 #include <type_traits>
 
-using Poco::NotificationQueue;
 using Poco::ThreadPool;
 
 using namespace Poco;
-
 
 using json = nlohmann::json;
 
