@@ -3,11 +3,11 @@
 #include "Poco/Notification.h"
 #include "Poco/NotificationQueue.h"
 #include "donde/definitions.h"
-#include "openvino_worker.h"
 #include "donde/message.h"
 #include "donde/utils.h"
 #include "opencv2/opencv.hpp"
 #include "openvino/openvino.hpp"
+#include "openvino_worker.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
 
@@ -161,8 +161,6 @@ RetCode LandmarksWorker::process(const DetectResult& detect_result, LandmarksRes
         result.faces.push_back(face_img);
 
         const size_t data_length = face_img.channels() * _image_width * _image_height;
-        std::shared_ptr<unsigned char> data_ptr;
-        data_ptr.reset(new unsigned char[data_length], std::default_delete<unsigned char[]>());
 
         // size of each batch.
         const size_t image_size
@@ -177,7 +175,7 @@ RetCode LandmarksWorker::process(const DetectResult& detect_result, LandmarksRes
 
         ov::Tensor input_tensor = _infer_request->get_input_tensor();
 
-        std::memcpy(input_tensor.data<std::uint8_t>(), data_ptr.get(), image_size);
+        std::memcpy(input_tensor.data<std::uint8_t>(), resized_img.data, image_size);
 
         _infer_request->infer();
 
