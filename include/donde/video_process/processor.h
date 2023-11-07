@@ -15,12 +15,12 @@ struct ProcessOptions {
 struct VideoStreamInfo {
     bool open_success;
     int64_t nb_frames;
-    int64_t duration_s;
+    int64_t duration_seconds;
+    double avg_frame_rate;
 };
 
 class VideoProcessor {
   public:
-
     virtual VideoStreamInfo OpenVideoContext(const std::string& filepath) = 0;
 
     virtual void Process(const ProcessOptions& opts) = 0;
@@ -31,6 +31,5 @@ class VideoProcessor {
 
     virtual bool Stop() = 0;
 };
-
 
 } // namespace donde_toolkits::video_process

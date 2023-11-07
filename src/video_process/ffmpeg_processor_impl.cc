@@ -147,16 +147,18 @@ VideoStreamInfo FFmpegVideoProcessorImpl::OpenVideoContext(const std::string& fi
 
     // video stream information, from open_context we get correct video_stream.
     auto video_stream = format_context_->streams[video_stream_index_];
+    double avg_frame_rate = av_q2d(video_stream->avg_frame_rate);
     int64_t nb_frames = video_stream->nb_frames;
-    int64_t duration_s = video_stream->duration * av_q2d(video_stream->time_base);
+    int64_t duration_seconds = video_stream->duration * av_q2d(video_stream->time_base);
 
-    VideoStreamInfo stream_infomation{
+    VideoStreamInfo info{
         .open_success = true,
         .nb_frames = nb_frames,
-        .duration_s = duration_s,
+        .duration_seconds = duration_seconds,
+        .avg_frame_rate = avg_frame_rate,
     };
 
-    return stream_infomation;
+    return info;
 }
 
 void FFmpegVideoProcessorImpl::Process(const ProcessOptions& opts) {
