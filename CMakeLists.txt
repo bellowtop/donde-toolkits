@@ -56,59 +56,61 @@ if (${PROJECT_NAME}_ENABLE_EXAMPLES)
 endif ()
 
 
-####
-#### ##########################################
-#### ### cmake install
-#### ##########################################
-####
-#### set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/install" CACHE PATH "where the library will be installed to " FORCE)
-#### install(TARGETS ${PROJECT_NAME}
-####     EXPORT "${PROJECT_NAME}Targets"
-####     PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
-####     INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-#### )
-####
-#### include(GNUInstallDirs)
-#### foreach(header ${headers})
-####     file(RELATIVE_PATH header_file_path "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}" "${header}")
-####     get_filename_component(header_directory_path "${header_file_path}" DIRECTORY)
-####     install(FILES ${header} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${header_directory_path}")
-#### endforeach()
-####
-####
-####
-#### ##########################################
-#### ### generate and install export file
-#### ##########################################
-#### set(namespace "donde")
-####
-#### install(EXPORT "${PROJECT_NAME}Targets"
-####     FILE "${PROJECT_NAME}Targets.cmake"
-####     NAMESPACE ${namespace}::
-####     DESTINATION cmake
-#### )
-#### include(CMakePackageConfigHelpers)
-####
-#### # generate version file from config file
-#### write_basic_package_version_file(
-####     "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-####     VERSION "${version}"
-####     COMPATIBILITY  AnyNewerVersion
-#### )
-#### # create config file, depends on ./Config.cmake.in
-#### configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
-####     "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-####     INSTALL_DESTINATION cmake
-#### )
-#### # install config file
-#### install(FILES
-####     "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-####     "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-####     DESTINATION cmake
-#### )
-#### # generate the export targets for the build tree
-#### export(EXPORT "${PROJECT_NAME}Targets"
-####     FILE "${CMAKE_CURRENT_BINARY_DIR}/cmake/${PROJECT_NAME}Targets.cmake"
-####     NAMESPACE ${namespace}::
-#### )
-####
+
+
+
+##########################################
+### cmake install
+##########################################
+
+set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/install" CACHE PATH "where the library will be installed to " FORCE)
+install(TARGETS ${PROJECT_NAME}
+    EXPORT "${PROJECT_NAME}Targets"
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+include(GNUInstallDirs)
+foreach(header ${headers})
+    file(RELATIVE_PATH header_file_path "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}" "${header}")
+    get_filename_component(header_directory_path "${header_file_path}" DIRECTORY)
+    install(FILES ${header} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${header_directory_path}")
+endforeach()
+
+
+
+##########################################
+### generate and install export file
+##########################################
+set(namespace "donde")
+
+install(EXPORT "${PROJECT_NAME}Targets"
+    FILE "${PROJECT_NAME}Targets.cmake"
+    NAMESPACE ${namespace}::
+    DESTINATION cmake
+)
+include(CMakePackageConfigHelpers)
+
+# generate version file from config file
+write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+    VERSION "${version}"
+    COMPATIBILITY  AnyNewerVersion
+)
+# create config file, depends on ./Config.cmake.in
+configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
+    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+    INSTALL_DESTINATION cmake
+)
+# install config file
+install(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+    DESTINATION cmake
+)
+# generate the export targets for the build tree
+export(EXPORT "${PROJECT_NAME}Targets"
+    FILE "${CMAKE_CURRENT_BINARY_DIR}/cmake/${PROJECT_NAME}Targets.cmake"
+    NAMESPACE ${namespace}::
+)
+
