@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 
-project(DondeToolkits VERSION 0.0.1 LANGUAGES CXX)
+project(video_process VERSION 0.0.1 LANGUAGES CXX)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 message("CMAKE_C_COMPILER: ${CMAKE_C_COMPILER}")
@@ -8,53 +8,97 @@ message("CMAKE_CXX_COMPILER: ${CMAKE_CXX_COMPILER}")
 
 
 
-# file(GLOB_RECURSE sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/donde/*.cc)
-file(GLOB_RECURSE headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/donde/*.h)
-add_library(${PROJECT_NAME} ${headers})
-include_directories(src)
-
-if (${PROJECT_NAME}_feature_extract)
-    add_subdirectory(src/feature_extract)
-    target_link_libraries(${PROJECT_NAME} PRIVATE feature_extract)
-endif()
-
-if (${PROJECT_NAME}_feature_identity)
-    add_subdirectory(src/feature_identity)
-    target_link_libraries(${PROJECT_NAME} PRIVATE feature_identity)
-endif()
-
-if (${PROJECT_NAME}_feature_search)
-    add_subdirectory(src/feature_search)
-    target_link_libraries(${PROJECT_NAME} PRIVATE feature_search)
-endif()
-
-if (${PROJECT_NAME}_video_process)
-    add_subdirectory(src/video_process)
-    target_link_libraries(${PROJECT_NAME} PRIVATE video_process)
-endif()
+## set(CMAKE_PREFIX_PATH "build" ${CMAKE_PREFIX_PATH})
+find_package(fmt REQUIRED)
+find_package(spdlog REQUIRED)
+find_package(Poco REQUIRED)
+find_package(SQLiteCpp REQUIRED)
+find_package(nlohmann_json REQUIRED)
 
 
-target_include_directories(${PROJECT_NAME}
-    PUBLIC
-    $<INSTALL_INTERFACE:include>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+
+
+# ---- Create library ----
+file(GLOB_RECURSE sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cc)
+file(GLOB_RECURSE sources_h CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
+file(GLOB_RECURSE headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/include/*)
+
+add_library(video_process ${sources} ${sources_h} ${headers})
+
+target_link_libraries(video_process
+    PRIVATE
+    fmt::fmt
+    spdlog::spdlog
+    nlohmann_json::nlohmann_json
+)
+
+add_subdirectory(3rdparty/cpp-channel)
+target_include_directories(video_process
+    PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/cpp-channel/include
 )
 
 
-# string(TOLOWER ${PROJECT_NAME}/version.h VERSION_HEADER_LOCATION)
+
+## ffmpeg
+##
+# CMAKE_MODULE_PATH:FILEPATH=./cmake
+##
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/../cmake)
+
+##
+# Find FFmpeg include directories and link libraries.
+# Find OpenCV
+# Find OpenVino
+##
+
+find_package(FFMPEG REQUIRED)
+message("FFMPEG_LIBRARIES: ${FFMPEG_LIBRARIES}")
+message("FFMPEG_INCLUDE_DIRS: ${FFMPEG_INCLUDE_DIRS}")
+
+find_package(OpenCV REQUIRED CONFIG)
+message("OpenCV_FOUND: ${OpenCV_FOUND}")
+message("OpenCV_LIBS: ${OpenCV_LIBS}")
+
+# we use opencv openvino in our implementation, so link them PRIVATE'ly
+target_link_libraries(video_process
+    PRIVATE
+    ${OpenCV_LIBS}
+    openvino::runtime
+)
+# we use ffmpeg in our public header. so link it PUBLIC'ly
+target_link_libraries(video_process
+    PUBLIC
+    ${FFMPEG_LIBRARIES}
+)
+
+target_include_directories(video_process
+    # these are system headers, managed by homebrew
+    SYSTEM
+    PUBLIC
+    ${FFMPEG_INCLUDE_DIRS}
+    ${OpenCV_INCLUDE_DIRS}
+)
 
 
-
-if (${PROJECT_NAME}_ENABLE_UNIT_TESTING)
-    enable_testing()
-    message(STATUS "Build unit tests for the project. Tests should always be found in the test folder\n")
-    add_subdirectory(tests)
-endif ()
-
-if (${PROJECT_NAME}_ENABLE_EXAMPLES)
-    add_subdirectory(examples)
-endif ()
-
+#####
+#####
+#####
+##### # string(TOLOWER ${PROJECT_NAME}/version.h VERSION_HEADER_LOCATION)
+#####
+#####
+#####
+##### if (${PROJECT_NAME}_ENABLE_UNIT_TESTING)
+#####     enable_testing()
+#####     message(STATUS "Build unit tests for the project. Tests should always be found in the test folder\n")
+#####     add_subdirectory(tests)
+##### endif ()
+#####
+##### if (${PROJECT_NAME}_ENABLE_EXAMPLES)
+#####     add_subdirectory(examples)
+##### endif ()
+#####
+#####
 
 ####
 #### ##########################################
@@ -111,4 +155,5 @@ endif ()
 ####     FILE "${CMAKE_CURRENT_BINARY_DIR}/cmake/${PROJECT_NAME}Targets.cmake"
 ####     NAMESPACE ${namespace}::
 #### )
+#### #####
 ####
