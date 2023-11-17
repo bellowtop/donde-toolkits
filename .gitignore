@@ -1,8 +1,6 @@
 /install
-/build
-/build2
-!/build/compile_commands.json
-!/build2/compile_commands.json
+bazel-*
+generated
 
 /*_openvino_*
 /.vscode

@@ -1,4 +1,9 @@
 [requires]
+
+# opencv/4.5.5
+# ffmpeg/6.1
+# openvino/2023.1.0
+
 fmt/10.1.1
 pcre2/10.42
 zlib/1.2.13
@@ -21,8 +26,7 @@ trompeloeil/42
 spdlog/1.12.0
 
 [generators]
-CMakeDeps
-CMakeToolchain
+BazelDeps
 
 [options]
 poco/*:enable_net=False

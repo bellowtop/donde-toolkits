@@ -1,0 +1,16 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "feature_extract",
+    srcs = glob(["src/**/*.cc", "src/**/*.h"]),
+    hdrs = glob(["include/**/*.h"]),
+    copts = ["-Imodules/feature_extract/include"],
+    visibility = ["//:__pkg__"],
+    deps = [
+        "//modules/common:common",
+        "@fmt//:fmt",
+        "@spdlog//:spdlog",
+        "@poco//:poco",
+        "@nlohmann_json//:nlohmann_json",
+    ],
+)
