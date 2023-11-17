@@ -23,7 +23,7 @@ file(GLOB_RECURSE sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cc
 file(GLOB_RECURSE sources_h CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
 file(GLOB_RECURSE headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/include/*)
 
-add_library(video_process ${sources} ${sources_h} ${headers})
+add_library(video_process OBJECT ${sources} ${sources_h} ${headers})
 
 target_link_libraries(video_process
     PRIVATE
@@ -44,12 +44,12 @@ target_include_directories(video_process
 ##
 # CMAKE_MODULE_PATH:FILEPATH=./cmake
 ##
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/../cmake)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/../../cmake)
+message("CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}")
 
 ##
 # Find FFmpeg include directories and link libraries.
 # Find OpenCV
-# Find OpenVino
 ##
 
 find_package(FFMPEG REQUIRED)
@@ -60,12 +60,6 @@ find_package(OpenCV REQUIRED CONFIG)
 message("OpenCV_FOUND: ${OpenCV_FOUND}")
 message("OpenCV_LIBS: ${OpenCV_LIBS}")
 
-# we use opencv openvino in our implementation, so link them PRIVATE'ly
-target_link_libraries(video_process
-    PRIVATE
-    ${OpenCV_LIBS}
-    openvino::runtime
-)
 # we use ffmpeg in our public header. so link it PUBLIC'ly
 target_link_libraries(video_process
     PUBLIC
@@ -80,6 +74,12 @@ target_include_directories(video_process
     ${OpenCV_INCLUDE_DIRS}
 )
 
+
+target_include_directories(video_process
+    PUBLIC
+    $<INSTALL_INTERFACE:include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
 
 #####
 #####

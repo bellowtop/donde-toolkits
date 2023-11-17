@@ -23,7 +23,7 @@ file(GLOB_RECURSE sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cc
 file(GLOB_RECURSE sources_h CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
 file(GLOB_RECURSE headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/include/*)
 
-add_library(feature_extract ${sources} ${sources_h} ${headers})
+add_library(feature_extract OBJECT ${sources} ${sources_h} ${headers})
 
 target_link_libraries(feature_extract
     PRIVATE

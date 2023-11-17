@@ -1,7 +1,6 @@
 #include "donde/defer.h"
 #include "msd/channel.hpp"
 
-#include <Poco/Notification.h>
 #include <chrono>
 #include <iostream>
 #include <memory>
