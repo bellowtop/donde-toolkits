@@ -4,6 +4,7 @@ cc_library(
     name = "common",
     srcs = glob([]),
     hdrs = glob(["include/**/*.h"]),
-    copts = ["-I./modules/common/include"],
+    strip_include_prefix = "include",
+    # copts = ["-I./modules/common/include"],
     visibility = ["//visibility:public"]
 )

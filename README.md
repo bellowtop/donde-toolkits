@@ -87,8 +87,7 @@ conan install --build=missing --profile conan/conanprofile.m1  -if build ./conan
 
 ```bash
 
-cmake -B build -DDondeToolkits_ENABLE_UNIT_TESTING=true -DDondeToolkits_ENABLE_EXAMPLES=true
-cmake --build build
+bazel build --config=clang++  //:donde
 ```
 
 ```

@@ -1,5 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 
+
 cc_library(
     name = "feature_extract",
     srcs = glob(["src/**/*.cc", "src/**/*.h"]),
@@ -12,5 +13,7 @@ cc_library(
         "@spdlog//:spdlog",
         "@poco//:poco",
         "@nlohmann_json//:nlohmann_json",
+        "@opencv//:opencv",
+        "@openvino//:openvino",
     ],
 )
