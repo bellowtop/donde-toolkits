@@ -7,8 +7,6 @@
 #include <memory>
 #include <type_traits>
 
-
-
 using json = nlohmann::json;
 
 using donde_toolkits::feature_extract::ConcurrentProcessor;
@@ -19,6 +17,7 @@ using donde_toolkits::feature_extract::openvino_worker::LandmarksWorker;
 
 namespace donde_toolkits ::feature_extract {
 
+void ProcessorFactory::printVersion() { std::cout << "vv" << std::endl; };
 Processor* ProcessorFactory::createDetector() { return new ConcurrentProcessor<DetectorWorker>(); };
 Processor* ProcessorFactory::createLandmarks() {
     return new ConcurrentProcessor<LandmarksWorker>();
