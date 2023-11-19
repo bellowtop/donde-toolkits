@@ -1,5 +1,13 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 
+##
+## prepare header files
+##
+filegroup(
+    name = "headers",
+    srcs = glob(["include/**/*.h"]),
+    visibility = ["//visibility:public"],
+)
 
 cc_library(
     name = "feature_extract",
@@ -7,8 +15,7 @@ cc_library(
     hdrs = glob(["include/**/*.h"]),
     includes = ["include"],
     copts = ["-Imodules/feature_extract/include"],
-    visibility = ["//:__pkg__"],
-    linkstatic = True,
+    visibility = ["//visibility:public"],
     deps = [
         "//modules/common:common",
         "@fmt//:fmt",
