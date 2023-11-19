@@ -8,6 +8,12 @@ new_local_repository(
 )
 
 new_local_repository(
+    name = "ffmpeg",
+    path = "/opt/homebrew/Cellar/ffmpeg/6.0_1",
+    build_file = "brew/ffmpeg.BUILD",
+)
+
+new_local_repository(
     name = "openvino",
     path = "/opt/homebrew/Cellar/openvino/2023.1.0/",
     build_file = "brew/openvino.BUILD",
@@ -69,3 +75,39 @@ http_archive(
 )
 load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
 rules_pkg_dependencies()
+
+
+
+#
+# cmake
+#
+
+http_archive(
+    name = "rules_foreign_cc",
+    # TODO: Get the latest sha256 value from a bazel debug message or the latest
+    #       release on the releases page: https://github.com/bazelbuild/rules_foreign_cc/releases
+    #
+    # sha256 = "...",
+    strip_prefix = "rules_foreign_cc-0258d350a9ff4c5145f131b7247d161a432dec8d",
+    url = "https://github.com/bazelbuild/rules_foreign_cc/archive/0258d350a9ff4c5145f131b7247d161a432dec8d.tar.gz",
+)
+
+load("@rules_foreign_cc//foreign_cc:repositories.bzl", "rules_foreign_cc_dependencies")
+
+rules_foreign_cc_dependencies()
+
+
+
+
+
+#
+# cpp-channel
+#
+
+_ALL_CONTENT = """\
+filegroup(
+    name = "all_srcs",
+    srcs = glob(["**"]),
+    visibility = ["//visibility:public"],
+)
+"""

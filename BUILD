@@ -9,7 +9,8 @@ load("//:cc_combine.bzl", "cc_combine")
 
 string_flag(
 	name = "enable_module",
-	build_setting_default = "feature_extract",
+    values = ["feature_extract", "feature_search", "video_process"],
+    build_setting_default = "feature_extract",
 )
 
 config_setting(
@@ -88,15 +89,8 @@ config_setting(
 pkg_tar(
     name = "release",
     srcs = select({
-        ":feature_extract": [
-            "//modules/feature_extract:headers",
-            "//modules/feature_extract:feature_extract",
-        ],
-        # ":feature_search": ["//modules/feature_search:headers"],
-        ":video_process": [
-            "//modules/video_process:headers",
-            "//modules/video_process:video_process",
-        ],
+        ":feature_extract": ["//modules/feature_extract:headers", "//modules/feature_extract:feature_extract",],
+        ":video_process": ["//modules/video_process:headers", "//modules/video_process:video_process",],
     }),
     remap_paths = {
         "modules/feature_extract": ".",

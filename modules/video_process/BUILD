@@ -1,4 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_foreign_cc//foreign_cc:defs.bzl", "cmake")
+
 
 ##
 ## prepare header files
@@ -10,10 +12,10 @@ filegroup(
 )
 
 cc_library(
-    name = "feature_extract",
+    name = "video_process",
     srcs = glob(["src/**/*.cc", "src/**/*.h"]),
-    hdrs = glob(["include/**/*.h"]),
-    includes = ["include"],
+    hdrs = glob(["include/**/*.h", "include/**/*.hpp", "include/**/*.inl"]),
+    includes = ["include", "include/msd"],
     copts = ["-Imodules/video_process/include"],
     visibility = ["//visibility:public"],
     deps = [
@@ -22,5 +24,6 @@ cc_library(
         "@spdlog//:spdlog",
         "@poco//:poco",
         "@nlohmann_json//:nlohmann_json",
+        "@ffmpeg//:ffmpeg",
     ],
 )
