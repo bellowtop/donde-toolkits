@@ -8,6 +8,7 @@ cc_library(
     includes = ["include"],
     copts = ["-Imodules/feature_extract/include"],
     visibility = ["//:__pkg__"],
+    linkstatic = True,
     deps = [
         "//modules/common:common",
         "@fmt//:fmt",
