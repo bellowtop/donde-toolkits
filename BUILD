@@ -88,10 +88,14 @@ config_setting(
 
 pkg_tar(
     name = "release",
-    srcs = select({
-        ":feature_extract": ["//modules/feature_extract:headers", "//modules/feature_extract:feature_extract",],
-        ":video_process": ["//modules/video_process:headers", "//modules/video_process:video_process",],
-    }),
+    # srcs = select({
+    #     ":feature_extract": ["//modules/feature_extract:headers", "//modules/feature_extract:feature_extract",],
+    #     ":video_process": ["//modules/video_process:headers", "//modules/video_process:video_process",],
+    # }),
+    srcs = [
+        "//modules/feature_extract:header_files", "//modules/feature_extract:feature_extract",
+        "//modules/video_process:header_files", "//modules/video_process:video_process",
+    ],
     remap_paths = {
         "modules/feature_extract": ".",
         "modules/feature_search": ".",
