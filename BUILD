@@ -104,12 +104,11 @@ pkg_tar(
     strip_prefix = ".",
 )
 
-### load("@com_github_google_rules_install//installer:def.bzl", "installer")
-### installer(
-###     name = "install_donde",
-###     data = select({
-###     	":feature_extract": ["//modules/feature_extract:feature_extract"],
-###     	":feature_search": ["//modules/feature_search:feature_search"],
-###     	":video_process": ["//modules/video_process:video_process"],
-###     }),
-### )
+## load("@com_github_google_rules_install//installer:def.bzl", "installer")
+## installer(
+##     name = "install_donde",
+##     data = [
+##         "//modules/feature_extract:header_files", "//modules/feature_extract:feature_extract",
+##         "//modules/video_process:header_files", "//modules/video_process:video_process",
+##     ],
+## )

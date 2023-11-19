@@ -46,9 +46,16 @@ bazel_skylib_workspace()
 #
 http_archive(
     name = "com_github_google_rules_install",
-    urls = ["https://github.com/google/bazel_rules_install/releases/download/0.3/bazel_rules_install-0.3.tar.gz"],
-    sha256 = "ea2a9f94fed090859589ac851af3a1c6034c5f333804f044f8f094257c33bdb3",
-    strip_prefix = "bazel_rules_install-0.3",
+    urls = [
+        "https://github.com/google/bazel_rules_install/archive/5ae7c2a8d22de2558098e3872fc7f3f7edc61fb4.zip",
+    ],
+    # The installer uses an option -T that is not available on MacOS, but
+    # it is benign to leave out.
+    # Upstream bug https://github.com/google/bazel_rules_install/issues/31
+    patch_args = ["-p1"],
+    patches = ["//bazel:installer.patch"],
+    sha256 = "880217b21dbd40928bbe3bca3d97bd4de7d70d5383665ec007d7e1aac41d9739",
+    strip_prefix = "bazel_rules_install-5ae7c2a8d22de2558098e3872fc7f3f7edc61fb4",
 )
 
 load("@com_github_google_rules_install//:deps.bzl", "install_rules_dependencies")
