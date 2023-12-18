@@ -150,12 +150,22 @@ VideoStreamInfo FFmpegVideoProcessorImpl::OpenVideoContext(const std::string& fi
     int64_t nb_frames = video_stream->nb_frames;
     int64_t duration_seconds = video_stream->duration * av_q2d(video_stream->time_base);
 
+    if (codec_context_ == nullptr) {
+        std::cerr << "!!! codec_context_ == nullptr !!!" << std::endl;
+        return {};
+    }
+
     VideoStreamInfo info{
         .open_success = true,
         .nb_frames = nb_frames,
         .duration_seconds = duration_seconds,
         .avg_frame_rate = avg_frame_rate,
+        .width = codec_context_->width,
+        .height = codec_context_->height,
     };
+
+    std::cout << "openVideoContext width: " << info.width << " height: " << info.height
+              << std::endl;
 
     return info;
 }

@@ -87,7 +87,7 @@ conan install --build=missing --profile conan/conanprofile.m1  -if build ./conan
 
 ```bash
 
-bazel build --config=clang++  //:donde
+bazel build --config=clang++  //:release
 ```
 
 ```

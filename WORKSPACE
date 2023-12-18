@@ -3,19 +3,19 @@ load_conan_dependencies()
 
 new_local_repository(
     name = "opencv",
-    path = "/opt/homebrew/Cellar/opencv/4.8.1_1",
+    path = "/opt/homebrew/Cellar/opencv/4.8.1_5",
     build_file = "brew/opencv.BUILD",
 )
 
 new_local_repository(
     name = "ffmpeg",
-    path = "/opt/homebrew/Cellar/ffmpeg/6.0_1",
+    path = "/opt/homebrew/Cellar/ffmpeg/6.0_2",
     build_file = "brew/ffmpeg.BUILD",
 )
 
 new_local_repository(
     name = "openvino",
-    path = "/opt/homebrew/Cellar/openvino/2023.1.0/",
+    path = "/opt/homebrew/Cellar/openvino/2023.2.0/",
     build_file = "brew/openvino.BUILD",
 )
 

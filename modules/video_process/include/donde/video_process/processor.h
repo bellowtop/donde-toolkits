@@ -17,6 +17,8 @@ struct VideoStreamInfo {
     int64_t nb_frames;
     int64_t duration_seconds;
     double avg_frame_rate;
+    int width;
+    int height;
 };
 
 class VideoProcessor {
