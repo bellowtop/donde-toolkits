@@ -15,7 +15,7 @@ poco/1.12.4
 sqlitecpp/3.2.0
 
 toml11/3.7.1
-nlohmann_json/3.10.5
+nlohmann_json/3.11.2
 doctest/2.4.11
 
 gtest/1.14.0
