@@ -9,7 +9,7 @@ new_local_repository(
 
 new_local_repository(
     name = "ffmpeg",
-    path = "/opt/homebrew/Cellar/ffmpeg/6.0_2",
+    path = "/opt/homebrew/Cellar/ffmpeg/6.1.1_2",
     build_file = "brew/ffmpeg.BUILD",
 )
 

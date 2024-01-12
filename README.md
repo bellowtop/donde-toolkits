@@ -79,8 +79,8 @@ source /opt/intel/openvino_2022/setupvars.sh
 #### Build conan dependency packages
 
 ```bash
-mkdir -p build
-conan install --build=missing --profile conan/conanprofile.m1  -if build ./conan
+mkdir -p generated
+conan install --build=missing  -of generated ./conan
 ```
 
 #### Build toolkits with testings
