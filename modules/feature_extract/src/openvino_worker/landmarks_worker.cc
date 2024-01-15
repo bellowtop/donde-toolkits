@@ -2,6 +2,7 @@
 #include "Poco/Logger.h"
 #include "Poco/Notification.h"
 #include "Poco/NotificationQueue.h"
+#include "donde/debug.h"
 #include "donde/definitions.h"
 #include "donde/message.h"
 #include "donde/utils.h"

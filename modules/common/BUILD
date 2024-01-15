@@ -6,5 +6,8 @@ cc_library(
     hdrs = glob(["include/**/*.h"]),
     strip_include_prefix = "include",
     # copts = ["-I./modules/common/include"],
-    visibility = ["//visibility:public"]
+    visibility = ["//visibility:public"],
+    deps = [
+        "@opencv//:opencv",
+    ]
 )

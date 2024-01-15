@@ -12,8 +12,6 @@
 #include <unordered_map>
 #include <vector>
 
-
-
 namespace donde_toolkits ::feature_search ::search_worker {
 
 class ShardManagerImpl;
