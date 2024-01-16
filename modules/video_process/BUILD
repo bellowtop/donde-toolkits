@@ -6,7 +6,7 @@ load("@rules_foreign_cc//foreign_cc:defs.bzl", "cmake")
 ## prepare header files
 ##
 filegroup(
-    name = "header_files",
+    name = "install_header_files",
     srcs = glob(["include/**/*.h", "include/**/*.hpp", "include/**/*.inl"]),
     visibility = ["//visibility:public"],
 )

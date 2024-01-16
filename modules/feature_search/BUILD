@@ -4,7 +4,7 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
 ## prepare header files
 ##
 filegroup(
-    name = "header_files",
+    name = "install_header_files",
     srcs = glob(["include/**/*.h"]),
     visibility = ["//visibility:public"],
 )

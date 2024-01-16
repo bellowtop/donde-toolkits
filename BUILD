@@ -93,14 +93,16 @@ pkg_tar(
     #     ":video_process": ["//modules/video_process:headers", "//modules/video_process:video_process",],
     # }),
     srcs = [
-        "//modules/feature_extract:header_files", "//modules/feature_extract:feature_extract",
-        "//modules/video_process:header_files", "//modules/video_process:video_process",
-        "//modules/feature_search:header_files", "//modules/feature_search:feature_search",
+        "//modules/feature_extract:install_header_files", "//modules/feature_extract:feature_extract",
+        "//modules/video_process:install_header_files", "//modules/video_process:video_process",
+        "//modules/feature_search:install_header_files", "//modules/feature_search:feature_search",
+        "//modules/common:install_header_files",
     ],
     remap_paths = {
         "modules/feature_extract": ".",
         "modules/feature_search": ".",
         "modules/video_process": ".",
+        "modules/common": ".",
     },
     strip_prefix = ".",
 )
