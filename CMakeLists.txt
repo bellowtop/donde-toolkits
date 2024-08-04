@@ -6,31 +6,110 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 message("CMAKE_C_COMPILER: ${CMAKE_C_COMPILER}")
 message("CMAKE_CXX_COMPILER: ${CMAKE_CXX_COMPILER}")
 
-# if (NOT DEFINED CONAN_ALREADY_SETUP)
-#   include(cmake-build-debug/conanbuildinfo.cmake)
-#   conan_basic_setup(TARGETS)
-#   set(CONAN_ALREADY_SETUP true)
-# endif()
+set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
+
+
+include(cmake/CPM.cmake)
+
+
+CPMAddPackage(
+    NAME fmt
+    GIT_REPOSITORY "https://github.com/fmtlib/fmt.git"
+    GIT_TAG 11.0.2
+)
+
+
+CPMAddPackage(
+    NAME spdlog
+    GIT_REPOSITORY "https://github.com/gabime/spdlog.git"
+    GIT_TAG v1.14.1
+)
+
+
+CPMAddPackage(
+    NAME Poco
+    GIT_REPOSITORY "https://github.com/pocoproject/poco.git"
+    GIT_TAG poco-1.13.3-release
+    OPTIONS "ENABLE_DATA OFF"
+)
+
+
+CPMAddPackage(
+    NAME SQLiteCpp
+    GIT_REPOSITORY "https://github.com/SRombauts/SQLiteCpp.git"
+    GIT_TAG 3.3.1
+)
+
+
+CPMAddPackage(
+    NAME nlohmann_json
+    GIT_REPOSITORY "https://github.com/nlohmann/json.git"
+    GIT_TAG v3.11.3
+)
 
 
 
-# faiss
-# find_package(faiss CONFIG REQUIRED)
-# if (faiss_FOUND)
-#   message(STATUS "faiss found ${faiss_FOUND}, ${faiss_INCLUDE_DIR}, ${faiss_LIBRARIES}")
-# else()
-#   message(STATUS "faiss not found, ${faiss_INCLUDE_DIR}, ${faiss_LIBRARIES}")
-# endif()
+CPMAddPackage(
+    NAME cpp-channel
+    GIT_REPOSITORY "https://github.com/andreiavrammsd/cpp-channel.git"
+    GIT_TAG v0.8.2
+)
 
 
 
-## set(CMAKE_PREFIX_PATH "build" ${CMAKE_PREFIX_PATH})
-find_package(fmt REQUIRED)
-find_package(spdlog REQUIRED)
-find_package(Poco REQUIRED)
-find_package(SQLiteCpp REQUIRED)
-find_package(nlohmann_json REQUIRED)
 
+
+
+
+# include(FetchContent)
+
+# FetchContent_Declare(
+#     fmt
+#     GIT_REPOSITORY "https://github.com/fmtlib/fmt.git"
+#     GIT_TAG 11.0.2
+# )
+# FetchContent_MakeAvailable(fmt)
+
+
+# FetchContent_Declare(
+#     spdlog
+#     GIT_REPOSITORY "https://github.com/gabime/spdlog.git"
+#     GIT_TAG v1.14.1
+# )
+# FetchContent_MakeAvailable(spdlog)
+
+
+# FetchContent_Declare(
+#     Poco
+#     GIT_REPOSITORY "https://github.com/pocoproject/poco.git"
+#     GIT_TAG poco-1.13.3-release
+# )
+# FetchContent_MakeAvailable(Poco)
+
+
+# FetchContent_Declare(
+#     SQLiteCpp
+#     GIT_REPOSITORY "https://github.com/SRombauts/SQLiteCpp.git"
+#     GIT_TAG 3.3.1
+# )
+# FetchContent_MakeAvailable(SQLiteCpp)
+
+
+# FetchContent_Declare(
+#     nlohmann_json
+#     GIT_REPOSITORY "https://github.com/nlohmann/json.git"
+#     GIT_TAG v3.11.3
+# )
+# FetchContent_MakeAvailable(nlohmann_json)
+
+
+
+# FetchContent_Declare(
+#     cpp-channel
+#     GIT_REPOSITORY "https://github.com/andreiavrammsd/cpp-channel.git"
+#     GIT_TAG v0.8.2
+# )
+# FetchContent_MakeAvailable(cpp-channel)
 
 
 
@@ -45,52 +124,27 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
     fmt::fmt
     spdlog::spdlog
-    Poco::Poco
-    #### msgpack::msgpack
+    Poco::Foundation
     SQLiteCpp
     nlohmann_json::nlohmann_json
-)
-
-##
-# 3rdparty
-##
-# add_subdirectory(3rdparty/cppchannel)
-# target_link_libraries(${PROJECT_NAME}
-#     PRIVATE
-#     cppchannel
-# )
-# target_include_directories(${PROJECT_NAME}
-#     PRIVATE
-#     ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/cppchannel
-# )
-
-add_subdirectory(3rdparty/cpp-channel)
-target_include_directories(${PROJECT_NAME}
-    PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/cpp-channel/include
+    cpp-channel
 )
 
 
 
-## ffmpeg
-##
-# CMAKE_MODULE_PATH:FILEPATH=./cmake
-##
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-##
-# Find FFmpeg include directories and link libraries.
-# Find OpenCV
-# Find OpenVino
-##
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+set(FFMPEG_HOME_DIR "C:/Users/nicke/Downloads/libraries/ffmpeg-master-latest-win64-gpl-shared")
+find_package(FFMPEG)
 
-find_package(FFMPEG REQUIRED)
 message("FFMPEG_LIBRARIES: ${FFMPEG_LIBRARIES}")
 message("FFMPEG_INCLUDE_DIRS: ${FFMPEG_INCLUDE_DIRS}")
 
+list(APPEND CMAKE_PREFIX_PATH "C:/Users/nicke/Downloads/libraries/opencv4.8-build")
 find_package(OpenCV REQUIRED CONFIG)
 message("OpenCV_FOUND: ${OpenCV_FOUND}")
 message("OpenCV_LIBS: ${OpenCV_LIBS}")
 
+list(APPEND CMAKE_PREFIX_PATH "C:/Users/nicke/Downloads/libraries/w_openvino_toolkit_windows_2023.0.2.11065.e662b1a3301_x86_64/runtime/cmake")
 find_package(OpenVINO REQUIRED COMPONENTS Runtime)
 message("OpenVINO_FOUND: ${OpenVINO_FOUND}")
 message("OpenVINO_Runtime_FOUND: ${OpenVINO_Runtime_FOUND}")
@@ -149,69 +203,69 @@ endif ()
 
 
 
-if (${PROJECT_NAME}_ENABLE_UNIT_TESTING)
-    enable_testing()
-    message(STATUS "Build unit tests for the project. Tests should always be found in the test folder\n")
-    add_subdirectory(tests)
-endif ()
+# if (${PROJECT_NAME}_ENABLE_UNIT_TESTING)
+#     enable_testing()
+#     message(STATUS "Build unit tests for the project. Tests should always be found in the test folder\n")
+#     add_subdirectory(tests)
+# endif ()
 
-if (${PROJECT_NAME}_ENABLE_EXAMPLES)
-    add_subdirectory(examples)
-endif ()
-
-
-
-##########################################
-### cmake install
-##########################################
-
-set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/install" CACHE PATH "where the library will be installed to " FORCE)
-install(TARGETS ${PROJECT_NAME}
-    EXPORT "${PROJECT_NAME}Targets"
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
-    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-)
-
-include(GNUInstallDirs)
-foreach(header ${headers})
-    file(RELATIVE_PATH header_file_path "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}" "${header}")
-    get_filename_component(header_directory_path "${header_file_path}" DIRECTORY)
-    install(FILES ${header} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${header_directory_path}")
-endforeach()
+# if (${PROJECT_NAME}_ENABLE_EXAMPLES)
+#     add_subdirectory(examples)
+# endif ()
 
 
 
-##########################################
-### generate and install export file
-##########################################
-set(namespace "donde")
+# ##########################################
+# ### cmake install
+# ##########################################
 
-install(EXPORT "${PROJECT_NAME}Targets"
-    FILE "${PROJECT_NAME}Targets.cmake"
-    NAMESPACE ${namespace}::
-    DESTINATION cmake
-)
-include(CMakePackageConfigHelpers)
+# set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/install" CACHE PATH "where the library will be installed to " FORCE)
+# install(TARGETS ${PROJECT_NAME}
+#     EXPORT "${PROJECT_NAME}Targets"
+#     PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
+#     INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+# )
 
-# generate version file from config file
-write_basic_package_version_file(
-    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-    VERSION "${version}"
-    COMPATIBILITY  AnyNewerVersion
-)
-# create config file, depends on ./Config.cmake.in
-configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
-    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-    INSTALL_DESTINATION cmake
-)
-# install config file
-install(FILES
-    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-    DESTINATION cmake
-)
-# generate the export targets for the build tree
-export(EXPORT "${PROJECT_NAME}Targets"
-    FILE "${CMAKE_CURRENT_BINARY_DIR}/cmake/${PROJECT_NAME}Targets.cmake"
-    NAMESPACE ${namespace}::
-)
+# include(GNUInstallDirs)
+# foreach(header ${headers})
+#     file(RELATIVE_PATH header_file_path "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}" "${header}")
+#     get_filename_component(header_directory_path "${header_file_path}" DIRECTORY)
+#     install(FILES ${header} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${header_directory_path}")
+# endforeach()
+
+
+
+# ##########################################
+# ### generate and install export file
+# ##########################################
+# set(namespace "donde")
+
+# install(EXPORT "${PROJECT_NAME}Targets"
+#     FILE "${PROJECT_NAME}Targets.cmake"
+#     NAMESPACE ${namespace}::
+#     DESTINATION cmake
+# )
+# include(CMakePackageConfigHelpers)
+
+# # generate version file from config file
+# write_basic_package_version_file(
+#     "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+#     VERSION "${version}"
+#     COMPATIBILITY  AnyNewerVersion
+# )
+# # create config file, depends on ./Config.cmake.in
+# configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
+#     "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+#     INSTALL_DESTINATION cmake
+# )
+# # install config file
+# install(FILES
+#     "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+#     "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+#     DESTINATION cmake
+# )
+# # generate the export targets for the build tree
+# export(EXPORT "${PROJECT_NAME}Targets"
+#     FILE "${CMAKE_CURRENT_BINARY_DIR}/cmake/${PROJECT_NAME}Targets.cmake"
+#     NAMESPACE ${namespace}::
+# )

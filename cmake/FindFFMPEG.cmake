@@ -17,10 +17,16 @@ set(${FFMPEG_FOUND} TRUE)
 # Find libavcodec.
 ##
 find_path(AVCODEC_INCLUDE_DIR libavcodec/avcodec.h
-        PATHS ${FFMPEG_HOME_DIR})
-find_library(AVCODEC_LIBRARY avcodec
-        PATHS ${FFMPEG_HOME_DIR}
+        HINTS ${FFMPEG_HOME_DIR}/include
 )
+find_library(AVCODEC_LIBRARY avcodec
+        HINTS ${FFMPEG_HOME_DIR}/lib
+)
+
+message("FFMPEG_HOME_DIR: ${FFMPEG_HOME_DIR}")
+
+message("AVCODEC_INCLUDE_DIR: ${AVCODEC_INCLUDE_DIR}")
+message("AVCODEC_LIBRARY: ${AVCODEC_LIBRARY}")
 
 ##
 # Add in libavcodec if found.
@@ -36,8 +42,8 @@ endif(AVCODEC_INCLUDE_DIR AND AVCODEC_LIBRARY)
 ##
 # Find libavformat
 ##
-find_path(AVFORMAT_INCLUDE_DIR libavformat/avformat.h)
-find_library(AVFORMAT_LIBRARY avformat)
+find_path(AVFORMAT_INCLUDE_DIR libavformat/avformat.h HINTS ${FFMPEG_HOME_DIR}/include)
+find_library(AVFORMAT_LIBRARY avformat HINTS ${FFMPEG_HOME_DIR}/lib)
 
 ##
 # Add in libavformat if found.
@@ -52,8 +58,8 @@ endif(AVFORMAT_INCLUDE_DIR AND AVFORMAT_LIBRARY)
 ##
 # Find libavdevice.
 ##
-find_path(AVDEVICE_INCLUDE_DIR libavdevice/avdevice.h)
-find_library(AVDEVICE_LIBRARY avdevice)
+find_path(AVDEVICE_INCLUDE_DIR libavdevice/avdevice.h HINTS ${FFMPEG_HOME_DIR}/include)
+find_library(AVDEVICE_LIBRARY avdevice HINTS ${FFMPEG_HOME_DIR}/lib)
 
 ##
 # Add in libavdevice if found.
@@ -68,8 +74,8 @@ endif(AVDEVICE_INCLUDE_DIR AND AVDEVICE_LIBRARY)
 ##
 # Find libavutil.
 ##
-find_path(AVUTIL_INCLUDE_DIR libavutil/avutil.h)
-find_library(AVUTIL_LIBRARY avutil)
+find_path(AVUTIL_INCLUDE_DIR libavutil/avutil.h HINTS ${FFMPEG_HOME_DIR}/include)
+find_library(AVUTIL_LIBRARY avutil HINTS ${FFMPEG_HOME_DIR}/lib)
 
 ##
 # Add in libavutil if found.
@@ -84,8 +90,8 @@ endif(AVUTIL_INCLUDE_DIR AND AVUTIL_LIBRARY)
 ##
 # Find libavfilter.
 ##
-find_path(AVFILTER_INCLUDE_DIR libavfilter/avfilter.h)
-find_library(AVFILTER_LIBRARY avfilter)
+find_path(AVFILTER_INCLUDE_DIR libavfilter/avfilter.h HINTS ${FFMPEG_HOME_DIR}/include)
+find_library(AVFILTER_LIBRARY avfilter HINTS ${FFMPEG_HOME_DIR}/lib)
 
 ##
 # Add in libavfilter if found.
@@ -100,8 +106,8 @@ endif(AVFILTER_INCLUDE_DIR AND AVFILTER_LIBRARY)
 ##
 # Find libswscale.
 ##
-find_path(SWSCALE_INCLUDE_DIR libswscale/swscale.h)
-find_library(SWSCALE_LIBRARY swscale)
+find_path(SWSCALE_INCLUDE_DIR libswscale/swscale.h HINTS ${FFMPEG_HOME_DIR}/include)
+find_library(SWSCALE_LIBRARY swscale HINTS ${FFMPEG_HOME_DIR}/lib)
 
 ##
 # Add in libswscale if found.
@@ -116,8 +122,8 @@ endif(SWSCALE_INCLUDE_DIR AND SWSCALE_LIBRARY)
 ##
 # Find libswresample.
 ##
-find_path(SWRESAMPLE_INCLUDE_DIR libswresample/swresample.h)
-find_library(SWRESAMPLE_LIBRARY swresample)
+find_path(SWRESAMPLE_INCLUDE_DIR libswresample/swresample.h HINTS ${FFMPEG_HOME_DIR}/include)
+find_library(SWRESAMPLE_LIBRARY swresample HINTS ${FFMPEG_HOME_DIR}/lib)
 
 ##
 # Add in libswresample if found.
