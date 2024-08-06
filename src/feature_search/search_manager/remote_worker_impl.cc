@@ -7,7 +7,7 @@ RemoteWorkerImpl::~RemoteWorkerImpl(){};
 
 std::string RemoteWorkerImpl::GetWorkerID() { return {}; };
 
-std::string GetAddress() { return {}; };
+std::string RemoteWorkerImpl::GetAddress() { return {}; };
 
 bool RemoteWorkerImpl::Ready() { return false; };
 
@@ -25,14 +25,14 @@ RetCode RemoteWorkerImpl::CloseShard(const std::string& db_id, const std::string
 };
 
 // AddFeatures to db_id/shard_id, delegate to remote worker.
-std::vector<std::string> AddFeatures(const std::string& db_id, const std::string& shard_id,
+std::vector<std::string> RemoteWorkerImpl::AddFeatures(const std::string& db_id, const std::string& shard_id,
                                      const std::vector<Feature>& fts) {
     return {};
 };
 
 // Search feature in the worker. worker can have multiple dbs, multiple shards.
 // only search in the requested db.
-std::vector<FeatureSearchItem> SearchFeature(const std::string& db_id, const Feature& query,
+std::vector<FeatureSearchItem> RemoteWorkerImpl::SearchFeature(const std::string& db_id, const Feature& query,
                                              int topk) {
     return {};
 };

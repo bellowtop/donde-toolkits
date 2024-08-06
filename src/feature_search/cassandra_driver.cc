@@ -24,7 +24,6 @@
 
 using json = nlohmann::json;
 
-using fmt::format;
 
 namespace donde_toolkits ::feature_search {
 
@@ -402,13 +401,12 @@ std::vector<DBShard> CassandraDriver::list_db_shards(const std::string& db_id) {
 ///
 
 RetCode CassandraDriver::init_features_table_for_db(const std::string& db_id) {
-    std::string sql = "create table if not exists features_db_{}("
-                      "id integer primary key autoincrement, "
-                      "feature_id char(64), "
-                      "metadata text, "
-                      "version int "
-                      ");";
-    sql = format(sql, replace_underscore_for_uuid(db_id));
+    std::string sql = std::format("create table if not exists features_db_{}("
+                       "id integer primary key autoincrement, "
+                       "feature_id char(64), "
+                       "metadata text, "
+                       "version int "
+                       ");", replace_underscore_for_uuid(db_id));
 
     try {
         db->exec(sql);
@@ -423,8 +421,8 @@ RetCode CassandraDriver::init_features_table_for_db(const std::string& db_id) {
 RetCode CassandraDriver::delete_features_from_db(const std::string& db_id,
                                                  const std::vector<std::string>& feature_ids) {
     try {
-        std::string sql = "delete from features_db_{} where feature_id in (? ";
-        sql = format(sql, replace_underscore_for_uuid(db_id));
+        std::string sql = std::format("delete from features_db_{} where feature_id in (? ",
+                                       replace_underscore_for_uuid(db_id));
 
         for (size_t i = 1; i < feature_ids.size(); i++) {
             sql += ",? ";
@@ -451,8 +449,8 @@ std::vector<FeatureDbItem> CassandraDriver::list_features_from_db(const std::str
     std::vector<FeatureDbItem> feature_ids;
 
     try {
-        std::string sql("select feature_id, metadata from features_db_{} limit ? offset ?");
-        sql = format(sql, replace_underscore_for_uuid(db_id));
+        std::string sql = std::format("select feature_id, metadata from features_db_{} limit ? offset ?",
+                                       replace_underscore_for_uuid(db_id));
 
         SQLite::Statement query(*db, sql);
         query.bind(1, limit);
@@ -488,9 +486,8 @@ RetCode CassandraDriver::insert_features_into_db(const std::string& db_id,
     // TODO: batch control
     try {
         int version = 10000; // FIXME
-        std::string sql(
-            "insert into features_db_{}(feature_id, metadata, version) values (?, ?, ?)");
-        sql = format(sql, replace_underscore_for_uuid(db_id));
+        std::string sql = std::format("insert into features_db_{}(feature_id, metadata, version) values (?, ?, ?)",
+                                      replace_underscore_for_uuid(db_id));
 
         for (size_t i = 1; i < feature_ids.size(); i++) {
             sql += ", (?, ?, ?)";
@@ -520,8 +517,8 @@ uint64 CassandraDriver::count_features_in_db(const std::string& db_id) {
     int count;
 
     try {
-        std::string sql("select count(*) from features_db_{};");
-        sql = format(sql, replace_underscore_for_uuid(db_id));
+        std::string sql = std::format("select count(*) from features_db_{};",
+                                        replace_underscore_for_uuid(db_id));
 
         spdlog::debug("sql: {}", sql);
 

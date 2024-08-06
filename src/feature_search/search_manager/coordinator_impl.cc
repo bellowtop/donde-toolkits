@@ -8,7 +8,6 @@
 #include "donde/feature_search/shard.h"
 #include "donde/feature_search/simple_driver.h"
 #include "donde/feature_search/worker.h"
-#include "fmt/format.h"
 #include "shard_impl.h"
 #include "shard_manager_impl.h"
 #include "worker_manager_impl.h"
@@ -20,7 +19,6 @@
 #include <string>
 #include <unordered_map>
 
-using namespace fmt;
 
 namespace donde_toolkits ::feature_search ::search_manager {
 
@@ -33,7 +31,7 @@ CoordinatorImpl::CoordinatorImpl(const json& coor_config) : config(coor_config) 
     }
     std::string driver_type = coor_config["driver"];
     if (driver_type != SEARCH_DRIVER_CASSANDRA || driver_type != SEARCH_DRIVER_SIMPLE) {
-        throw fmt::format("driver {} is not supported.", driver_type);
+        throw std::format("driver {} is not supported.", driver_type);
     }
 
     _driver = std::make_shared<SimpleDriver>((std::string)coor_config["cassandra"]["addr"]);
@@ -72,6 +70,10 @@ void CoordinatorImpl::Start() {
     load_user_dbs();
     load_known_shards();
 };
+
+void CoordinatorImpl::initialize_workers() {};
+
+void CoordinatorImpl::deinitialize_workers() {};
 
 void CoordinatorImpl::Stop() { deinitialize_workers(); };
 

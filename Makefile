@@ -22,6 +22,12 @@ all: check conan build
 conan:
 	conan install --build=missing --profile conan/conanprofile.m1  -if build ./conan
 
+cmake:
+	cmake -B build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug
+
+cmakebuild:
+	cmake --build build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug --target all
+
 build-pre: conan
 	cmake -B build
 	cmake -S tests -B build/tests

@@ -12,18 +12,20 @@ set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 include(cmake/CPM.cmake)
 
 
-CPMAddPackage(
-    NAME fmt
-    GIT_REPOSITORY "https://github.com/fmtlib/fmt.git"
-    GIT_TAG 11.0.2
-)
+# CPMAddPackage(
+#     NAME fmt
+#     GIT_REPOSITORY "https://github.com/fmtlib/fmt.git"
+#     GIT_TAG 11.0.2
+# )
+# message("CPM_LAST_PACKAGE_NAME: ${CPM_LAST_PACKAGE_NAME}")
 
 
 CPMAddPackage(
     NAME spdlog
     GIT_REPOSITORY "https://github.com/gabime/spdlog.git"
-    GIT_TAG v1.14.1
+    GIT_TAG v1.13.0
 )
+message("CPM_LAST_PACKAGE_NAME: ${CPM_LAST_PACKAGE_NAME}")
 
 
 CPMAddPackage(
@@ -31,7 +33,9 @@ CPMAddPackage(
     GIT_REPOSITORY "https://github.com/pocoproject/poco.git"
     GIT_TAG poco-1.13.3-release
     OPTIONS "ENABLE_DATA OFF"
+    OPTIONS "ENABLE_ACTIVERECORD OFF"
 )
+message("CPM_LAST_PACKAGE_NAME: ${CPM_LAST_PACKAGE_NAME}")
 
 
 CPMAddPackage(
@@ -39,6 +43,7 @@ CPMAddPackage(
     GIT_REPOSITORY "https://github.com/SRombauts/SQLiteCpp.git"
     GIT_TAG 3.3.1
 )
+message("CPM_LAST_PACKAGE_NAME: ${CPM_LAST_PACKAGE_NAME}")
 
 
 CPMAddPackage(
@@ -46,6 +51,7 @@ CPMAddPackage(
     GIT_REPOSITORY "https://github.com/nlohmann/json.git"
     GIT_TAG v3.11.3
 )
+message("CPM_LAST_PACKAGE_NAME: ${CPM_LAST_PACKAGE_NAME}")
 
 
 
@@ -54,6 +60,7 @@ CPMAddPackage(
     GIT_REPOSITORY "https://github.com/andreiavrammsd/cpp-channel.git"
     GIT_TAG v0.8.2
 )
+message("CPM_LAST_PACKAGE_NAME: ${CPM_LAST_PACKAGE_NAME}")
 
 
 
@@ -119,15 +126,22 @@ file(GLOB_RECURSE sources_h CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.
 file(GLOB_RECURSE headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/include/*)
 
 add_library(${PROJECT_NAME} ${sources} ${sources_h} ${headers})
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
+
 
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
-    fmt::fmt
-    spdlog::spdlog
+    # fmt::fmt
     Poco::Foundation
+    spdlog::spdlog
     SQLiteCpp
     nlohmann_json::nlohmann_json
-    cpp-channel
+)
+
+# head only lib
+target_link_libraries(${PROJECT_NAME}
+    PUBLIC
+    msd_channel
 )
 
 
@@ -139,7 +153,7 @@ find_package(FFMPEG)
 message("FFMPEG_LIBRARIES: ${FFMPEG_LIBRARIES}")
 message("FFMPEG_INCLUDE_DIRS: ${FFMPEG_INCLUDE_DIRS}")
 
-list(APPEND CMAKE_PREFIX_PATH "C:/Users/nicke/Downloads/libraries/opencv4.8-build")
+list(APPEND CMAKE_PREFIX_PATH "C:/Users/nicke/Downloads/libraries/opencv4.8/build")
 find_package(OpenCV REQUIRED CONFIG)
 message("OpenCV_FOUND: ${OpenCV_FOUND}")
 message("OpenCV_LIBS: ${OpenCV_LIBS}")

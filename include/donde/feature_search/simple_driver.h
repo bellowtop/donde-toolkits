@@ -2,7 +2,6 @@
 #include "donde/feature_search/definitions.h"
 #include "donde/feature_search/driver.h"
 #include "donde/utils.h"
-#include "fmt/format.h"
 #include "nlohmann/json.hpp"
 
 #include <SQLiteCpp/Database.h>

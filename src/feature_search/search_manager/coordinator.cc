@@ -10,7 +10,6 @@
 #include <queue>
 #include <spdlog/spdlog.h>
 
-using namespace fmt;
 
 namespace donde_toolkits ::feature_search ::search_manager {
 
