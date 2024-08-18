@@ -46,8 +46,7 @@ bool FFmpegVideoProcessorImpl::open_context() {
     av_dump_format(format_context_, 0, video_filepath_.c_str(), 0);
 
     for (int i = 0; i < format_context_->nb_streams; i++) {
-        if (format_context_->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_VIDEO
-            && video_stream_index_ < 0) {
+        if (format_context_->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_VIDEO && video_stream_index_ < 0) {
             video_stream_index_ = i;
             break;
         }
@@ -80,10 +79,16 @@ bool FFmpegVideoProcessorImpl::open_context() {
         return false;
     }
 
-    sws_context_
-        = sws_getContext(codec_context_->width, codec_context_->height, codec_context_->pix_fmt,
-                         codec_context_->width, codec_context_->height, AV_PIX_FMT_BGR24,
-                         SWS_BILINEAR, nullptr, nullptr, nullptr);
+    sws_context_ = sws_getContext(codec_context_->width,
+                                  codec_context_->height,
+                                  codec_context_->pix_fmt,
+                                  codec_context_->width,
+                                  codec_context_->height,
+                                  AV_PIX_FMT_BGR24,
+                                  SWS_BILINEAR,
+                                  nullptr,
+                                  nullptr,
+                                  nullptr);
     if (sws_context_ == nullptr) {
         std::cout << "cannot get sws context" << std::endl;
         return false;
@@ -178,12 +183,15 @@ void FFmpegVideoProcessorImpl::Process(const ProcessOptions& opts) {
 void FFmpegVideoProcessorImpl::ScaleFrame(const AVFrame* originalFrame, AVFrame* destFrame) const {
     destFrame->pts = originalFrame->pts;
     destFrame->key_frame = originalFrame->key_frame;
-    destFrame->coded_picture_number = originalFrame->coded_picture_number;
-    destFrame->display_picture_number = originalFrame->display_picture_number;
     destFrame->width = originalFrame->width;
     destFrame->height = originalFrame->height;
-    sws_scale(sws_context_, originalFrame->data, originalFrame->linesize, 0, originalFrame->height,
-              destFrame->data, destFrame->linesize);
+    sws_scale(sws_context_,
+              originalFrame->data,
+              originalFrame->linesize,
+              0,
+              originalFrame->height,
+              destFrame->data,
+              destFrame->linesize);
 }
 
 //
@@ -335,8 +343,7 @@ void FFmpegVideoProcessorImpl::monitor() {
 
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
         std::cout << "started_: " << started_ << ", is_demuxing_: " << is_demuxing_
-                  << ", is_decoding_: " << is_decoding_ << ", is_processing_: " << is_processing_
-                  << std::endl;
+                  << ", is_decoding_: " << is_decoding_ << ", is_processing_: " << is_processing_ << std::endl;
 
         if (started_ && !is_demuxing_ && !is_decoding_ && !is_processing_) {
             if (demux_thread_.joinable())

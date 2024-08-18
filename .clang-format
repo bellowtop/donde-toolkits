@@ -1,19 +1,23 @@
 ---
+  BasedOnStyle: LLVM
+  ColumnLimit: 120
+  IndentWidth: 4
+  TabWidth: 4
+
   AccessModifierOffset: '-2'
-  AlignTrailingComments: 'true'
-  AllowAllParametersOfDeclarationOnNextLine: 'false'
-  AlwaysBreakTemplateDeclarations: 'Yes'
+  AlignTrailingComments: true
+  AllowAllParametersOfDeclarationOnNextLine: true
+  ConstructorInitializerAllOnOneLineOrOnePerLine: true
+  PenaltyBreakBeforeFirstCallParameter: 1
+  AlwaysBreakTemplateDeclarations: true
   ReferenceAlignment: 'Left'
   PointerAlignment: 'Left'
   IncludeBlocks: Regroup
   BreakBeforeBraces: Attach
-  ColumnLimit: '100'
-  ConstructorInitializerAllOnOneLineOrOnePerLine: 'true'
   IndentPPDirectives: AfterHash
-  BasedOnStyle: LLVM
   UseTab: Never
-  IndentWidth: 4
-  TabWidth: 4
   BreakBeforeBinaryOperators: All
-  BreakBeforeTernaryOperators: 'true'
+  BreakBeforeTernaryOperators: true
   NamespaceIndentation: None
+  BinPackArguments: false
+  BinPackParameters: false
