@@ -1,0 +1,51 @@
+
+include(cmake/CPM.cmake)
+set(CPM_SOURCE_CACHE "$ENV{HOME}/.cache")
+
+
+
+
+CPMAddPackage(
+    NAME spdlog
+    GIT_REPOSITORY "https://github.com/gabime/spdlog.git"
+    GIT_TAG v1.13.0
+    OPTIONS "SPDLOG_FMT_EXTERNAL OFF"
+    OPTIONS "SPDLOG_USE_STD_FORMAT ON"
+)
+message("CPM_LAST_PACKAGE_NAME: ${CPM_LAST_PACKAGE_NAME}")
+
+
+CPMAddPackage(
+    NAME Poco
+    GIT_REPOSITORY "https://github.com/pocoproject/poco.git"
+    GIT_TAG poco-1.13.3-release
+    OPTIONS "ENABLE_DATA OFF"
+    OPTIONS "ENABLE_ACTIVERECORD OFF"
+)
+message("CPM_LAST_PACKAGE_NAME: ${CPM_LAST_PACKAGE_NAME}")
+
+
+CPMAddPackage(
+    NAME SQLiteCpp
+    GIT_REPOSITORY "https://github.com/SRombauts/SQLiteCpp.git"
+    GIT_TAG 3.3.1
+)
+message("CPM_LAST_PACKAGE_NAME: ${CPM_LAST_PACKAGE_NAME}")
+
+
+CPMAddPackage(
+    NAME nlohmann_json
+    GIT_REPOSITORY "https://github.com/nlohmann/json.git"
+    GIT_TAG v3.11.3
+)
+message("CPM_LAST_PACKAGE_NAME: ${CPM_LAST_PACKAGE_NAME}")
+
+
+
+CPMAddPackage(
+    NAME cpp-channel
+    GIT_REPOSITORY "https://github.com/andreiavrammsd/cpp-channel.git"
+    GIT_TAG v0.8.2
+)
+message("CPM_LAST_PACKAGE_NAME: ${CPM_LAST_PACKAGE_NAME}")
+

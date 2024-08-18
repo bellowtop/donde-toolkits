@@ -9,54 +9,7 @@ message("CMAKE_CXX_COMPILER: ${CMAKE_CXX_COMPILER}")
 set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 
 
-include(cmake/CPM.cmake)
-set(CPM_SOURCE_CACHE "C:/Users/nicke/source/cpm_sources")
-
-
-
-CPMAddPackage(
-    NAME spdlog
-    GIT_REPOSITORY "https://github.com/gabime/spdlog.git"
-    GIT_TAG v1.13.0
-    OPTIONS "SPDLOG_FMT_EXTERNAL OFF"
-    OPTIONS "SPDLOG_USE_STD_FORMAT ON"
-)
-message("CPM_LAST_PACKAGE_NAME: ${CPM_LAST_PACKAGE_NAME}")
-
-
-CPMAddPackage(
-    NAME Poco
-    GIT_REPOSITORY "https://github.com/pocoproject/poco.git"
-    GIT_TAG poco-1.13.3-release
-    OPTIONS "ENABLE_DATA OFF"
-    OPTIONS "ENABLE_ACTIVERECORD OFF"
-)
-message("CPM_LAST_PACKAGE_NAME: ${CPM_LAST_PACKAGE_NAME}")
-
-
-CPMAddPackage(
-    NAME SQLiteCpp
-    GIT_REPOSITORY "https://github.com/SRombauts/SQLiteCpp.git"
-    GIT_TAG 3.3.1
-)
-message("CPM_LAST_PACKAGE_NAME: ${CPM_LAST_PACKAGE_NAME}")
-
-
-CPMAddPackage(
-    NAME nlohmann_json
-    GIT_REPOSITORY "https://github.com/nlohmann/json.git"
-    GIT_TAG v3.11.3
-)
-message("CPM_LAST_PACKAGE_NAME: ${CPM_LAST_PACKAGE_NAME}")
-
-
-
-CPMAddPackage(
-    NAME cpp-channel
-    GIT_REPOSITORY "https://github.com/andreiavrammsd/cpp-channel.git"
-    GIT_TAG v0.8.2
-)
-message("CPM_LAST_PACKAGE_NAME: ${CPM_LAST_PACKAGE_NAME}")
+include("cmake/deps.cmake")
 
 
 
@@ -83,41 +36,75 @@ target_link_libraries(${PROJECT_NAME}
 
 
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-set(FFMPEG_HOME_DIR "C:/Users/nicke/Downloads/libraries/ffmpeg-master-latest-win64-gpl-shared")
-find_package(FFMPEG)
 
+##
+## Find FFMPEG
+##
+
+list(PREPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+message("CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}")
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+  set(FFMPEG_HOME_DIR "C:/Users/nicke/Downloads/libraries/ffmpeg-master-latest-win64-gpl-shared")
+endif()
+find_package(FFMPEG)
 message("FFMPEG_LIBRARIES: ${FFMPEG_LIBRARIES}")
 message("FFMPEG_INCLUDE_DIRS: ${FFMPEG_INCLUDE_DIRS}")
+target_link_libraries(${PROJECT_NAME}
+    PRIVATE
+    ${FFMPEG_LIBRARIES}
+)
+target_include_directories(${PROJECT_NAME}
+    SYSTEM
+    PUBLIC
+    ${FFMPEG_INCLUDE_DIRS}
+)
 
-list(APPEND CMAKE_PREFIX_PATH "C:/Users/nicke/Downloads/libraries/opencv4.8/build")
+
+
+##
+## Find OpenCV
+##
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+  list(APPEND CMAKE_PREFIX_PATH "C:/Users/nicke/Downloads/libraries/opencv4.8/build")
+endif()
+
 find_package(OpenCV REQUIRED CONFIG)
 message("OpenCV_FOUND: ${OpenCV_FOUND}")
 message("OpenCV_LIBS: ${OpenCV_LIBS}")
-
-list(APPEND CMAKE_PREFIX_PATH "C:/Users/nicke/Downloads/libraries/w_openvino_toolkit_windows_2023.0.2.11065.e662b1a3301_x86_64/runtime/cmake")
-find_package(OpenVINO REQUIRED COMPONENTS Runtime)
-message("OpenVINO_FOUND: ${OpenVINO_FOUND}")
-message("OpenVINO_Runtime_FOUND: ${OpenVINO_Runtime_FOUND}")
 # we use opencv openvino in our implementation, so link them PRIVATE'ly
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
     ${OpenCV_LIBS}
-    openvino::runtime
 )
-# we use ffmpeg in our public header. so link it PUBLIC'ly
-target_link_libraries(${PROJECT_NAME}
-    PUBLIC
-    ${FFMPEG_LIBRARIES}
-)
-
 target_include_directories(${PROJECT_NAME}
-    # these are system headers, managed by homebrew
     SYSTEM
     PUBLIC
-    ${FFMPEG_INCLUDE_DIRS}
     ${OpenCV_INCLUDE_DIRS}
 )
+
+
+
+
+##
+## Find OpenVINO
+##
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+  set(OPENVINO_HOME_DIR "C:/Users/nicke/Downloads/libraries/w_openvino_toolkit_windows_2023.0.2.11065.e662b1a3301_x86_64")
+endif()
+list(APPEND CMAKE_PREFIX_PATH "${OPENVINO_HOME_DIR}/runtime/cmake")
+find_package(OpenVINO REQUIRED COMPONENTS Runtime)
+message("OpenVINO_FOUND: ${OpenVINO_FOUND}")
+message("OpenVINO_Runtime_FOUND: ${OpenVINO_Runtime_FOUND}")
+target_link_libraries(${PROJECT_NAME}
+    PRIVATE
+    openvino::runtime
+)
+
+
+
+
 
 #
 # Set the build/user include directories
@@ -125,24 +112,24 @@ target_include_directories(${PROJECT_NAME}
 
 # Allow usage of header files in the `src` directory, but only for utilities
 if (${PROJECT_NAME}_BUILD_HEADERS_ONLY)
-    target_include_directories(${PROJECT_NAME}
+  target_include_directories(${PROJECT_NAME}
 	INTERFACE
 	$<INSTALL_INTERFACE:include>
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    )
+  )
 else ()
-    target_include_directories(${PROJECT_NAME}
+  target_include_directories(${PROJECT_NAME}
 	PUBLIC
 	$<INSTALL_INTERFACE:include>
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    )
+  )
 
   if (${PROJECT_NAME}_BUILD_EXECUTABLE AND ${PROJECT_NAME}_ENABLE_UNIT_TESTING)
-      target_include_directories(${PROJECT_NAME}_LIB
+    target_include_directories(${PROJECT_NAME}_LIB
 	  PUBLIC
 	  $<INSTALL_INTERFACE:include>
 	  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-      )
+    )
   endif ()
 endif ()
 
