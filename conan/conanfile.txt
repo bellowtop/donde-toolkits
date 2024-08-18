@@ -4,7 +4,7 @@
 # ffmpeg/6.1
 # openvino/2023.1.0
 
-fmt/10.2.0
+fmt/10.1.1
 pcre2/10.42
 zlib/1.2.13
 openssl/3.1.3
@@ -29,6 +29,7 @@ spdlog/1.12.0
 BazelDeps
 
 [options]
+spdlog/*:use_std_fmt=True
 poco/*:enable_net=False
 poco/*:enable_netssl=False
 poco/*:enable_data=False

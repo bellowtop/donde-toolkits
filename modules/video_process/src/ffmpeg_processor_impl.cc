@@ -31,7 +31,8 @@ FFmpegVideoProcessorImpl::~FFmpegVideoProcessorImpl() {}
 bool FFmpegVideoProcessorImpl::open_context() {
     int ret = avformat_open_input(&format_context_, video_filepath_.c_str(), nullptr, nullptr);
     if (ret < 0) {
-        std::cout << "cannot open input video file: " << video_filepath_ << std::endl;
+        std::cout << "cannot open input video file: " << video_filepath_ << ", ret: " << ret
+                  << std::endl;
         return false;
     }
 
