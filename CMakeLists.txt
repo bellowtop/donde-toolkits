@@ -10,20 +10,16 @@ set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 
 
 include(cmake/CPM.cmake)
+set(CPM_SOURCE_CACHE "C:/Users/nicke/source/cpm_sources")
 
-
-# CPMAddPackage(
-#     NAME fmt
-#     GIT_REPOSITORY "https://github.com/fmtlib/fmt.git"
-#     GIT_TAG 11.0.2
-# )
-# message("CPM_LAST_PACKAGE_NAME: ${CPM_LAST_PACKAGE_NAME}")
 
 
 CPMAddPackage(
     NAME spdlog
     GIT_REPOSITORY "https://github.com/gabime/spdlog.git"
     GIT_TAG v1.13.0
+    OPTIONS "SPDLOG_FMT_EXTERNAL OFF"
+    OPTIONS "SPDLOG_USE_STD_FORMAT ON"
 )
 message("CPM_LAST_PACKAGE_NAME: ${CPM_LAST_PACKAGE_NAME}")
 
@@ -65,67 +61,12 @@ message("CPM_LAST_PACKAGE_NAME: ${CPM_LAST_PACKAGE_NAME}")
 
 
 
-
-
-
-# include(FetchContent)
-
-# FetchContent_Declare(
-#     fmt
-#     GIT_REPOSITORY "https://github.com/fmtlib/fmt.git"
-#     GIT_TAG 11.0.2
-# )
-# FetchContent_MakeAvailable(fmt)
-
-
-# FetchContent_Declare(
-#     spdlog
-#     GIT_REPOSITORY "https://github.com/gabime/spdlog.git"
-#     GIT_TAG v1.14.1
-# )
-# FetchContent_MakeAvailable(spdlog)
-
-
-# FetchContent_Declare(
-#     Poco
-#     GIT_REPOSITORY "https://github.com/pocoproject/poco.git"
-#     GIT_TAG poco-1.13.3-release
-# )
-# FetchContent_MakeAvailable(Poco)
-
-
-# FetchContent_Declare(
-#     SQLiteCpp
-#     GIT_REPOSITORY "https://github.com/SRombauts/SQLiteCpp.git"
-#     GIT_TAG 3.3.1
-# )
-# FetchContent_MakeAvailable(SQLiteCpp)
-
-
-# FetchContent_Declare(
-#     nlohmann_json
-#     GIT_REPOSITORY "https://github.com/nlohmann/json.git"
-#     GIT_TAG v3.11.3
-# )
-# FetchContent_MakeAvailable(nlohmann_json)
-
-
-
-# FetchContent_Declare(
-#     cpp-channel
-#     GIT_REPOSITORY "https://github.com/andreiavrammsd/cpp-channel.git"
-#     GIT_TAG v0.8.2
-# )
-# FetchContent_MakeAvailable(cpp-channel)
-
-
-
 # ---- Create library ----
 file(GLOB_RECURSE sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cc)
 file(GLOB_RECURSE sources_h CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
 file(GLOB_RECURSE headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/include/*)
 
-add_library(${PROJECT_NAME} ${sources} ${sources_h} ${headers})
+add_library(${PROJECT_NAME} STATIC ${sources} ${sources_h} ${headers})
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 
 
@@ -136,13 +77,9 @@ target_link_libraries(${PROJECT_NAME}
     spdlog::spdlog
     SQLiteCpp
     nlohmann_json::nlohmann_json
-)
-
-# head only lib
-target_link_libraries(${PROJECT_NAME}
-    PUBLIC
     msd_channel
 )
+
 
 
 
@@ -229,23 +166,23 @@ endif ()
 
 
 
-# ##########################################
-# ### cmake install
-# ##########################################
+##########################################
+### cmake install
+##########################################
 
-# set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/install" CACHE PATH "where the library will be installed to " FORCE)
-# install(TARGETS ${PROJECT_NAME}
-#     EXPORT "${PROJECT_NAME}Targets"
-#     PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
-#     INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-# )
+set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/install" CACHE PATH "where the library will be installed to " FORCE)
+install(TARGETS ${PROJECT_NAME}
+    EXPORT "${PROJECT_NAME}Targets"
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
 
-# include(GNUInstallDirs)
-# foreach(header ${headers})
-#     file(RELATIVE_PATH header_file_path "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}" "${header}")
-#     get_filename_component(header_directory_path "${header_file_path}" DIRECTORY)
-#     install(FILES ${header} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${header_directory_path}")
-# endforeach()
+include(GNUInstallDirs)
+foreach(header ${headers})
+    file(RELATIVE_PATH header_file_path "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}" "${header}")
+    get_filename_component(header_directory_path "${header_file_path}" DIRECTORY)
+    install(FILES ${header} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${header_directory_path}")
+endforeach()
 
 
 
