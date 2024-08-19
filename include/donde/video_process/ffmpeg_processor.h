@@ -7,8 +7,8 @@ extern "C" {
 #include "processor.h"
 
 #include <functional>
-#include <string>
 #include <memory>
+#include <string>
 
 namespace donde_toolkits ::video_process {
 
@@ -30,7 +30,7 @@ class FFmpegVideoFrame {
 
 // borrow the frame pointer. donot own it. donot free it.
 // using VideoFrameProcessor = bool (*)(const FFmpegVideoFrame *f);
-using FFmpegVideoFrameProcessor = std::function<bool(const FFmpegVideoFrame* f)>;
+using VideoFrameObserver = std::function<bool(const FFmpegVideoFrame* f)>;
 
 class FFmpegVideoProcessorImpl;
 
@@ -41,7 +41,7 @@ class FFmpegVideoProcessor : public VideoProcessor {
     VideoStreamInfo OpenVideoContext(const std::string& filepath);
     void Process(const ProcessOptions& opts);
 
-    bool Register(const FFmpegVideoFrameProcessor& p);
+    bool AddObserver(const VideoFrameObserver& p);
     void ScaleFrame(const AVFrame* originalFrame, AVFrame* destFrame) const;
     bool Pause();
     bool IsPaused();

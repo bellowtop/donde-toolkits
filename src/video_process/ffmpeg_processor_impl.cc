@@ -98,47 +98,34 @@ bool FFmpegVideoProcessorImpl::open_context() {
 }
 
 bool FFmpegVideoProcessorImpl::Pause() {
-    {
-        std::lock_guard<std::mutex> lk(demux_mu_);
-        pause_ = true;
-    }
+    std::lock_guard<std::mutex> lk(demux_mu_);
+    pause_ = true;
     return true;
 }
 
 bool FFmpegVideoProcessorImpl::IsPaused() {
-    bool ret;
-    {
-        std::lock_guard<std::mutex> lk(demux_mu_);
-        ret = pause_;
-    }
-    return ret;
+    std::lock_guard<std::mutex> lk(demux_mu_);
+    return pause_;
 }
 
 bool FFmpegVideoProcessorImpl::Resume() {
-    {
-        std::lock_guard<std::mutex> lk(demux_mu_);
-        pause_ = false;
-    }
+    std::lock_guard<std::mutex> lk(demux_mu_);
+    pause_ = false;
     demux_cv_.notify_all();
     return true;
 }
 
 bool FFmpegVideoProcessorImpl::Stop() {
     quit_ = true;
-    if (pause_) {
-        pause_ = false;
-        demux_cv_.notify_all();
-    }
+    demux_cv_.notify_all();
 
     demux_thread_.join();
-    // decode_thread_.join();
-    // process_thread_.join();
 
     return true;
 }
 
-bool FFmpegVideoProcessorImpl::Register(const FFmpegVideoFrameProcessor& p) {
-    frame_processor_list_.push_back(p);
+bool FFmpegVideoProcessorImpl::AddObserver(const VideoFrameObserver& p) {
+    frame_observers_.push_back(p);
     return true;
 }
 
@@ -216,8 +203,11 @@ void FFmpegVideoProcessorImpl::demux_video_packet_() {
     while (true) {
         {
             std::unique_lock<std::mutex> lk(demux_mu_);
+            if (quit_) {
+                break;
+            }
             if (pause_) {
-                demux_cv_.wait(lk, [&] { return pause_ == false; });
+                demux_cv_.wait(lk, [&] { return pause_ == false || quit_ == false; });
             }
         }
 
@@ -327,7 +317,7 @@ void FFmpegVideoProcessorImpl::process_video_frame_() {
             continue;
         }
 
-        for (const auto& func : frame_processor_list_) {
+        for (const auto& func : frame_observers_) {
             func(std::make_unique<FFmpegVideoFrame>(++frame_id, f).get());
         }
     }

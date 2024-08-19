@@ -14,9 +14,7 @@ VideoStreamInfo FFmpegVideoProcessor::OpenVideoContext(const std::string& filepa
 
 void FFmpegVideoProcessor::Process(const ProcessOptions& opts) { impl->Process(opts); };
 
-bool FFmpegVideoProcessor::Register(const FFmpegVideoFrameProcessor& p) {
-    return impl->Register(p);
-}
+bool FFmpegVideoProcessor::AddObserver(const VideoFrameObserver& p) { return impl->AddObserver(p); }
 
 void FFmpegVideoProcessor::ScaleFrame(const AVFrame* originalFrame, AVFrame* destFrame) const {
     impl->ScaleFrame(originalFrame, destFrame);
