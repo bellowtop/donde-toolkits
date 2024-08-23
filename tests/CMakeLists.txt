@@ -23,27 +23,48 @@ message("PROJECT_NAME: ${PROJECT_NAME}")
 # find_package(OpenVINO REQUIRED COMPONENTS Runtime)
 
 
+###
+### find gtest
+###
+
+CPMAddPackage(
+  NAME googletest
+  GITHUB_REPOSITORY google/googletest
+  GIT_TAG release-1.12.1
+  VERSION 1.12.1
+  OPTIONS "INSTALL_GTEST OFF" "gtest_force_shared_crt"
+)
+
+
+
+
 # ---- Create executable ----
 file(GLOB_RECURSE headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
 file(GLOB_RECURSE sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/*.cc)
 
-add_executable(${PROJECT_NAME} ${headers} ${sources})
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
+# add_executable(${PROJECT_NAME} ${headers} ${sources})
+add_executable(${PROJECT_NAME}
+  feature_extract/mock_processor.h
+  feature_extract/pipeline/face_pipeline_impl.cc
+)
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 
-find_package(GTest REQUIRED)
 
-message("find GTest")
 
 target_link_libraries(${PROJECT_NAME}
   PUBLIC
   ${${CMAKE_PROJECT_NAME}_TEST_LIB}
-  gtest::gtest
-  fmt::fmt
+  gtest
+  gtest_main
+  gmock
+
+  Poco::Foundation
   spdlog::spdlog
-  Poco::Poco
   SQLiteCpp
   nlohmann_json::nlohmann_json
+  msd_channel
 )
+
 
 
 
@@ -63,3 +84,6 @@ if(NOT TEST_INSTALLED_VERSION)
     target_compile_definitions(${PROJECT_NAME} PUBLIC DOCTEST_CONFIG_USE_STD_HEADERS)
   endif()
 endif()
+
+
+enable_testing()

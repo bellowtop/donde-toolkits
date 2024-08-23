@@ -4,6 +4,7 @@
 #include "donde/utils.h"
 #include "src/feature_extract/concurrent_processor.h"
 #include "src/feature_extract/openvino_worker/openvino_worker.h"
+#include "src/feature_extract/pytorch_worker/pytorch_worker.h"
 
 #include <Poco/Logger.h>
 #include <filesystem>
@@ -17,7 +18,6 @@
 #include <opencv2/core/types.hpp>
 #include <opencv2/imgproc.hpp>
 #include <string>
-
 
 using namespace donde_toolkits::feature_extract;
 
@@ -33,9 +33,10 @@ using nlohmann::json;
 
 using donde_toolkits::feature_extract::ConcurrentProcessor;
 using donde_toolkits::feature_extract::openvino_worker::AlignerWorker;
-using donde_toolkits::feature_extract::openvino_worker::DetectorWorker;
 using donde_toolkits::feature_extract::openvino_worker::FeatureWorker;
 using donde_toolkits::feature_extract::openvino_worker::LandmarksWorker;
+
+using donde_toolkits::feature_extract::pytorch_worker::DetectorWorker;
 
 using testing::Return;
 
@@ -46,7 +47,7 @@ TEST(FeatureExtract, FacePipelineCanDecodeImageBinaryToFrame) {
   "detector": {
     "concurrent": 2,
     "device_id": "CPU",
-    "model": "./contrib/models/face-detection-adas-0001.xml",
+    "model": "./contrib/models/yolov8m.torchscript",
     "warmup": false
   }
 }

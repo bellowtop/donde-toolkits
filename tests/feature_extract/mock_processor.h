@@ -33,6 +33,8 @@ class MockWorker : public WorkerBaseImpl {
 
     MOCK_METHOD(std::string, GetName, (), (override));
 
+    MOCK_METHOD(void, init_log, (const std::string& name));
+
     MOCK_METHOD(void, run, (), (override));
 
     MOCK_METHOD(void, Die, ());
