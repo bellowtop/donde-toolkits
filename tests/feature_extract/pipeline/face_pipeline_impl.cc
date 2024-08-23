@@ -47,7 +47,7 @@ TEST(FeatureExtract, FacePipelineCanDecodeImageBinaryToFrame) {
   "detector": {
     "concurrent": 2,
     "device_id": "CPU",
-    "model": "./contrib/models/yolov8m.torchscript",
+    "model": "/Users/jiechen/Downloads/yolov8n_face_relu6.torchscript",
     "warmup": false
   }
 }

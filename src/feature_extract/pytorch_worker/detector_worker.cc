@@ -158,12 +158,6 @@ RetCode DetectorWorker::process(const cv::Mat& image, DetectResult& result) {
 
     // Show the results
     for (int i = 0; i < keep.size(0); i++) {
-        int cls = keep[i][5].item().toInt();
-        // cls 0 is person
-        if (cls != 0) {
-            continue;
-        }
-
         int x1 = keep[i][0].item().toFloat();
         int y1 = keep[i][1].item().toFloat();
         int x2 = keep[i][2].item().toFloat();
@@ -178,6 +172,8 @@ RetCode DetectorWorker::process(const cv::Mat& image, DetectResult& result) {
 
         detected.emplace_back(face);
     }
+
+    result.faces = detected;
 
     return RET_OK;
 }
