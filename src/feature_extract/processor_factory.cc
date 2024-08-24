@@ -2,7 +2,6 @@
 
 #include "concurrent_processor.h"
 #include "openvino_worker/openvino_worker.h"
-#include "pytorch_worker/pytorch_worker.h"
 
 #include <iostream>
 #include <memory>
@@ -15,7 +14,13 @@ using donde_toolkits::feature_extract::openvino_worker::AlignerWorker;
 using donde_toolkits::feature_extract::openvino_worker::FeatureWorker;
 using donde_toolkits::feature_extract::openvino_worker::LandmarksWorker;
 
+#if defined(__APPLE__)
+#    include "coreml_worker/coreml_worker.h"
+using donde_toolkits::feature_extract::coreml_worker::DetectorWorker;
+#else
+#    include "pytorch_worker/pytorch_worker.h"
 using donde_toolkits::feature_extract::pytorch_worker::DetectorWorker;
+#endif
 
 namespace donde_toolkits ::feature_extract {
 

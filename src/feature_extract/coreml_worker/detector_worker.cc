@@ -4,12 +4,16 @@
 #include "donde/definitions.h"
 #include "donde/message.h"
 #include "donde/utils.h"
+#include "objc_wrapper.h"
+#include "utils.h"
 
 #include <cassert>
 #include <filesystem>
 #include <iostream>
 #include <memory>
-#include <opencv2/core/types.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/opencv.hpp>
 #include <spdlog/common.h>
 #include <string>
 
@@ -23,85 +27,38 @@ namespace donde_toolkits ::feature_extract ::coreml_worker {
 DetectorWorker::DetectorWorker(std::shared_ptr<MsgChannel> ch) : WorkerBaseImpl{ch} {}
 
 DetectorWorker::~DetectorWorker() {
-    // _channel.reset();
+    if (yolov8model != nullptr) {
+        closeModel(yolov8model);
+    }
 }
 
-/**
-
-   conf:
-   {
-       "model": "../models/face-detection-adas-0001.xml",
-       "warmup": false
-   }
-
- */
-
-// void DetectorWorker::debugOutputTensor(const ov::Tensor& output) {
-//     ov::Shape shape = output.get_shape();
-//     const size_t batch_size = shape[0];
-//     const size_t face_numbers = shape[2];
-//     const float* tensor_data = output.data<float>();
-
-//     // SEE
-//     // https://docs.openvino.ai/2019_R1/_face_detection_adas_0001_description_face_detection_adas_0001.html
-
-//     for (size_t i = 0; i < face_numbers; i++) {
-//         int offset = i * _shape_dim;
-
-//         float image_id = tensor_data[offset + 0];
-//         float label = tensor_data[offset + 1];
-//         float conf = tensor_data[offset + 2];
-//         float x_min = tensor_data[offset + 3];
-//         float y_min = tensor_data[offset + 4];
-//         float x_max = tensor_data[offset + 5];
-//         float y_max = tensor_data[offset + 6];
-
-//         if (conf < _min_confidence) {
-//             continue;
-//         }
-
-//         _logger->info("face-{}", i);
-//         _logger->info("\t image_id: {}, label: {}, conf: {}, x_min: {}, y_min: {}, x_max: {}, y_max: {} \n",
-//                       image_id,
-//                       label,
-//                       conf,
-//                       x_min,
-//                       y_min,
-//                       x_max,
-//                       y_max);
-//     }
-// }
-
 RetCode DetectorWorker::Init(json conf, int i, std::string device_id) {
-    // _name = "detector-worker-" + std::to_string(i);
-    // init_log(_name);
+    _name = "detector-worker-" + std::to_string(i);
+    init_log(_name);
 
-    // _id = i;
-    // _device_id = device_id;
-    // _conf = conf;
+    _id = i;
+    _device_id = device_id;
+    _conf = conf;
 
-    // std::string model_path = conf["model"];
+    std::string model_path = conf["model"];
 
-    // _logger->info("loading model: {}", model_path);
-    // _logger->info("absolute path: {}", std::filesystem::canonical(model_path).string());
+    _logger->info("loading model: {}", model_path);
+    _logger->info("absolute path: {}", std::filesystem::canonical(model_path).string());
 
-    // model_abs_path = std::filesystem::canonical(model_path).string();
+    model_abs_path = std::filesystem::canonical(model_path).string();
 
-    // // Load the model (e.g. yolov8s.torchscript)
-    // yolo_model = torch::jit::load(model_abs_path);
-    // yolo_model.eval();
-    // yolo_model.to(device, torch::kFloat32);
+    yolov8model = loadModel(model_abs_path.c_str());
 
-    // if (conf.contains("warmup") && conf["warmup"]) {
-    //     // warmup img
-    //     std::string warmup_image = "./contrib/data/test_image_5_person.jpeg";
-    //     cv::Mat img = cv::imread(warmup_image);
+    if (conf.contains("warmup") && conf["warmup"]) {
+        // warmup img
+        std::string warmup_image = "./contrib/data/test_image_5_person.jpeg";
+        cv::Mat img = cv::imread(warmup_image);
 
-    //     DetectResult result;
-    //     process(img, result);
-    // }
+        DetectResult result;
+        process(img, result);
+    }
 
-    // return RET_OK;
+    return RET_OK;
 }
 
 void DetectorWorker::run() {
@@ -133,51 +90,68 @@ void DetectorWorker::run() {
 
 // resize input img, and do inference
 RetCode DetectorWorker::process(const cv::Mat& image, DetectResult& result) {
-    // cv::Mat input_image;
-    // letterbox((cv::Mat&)image, input_image, {640, 640});
 
-    // torch::Tensor image_tensor
-    //     = torch::from_blob(input_image.data, {input_image.rows, input_image.cols, 3}, torch::kByte).to(device);
-    // image_tensor = image_tensor.toType(torch::kFloat32).div(255);
-    // image_tensor = image_tensor.permute({2, 0, 1});
-    // image_tensor = image_tensor.unsqueeze(0);
-    // std::vector<torch::jit::IValue> inputs{image_tensor};
+    // alloc output buffer
+    // output as 1 × 5 × 8400 3-dimensional array of floats
+    float* outFloats = (float*)malloc(sizeof(float) * batch * params * boxes);
+    std::cout << "cols: " << image.cols << " rows: " << image.rows << std::endl;
+    cv::imwrite("/tmp/aaa.jpg", image);
 
-    // auto t1 = std::chrono::steady_clock::now();
-    // // Inference
-    // torch::Tensor output = yolo_model.forward(inputs).toTensor().cpu();
-    // auto [t2, used_ms] = now_time_since(t1);
-    // printf("yolo_model.forward use time: %lld ms\n", used_ms.count());
+    auto t1 = std::chrono::steady_clock::now();
+    predictWith(yolov8model, image, outFloats);
+    auto [t2, used_ms] = now_time_since(t1);
+    printf("yolov8 coreml predict use time: %lld ms\n", used_ms.count());
 
-    // // NMS
-    // auto keep = non_max_suppression(output)[0];
-    // auto boxes = keep.index({Slice(), Slice(None, 4)});
-    // keep.index_put_({Slice(), Slice(None, 4)},
-    //                 scale_boxes({input_image.rows, input_image.cols}, boxes, {image.rows, image.cols}));
+    std::vector<Yolov8DetBox> candidateBoxes;
 
-    // std::vector<FaceDetection> detected;
-    // detected.reserve(10);
+    for (int i = 0; i < batch; i++) {
+        std::cout << "Image " << i << std::endl;
+        // for (int j = 0; j < params; j++) {
+        for (int k = 0; k < boxes; k++) {
+            float confidence = outFloats[i * 4 * boxes + 4 * boxes + k];
+            if (confidence > min_confidence) {
+                float centerX = outFloats[i * 0 * boxes + 0 * boxes + k];
+                float centerY = outFloats[i * 1 * boxes + 1 * boxes + k];
+                float width = outFloats[i * 2 * boxes + 2 * boxes + k];
+                float height = outFloats[i * 3 * boxes + 3 * boxes + k];
+                auto box = Yolov8DetBox{centerX, centerY, width, height, confidence};
+                candidateBoxes.push_back(box);
+            }
+        }
+        // }
+    }
 
-    // // Show the results
-    // for (int i = 0; i < keep.size(0); i++) {
-    //     int x1 = keep[i][0].item().toFloat();
-    //     int y1 = keep[i][1].item().toFloat();
-    //     int x2 = keep[i][2].item().toFloat();
-    //     int y2 = keep[i][3].item().toFloat();
-    //     float conf = keep[i][4].item().toFloat();
+    float factorX = image.cols * 1.0f / image_width;
+    float factorY = image.rows * 1.0f / image_height;
 
-    //     FaceDetection face;
-    //     face.box = cv::Rect{x1, y1, x2 - x1, y2 - y1};
-    //     face.confidence = conf;
+    auto keep = nonMaxSuppression(candidateBoxes, 0.8);
 
-    //     std::cout << "Box: [" << face.box << "]  Conf: " << face.confidence << std::endl;
+    std::vector<FaceDetection> detected;
+    detected.reserve(keep.size());
 
-    //     detected.emplace_back(face);
-    // }
+    for (auto i : keep) {
+        auto box = candidateBoxes[i];
+        std::cout << "Box[ centerX: " << box.centerX << ", centerY: " << box.centerY << ", width: " << box.width
+                  << ", height:" << box.height << " ], Conf: " << box.confidence << std::endl;
 
-    // result.faces = detected;
+        cv::Point topLeft(box.centerX - box.width / 2, box.centerY - box.height / 2);
+        cv::Point bottomRight(box.centerX + box.width / 2, box.centerY + box.height / 2);
 
-    // return RET_OK;
+        // actual image size is bigger than 640;
+        topLeft.x = static_cast<int>(topLeft.x * factorX);
+        topLeft.y = static_cast<int>(topLeft.y * factorY);
+        bottomRight.x = static_cast<int>(bottomRight.x * factorX);
+        bottomRight.y = static_cast<int>(bottomRight.y * factorY);
+
+        FaceDetection face;
+        face.box = cv::Rect{topLeft.x, topLeft.y, bottomRight.x - topLeft.x, bottomRight.y - topLeft.y};
+        face.confidence = box.confidence;
+        detected.emplace_back(face);
+    }
+
+    result.faces = detected;
+
+    return RET_OK;
 }
 
 } // namespace donde_toolkits::feature_extract::coreml_worker

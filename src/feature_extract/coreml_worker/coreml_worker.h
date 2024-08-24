@@ -31,16 +31,21 @@ class DetectorWorker : public WorkerBaseImpl {
     RetCode process(const cv::Mat& frame, DetectResult& result);
     // void debugOutputTensor(const ov::Tensor& output);
 
-    int _batch_size = 1;
     int _max_faces;
-    int _shape_dim;
-    int _image_width;
-    int _image_height;
-    int _color_channel = 3;
 
-    constexpr static const float _min_confidence = 0.3f;
+    constexpr static const int image_width = 640;
+    constexpr static const int image_height = 640;
+
+    constexpr static const int batch = 1;
+    constexpr static const int params = 5;
+    constexpr static const int boxes = 8400;
+
+    constexpr static const float min_confidence = 0.3f;
 
     std::string model_abs_path;
+
+    // point to an area, and we can't modify that area.
+    const void* yolov8model = nullptr;
 
     // std::shared_ptr<ov::CompiledModel> _compiled_model;
     // std::shared_ptr<ov::InferRequest> _infer_request;

@@ -3,8 +3,13 @@ cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 project(DondeToolkits VERSION 0.0.1 LANGUAGES CXX)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+
+# 启用 C++ 和 Objective-C 语言
+enable_language(C)
+enable_language(CXX)
+
 message("CMAKE_C_COMPILER: ${CMAKE_C_COMPILER}")
-message("CMAKE_CXX_COMPILER: ${CMAKE_CXX_COMPILER}")
+message("CMAKE_OBJC_COMPILER: ${CMAKE_OBJC_COMPILER}")
 
 set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 
@@ -15,34 +20,56 @@ include("cmake/deps.cmake")
 
 
 # ---- Create library ----
-file(GLOB_RECURSE sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cc)
-file(GLOB_RECURSE sources_h CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
+file(GLOB_RECURSE sources_cc CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cc)
+file(GLOB_RECURSE sources_hh CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
 file(GLOB_RECURSE headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/include/*)
+
+file(GLOB_RECURSE sources_m CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.m)
+file(GLOB_RECURSE sources_mm CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.mm)
+set(sources_mm "${sources_mm}" "${sources_m}")
 
 
 # In non-apple env, exclude "coreml_worker" related file.
 # because it will linker to Apple frameworks.
 message("CMAKE_SYSTEM_NAME: ${CMAKE_SYSTEM_NAME}")
 if(NOT CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-  foreach(filepath ${sources})
+  foreach(filepath ${sources_cc})
     string(FIND ${filepath} "coreml_worker" found)
     if (found EQUAL -1)
-        list(APPEND filtered_sources ${filepath})
+        list(APPEND filtered_sources_cc ${filepath})
     endif()
   endforeach()
-  set(sources ${filtered_sources})
+  set(sources_cc ${filtered_sources_cc})
 
-  foreach(filepath ${sources_h})
+  foreach(filepath ${sources_mm})
     string(FIND ${filepath} "coreml_worker" found)
     if (found EQUAL -1)
-        list(APPEND filtered_sources_h ${filepath})
+        list(APPEND filtered_sources_mm ${filepath})
     endif()
   endforeach()
-  set(sources_h ${filtered_sources_h})
+  set(sources_mm ${filtered_sources_mm})
+
+  foreach(filepath ${sources_hh})
+    string(FIND ${filepath} "coreml_worker" found)
+    if (found EQUAL -1)
+        list(APPEND filtered_sources_hh ${filepath})
+    endif()
+  endforeach()
+  set(sources_hh ${filtered_sources_hh})
+
 endif()
 
 
-add_library(${PROJECT_NAME} STATIC ${sources} ${sources_h} ${headers})
+  message("sources_cc: ${sources_cc}")
+  message("sources_hh: ${sources_hh}")
+  message("sources_mm: ${sources_mm}")
+
+add_library(${PROJECT_NAME} STATIC
+  ${sources_cc}
+  ${sources_hh}
+  ${sources_mm}
+  ${headers}
+)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 
 
@@ -50,6 +77,9 @@ target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 ## Link CoreML if apple.
 ##
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+  enable_language(OBJC)
+  message("CMAKE_CXX_COMPILER: ${CMAKE_CXX_COMPILER}")
+
   target_compile_options(${PROJECT_NAME}
     PUBLIC
     "-fobjc-arc"
