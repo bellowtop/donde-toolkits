@@ -19,8 +19,50 @@ file(GLOB_RECURSE sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cc
 file(GLOB_RECURSE sources_h CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
 file(GLOB_RECURSE headers CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/include/*)
 
+
+# In non-apple env, exclude "coreml_worker" related file.
+# because it will linker to Apple frameworks.
+message("CMAKE_SYSTEM_NAME: ${CMAKE_SYSTEM_NAME}")
+if(NOT CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+  foreach(filepath ${sources})
+    string(FIND ${filepath} "coreml_worker" found)
+    if (found EQUAL -1)
+        list(APPEND filtered_sources ${filepath})
+    endif()
+  endforeach()
+  set(sources ${filtered_sources})
+
+  foreach(filepath ${sources_h})
+    string(FIND ${filepath} "coreml_worker" found)
+    if (found EQUAL -1)
+        list(APPEND filtered_sources_h ${filepath})
+    endif()
+  endforeach()
+  set(sources_h ${filtered_sources_h})
+endif()
+
+
 add_library(${PROJECT_NAME} STATIC ${sources} ${sources_h} ${headers})
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
+
+
+##
+## Link CoreML if apple.
+##
+if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+  target_compile_options(${PROJECT_NAME}
+    PUBLIC
+    "-fobjc-arc"
+  )
+
+  target_link_libraries(${PROJECT_NAME}
+    PRIVATE
+    "-framework Foundation"
+    "-framework CoreML"
+    "-framework CoreVideo"
+    "-framework Accelerate"
+  )
+endif()
 
 
 target_link_libraries(${PROJECT_NAME}
@@ -113,6 +155,9 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
     "${TORCH_LIBRARIES}"
 )
+
+
+
 
 
 
