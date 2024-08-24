@@ -2,6 +2,7 @@
 #include "Poco/NotificationQueue.h"
 #include "donde/definitions.h"
 #include "donde/message.h"
+#include "donde/utils.h"
 #include "pytorch_utils.h"
 #include "pytorch_worker.h"
 
@@ -144,8 +145,11 @@ RetCode DetectorWorker::process(const cv::Mat& image, DetectResult& result) {
     image_tensor = image_tensor.unsqueeze(0);
     std::vector<torch::jit::IValue> inputs{image_tensor};
 
+    auto t1 = std::chrono::steady_clock::now();
     // Inference
     torch::Tensor output = yolo_model.forward(inputs).toTensor().cpu();
+    auto [t2, used_ms] = now_time_since(t1);
+    printf("yolo_model.forward use time: %lld ms\n", used_ms.count());
 
     // NMS
     auto keep = non_max_suppression(output)[0];

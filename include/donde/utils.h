@@ -4,15 +4,14 @@
 #include "opencv2/opencv.hpp"
 #include "openvino/openvino.hpp"
 
+#include <chrono>
+#include <string>
 
 // #include <google/protobuf/map.h>
 #include <iostream>
 #include <opencv2/core/types.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgcodecs.hpp>
-
-
-
 
 namespace donde_toolkits {
 
@@ -80,14 +79,20 @@ inline void drawRectangleInImage(const std::string& image_path, const std::vecto
     cv::waitKey(0);
 }
 
-inline std::string generate_uuid() {
-    return uuid::generate_uuid_v4();
-}
+inline std::string generate_uuid() { return uuid::generate_uuid_v4(); }
 
 inline std::string replace_underscore_for_uuid(const std::string& u) {
     std::string ret(u);
     std::replace(ret.begin(), ret.end(), '-', '_');
     return ret;
+}
+
+template <typename clock_t = std::chrono::steady_clock,
+          typename duration_t = std::chrono::milliseconds,
+          typename timep_t = std::chrono::time_point<clock_t, duration_t>>
+std::tuple<timep_t, duration_t> now_time_since(timep_t const& start) {
+    auto now = clock_t::now();
+    return {now, std::chrono::duration_cast<duration_t>(now - start)};
 }
 
 } // namespace donde_toolkits
