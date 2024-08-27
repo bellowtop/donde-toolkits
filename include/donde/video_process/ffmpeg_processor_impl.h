@@ -4,7 +4,9 @@
 extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
+#include <libavutil/audio_fifo.h>
 #include <libavutil/imgutils.h>
+#include <libswresample/swresample.h>
 #include <libswscale/swscale.h>
 }
 
@@ -25,6 +27,8 @@ class FFmpegVideoProcessorImpl {
     VideoStreamInfo OpenVideoContext(const std::string& filepath);
 
     void Process(const ProcessOptions& opts);
+
+    bool ExtractAudio(const std::string& filepath);
 
     bool AddObserver(const VideoFrameObserver& p);
 
@@ -47,15 +51,28 @@ class FFmpegVideoProcessorImpl {
     void decode_video_frame_();
     void process_video_frame_();
 
+    // for audio trancode output
+    bool start_audio_extract_context(const std::string& filepath);
+    bool start_audio_extract_process(const std::string& filepath);
+    bool clear_audio_extract_context();
+    bool demux_audio_packet_();
+    bool decode_audio_frame_();
+    bool transcode_audio_frame_();
+    bool save_output_audio_packet_();
+    // end audio trancode output
+
     void monitor();
 
   private:
     std::string video_filepath_;
 
+    // for read video and audio
     AVFormatContext* format_context_ = nullptr;
-    AVCodecContext* codec_context_ = nullptr;
-    SwsContext* sws_context_ = nullptr;
+    AVCodecContext* video_codec_context_ = nullptr;
     int video_stream_index_ = -1;
+
+    // for convert video frame fmt
+    SwsContext* sws_context_ = nullptr;
 
     size_t video_width_ = 0;
     size_t video_height_ = 0;

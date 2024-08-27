@@ -15,7 +15,9 @@
 extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
+#include <libavformat/avio.h>
 #include <libavutil/imgutils.h>
+#include <libswresample/swresample.h>
 }
 
 #include "donde/video_process/ffmpeg_processor_impl.h"
@@ -36,62 +38,71 @@ bool FFmpegVideoProcessorImpl::open_context() {
         return false;
     }
 
-    ret = avformat_find_stream_info(format_context_, nullptr);
-    if (ret < 0) {
-        std::cout << "cannot find stream info: " << video_filepath_ << std::endl;
-        return false;
-    }
+    // find video/audio stream
+    {
+        ret = avformat_find_stream_info(format_context_, nullptr);
+        if (ret < 0) {
+            std::cout << "cannot find stream info: " << video_filepath_ << std::endl;
+            return false;
+        }
 
-    // for debug only.
-    av_dump_format(format_context_, 0, video_filepath_.c_str(), 0);
+        // for debug only.
+        av_dump_format(format_context_, 0, video_filepath_.c_str(), 0);
 
-    for (int i = 0; i < format_context_->nb_streams; i++) {
-        if (format_context_->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_VIDEO && video_stream_index_ < 0) {
-            video_stream_index_ = i;
-            break;
+        for (int i = 0; i < format_context_->nb_streams; i++) {
+            if (format_context_->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_VIDEO && video_stream_index_ < 0) {
+                video_stream_index_ = i;
+            }
+        }
+
+        if (video_stream_index_ == -1) {
+            std::cerr << "cannot find video stream" << std::endl;
+            return false;
         }
     }
-    if (video_stream_index_ == -1) {
-        std::cout << "cannot find video stream" << std::endl;
-        return false;
+
+    // open video codec
+    {
+        auto codec_params = format_context_->streams[video_stream_index_]->codecpar;
+        const AVCodec* avcodec = avcodec_find_decoder(codec_params->codec_id);
+        if (avcodec == nullptr) {
+            std::cout << "unsupoorted codec: " << codec_params->codec_id << std::endl;
+            return false;
+        }
+        video_codec_context_ = avcodec_alloc_context3(avcodec);
+        if (video_codec_context_ == nullptr) {
+            std::cout << "cannot alloc avcodec context" << std::endl;
+            return false;
+        }
+        ret = avcodec_parameters_to_context(video_codec_context_, codec_params);
+        if (ret < 0) {
+            std::cout << "cannot copy avcodec params to context, ret " << av_err2str(ret) << std::endl;
+            return false;
+        }
+
+        ret = avcodec_open2(video_codec_context_, avcodec, nullptr);
+        if (ret < 0) {
+            std::cout << "cannot avcodec_open2, ret: " << av_err2str(ret) << std::endl;
+            return false;
+        }
     }
 
-    auto codec_params = format_context_->streams[video_stream_index_]->codecpar;
-    const AVCodec* avcodec = avcodec_find_decoder(codec_params->codec_id);
-    if (avcodec == nullptr) {
-        std::cout << "unsupoorted codec: " << codec_params->codec_id << std::endl;
-        return false;
-    }
-    codec_context_ = avcodec_alloc_context3(avcodec);
-    if (codec_context_ == nullptr) {
-        std::cout << "cannot alloc avcodec context" << std::endl;
-        return false;
-    }
-    ret = avcodec_parameters_to_context(codec_context_, codec_params);
-    if (ret < 0) {
-        std::cout << "cannot copy avcodec params to context, ret " << av_err2str(ret) << std::endl;
-        return false;
-    }
-
-    ret = avcodec_open2(codec_context_, avcodec, nullptr);
-    if (ret < 0) {
-        std::cout << "cannot avcodec_open2, ret: " << av_err2str(ret) << std::endl;
-        return false;
-    }
-
-    sws_context_ = sws_getContext(codec_context_->width,
-                                  codec_context_->height,
-                                  codec_context_->pix_fmt,
-                                  codec_context_->width,
-                                  codec_context_->height,
-                                  AV_PIX_FMT_BGR24,
-                                  SWS_BILINEAR,
-                                  nullptr,
-                                  nullptr,
-                                  nullptr);
-    if (sws_context_ == nullptr) {
-        std::cout << "cannot get sws context" << std::endl;
-        return false;
+    // for convert video frame
+    {
+        sws_context_ = sws_getContext(video_codec_context_->width,
+                                      video_codec_context_->height,
+                                      video_codec_context_->pix_fmt,
+                                      video_codec_context_->width,
+                                      video_codec_context_->height,
+                                      AV_PIX_FMT_BGR24,
+                                      SWS_BILINEAR,
+                                      nullptr,
+                                      nullptr,
+                                      nullptr);
+        if (sws_context_ == nullptr) {
+            std::cout << "cannot get sws context" << std::endl;
+            return false;
+        }
     }
 
     return true;
@@ -207,7 +218,7 @@ void FFmpegVideoProcessorImpl::demux_video_packet_() {
                 break;
             }
             if (pause_) {
-                demux_cv_.wait(lk, [&] { return pause_ == false || quit_ == false; });
+                demux_cv_.wait(lk, [&] { return pause_ == false || quit_ == true; });
             }
         }
 
@@ -263,7 +274,7 @@ void FFmpegVideoProcessorImpl::decode_video_frame_() {
         packet_ch_ >> packet;
         DEFER(av_packet_unref(packet));
 
-        int ret = avcodec_send_packet(codec_context_, packet);
+        int ret = avcodec_send_packet(video_codec_context_, packet);
         if (ret < 0) {
             std::cerr << "cannot avcodec_send_packet: ret: " << av_err2str(ret) << std::endl;
             break;
@@ -272,7 +283,7 @@ void FFmpegVideoProcessorImpl::decode_video_frame_() {
             // will auto unref the frame first.
             // then will auto ref the new decoded frame.
             // so we donot need to unref the frame in the end of while loop
-            ret = avcodec_receive_frame(codec_context_, frame);
+            ret = avcodec_receive_frame(video_codec_context_, frame);
             if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF) {
                 break;
             } else if (ret < 0) {
@@ -350,8 +361,8 @@ void FFmpegVideoProcessorImpl::monitor() {
                     avformat_close_input(&format_context_);
                 }
 
-                if (codec_context_) {
-                    avcodec_close(codec_context_);
+                if (video_codec_context_) {
+                    avcodec_close(video_codec_context_);
                 }
 
                 if (sws_context_) {
