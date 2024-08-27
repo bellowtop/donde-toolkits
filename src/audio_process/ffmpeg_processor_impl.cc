@@ -466,17 +466,22 @@ bool FFmpegAudioProcessorImpl::transcode_audio_frame_() {
             write_ok = false;
             return write_ok;
         }
-        ret = av_audio_fifo_realloc(audio_output_fifo_, av_audio_fifo_size(audio_output_fifo_) + frame_size);
-        if (ret < 0) {
-            std::cerr << "failed to av_audio_fifo_realloc" << av_err2string(ret) << std::endl;
-            write_ok = false;
-            return write_ok;
-        }
-        ret = av_audio_fifo_write(audio_output_fifo_, (void**)converted_frame_data, frame_size);
-        if (ret < 0) {
-            std::cerr << "failed to av_audio_fifo_write" << av_err2string(ret) << std::endl;
-            write_ok = false;
-            return write_ok;
+
+        // fifo is not thread safe.
+        {
+            std::unique_lock lk(audio_fifo_ready_mu_);
+            ret = av_audio_fifo_realloc(audio_output_fifo_, av_audio_fifo_size(audio_output_fifo_) + frame_size);
+            if (ret < 0) {
+                std::cerr << "failed to av_audio_fifo_realloc" << av_err2string(ret) << std::endl;
+                write_ok = false;
+                return write_ok;
+            }
+            ret = av_audio_fifo_write(audio_output_fifo_, (void**)converted_frame_data, frame_size);
+            if (ret < 0) {
+                std::cerr << "failed to av_audio_fifo_write" << av_err2string(ret) << std::endl;
+                write_ok = false;
+                return write_ok;
+            }
         }
 
         write_ok = true;
@@ -510,20 +515,25 @@ bool FFmpegAudioProcessorImpl::save_output_audio_packet_() {
 
     auto more_than = [&](int want_size) -> bool {
         std::cout << "av_audio_fifo_size(audio_output_fifo_): " << av_audio_fifo_size(audio_output_fifo_)
-                  << "want_size: " << want_size << std::endl;
+                  << ", want_size: " << want_size << std::endl;
         return av_audio_fifo_size(audio_output_fifo_) >= want_size;
     };
 
     auto fn_read_samples_and_save_packet = [&](AVFrame* output_frame) -> bool {
-        int want_read = FFMIN(av_audio_fifo_size(audio_output_fifo_), output_frame_size_);
-        int real_read = av_audio_fifo_read(audio_output_fifo_, (void**)output_frame->data, want_read);
-        std::cout << "in save packet, read from fifo, want_read: " << want_read << ", real_read: " << real_read
-                  << std::endl;
+        // fifo is not thread safe.
+        {
+            std::unique_lock lk(audio_fifo_ready_mu_);
+            int want_read = FFMIN(av_audio_fifo_size(audio_output_fifo_), output_frame_size_);
+            int real_read = av_audio_fifo_read(audio_output_fifo_, (void**)output_frame->data, want_read);
+            std::cout << "in save packet, read from fifo, want_read: " << want_read << ", real_read: " << real_read
+                      << std::endl;
 
-        if (real_read < want_read) {
-            std::cerr << "fifo corrupt read. real_read: " << real_read << ", want_read: " << want_read << std::endl;
-            return false;
+            if (real_read < want_read) {
+                std::cerr << "fifo corrupt read. real_read: " << real_read << ", want_read: " << want_read << std::endl;
+                return false;
+            }
         }
+
         // encode frame to packet.
         AVPacket* output_packet = av_packet_alloc();
         if (output_packet == nullptr) {
@@ -586,13 +596,13 @@ bool FFmpegAudioProcessorImpl::save_output_audio_packet_() {
     while (true) {
         {
             std::unique_lock lk(audio_fifo_ready_mu_);
-            std::cout << "check more_than: " << output_frame_size_ << std::endl;
+            // std::cout << "check more_than: " << output_frame_size_ << std::endl;
             if (!more_than(output_frame_size_)) {
-                std::cout << "wait for audio_fifo_ready_cv_: " << std::endl;
+                // std::cout << "wait for audio_fifo_ready_cv_: " << std::endl;
                 audio_fifo_ready_cv_.wait(lk, [&]() { return more_than(output_frame_size_) || quit_ == true; });
             }
         }
-        std::cout << "wake from audio_fifo_ready_cv_" << std::endl;
+        // std::cout << "wake from audio_fifo_ready_cv_" << std::endl;
 
         if (quit_) {
             // drain last fifo frames.
