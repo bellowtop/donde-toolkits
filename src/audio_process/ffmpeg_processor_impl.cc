@@ -372,8 +372,9 @@ bool FFmpegAudioProcessorImpl::transcode_audio_frame_() {
             if (!write_ok) {
                 if (converted_frame_data) {
                     av_freep(&converted_frame_data[0]);
-                    av_freep(&converted_frame_data);
                 }
+                // av_freep accept nullptr's address, just like free()
+                av_freep(&converted_frame_data);
             }
         })
 
