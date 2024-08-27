@@ -321,18 +321,23 @@ bool FFmpegAudioProcessorImpl::start_audio_extract_process(const std::string& fi
 
     // wait for them to stop...
     if (audio_demux_thread_.joinable()) {
+        std::cout << "joining audio_demux_thread_" << std::endl;
         audio_demux_thread_.join();
     }
     if (audio_decode_thread_.joinable()) {
+        std::cout << "joining audio_decode_thread_" << std::endl;
         audio_decode_thread_.join();
     }
     if (audio_trancode_thread_.joinable()) {
+        std::cout << "joining audio_trancode_thread_" << std::endl;
         audio_trancode_thread_.join();
     }
     if (audio_save_thread_.joinable()) {
+        std::cout << "joining audio_save_thread_" << std::endl;
         audio_save_thread_.join();
     }
 
+    std::cout << "process finished." << std::endl;
     return true;
 }
 
@@ -369,8 +374,12 @@ bool FFmpegAudioProcessorImpl::demux_audio_packet_() {
         }
     }
 
+    quit_ = true;
+    audio_fifo_ready_cv_.notify_all();
+
     audio_packet_ch_.close();
 
+    std::cout << "return from thread: demux_audio_packet_" << std::endl;
     return true;
 }
 
@@ -383,10 +392,19 @@ bool FFmpegAudioProcessorImpl::decode_audio_frame_() {
     // don't free frame here. every frame is pushed to ch_, let the ch_ consumer free them.
     // DEFER(av_frame_free(&frame));
 
+    // close frame channel at last
+    // use DEFER, or you should close at every return branch.
+    DEFER(audio_frame_ch_.close());
+
     while (true) {
         AVPacket* packet;
         audio_packet_ch_ >> packet;
+        if (packet == nullptr) {
+            // channel is closed;
+            break;
+        }
         DEFER(av_packet_unref(packet));
+
         int ret = avcodec_send_packet(audio_codec_context_, packet);
         if (ret < 0) {
             std::cerr << "failed to send packet to audio codec context" << av_err2string(ret) << std::endl;
@@ -412,6 +430,11 @@ bool FFmpegAudioProcessorImpl::decode_audio_frame_() {
             audio_frame_ch_ << av_frame_clone(frame);
         }
     }
+
+    ;
+
+    std::cout << "return from thread: decode_audio_frame_" << std::endl;
+    return true;
 }
 
 bool FFmpegAudioProcessorImpl::transcode_audio_frame_() {
@@ -491,6 +514,10 @@ bool FFmpegAudioProcessorImpl::transcode_audio_frame_() {
     while (true) {
         AVFrame* frame;
         audio_frame_ch_ >> frame;
+        if (frame == nullptr) {
+            // channel is closed.
+            break;
+        }
         DEFER(av_frame_free(&frame));
 
         // std::cout << "transcode_audio_frame_ get frame: ";
@@ -507,6 +534,7 @@ bool FFmpegAudioProcessorImpl::transcode_audio_frame_() {
         }
     }
 
+    std::cout << "return from thread: transcode_audio_frame_" << std::endl;
     return true;
 }
 
@@ -514,8 +542,8 @@ bool FFmpegAudioProcessorImpl::save_output_audio_packet_() {
     std::cout << "save_output_audio_packet_: output_frame_size: " << output_frame_size_ << std::endl;
 
     auto more_than = [&](int want_size) -> bool {
-        std::cout << "av_audio_fifo_size(audio_output_fifo_): " << av_audio_fifo_size(audio_output_fifo_)
-                  << ", want_size: " << want_size << std::endl;
+        std::cout << "av_audio_fifo_size: " << av_audio_fifo_size(audio_output_fifo_) << ", want_size: " << want_size
+                  << std::endl;
         return av_audio_fifo_size(audio_output_fifo_) >= want_size;
     };
 
@@ -594,19 +622,9 @@ bool FFmpegAudioProcessorImpl::save_output_audio_packet_() {
     }
 
     while (true) {
-        {
-            std::unique_lock lk(audio_fifo_ready_mu_);
-            // std::cout << "check more_than: " << output_frame_size_ << std::endl;
-            if (!more_than(output_frame_size_)) {
-                // std::cout << "wait for audio_fifo_ready_cv_: " << std::endl;
-                audio_fifo_ready_cv_.wait(lk, [&]() { return more_than(output_frame_size_) || quit_ == true; });
-            }
-        }
-        // std::cout << "wake from audio_fifo_ready_cv_" << std::endl;
-
         if (quit_) {
             // drain last fifo frames.
-            while (more_than(0)) {
+            while (more_than(output_frame_size_)) {
                 // read fifo
                 bool has_more = fn_read_samples_and_save_packet(frame);
                 if (!has_more) {
@@ -616,12 +634,24 @@ bool FFmpegAudioProcessorImpl::save_output_audio_packet_() {
             break;
         }
 
+        {
+            std::unique_lock lk(audio_fifo_ready_mu_);
+            // std::cout << "check more_than: " << output_frame_size_ << std::endl;
+            if (!more_than(output_frame_size_)) {
+                std::cout << "wait for audio_fifo_ready_cv_: " << std::endl;
+                audio_fifo_ready_cv_.wait(lk, [&]() { return more_than(output_frame_size_) || quit_ == true; });
+            }
+        }
+        // std::cout << "wake from audio_fifo_ready_cv_" << std::endl;
+
         // read fifo
         bool has_more = fn_read_samples_and_save_packet(frame);
-        if (!has_more) {
-            break;
+        if (has_more) {
+            continue;
         }
     }
+
+    std::cout << "return from thread: save_output_audio_packet_" << std::endl;
 
     return true;
 }

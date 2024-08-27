@@ -77,8 +77,8 @@ class FFmpegAudioProcessorImpl {
     const int audio_output_bit_rate = 96000; // bit/s
     const int output_frame_size_ = 1024;
 
-    bool quit_ = false;
-    bool pause_ = false;
+    std::atomic_bool quit_ = false;
+    std::atomic_bool pause_ = false;
     ProcessOptions processor_opts_;
 };
 
