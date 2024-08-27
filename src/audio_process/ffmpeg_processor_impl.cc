@@ -26,13 +26,48 @@ extern "C" {
 
 namespace donde_toolkits ::audio_process {
 
+void debug_frame(const AVFrame* frame) {
+    // if (!frame) {
+    //     std::cerr << "Frame is null" << std::endl;
+    //     return;
+    // }
+
+    // std::cout << "Frame details:" << std::endl;
+    // std::cout << "  nb_samples: " << frame->nb_samples << std::endl;
+    // std::cout << "  channels: " << frame->ch_layout.nb_channels << std::endl;
+
+    // const char* fmt_name = av_get_sample_fmt_name((AVSampleFormat)frame->format);
+    // if (fmt_name == nullptr) {
+    //     std::cout << "  format: NULL, frame->format: " << frame->format << std::endl;
+    // } else {
+    //     std::cout << "  format: " << fmt_name << std::endl;
+    // }
+
+    // // 打印通道布局信息
+    // char channel_layout_str[256];
+    // av_channel_layout_describe(&frame->ch_layout, channel_layout_str, sizeof(channel_layout_str));
+    // std::cout << "  channel_layout: " << channel_layout_str << std::endl;
+    // std::cout << "  sample_rate: " << frame->sample_rate << std::endl;
+
+    // // // 打印每个通道的前几个样本数据 (假设为 float 格式)
+    // // if (frame->data[0]) {
+    // //     for (int ch = 0; ch < frame->ch_layout.nb_channels; ch++) {
+    // //         std::cout << "Channel " << ch << ": ";
+    // //         for (int i = 0; i < std::min(frame->nb_samples, 10); i++) { // 只打印前10个样本
+    // //             std::cout << ((float*)frame->data[ch])[i] << " ";
+    // //         }
+    // //         std::cout << std::endl;
+    // //     }
+    // // }
+}
+
 FFmpegAudioProcessorImpl::FFmpegAudioProcessorImpl() {
     // monitor_thread_ = std::thread([&] { monitor(); });
 }
 
 FFmpegAudioProcessorImpl::~FFmpegAudioProcessorImpl() {}
 
-AudioStreamInfo FFmpegAudioProcessorImpl::OpenVideoContext(const std::string& filepath) {
+AudioStreamInfo FFmpegAudioProcessorImpl::OpenContext(const std::string& filepath) {
     video_filepath_ = filepath;
 
     bool succ = open_context();
@@ -51,6 +86,7 @@ bool FFmpegAudioProcessorImpl::Transcode(const std::string& filepath) {
     DEFER(clear_audio_extract_context());
 
     // extract
+    // blocking call.
     start_audio_extract_process(filepath);
 
     return true;
@@ -156,20 +192,29 @@ bool FFmpegAudioProcessorImpl::start_audio_extract_context(const std::string& fi
     // initialize audio_output_codec_ctx
     {
         /* Find the encoder to be used by its name. */
-        audio_output_codec_ = avcodec_find_encoder(AV_CODEC_ID_PCM_F32BE);
+        audio_output_codec_ = avcodec_find_encoder(AV_CODEC_ID_PCM_S16LE);
 
         /* Set the basic encoder parameters.
          * The input file's sample rate is used to avoid a sample rate conversion. */
         audio_output_codec_context_ = avcodec_alloc_context3(audio_output_codec_);
         av_channel_layout_default(&audio_output_codec_context_->ch_layout, 2);
-        audio_output_codec_context_->sample_rate = audio_codec_context_->sample_rate;
+        audio_output_codec_context_->sample_rate = 44100;
         audio_output_codec_context_->sample_fmt = audio_output_codec_->sample_fmts[0];
-        audio_output_codec_context_->bit_rate = audio_output_bit_rate;
+
+        // explict set output frame_size. this value is not restricted, just means samples per frame.
+        // it doesn't affect audio quality.
+        // also for PCM, no need to set it.
+        // audio_output_codec_context_->frame_size = 1024;
+
+        // PCM don't need bit_rate, because it's un-compressed fmt.
+        // it's bit_rate is calculated by sample_rate and channel numbers
+        // audio_output_codec_context_->bit_rate = audio_output_bit_rate;
+        audio_output_codec_context_->bit_rate = 0;
 
         /* Some container formats (like MP4) require global headers to be present.
          * Mark the encoder so that it behaves accordingly. */
         if (audio_output_format_context_->oformat->flags & AVFMT_GLOBALHEADER) {
-            audio_output_codec_context_->flags |= AVFMT_GLOBALHEADER;
+            audio_output_codec_context_->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
         }
     }
 
@@ -193,6 +238,15 @@ bool FFmpegAudioProcessorImpl::start_audio_extract_context(const std::string& fi
         ret = avcodec_parameters_from_context(audio_output_stream_->codecpar, audio_output_codec_context_);
         if (ret < 0) {
             std::cerr << "cannot avcodec_parameters_from_context, ret: " << av_err2str(ret) << std::endl;
+            return false;
+        }
+    }
+
+    // write output header
+    {
+        ret = avformat_write_header(audio_output_format_context_, nullptr);
+        if (ret < 0) {
+            std::cerr << "failed avformat_write_header, ret: " << av_err2str(ret) << std::endl;
             return false;
         }
     }
@@ -227,6 +281,16 @@ bool FFmpegAudioProcessorImpl::start_audio_extract_context(const std::string& fi
         }
     }
 
+    // init fifo
+    {
+        audio_output_fifo_ = av_audio_fifo_alloc(
+            audio_output_codec_context_->sample_fmt, audio_output_codec_context_->ch_layout.nb_channels, 1);
+        if (audio_output_fifo_ == nullptr) {
+            std::cerr << "cannot av_audio_fifo_alloc " << std::endl;
+            return false;
+        }
+    }
+
     return true;
 }
 
@@ -253,6 +317,7 @@ bool FFmpegAudioProcessorImpl::start_audio_extract_process(const std::string& fi
     audio_demux_thread_ = std::thread([&] { demux_audio_packet_(); });
     audio_decode_thread_ = std::thread([&] { decode_audio_frame_(); });
     audio_trancode_thread_ = std::thread([&] { transcode_audio_frame_(); });
+    audio_save_thread_ = std::thread([&] { save_output_audio_packet_(); });
 
     // wait for them to stop...
     if (audio_demux_thread_.joinable()) {
@@ -263,6 +328,9 @@ bool FFmpegAudioProcessorImpl::start_audio_extract_process(const std::string& fi
     }
     if (audio_trancode_thread_.joinable()) {
         audio_trancode_thread_.join();
+    }
+    if (audio_save_thread_.joinable()) {
+        audio_save_thread_.join();
     }
 
     return true;
@@ -286,7 +354,7 @@ bool FFmpegAudioProcessorImpl::demux_audio_packet_() {
                 audio_demux_cv_.wait(lk, [&] { return pause_ == false || quit_ == true; });
             }
         }
-        int ret = av_read_frame(audio_output_format_context_, packet);
+        int ret = av_read_frame(format_context_, packet);
         if (ret < 0) {
             std::cerr << "can't read packet from format context, " << av_err2string(ret) << std::endl;
             break;
@@ -297,7 +365,7 @@ bool FFmpegAudioProcessorImpl::demux_audio_packet_() {
             AVPacket* cloned = av_packet_clone(packet);
             // sync block channel, if channel full, then block this statement
             audio_packet_ch_ << cloned;
-            std::cout << "send audio packet to channel" << std::endl;
+            // std::cout << "send audio packet to channel" << std::endl;
         }
     }
 
@@ -312,7 +380,8 @@ bool FFmpegAudioProcessorImpl::decode_audio_frame_() {
         std::cerr << "failed to alloc frame" << std::endl;
         return false;
     }
-    DEFER(av_frame_free(&frame));
+    // don't free frame here. every frame is pushed to ch_, let the ch_ consumer free them.
+    // DEFER(av_frame_free(&frame));
 
     while (true) {
         AVPacket* packet;
@@ -338,7 +407,9 @@ bool FFmpegAudioProcessorImpl::decode_audio_frame_() {
                 std::cerr << "failed to receive frame from audio codec context" << av_err2string(ret) << std::endl;
                 break;
             }
-            audio_frame_ch_ << frame;
+            // std::cout << "send frame: " << std::endl;
+            // debug_frame(frame);
+            audio_frame_ch_ << av_frame_clone(frame);
         }
     }
 }
@@ -346,7 +417,7 @@ bool FFmpegAudioProcessorImpl::decode_audio_frame_() {
 bool FFmpegAudioProcessorImpl::transcode_audio_frame_() {
 
     auto fn_write_frame_samples_to_fifo = [&](AVFrame* frame) -> bool {
-        uint8_t** converted_frame_data;
+        uint8_t** converted_frame_data = nullptr;
 
         // number of samples in one audio frame;
         int frame_size = frame->nb_samples;
@@ -358,7 +429,17 @@ bool FFmpegAudioProcessorImpl::transcode_audio_frame_() {
                                                      audio_output_codec_context_->sample_fmt,
                                                      0);
         if (ret < 0) {
-            std::cerr << "failed to av_samples_alloc_array_and_samples" << av_err2string(ret) << std::endl;
+            std::cerr << "failed to av_samples_alloc_array_and_samples: " << av_err2string(ret) << std::endl;
+
+            std::cerr << "\taudio_output_codec_context_->ch_layout.nb_channels: "
+                      << audio_output_codec_context_->ch_layout.nb_channels << std::endl;
+
+            std::cerr << "\taudio_output_codec_context_->sample_fmt: "
+                      << av_get_sample_fmt_name(audio_output_codec_context_->sample_fmt) << std::endl;
+
+            std::cerr << "\tframe_size: " << frame_size << std::endl;
+
+            debug_frame(frame);
             return false;
         }
 
@@ -407,36 +488,49 @@ bool FFmpegAudioProcessorImpl::transcode_audio_frame_() {
         audio_frame_ch_ >> frame;
         DEFER(av_frame_free(&frame));
 
+        // std::cout << "transcode_audio_frame_ get frame: ";
+        // debug_frame(frame);
+
         // write to fifo
         bool write_ok = fn_write_frame_samples_to_fifo(frame);
         if (!write_ok) {
             break;
         }
 
-        if (av_audio_fifo_size(audio_output_fifo_) >= audio_output_codec_context_->frame_size) {
+        if (av_audio_fifo_size(audio_output_fifo_) >= output_frame_size_) {
             audio_fifo_ready_cv_.notify_all();
         }
     }
+
+    return true;
 }
 
 bool FFmpegAudioProcessorImpl::save_output_audio_packet_() {
-    const int output_frame_size = audio_output_codec_context_->frame_size;
+    std::cout << "save_output_audio_packet_: output_frame_size: " << output_frame_size_ << std::endl;
 
-    auto more_than = [&](int want_size) -> bool { return av_audio_fifo_size(audio_output_fifo_) >= want_size; };
+    auto more_than = [&](int want_size) -> bool {
+        std::cout << "av_audio_fifo_size(audio_output_fifo_): " << av_audio_fifo_size(audio_output_fifo_)
+                  << "want_size: " << want_size << std::endl;
+        return av_audio_fifo_size(audio_output_fifo_) >= want_size;
+    };
 
     auto fn_read_samples_and_save_packet = [&](AVFrame* output_frame) -> bool {
-        int want_read = FFMIN(av_audio_fifo_size(audio_output_fifo_), output_frame_size);
-        int real_read = av_audio_fifo_read(audio_output_fifo_, (void**)output_frame->extended_data, want_read);
+        int want_read = FFMIN(av_audio_fifo_size(audio_output_fifo_), output_frame_size_);
+        int real_read = av_audio_fifo_read(audio_output_fifo_, (void**)output_frame->data, want_read);
+        std::cout << "in save packet, read from fifo, want_read: " << want_read << ", real_read: " << real_read
+                  << std::endl;
+
         if (real_read < want_read) {
+            std::cerr << "fifo corrupt read. real_read: " << real_read << ", want_read: " << want_read << std::endl;
             return false;
         }
         // encode frame to packet.
-        AVPacket* packet = av_packet_alloc();
-        if (packet == nullptr) {
+        AVPacket* output_packet = av_packet_alloc();
+        if (output_packet == nullptr) {
             std::cerr << "failed to alloc packet when save output packet." << std::endl;
             return false;
         }
-        DEFER(av_packet_free(&packet));
+        DEFER(av_packet_free(&output_packet));
 
         int ret = avcodec_send_frame(audio_output_codec_context_, output_frame);
         if (ret < 0) {
@@ -444,7 +538,7 @@ bool FFmpegAudioProcessorImpl::save_output_audio_packet_() {
             return false;
         }
 
-        ret = avcodec_receive_packet(audio_output_codec_context_, packet);
+        ret = avcodec_receive_packet(audio_output_codec_context_, output_packet);
         if (ret == AVERROR(EAGAIN)) {
             std::cout << "need more frame data to receive a full packet" << std::endl;
             return true;
@@ -454,19 +548,20 @@ bool FFmpegAudioProcessorImpl::save_output_audio_packet_() {
             return false;
         }
         if (ret < 0) {
-            std::cerr << "failed to avcodec_receive_packet" << av_err2string(ret) << std::endl;
+            std::cerr << "failed to avcodec_receive_packet: " << av_err2string(ret) << std::endl;
             return false;
         }
         // save to file.
-        ret = av_write_frame(audio_output_format_context_, packet);
+        ret = av_write_frame(audio_output_format_context_, output_packet);
         if (ret < 0) {
-            std::cerr << "failed to av_write_frame" << av_err2string(ret) << std::endl;
+            std::cerr << "failed to av_write_frame: " << av_err2string(ret) << std::endl;
             return false;
         }
 
         return true;
     };
 
+    // alloc the frame
     AVFrame* frame = av_frame_alloc();
     if (frame == nullptr) {
         std::cerr << "failed to alloc frame" << std::endl;
@@ -474,13 +569,31 @@ bool FFmpegAudioProcessorImpl::save_output_audio_packet_() {
     }
     DEFER(av_frame_free(&frame));
 
+    // initialize the frame inner data buffer
+    {
+        frame->nb_samples = output_frame_size_;
+        av_channel_layout_copy(&frame->ch_layout, &audio_output_codec_context_->ch_layout);
+        frame->format = audio_output_codec_context_->sample_fmt;
+        frame->sample_rate = audio_output_codec_context_->sample_rate;
+        // This function will fill AVFrame.data and AVFrame.buf arrays
+        int ret = av_frame_get_buffer(frame, 0);
+        if (ret < 0) {
+            std::cerr << "failed to av_frame_get_buffer" << av_err2string(ret) << std::endl;
+            return false;
+        }
+    }
+
     while (true) {
         {
             std::unique_lock lk(audio_fifo_ready_mu_);
-            if (!more_than(output_frame_size)) {
-                audio_fifo_ready_cv_.wait(lk, [&]() { return more_than(output_frame_size) || quit_ == true; });
+            std::cout << "check more_than: " << output_frame_size_ << std::endl;
+            if (!more_than(output_frame_size_)) {
+                std::cout << "wait for audio_fifo_ready_cv_: " << std::endl;
+                audio_fifo_ready_cv_.wait(lk, [&]() { return more_than(output_frame_size_) || quit_ == true; });
             }
         }
+        std::cout << "wake from audio_fifo_ready_cv_" << std::endl;
+
         if (quit_) {
             // drain last fifo frames.
             while (more_than(0)) {

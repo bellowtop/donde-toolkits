@@ -6,7 +6,6 @@
 #include <thread>
 
 using donde_toolkits::video_process::FFmpegVideoFrame;
-using donde_toolkits::video_process::FFmpegVideoFrameProcessor;
 using donde_toolkits::video_process::FFmpegVideoProcessor;
 
 bool callback(const FFmpegVideoFrame* frame) {
@@ -15,10 +14,16 @@ bool callback(const FFmpegVideoFrame* frame) {
 };
 
 int main(int argc, char** argv) {
-    FFmpegVideoProcessor v(argv[1]);
-    FFmpegVideoFrameProcessor p(callback);
-    v.Register(p);
-    v.Process();
+    FFmpegVideoProcessor v{};
+
+    v.AddObserver([&](const FFmpegVideoFrame* f) -> bool { return true; });
+    v.OpenVideoContext("./contrib/Iron_Man-Trailer_HD.mp4");
+    v.Process({
+        .warm_up_frames = 0,
+        .skip_frames = 1,
+        .decode_fps = 30,
+        .loop_forever = true,
+    });
 
     while (true) {
         std::this_thread::sleep_for(std::chrono::seconds(1));

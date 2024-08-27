@@ -1,6 +1,5 @@
 #pragma once
 
-#include <Poco/Notification.h>
 extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
@@ -24,7 +23,7 @@ class FFmpegAudioProcessorImpl {
   public:
     FFmpegAudioProcessorImpl();
 
-    AudioStreamInfo OpenVideoContext(const std::string& filepath);
+    AudioStreamInfo OpenContext(const std::string& filepath);
 
     bool Transcode(const std::string& output_filepath);
 
@@ -69,12 +68,14 @@ class FFmpegAudioProcessorImpl {
     std::thread audio_demux_thread_;
     std::thread audio_decode_thread_;
     std::thread audio_trancode_thread_;
+    std::thread audio_save_thread_;
     std::thread audio_monitor_thread_;
     std::mutex audio_demux_mu_;
     std::condition_variable audio_demux_cv_;
     // end audio transcode output.
 
     const int audio_output_bit_rate = 96000; // bit/s
+    const int output_frame_size_ = 1024;
 
     bool quit_ = false;
     bool pause_ = false;

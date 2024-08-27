@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 
 project(DondeToolkits VERSION 0.0.1 LANGUAGES CXX)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_BUILD_TYPE Debug)
 
 
 # 启用 C++ 和 Objective-C 语言
@@ -234,7 +235,7 @@ endif ()
 # endif ()
 
 # if (${PROJECT_NAME}_ENABLE_EXAMPLES)
-#     add_subdirectory(examples)
+    add_subdirectory(examples)
 # endif ()
 
 

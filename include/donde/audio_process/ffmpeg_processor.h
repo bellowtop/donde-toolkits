@@ -18,8 +18,8 @@ class FFmpegAudioProcessor : public AudioProcessor {
   public:
     FFmpegAudioProcessor();
 
-    AudioStreamInfo OpenAudioContext(const std::string& filepath);
-    void Transcode(const ProcessOptions& opts);
+    AudioStreamInfo OpenContext(const std::string& filepath);
+    void Transcode(const std::string& output_filepath);
 
     ~FFmpegAudioProcessor();
 

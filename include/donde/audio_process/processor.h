@@ -13,9 +13,9 @@ struct AudioStreamInfo {
 
 class AudioProcessor {
   public:
-    virtual AudioStreamInfo OpenAudioContext(const std::string& filepath) = 0;
+    virtual AudioStreamInfo OpenContext(const std::string& filepath) = 0;
 
-    virtual void TransCode(const ProcessOptions& opts) = 0;
+    virtual void Transcode(const std::string& output_filepath) = 0;
 };
 
 } // namespace donde_toolkits::audio_process
