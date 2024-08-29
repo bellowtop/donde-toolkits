@@ -197,7 +197,7 @@ bool FFmpegAudioProcessorImpl::start_audio_extract_context(const std::string& fi
         /* Set the basic encoder parameters.
          * The input file's sample rate is used to avoid a sample rate conversion. */
         audio_output_codec_context_ = avcodec_alloc_context3(audio_output_codec_);
-        av_channel_layout_default(&audio_output_codec_context_->ch_layout, 2);
+        av_channel_layout_default(&audio_output_codec_context_->ch_layout, 1);
         audio_output_codec_context_->sample_rate = 16000;
         audio_output_codec_context_->sample_fmt = audio_output_codec_->sample_fmts[0];
 
@@ -493,11 +493,13 @@ bool FFmpegAudioProcessorImpl::transcode_audio_frame_() {
             audio_output_swr_context_, converted_frame_data, dst_nb_samples, frame->extended_data, frame_size);
         if (ret < 0) {
             std::cerr << "failed to swr_convert: " << av_err2string(ret) << std::endl;
-            std::cerr << "input frame_size: " << frame_size << std::endl;
-            std::cerr << "output >frame_size: " << audio_output_codec_context_->frame_size << std::endl;
             write_ok = false;
             return write_ok;
         }
+        if (ret != dst_nb_samples) {
+            std::cout << "swr_convert ret != dst_nb_samples, ret: " << ret << ", " << dst_nb_samples << std::endl;
+        }
+        dst_nb_samples = ret;
 
         // fifo is not thread safe.
         {
