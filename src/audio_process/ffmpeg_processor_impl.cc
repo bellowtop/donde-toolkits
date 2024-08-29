@@ -443,18 +443,19 @@ bool FFmpegAudioProcessorImpl::transcode_audio_frame_() {
         uint8_t** converted_frame_data = nullptr;
 
         // output frame_size
-        int max_dst_nb_samples
+        int dst_nb_samples
             = av_rescale_rnd(swr_get_delay(audio_output_swr_context_, frame->sample_rate) + frame->nb_samples,
-                             16000,
+                             audio_output_codec_context_->sample_rate,
                              frame->sample_rate,
                              AV_ROUND_UP);
+        std::cout << "dst_nb_samples: " << dst_nb_samples << std::endl;
         // number of samples in one audio frame;
         int frame_size = frame->nb_samples;
         // prepare converted_frame_data memory
         int ret = av_samples_alloc_array_and_samples(&converted_frame_data,
                                                      nullptr,
                                                      audio_output_codec_context_->ch_layout.nb_channels,
-                                                     max_dst_nb_samples,
+                                                     dst_nb_samples,
                                                      audio_output_codec_context_->sample_fmt,
                                                      0);
         if (ret < 0) {
@@ -489,7 +490,7 @@ bool FFmpegAudioProcessorImpl::transcode_audio_frame_() {
         })
 
         ret = swr_convert(
-            audio_output_swr_context_, converted_frame_data, max_dst_nb_samples, frame->extended_data, frame_size);
+            audio_output_swr_context_, converted_frame_data, dst_nb_samples, frame->extended_data, frame_size);
         if (ret < 0) {
             std::cerr << "failed to swr_convert: " << av_err2string(ret) << std::endl;
             std::cerr << "input frame_size: " << frame_size << std::endl;
@@ -501,13 +502,13 @@ bool FFmpegAudioProcessorImpl::transcode_audio_frame_() {
         // fifo is not thread safe.
         {
             std::unique_lock lk(audio_fifo_ready_mu_);
-            ret = av_audio_fifo_realloc(audio_output_fifo_, av_audio_fifo_size(audio_output_fifo_) + frame_size);
+            ret = av_audio_fifo_realloc(audio_output_fifo_, av_audio_fifo_size(audio_output_fifo_) + dst_nb_samples);
             if (ret < 0) {
                 std::cerr << "failed to av_audio_fifo_realloc" << av_err2string(ret) << std::endl;
                 write_ok = false;
                 return write_ok;
             }
-            ret = av_audio_fifo_write(audio_output_fifo_, (void**)converted_frame_data, max_dst_nb_samples);
+            ret = av_audio_fifo_write(audio_output_fifo_, (void**)converted_frame_data, dst_nb_samples);
             if (ret < 0) {
                 std::cerr << "failed to av_audio_fifo_write" << av_err2string(ret) << std::endl;
                 write_ok = false;
@@ -555,11 +556,14 @@ bool FFmpegAudioProcessorImpl::save_output_audio_packet_() {
         return av_audio_fifo_size(audio_output_fifo_) >= want_size;
     };
 
+    int pts = 0;
+
     auto fn_read_samples_and_save_packet = [&](AVFrame* output_frame) -> bool {
         // fifo is not thread safe.
         {
             std::unique_lock lk(audio_fifo_ready_mu_);
-            int want_read = FFMIN(av_audio_fifo_size(audio_output_fifo_), output_frame_size_);
+            // int want_read = FFMIN(av_audio_fifo_size(audio_output_fifo_), output_frame_size_);
+            int want_read = output_frame_size_;
             int real_read = av_audio_fifo_read(audio_output_fifo_, (void**)output_frame->data, want_read);
             std::cout << "in save packet, read from fifo, want_read: " << want_read << ", real_read: " << real_read
                       << std::endl;
@@ -569,6 +573,9 @@ bool FFmpegAudioProcessorImpl::save_output_audio_packet_() {
                 return false;
             }
         }
+
+        output_frame->pts = pts;
+        pts += output_frame->nb_samples;
 
         // encode frame to packet.
         AVPacket* output_packet = av_packet_alloc();
