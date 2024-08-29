@@ -198,7 +198,7 @@ bool FFmpegAudioProcessorImpl::start_audio_extract_context(const std::string& fi
          * The input file's sample rate is used to avoid a sample rate conversion. */
         audio_output_codec_context_ = avcodec_alloc_context3(audio_output_codec_);
         av_channel_layout_default(&audio_output_codec_context_->ch_layout, 2);
-        audio_output_codec_context_->sample_rate = 44100;
+        audio_output_codec_context_->sample_rate = 16000;
         audio_output_codec_context_->sample_fmt = audio_output_codec_->sample_fmts[0];
 
         // explict set output frame_size. this value is not restricted, just means samples per frame.
@@ -272,7 +272,7 @@ bool FFmpegAudioProcessorImpl::start_audio_extract_context(const std::string& fi
          * not greater than the number of samples to be converted.
          * If the sample rates differ, this case has to be handled differently
          */
-        av_assert0(audio_output_codec_context_->sample_rate == audio_codec_context_->sample_rate);
+        av_assert0(audio_output_codec_context_->sample_rate <= audio_codec_context_->sample_rate);
 
         ret = swr_init(audio_output_swr_context_);
         if (ret < 0) {
@@ -442,13 +442,19 @@ bool FFmpegAudioProcessorImpl::transcode_audio_frame_() {
     auto fn_write_frame_samples_to_fifo = [&](AVFrame* frame) -> bool {
         uint8_t** converted_frame_data = nullptr;
 
+        // output frame_size
+        int max_dst_nb_samples
+            = av_rescale_rnd(swr_get_delay(audio_output_swr_context_, frame->sample_rate) + frame->nb_samples,
+                             16000,
+                             frame->sample_rate,
+                             AV_ROUND_UP);
         // number of samples in one audio frame;
         int frame_size = frame->nb_samples;
         // prepare converted_frame_data memory
         int ret = av_samples_alloc_array_and_samples(&converted_frame_data,
                                                      nullptr,
                                                      audio_output_codec_context_->ch_layout.nb_channels,
-                                                     frame_size,
+                                                     max_dst_nb_samples,
                                                      audio_output_codec_context_->sample_fmt,
                                                      0);
         if (ret < 0) {
@@ -483,9 +489,11 @@ bool FFmpegAudioProcessorImpl::transcode_audio_frame_() {
         })
 
         ret = swr_convert(
-            audio_output_swr_context_, converted_frame_data, frame_size, frame->extended_data, frame_size);
+            audio_output_swr_context_, converted_frame_data, max_dst_nb_samples, frame->extended_data, frame_size);
         if (ret < 0) {
-            std::cerr << "failed to swr_convert" << av_err2string(ret) << std::endl;
+            std::cerr << "failed to swr_convert: " << av_err2string(ret) << std::endl;
+            std::cerr << "input frame_size: " << frame_size << std::endl;
+            std::cerr << "output >frame_size: " << audio_output_codec_context_->frame_size << std::endl;
             write_ok = false;
             return write_ok;
         }
@@ -499,7 +507,7 @@ bool FFmpegAudioProcessorImpl::transcode_audio_frame_() {
                 write_ok = false;
                 return write_ok;
             }
-            ret = av_audio_fifo_write(audio_output_fifo_, (void**)converted_frame_data, frame_size);
+            ret = av_audio_fifo_write(audio_output_fifo_, (void**)converted_frame_data, max_dst_nb_samples);
             if (ret < 0) {
                 std::cerr << "failed to av_audio_fifo_write" << av_err2string(ret) << std::endl;
                 write_ok = false;
