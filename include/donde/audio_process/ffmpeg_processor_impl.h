@@ -52,30 +52,33 @@ class FFmpegAudioProcessorImpl {
     int audio_stream_index_ = -1;
 
     // for audio transcode output.
-    AVIOContext* audio_output_io_context_ = nullptr;
-    AVFormatContext* audio_output_format_context_ = nullptr;
-    const AVCodec* audio_output_codec_ = nullptr;
-    AVStream* audio_output_stream_ = nullptr;
-    AVCodecContext* audio_output_codec_context_ = nullptr;
-    SwrContext* audio_output_swr_context_ = nullptr;
-    AVAudioFifo* audio_output_fifo_ = nullptr;
+    AVIOContext* output_io_context_ = nullptr;
+    AVFormatContext* output_format_context_ = nullptr;
+    const AVCodec* output_codec_ = nullptr;
+    AVStream* output_stream_ = nullptr;
+    AVCodecContext* output_codec_context_ = nullptr;
+    SwrContext* output_swr_context_ = nullptr;
+    AVAudioFifo* output_fifo_ = nullptr;
 
     std::mutex audio_fifo_ready_mu_;
     std::condition_variable audio_fifo_ready_cv_;
 
     msd::channel<AVPacket*> audio_packet_ch_{1};
     msd::channel<AVFrame*> audio_frame_ch_{1};
-    std::thread audio_demux_thread_;
-    std::thread audio_decode_thread_;
-    std::thread audio_trancode_thread_;
-    std::thread audio_save_thread_;
-    std::thread audio_monitor_thread_;
-    std::mutex audio_demux_mu_;
-    std::condition_variable audio_demux_cv_;
+    std::thread demux_thread_;
+    std::thread decode_thread_;
+    std::thread trancode_thread_;
+    std::thread save_thread_;
+    std::thread monitor_thread_;
+    std::mutex demux_mu_;
+    std::condition_variable demux_cv_;
     // end audio transcode output.
 
-    const int audio_output_bit_rate = 96000; // bit/s
+    const int output_bit_rate = 96000; // bit/s
     const int output_frame_size_ = 1024;
+    const int output_sample_rate_ = 16000;
+    const int output_nb_channels_ = 1;
+    const AVCodecID output_codec_id_ = AV_CODEC_ID_PCM_S16LE;
 
     std::atomic_bool quit_ = false;
     std::atomic_bool pause_ = false;
