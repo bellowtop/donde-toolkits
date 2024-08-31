@@ -13,8 +13,6 @@
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/opencv.hpp>
 
-
-
 using namespace donde_toolkits::feature_extract::openvino_worker;
 
 using json = nlohmann::json;
@@ -49,8 +47,7 @@ namespace donde_toolkits ::feature_extract {
 
 FacePipelineImpl::FacePipelineImpl(const json& conf) : _config(conf) {}
 
-RetCode FacePipelineImpl::Init(Processor* detector, Processor* landmarks, Processor* aligner,
-                               Processor* feature) {
+RetCode FacePipelineImpl::Init(Processor* detector, Processor* landmarks, Processor* aligner, Processor* feature) {
 
     _detectorProcessor.reset(detector);
     _landmarksProcessor.reset(landmarks);
@@ -122,6 +119,8 @@ std::shared_ptr<Frame> FacePipelineImpl::Decode(const std::vector<uint8_t>& imag
     return std::make_shared<Frame>(image);
 }
 
+std::shared_ptr<OcrResult> TextRecognition(const cv::Mat& mat) { return {}; }
+
 std::shared_ptr<DetectResult> FacePipelineImpl::Detect(std::shared_ptr<Frame> frame) {
     Value input{ValueFrame, frame};
     // output.valuePtr memory is allocated by inner Process();
@@ -138,8 +137,7 @@ std::shared_ptr<DetectResult> FacePipelineImpl::Detect(std::shared_ptr<Frame> fr
     return std::static_pointer_cast<DetectResult>(output.valuePtr);
 }
 
-std::shared_ptr<LandmarksResult>
-FacePipelineImpl::Landmarks(std::shared_ptr<DetectResult> detect_result) {
+std::shared_ptr<LandmarksResult> FacePipelineImpl::Landmarks(std::shared_ptr<DetectResult> detect_result) {
     Value input{ValueDetectResult, detect_result};
     // output.valuePtr memory is allocated by inner Process();
     Value output;
@@ -155,8 +153,7 @@ FacePipelineImpl::Landmarks(std::shared_ptr<DetectResult> detect_result) {
     return std::static_pointer_cast<LandmarksResult>(output.valuePtr);
 }
 
-std::shared_ptr<AlignerResult>
-FacePipelineImpl::Align(std::shared_ptr<LandmarksResult> landmarks_result) {
+std::shared_ptr<AlignerResult> FacePipelineImpl::Align(std::shared_ptr<LandmarksResult> landmarks_result) {
     Value input{ValueLandmarksResult, landmarks_result};
     // output.valuePtr memory is allocated by inner Process();
     Value output;
@@ -172,8 +169,7 @@ FacePipelineImpl::Align(std::shared_ptr<LandmarksResult> landmarks_result) {
     return std::static_pointer_cast<AlignerResult>(output.valuePtr);
 }
 
-std::shared_ptr<FeatureResult>
-FacePipelineImpl::Extract(std::shared_ptr<AlignerResult> aligner_result) {
+std::shared_ptr<FeatureResult> FacePipelineImpl::Extract(std::shared_ptr<AlignerResult> aligner_result) {
     Value input{ValueAlignerResult, aligner_result};
     // output.valuePtr memory is allocated by inner Process();
     Value output;

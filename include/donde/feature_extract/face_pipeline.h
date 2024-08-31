@@ -7,7 +7,6 @@
 
 using namespace Poco;
 
-
 using json = nlohmann::json;
 
 namespace donde_toolkits ::feature_extract {
@@ -20,26 +19,22 @@ class IFacePipeline {
 
     // take owner of these input pointers.
     // implementations should release them in dtor.
-    virtual RetCode Init(Processor* detector, Processor* landmarks, Processor* aligner,
-                         Processor* feature)
-        = 0;
+    virtual RetCode Init(Processor* detector, Processor* landmarks, Processor* aligner, Processor* feature) = 0;
 
     virtual RetCode Terminate() = 0;
 
-
     virtual std::shared_ptr<Frame> Decode(const std::vector<uint8_t>& image_data) = 0;
+
+    virtual std::shared_ptr<OcrResult> TextRecognition(const cv::Mat& mat) = 0;
 
     virtual std::shared_ptr<DetectResult> Detect(const cv::Mat& mat) = 0;
     virtual std::shared_ptr<DetectResult> Detect(const std::shared_ptr<Frame> frame) = 0;
 
-    virtual std::shared_ptr<LandmarksResult>
-    Landmarks(const std::shared_ptr<DetectResult> detect_result) = 0;
+    virtual std::shared_ptr<LandmarksResult> Landmarks(const std::shared_ptr<DetectResult> detect_result) = 0;
 
-    virtual std::shared_ptr<AlignerResult>
-    Align(const std::shared_ptr<LandmarksResult> landmarks_result) = 0;
+    virtual std::shared_ptr<AlignerResult> Align(const std::shared_ptr<LandmarksResult> landmarks_result) = 0;
 
-    virtual std::shared_ptr<FeatureResult> Extract(std::shared_ptr<AlignerResult> aligner_result)
-        = 0;
+    virtual std::shared_ptr<FeatureResult> Extract(std::shared_ptr<AlignerResult> aligner_result) = 0;
 };
 
 // forward declearation.
@@ -53,21 +48,20 @@ class FacePipeline : public IFacePipeline {
 
     const json& GetConfig() override;
 
-    RetCode Init(Processor* detector, Processor* landmarks, Processor* aligner,
-                 Processor* feature) override;
+    RetCode Init(Processor* detector, Processor* landmarks, Processor* aligner, Processor* feature) override;
 
     RetCode Terminate() override;
+
+    std::shared_ptr<OcrResult> TextRecognition(const cv::Mat& mat) override;
 
     std::shared_ptr<DetectResult> Detect(const cv::Mat& mat) override;
     std::shared_ptr<Frame> Decode(const std::vector<uint8_t>& image_data) override;
 
     std::shared_ptr<DetectResult> Detect(const std::shared_ptr<Frame> frame) override;
 
-    std::shared_ptr<LandmarksResult>
-    Landmarks(const std::shared_ptr<DetectResult> detect_result) override;
+    std::shared_ptr<LandmarksResult> Landmarks(const std::shared_ptr<DetectResult> detect_result) override;
 
-    std::shared_ptr<AlignerResult>
-    Align(const std::shared_ptr<LandmarksResult> landmarks_result) override;
+    std::shared_ptr<AlignerResult> Align(const std::shared_ptr<LandmarksResult> landmarks_result) override;
 
     std::shared_ptr<FeatureResult> Extract(std::shared_ptr<AlignerResult> aligner_result) override;
 

@@ -1,7 +1,8 @@
 #pragma once
 
-#include <stdint.h>
 #include "spdlog/spdlog.h"
+
+#include <stdint.h>
 // #include "utils.h"
 
 #include <cmath>
@@ -34,6 +35,8 @@ struct FaceDetection {
     float confidence;
     cv::Rect box;
 };
+
+struct OcrResult {};
 
 struct DetectResult {
     std::shared_ptr<Frame> frame;
@@ -131,9 +134,7 @@ struct FeatureScore {
 };
 
 struct FeatureScoreComparator {
-    bool operator()(const FeatureScore& lhs, const FeatureScore& rhs) {
-        return lhs.score > rhs.score;
-    }
+    bool operator()(const FeatureScore& lhs, const FeatureScore& rhs) { return lhs.score > rhs.score; }
 };
 
 template <int size>
@@ -173,9 +174,7 @@ inline std::string format_value_type(const ValueType typ) {
     return strings[typ];
 };
 
-inline std::ostream& operator<<(std::ostream& out, const ValueType typ) {
-    return out << format_value_type(typ);
-};
+inline std::ostream& operator<<(std::ostream& out, const ValueType typ) { return out << format_value_type(typ); };
 
 struct Value {
     ValueType valueType;

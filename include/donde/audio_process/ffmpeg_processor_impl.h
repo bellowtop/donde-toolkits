@@ -27,6 +27,8 @@ class FFmpegAudioProcessorImpl {
 
     bool Transcode(const std::string& output_filepath);
 
+    bool ExportSubtitle(const std::string& output_filepath);
+
     ~FFmpegAudioProcessorImpl();
 
   private:

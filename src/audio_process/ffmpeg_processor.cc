@@ -12,4 +12,8 @@ AudioStreamInfo FFmpegAudioProcessor::OpenContext(const std::string& filepath) {
 
 void FFmpegAudioProcessor::Transcode(const std::string& output_filepath) { impl->Transcode(output_filepath); };
 
+void FFmpegAudioProcessor::ExportSubtitle(const std::string& output_filepath) {
+    impl->ExportSubtitle(output_filepath);
+};
+
 } // namespace donde_toolkits::audio_process

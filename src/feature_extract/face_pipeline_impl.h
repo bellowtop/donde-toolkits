@@ -9,7 +9,6 @@
 
 using namespace Poco;
 
-
 using json = nlohmann::json;
 
 namespace donde_toolkits ::feature_extract {
@@ -27,6 +26,8 @@ class FacePipelineImpl {
     std::shared_ptr<Frame> Decode(const std::vector<uint8_t>& image_data);
 
     std::shared_ptr<DetectResult> Detect(const std::shared_ptr<Frame> frame);
+
+    std::shared_ptr<OcrResult> TextRecognition(const cv::Mat& mat);
 
     std::shared_ptr<LandmarksResult> Landmarks(const std::shared_ptr<DetectResult> detect_result);
 

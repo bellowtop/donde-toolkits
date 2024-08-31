@@ -26,41 +26,6 @@ extern "C" {
 
 namespace donde_toolkits ::audio_process {
 
-void debug_frame(const AVFrame* frame) {
-    // if (!frame) {
-    //     std::cerr << "Frame is null" << std::endl;
-    //     return;
-    // }
-
-    // std::cout << "Frame details:" << std::endl;
-    // std::cout << "  nb_samples: " << frame->nb_samples << std::endl;
-    // std::cout << "  channels: " << frame->ch_layout.nb_channels << std::endl;
-
-    // const char* fmt_name = av_get_sample_fmt_name((AVSampleFormat)frame->format);
-    // if (fmt_name == nullptr) {
-    //     std::cout << "  format: NULL, frame->format: " << frame->format << std::endl;
-    // } else {
-    //     std::cout << "  format: " << fmt_name << std::endl;
-    // }
-
-    // // 打印通道布局信息
-    // char channel_layout_str[256];
-    // av_channel_layout_describe(&frame->ch_layout, channel_layout_str, sizeof(channel_layout_str));
-    // std::cout << "  channel_layout: " << channel_layout_str << std::endl;
-    // std::cout << "  sample_rate: " << frame->sample_rate << std::endl;
-
-    // // // 打印每个通道的前几个样本数据 (假设为 float 格式)
-    // // if (frame->data[0]) {
-    // //     for (int ch = 0; ch < frame->ch_layout.nb_channels; ch++) {
-    // //         std::cout << "Channel " << ch << ": ";
-    // //         for (int i = 0; i < std::min(frame->nb_samples, 10); i++) { // 只打印前10个样本
-    // //             std::cout << ((float*)frame->data[ch])[i] << " ";
-    // //         }
-    // //         std::cout << std::endl;
-    // //     }
-    // // }
-}
-
 FFmpegAudioProcessorImpl::FFmpegAudioProcessorImpl() {
     // monitor_thread_ = std::thread([&] { monitor(); });
 }
@@ -80,14 +45,14 @@ AudioStreamInfo FFmpegAudioProcessorImpl::OpenContext(const std::string& filepat
     return info;
 }
 
-bool FFmpegAudioProcessorImpl::Transcode(const std::string& filepath) {
+bool FFmpegAudioProcessorImpl::Transcode(const std::string& output_filepath) {
     // start
-    start_audio_extract_context(filepath);
+    start_audio_extract_context(output_filepath);
     DEFER(clear_audio_extract_context());
 
     // extract
     // blocking call.
-    start_audio_extract_process(filepath);
+    start_audio_extract_process(output_filepath);
 
     return true;
 }
@@ -99,7 +64,7 @@ bool FFmpegAudioProcessorImpl::open_context() {
         return false;
     }
 
-    // find video/audio stream
+    // find audio stream
     {
         ret = avformat_find_stream_info(format_context_, nullptr);
         if (ret < 0) {
@@ -433,8 +398,6 @@ bool FFmpegAudioProcessorImpl::decode_audio_frame_() {
                 std::cerr << "failed to receive frame from audio codec context" << av_err2string(ret) << std::endl;
                 break;
             }
-            // std::cout << "send frame: " << std::endl;
-            // debug_frame(frame);
             audio_frame_ch_ << av_frame_clone(frame);
         }
     }
@@ -476,7 +439,6 @@ bool FFmpegAudioProcessorImpl::transcode_audio_frame_() {
 
             std::cerr << "\tframe_size: " << frame_size << std::endl;
 
-            debug_frame(frame);
             return false;
         }
 
@@ -538,7 +500,6 @@ bool FFmpegAudioProcessorImpl::transcode_audio_frame_() {
         DEFER(av_frame_free(&frame));
 
         // std::cout << "transcode_audio_frame_ get frame: ";
-        // debug_frame(frame);
 
         // write to fifo
         bool write_ok = fn_write_frame_samples_to_fifo(frame);
@@ -678,5 +639,7 @@ bool FFmpegAudioProcessorImpl::save_output_audio_packet_() {
 
     return true;
 }
+
+bool FFmpegAudioProcessorImpl::ExportSubtitle(const std::string& output_filepath) { return true; }
 
 } // namespace donde_toolkits::audio_process
