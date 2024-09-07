@@ -81,15 +81,12 @@ void OcrWorker::run() {
 }
 
 RetCode OcrWorker::process(const cv::Mat& image, OcrResult& result) {
-    cv::imwrite("/tmp/debug1.jpg", image);
-
     auto mat = image.clone();
     cv::cvtColor(mat, mat, cv::COLOR_BGR2RGBA);
-    cv::imwrite("/tmp/debug2.jpg", mat);
     _tesserctOcr->SetImage(mat.data, mat.cols, mat.rows, 4, 4 * mat.cols);
 
     char* text = _tesserctOcr->GetUTF8Text();
-    result.text = text;
+    result.text = std::string(text);
     _logger->debug("text recognition is: {}", result.text);
 
     delete[] text;
