@@ -20,6 +20,7 @@ class IFacePipeline {
     // take owner of these input pointers.
     // implementations should release them in dtor.
     virtual RetCode Init(Processor* detector, Processor* landmarks, Processor* aligner, Processor* feature) = 0;
+    virtual RetCode InitOcrProcessor(Processor* ocr) = 0;
 
     virtual RetCode Terminate() = 0;
 
@@ -49,6 +50,7 @@ class FacePipeline : public IFacePipeline {
     const json& GetConfig() override;
 
     RetCode Init(Processor* detector, Processor* landmarks, Processor* aligner, Processor* feature) override;
+    RetCode InitOcrProcessor(Processor* ocr) override;
 
     RetCode Terminate() override;
 

@@ -51,8 +51,6 @@ TEST(FeatureExtract, FacePipelineCanDecodeImageBinaryToFrame) {
     "warmup": false
   }
 }
-
-
 )"_json;
 
     FacePipeline pipeline{conf};

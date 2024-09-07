@@ -14,3 +14,16 @@ add_executable(audio_extract audio_extract.cc)
 target_link_libraries(audio_extract
     PUBLIC
     ${DONDE_TOOLKIT_LIB})
+
+add_executable(text_recog text_recog.cc)
+target_link_libraries(text_recog
+    PUBLIC
+    ${DONDE_TOOLKIT_LIB}
+
+    Poco::Foundation
+    spdlog::spdlog
+    # SQLiteCpp
+    nlohmann_json::nlohmann_json
+    msd_channel
+)
+target_compile_features(text_recog PRIVATE cxx_std_20)

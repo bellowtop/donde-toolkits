@@ -4,6 +4,7 @@
   IndentWidth: 4
   TabWidth: 4
 
+  SortIncludes: Never
   AccessModifierOffset: '-2'
   AlignTrailingComments: true
   AllowAllParametersOfDeclarationOnNextLine: true

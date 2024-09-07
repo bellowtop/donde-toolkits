@@ -51,6 +51,8 @@ RetCode FacePipeline::Init(Processor* detector, Processor* landmarks, Processor*
     return pimpl->Init(detector, landmarks, aligner, feature);
 }
 
+RetCode FacePipeline::InitOcrProcessor(Processor* ocr) { return pimpl->InitOcrProcessor(ocr); };
+
 RetCode FacePipeline::Terminate() { return pimpl->Terminate(); }
 
 const json& FacePipeline::GetConfig() { return pimpl->GetConfig(); };
@@ -59,7 +61,10 @@ std::shared_ptr<Frame> FacePipeline::Decode(const std::vector<uint8_t>& image_da
     return pimpl->Decode(image_data);
 }
 
-std::shared_ptr<OcrResult> FacePipeline::TextRecognition(const cv::Mat& mat) { return {}; }
+std::shared_ptr<OcrResult> FacePipeline::TextRecognition(const cv::Mat& mat) {
+    auto frame = std::make_shared<Frame>(mat);
+    return pimpl->TextRecognition(frame);
+}
 
 std::shared_ptr<DetectResult> FacePipeline::Detect(const cv::Mat& mat) {
     auto frame = std::make_shared<Frame>(mat);

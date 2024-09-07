@@ -1,17 +1,16 @@
 #pragma once
 
+#include <iostream>
+#include <memory>
+#include <string>
+#include <type_traits>
+
+#include "nlohmann/json.hpp"
 #include "Poco/Runnable.h"
 #include "donde/definitions.h"
 #include "donde/message.h"
-#include "nlohmann/json.hpp"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
-
-#include <iostream>
-#include <memory>
-#include <type_traits>
-
-
 
 using Poco::Runnable;
 using json = nlohmann::json;

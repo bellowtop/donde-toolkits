@@ -1,7 +1,5 @@
 #pragma once
 
-#include "spdlog/spdlog.h"
-
 #include <stdint.h>
 // #include "utils.h"
 
@@ -21,6 +19,8 @@
 #include <string>
 #include <vector>
 
+#include "spdlog/spdlog.h"
+
 namespace donde_toolkits {
 
 enum RetCode { RET_OK, RET_ERR };
@@ -36,7 +36,9 @@ struct FaceDetection {
     cv::Rect box;
 };
 
-struct OcrResult {};
+struct OcrResult {
+    std::string text;
+};
 
 struct DetectResult {
     std::shared_ptr<Frame> frame;
@@ -153,6 +155,7 @@ struct FeatureResult {
 
 enum ValueType {
     ValueFrame,
+    ValueOcrResult,
     ValueDetectResult,
     ValueLandmarksResult,
     ValueAlignerResult,
@@ -165,6 +168,7 @@ inline std::string format_value_type(const ValueType typ) {
     if (strings.size() == 0) {
 #define insert_elem(p) strings[p] = #p
         insert_elem(ValueFrame);
+        insert_elem(ValueOcrResult);
         insert_elem(ValueDetectResult);
         insert_elem(ValueLandmarksResult);
         insert_elem(ValueAlignerResult);

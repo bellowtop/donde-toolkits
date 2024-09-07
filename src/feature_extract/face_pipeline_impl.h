@@ -20,6 +20,7 @@ class FacePipelineImpl {
     const json& GetConfig() { return _config; };
 
     RetCode Init(Processor* detector, Processor* landmarks, Processor* aligner, Processor* feature);
+    RetCode InitOcrProcessor(Processor* ocr);
 
     RetCode Terminate();
 
@@ -27,7 +28,7 @@ class FacePipelineImpl {
 
     std::shared_ptr<DetectResult> Detect(const std::shared_ptr<Frame> frame);
 
-    std::shared_ptr<OcrResult> TextRecognition(const cv::Mat& mat);
+    std::shared_ptr<OcrResult> TextRecognition(std::shared_ptr<Frame> frame);
 
     std::shared_ptr<LandmarksResult> Landmarks(const std::shared_ptr<DetectResult> detect_result);
 
@@ -39,6 +40,7 @@ class FacePipelineImpl {
     json _config;
 
     std::shared_ptr<Processor> _detectorProcessor;
+    std::shared_ptr<Processor> _ocrProcessor;
     std::shared_ptr<Processor> _landmarksProcessor;
     std::shared_ptr<Processor> _alignerProcessor;
     std::shared_ptr<Processor> _featureProcessor;

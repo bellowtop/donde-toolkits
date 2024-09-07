@@ -4,7 +4,6 @@
 #include "donde/definitions.h"
 #include "donde/feature_extract/processor.h"
 #include "nlohmann/json.hpp"
-#include "openvino_worker/openvino_worker.h"
 #include "spdlog/spdlog.h"
 
 #include <cstdint>
@@ -12,8 +11,6 @@
 #include <opencv2/core/mat.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/opencv.hpp>
-
-using namespace donde_toolkits::feature_extract::openvino_worker;
 
 using json = nlohmann::json;
 
@@ -48,7 +45,6 @@ namespace donde_toolkits ::feature_extract {
 FacePipelineImpl::FacePipelineImpl(const json& conf) : _config(conf) {}
 
 RetCode FacePipelineImpl::Init(Processor* detector, Processor* landmarks, Processor* aligner, Processor* feature) {
-
     _detectorProcessor.reset(detector);
     _landmarksProcessor.reset(landmarks);
     _alignerProcessor.reset(aligner);
@@ -93,6 +89,15 @@ RetCode FacePipelineImpl::Init(Processor* detector, Processor* landmarks, Proces
     return RET_OK;
 }
 
+RetCode FacePipelineImpl::InitOcrProcessor(Processor* ocr) {
+    _ocrProcessor.reset(ocr);
+    if (_ocrProcessor->Init(_config["ocr"]) != RetCode::RET_OK) {
+        spdlog::error("cannot init ocr processor");
+        return RetCode::RET_ERR;
+    };
+    return RET_OK;
+}
+
 RetCode FacePipelineImpl::Terminate() {
     if (_detectorProcessor && _detectorProcessor->IsInited()) {
         RetCode ret = _detectorProcessor->Terminate();
@@ -119,7 +124,26 @@ std::shared_ptr<Frame> FacePipelineImpl::Decode(const std::vector<uint8_t>& imag
     return std::make_shared<Frame>(image);
 }
 
-std::shared_ptr<OcrResult> TextRecognition(const cv::Mat& mat) { return {}; }
+std::shared_ptr<OcrResult> FacePipelineImpl::TextRecognition(std::shared_ptr<Frame> frame) {
+    if (_ocrProcessor == nullptr) {
+        spdlog::error("Ocr processor is null, InitOcrProcessor first");
+        return nullptr;
+    }
+
+    Value input{ValueFrame, frame};
+    // output.valuePtr memory is allocated by inner Process();
+    Value output;
+
+    RetCode ret = _ocrProcessor->Process(input, output);
+    // spdlog::info("FacePipelineImpl::Ocr ret: {}", int(ret));
+
+    if (output.valueType != ValueOcrResult) {
+        spdlog::error("Ocr output is not ValueOcrResult, return empty result");
+        return nullptr;
+    }
+
+    return std::static_pointer_cast<OcrResult>(output.valuePtr);
+}
 
 std::shared_ptr<DetectResult> FacePipelineImpl::Detect(std::shared_ptr<Frame> frame) {
     Value input{ValueFrame, frame};
