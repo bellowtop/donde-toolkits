@@ -54,6 +54,8 @@ RetCode FacePipelineImpl::Init(Processor* detector, Processor* landmarks, Proces
         if (_detectorProcessor->Init(_config["detector"]) != RetCode::RET_OK) {
             spdlog::warn("cannot init detector processor");
             return RetCode::RET_ERR;
+        } else {
+            spdlog::info("init detector processor success");
         };
     } else {
         spdlog::warn("no detector found in _config json, skip init detector processor");
@@ -63,6 +65,8 @@ RetCode FacePipelineImpl::Init(Processor* detector, Processor* landmarks, Proces
         if (_landmarksProcessor->Init(_config["landmarks"]) != RetCode::RET_OK) {
             spdlog::warn("cannot init landmarks processor");
             return RetCode::RET_ERR;
+        } else {
+            spdlog::info("init landmarks processor success");
         };
     } else {
         spdlog::warn("no landmarks found in _config json, skip init landmarks processor");
@@ -72,6 +76,8 @@ RetCode FacePipelineImpl::Init(Processor* detector, Processor* landmarks, Proces
         if (_alignerProcessor->Init(_config["aligner"]) != RetCode::RET_OK) {
             spdlog::warn("cannot init aligner processor");
             return RetCode::RET_ERR;
+        } else {
+            spdlog::info("init aligner processor success");
         };
     } else {
         spdlog::warn("no aligner found in _config json, skip init aligner processor");
@@ -81,6 +87,8 @@ RetCode FacePipelineImpl::Init(Processor* detector, Processor* landmarks, Proces
         if (_featureProcessor->Init(_config["feature"]) != RetCode::RET_OK) {
             spdlog::warn("cannot init feature processor");
             return RetCode::RET_ERR;
+        } else {
+            spdlog::info("init feature processor success");
         };
     } else {
         spdlog::warn("no feature found in _config json, skip init feature processor");

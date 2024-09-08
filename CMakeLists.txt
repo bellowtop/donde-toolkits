@@ -193,18 +193,14 @@ target_link_libraries(${PROJECT_NAME}
 ## 查找 Leptonica 和 Tesseract 库
 ##
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(LEPT REQUIRED lept)
-pkg_check_modules(TESSERACT REQUIRED tesseract)
-message("LEPT_LIBRARIES: ${LEPT_LIBRARIES}")
-message("LEPT_LIBRARY_DIRS: ${LEPT_LIBRARY_DIRS}")
-message("TESSERACT_LIBRARIES: ${TESSERACT_LIBRARIES}")
-if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-  link_directories("/opt/homebrew/lib")
-endif()
+pkg_check_modules(tesseract REQUIRED IMPORTED_TARGET tesseract)
+pkg_check_modules(leptonica REQUIRED IMPORTED_TARGET lept)
+pkg_check_moduleS(libcurl REQUIRED IMPORTED_TARGET libcurl)
+set_property(TARGET PkgConfig::tesseract APPEND PROPERTY INTERFACE_LINK_LIBRARIES curl archive)
 target_link_libraries(${PROJECT_NAME}
   PRIVATE
-  "${LEPT_LIBRARIES}"
-  "${TESSERACT_LIBRARIES}"
+  PkgConfig::leptonica
+  PkgConfig::tesseract
 )
 
 
