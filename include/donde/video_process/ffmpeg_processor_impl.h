@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Poco/Notification.h>
+#include <__atomic/atomic.h>
 extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
@@ -16,6 +17,7 @@ extern "C" {
 #include <condition_variable>
 #include <memory>
 #include <string>
+#include <vector>
 #include <thread>
 
 namespace donde_toolkits ::video_process {
@@ -34,6 +36,7 @@ class FFmpegVideoProcessorImpl {
 
     void ScaleFrame(const AVFrame* originalFrame, AVFrame* destFrame) const;
 
+    bool Seek(int seconds);
     bool Pause();
     bool IsPaused();
     bool Resume();
@@ -70,6 +73,13 @@ class FFmpegVideoProcessorImpl {
     AVFormatContext* format_context_ = nullptr;
     AVCodecContext* video_codec_context_ = nullptr;
     int video_stream_index_ = -1;
+    int32_t video_stream_units_per_second_ = 0;
+    float video_stream_seconds_per_unit_ = 0.0f;
+
+    // cover image
+    int cover_stream_index_ = -1;
+    std::string cover_image_file_ext_ = "";
+    std::vector<uint8_t> cover_image_file_data_ = {};
 
     // for convert video frame fmt
     SwsContext* sws_context_ = nullptr;
@@ -90,6 +100,9 @@ class FFmpegVideoProcessorImpl {
 
     bool started_ = false;
     bool start_over_ = false;
+
+    std::atomic<int> last_seek_seconds_ = 0;
+    std::atomic<bool> need_seeking_ = false;
 
     bool is_demuxing_ = false;
     bool is_decoding_ = false;

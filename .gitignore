@@ -3,6 +3,7 @@
 /build2
 !/build/compile_commands.json
 !/build2/compile_commands.json
+*.mp4
 
 /*_openvino_*
 /.vscode

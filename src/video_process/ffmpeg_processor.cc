@@ -20,6 +20,8 @@ void FFmpegVideoProcessor::ScaleFrame(const AVFrame* originalFrame, AVFrame* des
     impl->ScaleFrame(originalFrame, destFrame);
 }
 
+bool FFmpegVideoProcessor::Seek(int seconds) { return impl->Seek(seconds); };
+
 bool FFmpegVideoProcessor::Pause() { return impl->Pause(); };
 
 bool FFmpegVideoProcessor::IsPaused() { return impl->IsPaused(); };

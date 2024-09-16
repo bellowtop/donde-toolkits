@@ -3,6 +3,7 @@
 
 #include <Poco/Notification.h>
 #include <chrono>
+#include <cstring>
 #include <iostream>
 #include <memory>
 #include <mutex>
@@ -50,8 +51,22 @@ bool FFmpegVideoProcessorImpl::open_context() {
         av_dump_format(format_context_, 0, video_filepath_.c_str(), 0);
 
         for (int i = 0; i < format_context_->nb_streams; i++) {
-            if (format_context_->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_VIDEO && video_stream_index_ < 0) {
-                video_stream_index_ = i;
+            auto& stream = format_context_->streams[i];
+            if (stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
+                if (stream->disposition & AV_DISPOSITION_ATTACHED_PIC) {
+                    cover_stream_index_ = i;
+                    cover_image_file_ext_ = get_cover_image_file_extension(stream->codecpar->codec_id);
+                    AVPacket pkt = stream->attached_pic;
+                    cover_image_file_data_.resize(pkt.size);
+                    // std::memcpy(cover_image_file_data_.data(), pkt.data, pkt.size);
+                    std::copy(pkt.data, pkt.data + pkt.size, cover_image_file_data_.begin());
+                    std::cout << "find get attached pic! cover_image data size: " << cover_image_file_data_.size()
+                              << ", file ext: " << cover_image_file_ext_ << std::endl;
+                } else {
+                    video_stream_index_ = i;
+                    video_stream_seconds_per_unit_ = av_q2d(stream->time_base);
+                    video_stream_units_per_second_ = static_cast<int32_t>(1 / video_stream_seconds_per_unit_);
+                }
             }
         }
 
@@ -108,6 +123,13 @@ bool FFmpegVideoProcessorImpl::open_context() {
     return true;
 }
 
+bool FFmpegVideoProcessorImpl::Seek(int seconds) {
+    std::unique_lock<std::mutex> lk(demux_mu_);
+    need_seeking_ = true;
+    last_seek_seconds_ = seconds;
+    return true;
+}
+
 bool FFmpegVideoProcessorImpl::Pause() {
     std::lock_guard<std::mutex> lk(demux_mu_);
     pause_ = true;
@@ -159,8 +181,16 @@ VideoStreamInfo FFmpegVideoProcessorImpl::OpenVideoContext(const std::string& fi
         .nb_frames = nb_frames,
         .duration_seconds = duration_seconds,
         .avg_frame_rate = avg_frame_rate,
+        .time_units_per_second = video_stream_units_per_second_,
     };
 
+    if (!cover_image_file_data_.empty()) {
+        // copy vector data
+        info.cover_file_data = cover_image_file_data_;
+        info.cover_file_ext = cover_image_file_ext_;
+    }
+
+    // well, RVO
     return info;
 }
 
@@ -224,6 +254,27 @@ void FFmpegVideoProcessorImpl::demux_video_packet_() {
 
         if (quit_) {
             break;
+        }
+
+        // seeking.
+        {
+            std::unique_lock<std::mutex> lk(demux_mu_);
+            if (need_seeking_) {
+                if (last_seek_seconds_ <= 0) {
+                    std::cerr << "need_seeking, but last_seek_seconds is wrong: " << last_seek_seconds_ << std::endl;
+                } else {
+                    // seeking.
+                    auto timestamp = last_seek_seconds_ * video_stream_units_per_second_;
+                    int ret = av_seek_frame(format_context_, video_stream_index_, timestamp, AVSEEK_FLAG_BACKWARD);
+                    if (ret < 0) {
+                        std::cerr << "av_seek_frame failed, ret: " << av_err2str(ret) << std::endl;
+                    }
+                    avcodec_flush_buffers(video_codec_context_);
+                    std::cout << "av_seek_frame success, new location: " << last_seek_seconds_ << std::endl;
+                }
+                // reset seeking operation.
+                need_seeking_ = false;
+            }
         }
 
         int ret = av_read_frame(format_context_, packet);

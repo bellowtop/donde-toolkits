@@ -1,5 +1,10 @@
+#pragma once
+
+#include <string>
+
 extern "C" {
 #include <libavutil/imgutils.h>
+#include <libavcodec/avcodec.h>
 }
 
 // clang-format off
@@ -17,3 +22,18 @@ av_always_inline std::string av_err2string(int errnum) {
 #endif // av_err2str
 
 // clang-format on
+
+inline std::string get_cover_image_file_extension(AVCodecID codec_id) {
+    switch (codec_id) {
+    case AV_CODEC_ID_JPEG2000:
+    case AV_CODEC_ID_MJPEG:
+    case AV_CODEC_ID_MJPEGB:
+    case AV_CODEC_ID_JPEGLS:
+    case AV_CODEC_ID_JPEGXL:
+        return ".jpg";
+    case AV_CODEC_ID_PNG:
+        return ".png";
+    default:
+        return ".bin";
+    }
+}

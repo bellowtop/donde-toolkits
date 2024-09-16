@@ -2,6 +2,8 @@
 
 #include <cstdint>
 #include <string>
+#include <sys/_types/_int64_t.h>
+#include <vector>
 
 namespace donde_toolkits ::video_process {
 
@@ -17,8 +19,12 @@ struct VideoStreamInfo {
     int64_t nb_frames;
     int64_t duration_seconds;
     double avg_frame_rate;
+    int time_units_per_second;
     int64_t width;
     int64_t height;
+
+    std::vector<uint8_t> cover_file_data{};
+    std::string cover_file_ext{};
 };
 
 class VideoProcessor {

@@ -43,6 +43,7 @@ class FFmpegVideoProcessor : public VideoProcessor {
 
     bool AddObserver(const VideoFrameObserver& p);
     void ScaleFrame(const AVFrame* originalFrame, AVFrame* destFrame) const;
+    bool Seek(int seconds);
     bool Pause();
     bool IsPaused();
     bool Resume();

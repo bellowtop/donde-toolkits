@@ -16,8 +16,15 @@ bool callback(const FFmpegVideoFrame* frame) {
 int main(int argc, char** argv) {
     FFmpegVideoProcessor v{};
 
-    v.AddObserver([&](const FFmpegVideoFrame* f) -> bool { return true; });
-    v.OpenVideoContext("./contrib/Iron_Man-Trailer_HD.mp4");
+    auto videoInfo = v.OpenVideoContext("/Users/jiechen/Downloads/PoMu.mp4/PoMu.mp4");
+
+    v.AddObserver([&](const FFmpegVideoFrame* f) -> bool {
+        const AVFrame* frame = reinterpret_cast<const AVFrame*>(f->getFrame());
+        auto frameSeconds = static_cast<float>(frame->pts) / videoInfo.time_units_per_second;
+        std::cout << "get frame id: " << f->getFrameId() << ", current seconds: " << frameSeconds << std::endl;
+        return true;
+    });
+
     v.Process({
         .warm_up_frames = 0,
         .skip_frames = 1,
@@ -25,14 +32,28 @@ int main(int argc, char** argv) {
         .loop_forever = true,
     });
 
-    while (true) {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-        std::cout << "sleep 1s" << std::endl;
-        if (v.IsPaused()) {
-            std::cout << "video processor is paused, contiune 100 frames" << std::endl;
-            v.Resume();
+    // mock seeking...
+    std::thread t([&]() {
+        int i = 0;
+        while (i < 100) {
+            int seconds = i * 10;
+            std::cout << "seeking to seconds: " << seconds << std::endl;
+            v.Seek(seconds);
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            i++;
         }
-    }
+    });
+
+    t.join();
+
+    // while (true) {
+    //     std::this_thread::sleep_for(std::chrono::seconds(1));
+    //     std::cout << "sleep 1s" << std::endl;
+    //     if (v.IsPaused()) {
+    //         std::cout << "video processor is paused, contiune 100 frames" << std::endl;
+    //         v.Resume();
+    //     }
+    // }
 
     return 0;
 }
