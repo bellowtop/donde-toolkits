@@ -14,6 +14,8 @@ struct ProcessOptions {
     bool loop_forever;
 };
 
+struct AudioTrack {};
+
 struct VideoStreamInfo {
     bool open_success;
     int64_t nb_frames;

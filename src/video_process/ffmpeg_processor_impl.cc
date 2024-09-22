@@ -60,7 +60,7 @@ bool FFmpegVideoProcessorImpl::open_context() {
                     cover_image_file_data_.resize(pkt.size);
                     // std::memcpy(cover_image_file_data_.data(), pkt.data, pkt.size);
                     std::copy(pkt.data, pkt.data + pkt.size, cover_image_file_data_.begin());
-                    std::cout << "find get attached pic! cover_image data size: " << cover_image_file_data_.size()
+                    std::cout << "get attached pic! cover_image data size: " << cover_image_file_data_.size()
                               << ", file ext: " << cover_image_file_ext_ << std::endl;
                 } else {
                     video_stream_index_ = i;
