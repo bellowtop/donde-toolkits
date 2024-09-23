@@ -25,6 +25,7 @@ core.*
 openvino_env
 
 contrib/models
+contrib
 
 xcode
 
