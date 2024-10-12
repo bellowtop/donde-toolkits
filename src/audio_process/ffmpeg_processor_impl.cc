@@ -35,12 +35,13 @@ FFmpegAudioProcessorImpl::~FFmpegAudioProcessorImpl() {}
 AudioStreamInfo FFmpegAudioProcessorImpl::OpenContext(const std::string& filepath) {
     video_filepath_ = filepath;
 
+    AudioStreamInfo info{};
     bool succ = open_context();
     if (!succ) {
-        return AudioStreamInfo{.open_success = false};
+        info.open_success = false;
+    } else {
+        info.open_success = true;
     }
-
-    AudioStreamInfo info{};
 
     return info;
 }

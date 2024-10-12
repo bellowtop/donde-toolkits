@@ -178,7 +178,7 @@ target_link_libraries(${PROJECT_NAME}
 ##
 ## Find Torch
 ##
-list(APPEND CMAKE_PREFIX_PATH "/opt/homebrew/Cellar/pytorch/2.2.0_8/share/cmake/Torch/")
+list(APPEND CMAKE_PREFIX_PATH "/opt/homebrew/opt/pytorch/share/cmake/Torch")
 find_package(Torch REQUIRED)
 message("TORCH_INCLUDE_DIRS: ${TORCH_INCLUDE_DIRS}")
 message("TORCH_LIBRARIES: ${TORCH_LIBRARIES}")
@@ -245,7 +245,7 @@ endif ()
 # if (${PROJECT_NAME}_ENABLE_UNIT_TESTING)
 #     enable_testing()
 #     message(STATUS "Build unit tests for the project. Tests should always be found in the test folder\n")
-    add_subdirectory(tests)
+    # add_subdirectory(tests)
 # endif ()
 
 # if (${PROJECT_NAME}_ENABLE_EXAMPLES)

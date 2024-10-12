@@ -1,14 +1,19 @@
 #pragma once
 
-#include <cstdint>
+#include <vector>
 #include <string>
 
 namespace donde_toolkits ::audio_process {
 
 struct ProcessOptions {};
 
+struct AudioTrack {
+    std::string lang;
+};
+
 struct AudioStreamInfo {
     bool open_success;
+    std::vector<AudioTrack> audioTracks;
 };
 
 class AudioProcessor {
